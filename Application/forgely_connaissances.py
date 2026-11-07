@@ -4,7 +4,12 @@ Knowledge is kept distinct from real observations and synthetic simulations.
 from __future__ import annotations
 from dataclasses import dataclass
 
+GAME_SCOPE = 'DOFUS PC — règles communautaires, pas DOFUS Rétro/Touch'
+CHECKED_ON = '2026-11-07'
+
 SOURCES = {
+ 'huzounet': 'https://huzounet.fr/guides/forgemagie',
+ 'gamosaurus': 'https://www.gamosaurus.com/jeux/dofus/forgemagie-le-guide-complet-dofus',
  'dofuspourlesnoobs': 'https://www.dofuspourlesnoobs.com/guide-forgemagie.html',
  'fashionista': 'https://dofusfashionista.gg/fr/forgemagie/',
  'jeuxonline': 'https://dofus.jeuxonline.info/article/3736/forgemagie',
@@ -28,7 +33,13 @@ FACTS = (
  Fact('weight', 'Poids de la rune = quantité ajoutée × poids unitaire de la caractéristique.', ('jeuxonline','dofuspourlesnoobs'), 'communautaire_concordant'),
  Fact('pool', 'Le reliquat résulte des pertes de poids excédentaires et peut absorber des pertes futures ; ne pas le confondre avec les manques au jet parfait.', ('jeuxonline','fashionista'), 'communautaire_concordant'),
  Fact('exo_over', 'Une ligne absente du jet naturel est un exo ; une ligne au-dessus de sa borne naturelle est un over. Bornes documentées indispensables.', ('fashionista','jeuxonline'), 'communautaire_concordant'),
- Fact('cap101', 'Le plafond de poids supplémentaire 101 est rapporté par les guides communautaires ; vérifier les exceptions et versions.', ('fashionista','dofuspourlesnoobs'), 'communautaire_a_verifier'),
+ Fact('cap101', 'Over : densité totale de la ligne limitée à 101 hors jet naturel supérieur ; exos : densité cumulée limitée à 101. Ne pas additionner tous les surplus d’over comme un plafond global.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
+ Fact('sc_pool', 'Un succès critique ajoute le bonus sans consommer le reliquat ; un reliquat suffisant ne garantit pas le succès.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
+ Fact('tier20', 'Le repère 20 fois le gain de la rune guide le choix simple/Pa/Ra ; ce n’est ni une probabilité ni une interdiction de pose.', ('gamosaurus',), 'heuristique_communautaire'),
+ Fact('balance', 'Remonter progressivement les lignes et éviter de finaliser trop tôt une ligne peut faciliter le travail sur les autres ; pas d’ordre universel de runes.', ('huzounet',), 'heuristique_communautaire'),
+ Fact('finish', 'Les overs et exos sont fragiles lors des poses suivantes ; tenir compte des lignes restant à restaurer avant une finition.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
+ Fact('malus', 'Les lignes négatives exigent des règles propres et des bornes signées ; le moteur positif doit suspendre leur traitement plutôt que les convertir en bonus ordinaires.', ('huzounet',), 'limite_du_modele'),
+ Fact('transcendence', 'La transcendance est une finition qui empêche la FM ultérieure ; vérifier ses conditions spécifiques, distinctes des runes ordinaires.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
  Fact('probabilities', 'Les probabilités de SC/SN/EC dépendent du contexte ; ne pas extrapoler un taux fixe à toutes les runes.', ('fashionista','jeuxonline'), 'prudence_methodologique'),
  Fact('session_pool', 'La persistance du reliquat entre changements de session ou manipulations d’objet doit être vérifiée sur DOFUS 3.', ('fashionista','jeuxonline'), 'incertain'),
  Fact('focus', 'Le focus et le coefficient serveur concernent le BRISAGE, pas la probabilité SC/SN/EC de pose de rune.', ('dofocus',), 'source_explicite', 'brisage'),
@@ -52,7 +63,7 @@ def advice_context(*, natural_max_known:bool, pool_confirmed:bool, kind:str, run
     if not natural_max_known:
         notes.append('Bornes naturelles inconnues : over/exo non vérifiable.')
     if kind in ('exo','over'):
-        notes.append('Dépassement du jet naturel : préserver les autres lignes et vérifier le plafond de poids supplémentaire.')
+        notes.append('Dépassement du jet naturel : vérifier la densité totale de la ligne over et la densité cumulée des exos.')
     if rune_weight is not None and rune_weight >= 30:
         notes.append('Rune lourde : perte potentiellement coûteuse pour les autres lignes ; probabilité exacte non connue.')
     return tuple(notes)
@@ -61,3 +72,4 @@ def sources_for(key):
     for fact in FACTS:
         if fact.key==key:return tuple(SOURCES[k] for k in fact.sources)
     raise KeyError(key)
+

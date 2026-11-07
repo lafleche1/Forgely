@@ -9,6 +9,7 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from forgely_data import DB_FILE
 from forgely_probabilites import wilson
+from forgely_rules import finite_number
 
 
 def pool_bucket(value):
@@ -20,8 +21,10 @@ def pool_bucket(value):
 
 
 def jet_signature(jet):
-    """Exact observed stat keys only; never infer missing stats as zero."""
-    return tuple(sorted(jet))
+    """Exact observed values, not only line names. No missing stat inferred as zero."""
+    if not isinstance(jet,dict) or not jet or any(not isinstance(k,str) or not finite_number(v) for k,v in jet.items()):
+        raise ValueError('Jet invalide')
+    return tuple(sorted(jet.items()))
 
 
 def compute_snapshot(db_file=DB_FILE, *, minimum=30):
@@ -38,8 +41,8 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
             rejected+=1;continue
         try:
             before=json.loads(raw)
-            pool=float(before['pool']);jet=before['jet']
-            if not isinstance(jet,dict) or not jet or pool<0 or not item or not rune:
+            pool=before['pool'];jet=before['jet']
+            if not isinstance(jet,dict) or not jet or not finite_number(pool,nonnegative=True) or not item or not rune:
                 raise ValueError('invalid context')
             key=(item,rune,pool_bucket(pool),jet_signature(jet))
             groups[key][outcome]+=1
@@ -84,7 +87,9 @@ class LiveLaboratory:
 
     def estimate(self,item,rune,jet,pool):
         if not item or not rune or not isinstance(jet,dict) or not jet or pool is None: return None
-        try: key=(item,rune,pool_bucket(float(pool)),jet_signature(jet))
+        try:
+            if not finite_number(pool,nonnegative=True):return None
+            key=(item,rune,pool_bucket(float(pool)),jet_signature(jet))
         except (ValueError,TypeError): return None
         with self._lock: return self._snapshot['groups'].get(key)
 
@@ -97,3 +102,4 @@ class LiveLaboratory:
     def stop(self):
         self._stop.set();self._wake.set()
         if self._thread and self._thread.is_alive():self._thread.join(timeout=2)
+

@@ -17,13 +17,14 @@ from tempfile import NamedTemporaryFile
 
 from forgely_data import DB_FILE, DATA_DIR, RUNES, connect
 from forgely_items import key_for
+from forgely_rules import MODES, objective_mode, finite_number
 
 SETTINGS_PATH = DATA_DIR / 'atelier_preferences.json'
 BOUNDS_PATH = DATA_DIR / 'jets_naturels_verifies.csv'
-STRATEGIES = ('Prudent', 'Économique', 'Rapide', 'Jet parfait')
+STRATEGIES = MODES + ('Prudent', 'Économique', 'Rapide', 'Jet parfait')
 
 def settings_default():
-    return {'strategy':'Prudent','budget_kamas':0,'prices':{}}
+    return {'strategy':'Chances maximales','budget_kamas':0,'prices':{}}
 
 def read_settings(path=SETTINGS_PATH):
     try:
@@ -32,7 +33,8 @@ def read_settings(path=SETTINGS_PATH):
     except (OSError,ValueError,TypeError):raw={}
     cfg=settings_default()
     cfg.update({k:raw[k] for k in ('strategy','budget_kamas','prices') if k in raw})
-    if cfg['strategy'] not in STRATEGIES:cfg['strategy']='Prudent'
+    if cfg['strategy'] not in STRATEGIES:cfg['strategy']='Chances maximales'
+    cfg['strategy']=objective_mode(cfg['strategy'])
     if not isinstance(cfg['prices'],dict):cfg['prices']={}
     cfg['prices']={str(k):int(v) for k,v in cfg['prices'].items() if str(v).isdigit() and int(v)>=0}
     try: cfg['budget_kamas']=max(0,int(cfg['budget_kamas']))
@@ -128,6 +130,47 @@ def session_cost(item,settings=None,db_file=DB_FILE):
     unknown=sum(n for r,n in rows if r not in cfg['prices'])
     return {'known_cost':known_cost,'unpriced_attempts':unknown,'total_attempts':sum(n for _,n in rows)}
 
+
+def observation_cursor(db_file=DB_FILE):
+    """Consistent launch boundary for assigned AND unassigned attempts."""
+    with connect(db_file) as db:
+        db.execute('''CREATE TABLE IF NOT EXISTS unassigned_actions (
+            id INTEGER PRIMARY KEY AUTOINCREMENT, captured_at TEXT NOT NULL,
+            outcome TEXT NOT NULL, evidence TEXT NOT NULL DEFAULT '')''')
+        db.commit()
+        db.execute('BEGIN')
+        return {table:db.execute(f'SELECT COALESCE(MAX(id),0) FROM {table}').fetchone()[0]
+                for table in ('observations','unassigned_actions')}
+
+
+def cost_since(cursor, prices, db_file=DB_FILE):
+    """Recorded rune consumption since launch, not inventory or guaranteed coverage.
+
+    All items in this application session share the budget. OCR events remain
+    estimates of consumption. Repricing intentionally revalues the whole session.
+    """
+    # Legacy integer cursors conservatively include all unknown-rune attempts.
+    boundary={'observations':cursor,'unassigned_actions':0} if isinstance(cursor,int) else cursor
+    if (not isinstance(boundary,dict) or set(boundary)!= {'observations','unassigned_actions'}
+            or any(not isinstance(v,int) or isinstance(v,bool) or v<0 for v in boundary.values())):
+        raise ValueError('Début de session invalide')
+    with connect(db_file) as db:
+        db.execute('BEGIN')
+        rows=db.execute('SELECT rune,COUNT(*) FROM observations WHERE id>? GROUP BY rune', (boundary['observations'],)).fetchall()
+        exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='unassigned_actions'").fetchone()
+        unassigned=db.execute('SELECT COUNT(*) FROM unassigned_actions WHERE id>?',
+                              (boundary['unassigned_actions'],)).fetchone()[0] if exists else 0
+    known=0.; unknown=unassigned
+    for rune,n in rows:
+        price=prices.get(rune)
+        if not finite_number(price,nonnegative=True):
+            unknown+=n
+        else:
+            known+=n*price
+    return {'known_cost':known,'unpriced_attempts':unknown,
+            'total_attempts':sum(n for _,n in rows)+unassigned,
+            'unassigned_attempts':unassigned,'complete':unknown==0}
+
 def observed_distribution(item,rune,db_file=DB_FILE,min_samples=30):
     from forgely_data import stats
     n,counts=stats(item=item,rune=rune,db_file=db_file)
@@ -162,3 +205,4 @@ def advisory_status(plan,jets,pool,verified,item_bounds=None,stats_count=0):
     complete=all(jets[k]>=v['target'] for k,v in wanted.items())
     if complete:return {'stop':'Objectif affiché atteint : envisager d’arrêter','goal_probability':1.0}
     return {'stop':'Objectif en cours : comparer les risques avant de continuer','goal_probability':None}
+
