@@ -3,7 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 from forgely_probabilites import empirical
-from forgely_dofocus import (reference, lookup, natural_profile, line_limit,
+from forgely_dofocus import (reference, lookup, lookup_context, natural_profile, line_limit,
     normalise_jet, displayed_number, risk_notes)
 from forgely_rules import (RUNE_CHOICES, WEIGHTS as WEIGHT_PER_POINT, CAP,
                           constraints, finite_number, objective_mode, known_prices)
@@ -64,6 +64,7 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
     prices = known_prices(prices)
     pending_natural = any(current < targets.get(stat, current) and current < natural_max[stat]
                           for stat, current in jets.items() if natural_max and stat in natural_max)
+    source_context=lookup_context(item,jets,pool) if item else None
     available = []
     for stat, goal in targets.items():
         current = jets[stat]
@@ -88,7 +89,7 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
                 continue
             limit=line_limit(item,stat) if item else None
             if limit is not None and proposed>limit:continue
-            sampled=lookup(item,jets,pool,rune) if item else None
+            sampled=source_context.get(rune) if source_context else None
             if sampled and sampled['blocked']:continue
             price = prices.get(rune)
             if not finite_number(price, nonnegative=True):

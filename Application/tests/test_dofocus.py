@@ -119,11 +119,17 @@ class DofocusTests(unittest.TestCase):
             with self.subTest(mutate=mutate),self.assertRaises(ValueError):validate_catalogue(bad)
 
     def test_validated_capture_date_is_not_replaced_by_a_literal(self):
+        import json,tempfile
+        from pathlib import Path
         from unittest.mock import patch
         from forgely_dofocus import catalogue,lookup
+        from forgely_dofocus_store import build_database
         data=deepcopy(catalogue());data['captured_on']='2026-11-06'
-        with patch('forgely_dofocus.catalogue',return_value=data):
-            self.assertEqual(lookup('Gelano',{'PA':0},0,'Ga Pa')['captured_on'],'2026-11-06')
+        with tempfile.TemporaryDirectory() as directory:
+            source=Path(directory)/'source.json';db=Path(directory)/'reference.sqlite3'
+            source.write_text(json.dumps(data),encoding='utf-8');build_database(source,db)
+            with patch('forgely_dofocus.STORE_PATH',db):
+                self.assertEqual(lookup('Gelano',{'PA':0},0,'Ga Pa')['captured_on'],'2026-11-06')
 
     def test_advice_window_fits_short_screens(self):
         from forgely_dashboard import advice_window_size

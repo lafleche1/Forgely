@@ -30,3 +30,6 @@ tess_*
 Application/diagnostics/
 pytest-of-*/
 
+
+# Versioned read-only simulation reference, not player observations
+!Application/assets/dofocus/reference.sqlite3

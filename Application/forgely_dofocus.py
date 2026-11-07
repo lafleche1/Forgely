@@ -14,7 +14,8 @@ from datetime import date
 
 SOURCE_URL = 'https://dofocus.fr/forgemagie/'
 GUIDE_URL = 'https://dofocus.fr/guide/'
-REFERENCE_PATH = Path(__file__).with_name('assets') / 'dofocus' / 'reference.json'
+REFERENCE_PATH = Path(__file__).with_name('references') / 'dofocus' / 'reference.json'
+STORE_PATH = Path(__file__).with_name('assets') / 'dofocus' / 'reference.sqlite3'
 
 
 def key(text):
@@ -178,38 +179,35 @@ def catalogue():
         return {'schema':1,'kind':'simulation_reference','real_attempts':0,'snapshots':[]}
 
 
+@lru_cache(maxsize=1)
+def _cached_store(path,stamp,size):
+    from forgely_dofocus_store import ReferenceStore
+    return ReferenceStore(path)
+
+
+def reference_store():
+    try:
+        info=STORE_PATH.stat()
+        stamp,size=info.st_mtime_ns,info.st_size
+    except OSError:
+        stamp,size=None,None
+    return _cached_store(str(STORE_PATH),stamp,size)
+
+
 def natural_profile(item):
-    for sample in catalogue()['snapshots']:
-        if key(sample['item'])==key(item):
-            return {canonical_stat(r['stat']):r['max'] for r in sample['rows'] if r['max'] is not None}
-    return None
+    return reference_store().profile(item)
+
+
+def lookup_context(item,jets,pool):
+    return reference_store().context(item,jets,pool)
 
 
 def lookup(item,jets,pool,rune):
-    if not finite_number(pool) or pool<0:return None
-    jets=normalise_jet(jets)
-    if jets is None:return None
-    for sample in catalogue()['snapshots']:
-        if key(sample['item'])!=key(item) or sample['pool']!=pool:continue
-        recorded={canonical_stat(r['stat']):r['value'] for r in sample['rows']}
-        if jets!=recorded:continue
-        for row in sample['rows']:
-            if rune in row['runes']:
-                return {**row['runes'][rune],'kind':'simulation_reference','source':'Dofocus',
-                        'url':sample['url'],'captured_on':catalogue()['captured_on'],'real_observation':False,
-                        'stat':canonical_stat(row['stat'])}
-    return None
+    return reference_store().rune(item,jets,pool,rune)
 
 
 def line_limit(item,stat):
-    """Only limits explicitly displayed by disabled controls, not an inferred formula."""
-    limits=set()
-    for sample in catalogue()['snapshots']:
-        if key(sample['item'])!=key(item):continue
-        for row in sample['rows']:
-            if canonical_stat(row['stat'])==canonical_stat(stat):
-                limits.update(r['line_max'] for r in row['runes'].values() if r['blocked'])
-    return min(limits) if limits else None
+    return reference_store().limit(item,stat)
 
 
 def risk_notes(current, proposed, weight, pool, natural_max=None):

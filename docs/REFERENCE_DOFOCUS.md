@@ -1,4 +1,4 @@
-# Dofocus, référence des conseils Forgely v22.01
+# Dofocus, référence des conseils Forgely v22.03
 
 À la demande de l'utilisateur, les conseils actifs utilisent désormais Dofocus comme référence de base. Consultation du 7 novembre 2026. Le moteur principal, le résumé du plan et l'ancien point d'entrée de conseil partagent la même décision.
 
@@ -43,7 +43,7 @@ Les explications du simulateur et le mini-test déjà réalisé (Fo sur Cycloïd
 | Bouclier du Captain Amakna | 18670 | moyen ; puits 0 |
 | Anneau du Cycloïde | 14092 | moyen/puits 0 ; moyen/puits 10 ; Force 10 et autres lignes moyennes/puits 10 |
 
-Les contrôles de recherche, préréglage, édition du jet et ajout d'exo ont été utilisés dans le navigateur. Les libellés accessibles des boutons de rune fournissent les valeurs. Les nombres ont été transcrits en données structurées et contrôlés. Aucun prix ni historique économique n'est enregistré. Le fichier embarqué est `Application/assets/dofocus/reference.json`.
+Les contrôles de recherche, préréglage, édition du jet et ajout d'exo ont été utilisés dans le navigateur. Les libellés accessibles des boutons de rune fournissent les valeurs. Les nombres ont été transcrits en données structurées et contrôlés. Aucun prix ni historique économique n'est enregistré. Le JSON auditable se trouve dans `Application/references/dofocus/reference.json`. La ressource embarquée en lecture seule est `Application/assets/dofocus/reference.sqlite3`.
 
 Cette collecte est un échantillon, pas tous les objets du jeu, ni toutes les combinaisons de jets et de puits. Les règles de poids s'appliquent aux caractéristiques compatibles de n'importe quel équipement ; cela n'autorise pas à transférer les pourcentages entre objets ou jets. Les caractéristiques non couvertes sont laissées sans conseil de rune.
 
@@ -62,8 +62,17 @@ L'absence de formule complète empêche de reproduire les probabilités du simul
 
 ## Maintenance
 
-Les données sont chargées hors ligne, depuis les ressources déjà incluses par le conditionnement PyInstaller. Le validateur vérifie provenance, bornes, poids, unicité des contextes et cohérence des pourcentages arrondis. Un fichier absent ou invalide désactive les relevés chiffrés ; il n'entraîne pas de taux de remplacement. Toute extension doit garder la provenance, la date, l'objet, le jet complet et le puits.
+Les données sont lues hors ligne, par recherche indexée sur l'objet et le contexte exact. Le JSON d'auteur n'est pas chargé par le moteur ni inclus dans les ressources de l'exécutable. Les caches sont bornés à 32 objets et 64 contextes. Le validateur vérifie provenance, bornes, poids, unicité des contextes et cohérence des pourcentages arrondis. Un fichier absent ou invalide désactive les relevés chiffrés ; il n'entraîne pas de taux de remplacement. Toute extension doit garder la provenance, la date, l'objet, le jet complet et le puits.
 
 ## Intégration avec les deux objectifs
 
 La version du dépôt a évolué en parallèle vers deux modes. Cette intégration conserve **Chances maximales**, **Budget optimisé**, les prix personnels, le coût des tentatives enregistrées depuis le lancement et le blocage d'un budget incomplet. Les pourcentages d'un état exactement relevé pondèrent la progression du candidat ; le mode économique conserve aussi sa comparaison de coûts. Aucun prix Dofocus n'est récupéré et la probabilité du jet final reste inconnue.
+
+
+## Croissance de la base (v22.03)
+
+Le constructeur `python Application/preparer_reference_dofocus.py` valide le JSON puis remplace atomiquement la base SQLite. La fabrication de l'exécutable le lance avant PyInstaller ; la CI vérifie que les 322 cas embarqués correspondent à la source. Une référence absente ou corrompue désactive les relevés chiffrés, sans toucher aux observations personnelles.
+
+`python Application/preparer_collecte_dofocus.py --limit 64 --output collecte.json` prépare uniquement des entrées à vérifier dans le simulateur. La liste versionnée `docs/dofocus-collection-targets.json` privilégie les familles peu couvertes, répartit les questions entre familles et exclut les cas déjà relevés. Ces cibles ne sont ni des conseils de pose dans DOFUS ni de nouvelles données de réussite. Aucune collecte massive n'est lancée automatiquement.
+
+Mesures et protocole : `docs/PERFORMANCES_REFERENCE_V22_03.md`.

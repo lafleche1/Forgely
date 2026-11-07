@@ -1,1 +1,1 @@
-Forgely v22.02 — OCR et réactivité optimisés
+Forgely v22.03 — OCR optimisé et référence Dofocus indexée

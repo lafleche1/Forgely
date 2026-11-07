@@ -394,7 +394,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.02')
+        self.title('Forgely · L’atelier — v22.03')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')

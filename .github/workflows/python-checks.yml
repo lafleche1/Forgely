@@ -15,6 +15,8 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y tesseract-ocr tesseract-ocr-fra python3-tk xvfb
           python -m pip install -r requirements-dev.txt
+      - name: Validate packaged Dofocus reference
+        run: python -m pytest -q Application/tests/test_dofocus_store.py
       - name: Compile Python sources
         run: |
           python - <<'PY'

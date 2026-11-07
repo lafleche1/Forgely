@@ -1,0 +1,69 @@
+{
+  "note": "Mesures locales Python ; fixture de croissance fictive, aucune nouvelle observation DOFUS.",
+  "real_states": 17,
+  "real_database_bytes": 77824,
+  "synthetic_contexts": 3000,
+  "synthetic_is_game_evidence": false,
+  "current_lookup": {
+    "p50_ms": 0.031617,
+    "p95_ms": 0.047131
+  },
+  "current_advice": {
+    "p50_ms": 0.268805,
+    "p95_ms": 0.375406
+  },
+  "synthetic_database_bytes": 15085568,
+  "synthetic_lookup_last": {
+    "p50_ms": 0.031788,
+    "p95_ms": 0.052008
+  },
+  "synthetic_advice_last": {
+    "p50_ms": 0.2696215,
+    "p95_ms": 0.396517
+  },
+  "synthetic_advice_uncached_items": {
+    "p50_ms": 0.8783695,
+    "p95_ms": 1.13473
+  },
+  "synthetic_lookup_uncached_items": {
+    "p50_ms": 0.552853,
+    "p95_ms": 0.799215
+  },
+  "reader_python_memory_after_200_distinct_states": {
+    "current_bytes": 1232672,
+    "peak_bytes": 1252965,
+    "note": "Allocations Python du lecteur uniquement ; exclut le processus, SQLite natif et la fixture de préparation."
+  },
+  "bounded_cache": {
+    "items": {
+      "hits": 0,
+      "misses": 200,
+      "maxsize": 32,
+      "currsize": 32
+    },
+    "contexts": {
+      "hits": 0,
+      "misses": 200,
+      "maxsize": 64,
+      "currsize": 64
+    }
+  },
+  "measured_before_v22_01": {
+    "current_lookup": {
+      "p50_ms": 0.0719235,
+      "p95_ms": 0.097818
+    },
+    "current_advice": {
+      "p50_ms": 0.597085,
+      "p95_ms": 0.757522
+    },
+    "synthetic_3000_lookup_last": {
+      "p50_ms": 9.0214745,
+      "p95_ms": 9.538711
+    },
+    "synthetic_3000_advice_last": {
+      "p50_ms": 54.698032,
+      "p95_ms": 71.560688
+    }
+  }
+}
