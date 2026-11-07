@@ -134,6 +134,16 @@ class HistoryTransitionTracker:
             self.reason = 'Historique vide confirmé : attente de la première tentative'
             return None
         signature = history_signature(history_text)
+        if signature and not any(explicit_outcome(row) for row in signature):
+            # Stat deltas are handled by HistoryDeltaMonitor. Repeatedly
+            # confirming their OCR cannot produce evidence of an outcome.
+            self.baseline = None
+            self.pending_signature = None
+            self.pending_count = 0
+            self._init_candidate = None
+            self._init_count = 0
+            self.reason = 'Variations visibles · aucun résultat SC/SN/EC explicite'
+            return None
         if len(signature) < 2:
             self.reason = 'Historique illisible ou atelier fermé'
             return None

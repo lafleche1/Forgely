@@ -7,7 +7,7 @@ class TestOCRDiagnostic(unittest.TestCase):
         self.assertEqual(result.level,'À VÉRIFIER')
         self.assertTrue(any('Aucune lecture' in r for r in result.reasons))
     def test_complete_is_not_certified(self):
-        raw='HISTORIQUE\na\nEFFETS\nb\nRUNES (Pa / Ra)\nc\nRELIQUAT\nd\nVISION\ne'
+        raw='HISTORIQUE\nÉchec\nEFFETS\nb\nRUNES (Pa / Ra)\nRune Ra Vi\nRELIQUAT\nd\nVISION\ne'
         result=evaluate(raw,running=True,item_verified=True,jet_verified=True)
         self.assertFalse(result.reasons)
         self.assertIn('non certifiées',result.level)

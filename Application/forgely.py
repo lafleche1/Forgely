@@ -1209,13 +1209,15 @@ class Forgely(tk.Tk):
             profile=compare_theoretical_profile(self.item.get() if self.active_equipment_verified else '',raw_jet)
             report=evaluate_ocr(self.last_ocr_text,running=self.running,
                 item_verified=self.active_equipment_verified,
-                jet_verified=self.live_jet is not None and self.live_pool is not None)
+                jet_verified=self.live_jet is not None and self.live_pool is not None,
+                observation_delay_ms=self.last_observation_delay_ms)
             lines=['ÉTAT : '+report.level,
                    'FENÊTRE : '+(self.last_capture_title or 'Non détectée'),
                    'CAPTURE : '+self.capture.debug_stage,
                    'TESSERACT : '+ocr_engine_status(),
                    'MOTIF OBSERVATEUR : '+self.last_reason,
                    'LECTURE RAPIDE (PROVISOIRE) : '+getattr(self, 'fast_preview_reason', 'Non démarrée'),
+                   'DÉTAILS LECTURE RAPIDE : '+repr(getattr(self, 'fast_preview_details', {})),
                    'PERFORMANCES LECTURE RAPIDE (ms) : '+repr(self.fast_preview_performance.snapshot() if hasattr(self, 'fast_preview_performance') else {}),
                    'LECTURES : '+str(self.scan_count),
                    'RETARD DERNIÈRE OBSERVATION : '+(f'{self.last_observation_delay_ms:.0f} ms' if self.last_observation_delay_ms is not None else 'Non mesuré'),
@@ -1463,6 +1465,7 @@ class Forgely(tk.Tk):
         self.confirmation_requested = threading.Event()
         self.fast_preview_performance = PerformanceTracker()
         self.fast_preview_reason = 'En attente du premier historique stable'
+        self.fast_preview_details = {}
         self.last_full_event_frame_id = 0
         self.last_displayed_result_frame_id = 0
         self.fast_preview_visible = False
@@ -1565,7 +1568,8 @@ class Forgely(tk.Tk):
                     reader.reset()
                     continue
                 self.fast_preview_performance.record('historique_et_rune', forgely_perf_ns() - started)
-                self.fast_preview_reason = reader.tracker.reason
+                self.fast_preview_reason = reader.reason
+                self.fast_preview_details = reader.diagnostic
                 if result.context_reset:
                     self.messages.put(('fast_preview_clear', (frame_id, mailbox)))
                 if result.needs_confirmation:
@@ -1573,6 +1577,9 @@ class Forgely(tk.Tk):
                 if result.event:
                     self.messages.put(('fast_preview', (frame_id, captured_ns, result.event,
                                                         generation, title, reader.icon, mailbox)))
+                elif result.changes:
+                    self.messages.put(('fast_changes', (frame_id, captured_ns,
+                        (result.changes, result.changes_stable), generation, title, reader.icon, mailbox)))
             except Exception as exc:
                 # Failure of an optional preview must not stop the complete
                 # observer or reuse a stale reference after OCR failure.
@@ -1727,31 +1734,12 @@ class Forgely(tk.Tk):
                 perf.record("extraction_icone", forgely_perf_ns() - t_icon)
                 historical_names = visible_history_names(history_text, item_list())
                 latest_history_candidate = latest_visible_history_name(history_text, item_list())
-                # Search every independently OCR-visible history heading. The
-                # first-row OCR often reads a rune line, not the item's name.
-                # Never let that erroneous candidate hide a valid older row.
+                # Historical icons are not a source of current-item identity.
+                # Their former OCR geometry/visual-row search was discarded by
+                # the UI, yet launched expensive subprocesses every cycle.
+                # Explicit diagnostic exports can still locate a history icon.
                 history_icon = None
                 corroborated_history_name = None
-                candidates = list(dict.fromkeys(
-                    [n for n in historical_names if n] +
-                    [n for n in (found, new_name) if n]))
-                matches = []
-                if slot_icon is not None:
-                    for label in candidates[:8]:
-                        patch = history_icon_for_name(im, label)
-                        if patch is None or icon_distance(slot_icon, patch) > 32:
-                            patch = history_icon_by_visual_row(im, slot_icon, label)
-                        if patch is not None:
-                            distance = icon_distance(slot_icon, patch)
-                            if distance <= 32:
-                                matches.append((distance, label, patch))
-                # Ambiguous matches cannot identify a current item.
-                if matches:
-                    matches.sort(key=lambda x: x[0])
-                    best = matches[0]
-                    if all(key_for(label) == key_for(best[1]) or distance-best[0] >= 8
-                           for distance,label,_ in matches[1:]):
-                        _, corroborated_history_name, history_icon = best
                 signature = effect_signature(atelier.effects)
                 if stop_event.is_set():
                     break
@@ -2113,7 +2101,7 @@ class Forgely(tk.Tk):
                     frame_id, mailbox = data
                     if mailbox is self.frame_mailbox and frame_id >= self.last_displayed_result_frame_id:
                         self.clear_fast_preview()
-                elif kind=='fast_preview':
+                elif kind in ('fast_preview', 'fast_changes'):
                     frame_id, captured_ns, event, generation, title, icon, mailbox = data
                     if (frame_id <= self.last_full_event_frame_id or
                         frame_id < self.last_displayed_result_frame_id or
@@ -2123,9 +2111,16 @@ class Forgely(tk.Tk):
                     self.fast_preview_visible = True
                     delay_ns = forgely_perf_ns() - captured_ns
                     self.fast_preview_performance.record('capture_vers_affichage', delay_ns)
-                    label = event.rune or 'Rune inconnue'
-                    self.detect_label.configure(text=f'{label} · {event.outcome} · à vérifier')
-                    self.detect_help.configure(text='Lecture rapide provisoire · analyse complète en cours')
+                    if kind == 'fast_changes':
+                        changes, stable = event
+                        label = ' · '.join(f'{value:+d} {stat}' for stat, value in changes[:4])
+                        self.detect_label.configure(text=label + ' · à vérifier')
+                        confirmation = 'Variations lues deux fois' if stable else 'Lecture à confirmer'
+                        self.detect_help.configure(text=confirmation + ' · rune et résultat SC/SN/EC non confirmés')
+                    else:
+                        label = event.rune or 'Rune inconnue'
+                        self.detect_label.configure(text=f'{label} · {event.outcome} · à vérifier')
+                        self.detect_help.configure(text='Lecture rapide provisoire · analyse complète en cours')
                     self.overlay.state_color('candidate')
                 elif kind=='auto_event':
                     # Save last stable pre-fusion state BEFORE invalidating it.

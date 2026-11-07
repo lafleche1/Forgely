@@ -1,1 +1,1 @@
-Forgely v21.03 — aperçu rune indépendant et confirmations rapides
+Forgely v21.04 — variations rapides et diagnostic des lectures manquantes

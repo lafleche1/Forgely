@@ -11,7 +11,8 @@ class Diagnostic:
 
 
 def evaluate(raw: str, *, running: bool, item_verified: bool,
-             jet_verified: bool, rune_conflict: bool = False) -> Diagnostic:
+             jet_verified: bool, rune_conflict: bool = False,
+             observation_delay_ms: float | None = None) -> Diagnostic:
     raw = raw or ''
     sections = {}
     for index, heading in enumerate(SECTIONS):
@@ -38,6 +39,17 @@ def evaluate(raw: str, *, running: bool, item_verified: bool,
         reasons.append('Caractéristiques illisibles ou absentes.')
     if not sections['RUNES (Pa / Ra)']:
         reasons.append('Zone des runes illisible ou absente.')
+    else:
+        from forgely_data import RUNES
+        from runeforge_observer import find_rune
+        if find_rune(sections['RUNES (Pa / Ra)'], RUNES) is None:
+            reasons.append('Rune non reconnue dans le texte : nombres et titres Pa/Ra insuffisants ; vérifier le calibrage visuel.')
+    if sections['HISTORIQUE']:
+        from forgely_detection import explicit_outcome
+        if not any(explicit_outcome(line) for line in sections['HISTORIQUE'].splitlines()):
+            reasons.append('Aucun résultat SC/SN/EC explicite : variations observables, tentative non certifiable.')
+    if observation_delay_ms is not None and observation_delay_ms > 1000:
+        reasons.append(f'Affichage retardé : {observation_delay_ms:.0f} ms depuis la capture ; objectif inférieur à une seconde non atteint.')
     if rune_conflict or 'CONFLIT OCR / icône' in sections['VISION']:
         reasons.append('Conflit entre reconnaissance du texte et de l’icône.')
     # No numerical OCR accuracy is inferred from non-calibrated text.
