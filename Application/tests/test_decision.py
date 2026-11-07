@@ -27,7 +27,8 @@ class TestDecision(unittest.TestCase):
     def test_exo_reference_separate(self):
         a=advise({'PA':0},{'PA':1},natural_max={'Force':100},pool=0)
         self.assertEqual(a.rune,'Ga Pa')
-        self.assertEqual(a.estimates['benchmark']['SC'],1.)
+        self.assertIsNone(a.estimates['benchmark']['SC'])
+        self.assertIn('Dofocus',a.evidence)
         b=advise({'Force':50},{'Force':60},pool=10)
         self.assertIsNone(b.estimates['benchmark']['SC'])
 

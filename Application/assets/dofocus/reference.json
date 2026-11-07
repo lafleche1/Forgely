@@ -1,0 +1,4159 @@
+{
+  "schema": 1,
+  "source": "Dofocus",
+  "kind": "simulation_reference",
+  "captured_on": "2026-11-07",
+  "server": "Dakal",
+  "mode": "avance",
+  "real_attempts": 0,
+  "coverage": "Echantillon de 10 équipements, pas tous les objets ni tous les jets. Valeurs affichées arrondies, ≈0 distinct de zéro exact. Aucun prix collecté.",
+  "snapshots": [
+    {
+      "item_id": 14077,
+      "item": "Anneau du Comte Harebourg",
+      "url": "https://dofocus.fr/forgemagie/14077",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 301.0,
+          "max": 350.0,
+          "value": 326.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "5,9",
+                "EC": "92"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "41",
+                "EC": "57"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "42",
+                "EC": "56"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "43",
+                "SN": "50",
+                "EC": "7,2"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "8,3",
+                "SN": "46",
+                "EC": "46"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "7,9"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 6.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "21",
+                "SN": "50",
+                "EC": "29"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "43",
+                "SN": "50",
+                "EC": "6,9"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "43",
+                "SN": "50",
+                "EC": "6,9"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": -500.0,
+          "max": -401.0,
+          "value": -450.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "43",
+                "SN": "50",
+                "EC": "7"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "20",
+                "SN": "50",
+                "EC": "30"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 21.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "15",
+                "SN": "50",
+                "EC": "35"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "20",
+                "SN": "50",
+                "EC": "30"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14077,
+      "item": "Anneau du Comte Harebourg",
+      "url": "https://dofocus.fr/forgemagie/14077",
+      "preset": "minimum",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 301.0,
+          "max": 350.0,
+          "value": 301.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "16",
+                "EC": "82"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "11",
+                "SN": "50",
+                "EC": "39"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "14",
+                "SN": "51",
+                "EC": "35"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 31.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "13",
+                "SN": "50",
+                "EC": "37"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 31.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "8,6",
+                "EC": "89"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "3,1"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "3,1"
+              },
+              "weight": 30.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 5.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 11.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 11.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": -500.0,
+          "max": -401.0,
+          "value": -500.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "14",
+                "SN": "51",
+                "EC": "35"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 16.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "39",
+                "SN": "50",
+                "EC": "11"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "47",
+                "SN": "50",
+                "EC": "2,9"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "11",
+                "SN": "48",
+                "EC": "42"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14077,
+      "item": "Anneau du Comte Harebourg",
+      "url": "https://dofocus.fr/forgemagie/14077",
+      "preset": "maximum",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 301.0,
+          "max": 350.0,
+          "value": 350.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 50.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "12",
+                "EC": "86"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 50.0,
+          "runes": {
+            "Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            },
+            "Pa Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 7.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 15.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "6,3",
+                "EC": "92"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 15.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "6,3",
+                "EC": "92"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": -500.0,
+          "max": -401.0,
+          "value": -401.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "27",
+                "EC": "71"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "24",
+                "EC": "74"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 25.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "20",
+                "EC": "78"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 2469,
+      "item": "Gelano",
+      "url": "https://dofocus.fr/forgemagie/2469",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Points d'action (PA)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 1.0,
+          "runes": {
+            "Ga Pa": {
+              "blocked": true,
+              "line_max": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 2469,
+      "item": "Gelano",
+      "url": "https://dofocus.fr/forgemagie/2469",
+      "preset": "PA_retrait_manuel",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Points d'action (PA)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 0.0,
+          "runes": {
+            "Ga Pa": {
+              "display": {
+                "SC": "66",
+                "SN": "34",
+                "EC": "≈0"
+              },
+              "weight": 100.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 2469,
+      "item": "Gelano",
+      "url": "https://dofocus.fr/forgemagie/2469",
+      "preset": "PA0_exo_PM0",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "PM",
+          "min": null,
+          "max": null,
+          "value": 0.0,
+          "runes": {
+            "Ga Pme": {
+              "display": {
+                "SC": "1,5",
+                "SN": "≈0",
+                "EC": "99"
+              },
+              "weight": 90.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Points d'action (PA)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 0.0,
+          "runes": {
+            "Ga Pa": {
+              "display": {
+                "SC": "66",
+                "SN": "34",
+                "EC": "≈0"
+              },
+              "weight": 100.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 2469,
+      "item": "Gelano",
+      "url": "https://dofocus.fr/forgemagie/2469",
+      "preset": "PA1_exo_PM0",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "PM",
+          "min": null,
+          "max": null,
+          "value": 0.0,
+          "runes": {
+            "Ga Pme": {
+              "display": {
+                "SC": "1,5",
+                "SN": "≈0",
+                "EC": "99"
+              },
+              "weight": 90.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Points d'action (PA)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 1.0,
+          "runes": {
+            "Ga Pa": {
+              "blocked": true,
+              "line_max": 1.0
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 7143,
+      "item": "Solomonk",
+      "url": "https://dofocus.fr/forgemagie/7143",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 201.0,
+          "max": 250.0,
+          "value": 226.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "3,5",
+                "SN": "43",
+                "EC": "54"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "44",
+                "EC": "54"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "46",
+                "SN": "50",
+                "EC": "4,1"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "11",
+                "SN": "49",
+                "EC": "40"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "2",
+                "SN": "44",
+                "EC": "54"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "46",
+                "SN": "50",
+                "EC": "4,1"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "11",
+                "SN": "49",
+                "EC": "40"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Puissance",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 21.0,
+          "runes": {
+            "Pui": {
+              "display": {
+                "SC": "18",
+                "SN": "50",
+                "EC": "32"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Pui": {
+              "display": {
+                "SC": "24",
+                "SN": "50",
+                "EC": "26"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Pui": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 6.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "24",
+                "SN": "50",
+                "EC": "26"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages",
+          "min": 6.0,
+          "max": 10.0,
+          "value": 8.0,
+          "runes": {
+            "Do": {
+              "display": {
+                "SC": "45",
+                "SN": "50",
+                "EC": "5,4"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 300.0,
+          "max": 300.0,
+          "value": 300.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "8,1",
+                "SN": "46",
+                "EC": "46"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "36",
+                "EC": "62"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Pièges",
+          "min": 21.0,
+          "max": 30.0,
+          "value": 26.0,
+          "runes": {
+            "Do Pi": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Pi": {
+              "display": {
+                "SC": "24",
+                "SN": "50",
+                "EC": "26"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14096,
+      "item": "Bottes du Strigide",
+      "url": "https://dofocus.fr/forgemagie/14096",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 351.0,
+          "max": 400.0,
+          "value": 376.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "15",
+                "EC": "83"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "41",
+                "SN": "50",
+                "EC": "8,7"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            }
+          }
+        },
+        {
+          "stat": "Puissance",
+          "min": 51.0,
+          "max": 75.0,
+          "value": 63.0,
+          "runes": {
+            "Pui": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Pui": {
+              "display": {
+                "SC": "2",
+                "SN": "18",
+                "EC": "80"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Pui": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Points de mouvement (PM)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 1.0,
+          "runes": {
+            "Ga Pme": {
+              "blocked": true,
+              "line_max": 1.0
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 9.0,
+          "max": 13.0,
+          "value": 11.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 9.0,
+          "max": 13.0,
+          "value": 11.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 9.0,
+          "max": 13.0,
+          "value": 11.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Eau (fixe)",
+          "min": 9.0,
+          "max": 13.0,
+          "value": 11.0,
+          "runes": {
+            "Do Eau": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Eau": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 9.0,
+          "max": 13.0,
+          "value": 11.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Feu (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Feu": {
+              "display": {
+                "SC": "20",
+                "SN": "50",
+                "EC": "30"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Esquive PA",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Pa": {
+              "display": {
+                "SC": "20",
+                "SN": "50",
+                "EC": "30"
+              },
+              "weight": 7.0,
+              "blocked": false
+            },
+            "Pa Ré Pa": {
+              "display": {
+                "SC": "2",
+                "SN": "26",
+                "EC": "72"
+              },
+              "weight": 21.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": -20.0,
+          "max": -16.0,
+          "value": -18.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "5,5",
+                "SN": "44",
+                "EC": "50"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "23",
+                "EC": "75"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14080,
+      "item": "Amulette Séculaire",
+      "url": "https://dofocus.fr/forgemagie/14080",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 251.0,
+          "max": 300.0,
+          "value": 276.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "18",
+                "EC": "80"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "43",
+                "EC": "55"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Intelligence",
+          "min": 61.0,
+          "max": 80.0,
+          "value": 71.0,
+          "runes": {
+            "Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "36",
+                "EC": "62"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ine": {
+              "display": {
+                "SC": "4,8",
+                "SN": "44",
+                "EC": "52"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 21.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "25",
+                "SN": "50",
+                "EC": "25"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "2",
+                "SN": "36",
+                "EC": "62"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 40.0
+            }
+          }
+        },
+        {
+          "stat": "Points d'action (PA)",
+          "min": 1.0,
+          "max": 1.0,
+          "value": 1.0,
+          "runes": {
+            "Ga Pa": {
+              "blocked": true,
+              "line_max": 1.0
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 8.0,
+          "max": 12.0,
+          "value": 10.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "39",
+                "SN": "50",
+                "EC": "11"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 8.0,
+          "max": 12.0,
+          "value": 10.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "39",
+                "SN": "50",
+                "EC": "11"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Prospection",
+          "min": 16.0,
+          "max": 20.0,
+          "value": 18.0,
+          "runes": {
+            "Prospe": {
+              "display": {
+                "SC": "15",
+                "SN": "50",
+                "EC": "35"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Prospe": {
+              "display": {
+                "SC": "2",
+                "SN": "41",
+                "EC": "57"
+              },
+              "weight": 9.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Neutre (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Neutre": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Feu (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Feu": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "39",
+                "SN": "50",
+                "EC": "11"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "2,8",
+                "SN": "42",
+                "EC": "55"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "21",
+                "EC": "77"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14085,
+      "item": "Cape du Sinistrofu",
+      "url": "https://dofocus.fr/forgemagie/14085",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 251.0,
+          "max": 300.0,
+          "value": 276.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "19",
+                "EC": "79"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "44",
+                "EC": "54"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Chance",
+          "min": 71.0,
+          "max": 100.0,
+          "value": 86.0,
+          "runes": {
+            "Cha": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Cha": {
+              "display": {
+                "SC": "2",
+                "SN": "14",
+                "EC": "84"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Cha": {
+              "display": {
+                "SC": "18",
+                "SN": "50",
+                "EC": "32"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 16.0,
+          "max": 25.0,
+          "value": 21.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "49",
+                "EC": "49"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "18",
+                "SN": "50",
+                "EC": "32"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "19",
+                "EC": "79"
+              },
+              "weight": 30.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 4.0,
+          "max": 5.0,
+          "value": 5.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": -15.0,
+          "max": -11.0,
+          "value": -13.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "41",
+                "SN": "50",
+                "EC": "9,1"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Eau (fixe)",
+          "min": 14.0,
+          "max": 18.0,
+          "value": 16.0,
+          "runes": {
+            "Do Eau": {
+              "display": {
+                "SC": "21",
+                "SN": "50",
+                "EC": "29"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Eau": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Soins",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "So": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 10.0,
+              "blocked": false
+            },
+            "Pa So": {
+              "blocked": true,
+              "line_max": 10.0
+            }
+          }
+        },
+        {
+          "stat": "Prospection",
+          "min": 16.0,
+          "max": 20.0,
+          "value": 18.0,
+          "runes": {
+            "Prospe": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Prospe": {
+              "display": {
+                "SC": "2,5",
+                "SN": "42",
+                "EC": "56"
+              },
+              "weight": 9.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Neutre (%)",
+          "min": 8.0,
+          "max": 12.0,
+          "value": 10.0,
+          "runes": {
+            "Ré Per Neutre": {
+              "display": {
+                "SC": "40",
+                "SN": "50",
+                "EC": "9,6"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "18",
+                "SN": "50",
+                "EC": "32"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Terre (fixe)",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Ré Terre": {
+              "display": {
+                "SC": "41",
+                "SN": "50",
+                "EC": "9,2"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Terre": {
+              "display": {
+                "SC": "4,3",
+                "SN": "43",
+                "EC": "52"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "22",
+                "EC": "76"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Fuite",
+          "min": 8.0,
+          "max": 12.0,
+          "value": 10.0,
+          "runes": {
+            "Fui": {
+              "display": {
+                "SC": "41",
+                "SN": "50",
+                "EC": "9,4"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Fui": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14095,
+      "item": "Ceinture du Strigide",
+      "url": "https://dofocus.fr/forgemagie/14095",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 301.0,
+          "max": 350.0,
+          "value": 326.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "4,8",
+                "EC": "93"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 50.0,
+          "value": 41.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "41",
+                "SN": "50",
+                "EC": "9,1"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 50.0
+            }
+          }
+        },
+        {
+          "stat": "Puissance",
+          "min": 41.0,
+          "max": 60.0,
+          "value": 51.0,
+          "runes": {
+            "Pui": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Pui": {
+              "display": {
+                "SC": "5,5",
+                "SN": "50",
+                "EC": "45"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Pui": {
+              "blocked": true,
+              "line_max": 60.0
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 6.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Eau (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Eau": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Eau": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Soins",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 6.0,
+          "runes": {
+            "So": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 10.0,
+              "blocked": false
+            },
+            "Pa So": {
+              "display": {
+                "SC": "2",
+                "SN": "17",
+                "EC": "81"
+              },
+              "weight": 30.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 301.0,
+          "max": 400.0,
+          "value": 351.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Neutre (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Neutre": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Tacle",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Tac": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Tac": {
+              "display": {
+                "SC": "2",
+                "SN": "35",
+                "EC": "63"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Critiques",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Do Cri": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,3"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "39",
+                "EC": "59"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Critiques (fixe)",
+          "min": -25.0,
+          "max": -16.0,
+          "value": -20.0,
+          "runes": {
+            "Ré Cri": {
+              "display": {
+                "SC": "42",
+                "SN": "50",
+                "EC": "8,3"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Cri": {
+              "display": {
+                "SC": "19",
+                "SN": "50",
+                "EC": "31"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 15216,
+      "item": "Baguette de Malléfisk",
+      "url": "https://dofocus.fr/forgemagie/15216",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 301.0,
+          "max": 350.0,
+          "value": 326.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "3,4",
+                "EC": "95"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Sagesse",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Sa": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Sa": {
+              "display": {
+                "SC": "18",
+                "SN": "50",
+                "EC": "32"
+              },
+              "weight": 9.0,
+              "blocked": false
+            },
+            "Ra Sa": {
+              "blocked": true,
+              "line_max": 40.0
+            }
+          }
+        },
+        {
+          "stat": "Puissance",
+          "min": 41.0,
+          "max": 60.0,
+          "value": 51.0,
+          "runes": {
+            "Pui": {
+              "display": {
+                "SC": "2",
+                "SN": "≈0",
+                "EC": "98"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Pui": {
+              "display": {
+                "SC": "3,2",
+                "SN": "50",
+                "EC": "47"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Pui": {
+              "blocked": true,
+              "line_max": 60.0
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 3.0,
+          "max": 4.0,
+          "value": 4.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Portée",
+          "min": -1.0,
+          "max": -1.0,
+          "value": -1.0,
+          "runes": {
+            "Po": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 51.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Soins",
+          "min": 16.0,
+          "max": 20.0,
+          "value": 18.0,
+          "runes": {
+            "So": {
+              "display": {
+                "SC": "2",
+                "SN": "20",
+                "EC": "78"
+              },
+              "weight": 10.0,
+              "blocked": false
+            },
+            "Pa So": {
+              "blocked": true,
+              "line_max": 20.0
+            }
+          }
+        },
+        {
+          "stat": "Prospection",
+          "min": 11.0,
+          "max": 15.0,
+          "value": 13.0,
+          "runes": {
+            "Prospe": {
+              "display": {
+                "SC": "40",
+                "SN": "50",
+                "EC": "10"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Pa Prospe": {
+              "display": {
+                "SC": "2",
+                "SN": "41",
+                "EC": "57"
+              },
+              "weight": 9.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 401.0,
+          "max": 600.0,
+          "value": 501.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "23",
+                "SN": "50",
+                "EC": "27"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "6,8",
+                "SN": "45",
+                "EC": "48"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 5.0,
+          "max": 7.0,
+          "value": 6.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Air (%)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Ré Per Air": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Esquive PM",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Ré Pme": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 7.0,
+              "blocked": false
+            },
+            "Pa Ré Pme": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 21.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistance Poussée (fixe)",
+          "min": 16.0,
+          "max": 20.0,
+          "value": 18.0,
+          "runes": {
+            "Ré Pou": {
+              "display": {
+                "SC": "24",
+                "SN": "50",
+                "EC": "26"
+              },
+              "weight": 2.0,
+              "blocked": false
+            },
+            "Pa Ré Pou": {
+              "display": {
+                "SC": "3,4",
+                "SN": "43",
+                "EC": "54"
+              },
+              "weight": 6.0,
+              "blocked": false
+            },
+            "Ra Ré Pou": {
+              "display": {
+                "SC": "2",
+                "SN": "22",
+                "EC": "76"
+              },
+              "weight": 20.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 18670,
+      "item": "Bouclier du Captain Amakna",
+      "url": "https://dofocus.fr/forgemagie/18670",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 201.0,
+          "max": 250.0,
+          "value": 226.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "26",
+                "EC": "72"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 41.0,
+          "max": 50.0,
+          "value": 46.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Intelligence",
+          "min": 41.0,
+          "max": 50.0,
+          "value": 46.0,
+          "runes": {
+            "Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Chance",
+          "min": 41.0,
+          "max": 50.0,
+          "value": 46.0,
+          "runes": {
+            "Cha": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Cha": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Cha": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 41.0,
+          "max": 50.0,
+          "value": 46.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "2",
+                "SN": "29",
+                "EC": "69"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Coups Critiques (%)",
+          "min": 4.0,
+          "max": 5.0,
+          "value": 5.0,
+          "runes": {
+            "Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "25",
+                "EC": "73"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Portée",
+          "min": -1.0,
+          "max": -1.0,
+          "value": -1.0,
+          "runes": {
+            "Po": {
+              "display": {
+                "SC": "2",
+                "SN": "5",
+                "EC": "93"
+              },
+              "weight": 51.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Neutre (%)",
+          "min": 2.0,
+          "max": 3.0,
+          "value": 3.0,
+          "runes": {
+            "Ré Per Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Terre (%)",
+          "min": 2.0,
+          "max": 3.0,
+          "value": 3.0,
+          "runes": {
+            "Ré Per Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Feu (%)",
+          "min": 2.0,
+          "max": 3.0,
+          "value": 3.0,
+          "runes": {
+            "Ré Per Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 2.0,
+          "max": 3.0,
+          "value": 3.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Air (%)",
+          "min": 2.0,
+          "max": 3.0,
+          "value": 3.0,
+          "runes": {
+            "Ré Per Air": {
+              "display": {
+                "SC": "2",
+                "SN": "30",
+                "EC": "68"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Fuite",
+          "min": -15.0,
+          "max": -15.0,
+          "value": -15.0,
+          "runes": {
+            "Fui": {
+              "display": {
+                "SC": "2",
+                "SN": "33",
+                "EC": "65"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Fui": {
+              "display": {
+                "SC": "2",
+                "SN": "21",
+                "EC": "77"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Critiques",
+          "min": 4.0,
+          "max": 5.0,
+          "value": 5.0,
+          "runes": {
+            "Do Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "32",
+                "EC": "66"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Cri": {
+              "display": {
+                "SC": "2",
+                "SN": "17",
+                "EC": "81"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14092,
+      "item": "Anneau du Cycloïde",
+      "url": "https://dofocus.fr/forgemagie/14092",
+      "preset": "moyen",
+      "pool": 0,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 251.0,
+          "max": 300.0,
+          "value": 276.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "18",
+                "EC": "80"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "43",
+                "EC": "55"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Intelligence",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ine": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 201.0,
+          "max": 300.0,
+          "value": 251.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Tacle",
+          "min": 4.0,
+          "max": 6.0,
+          "value": 5.0,
+          "runes": {
+            "Tac": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Tac": {
+              "display": {
+                "SC": "2",
+                "SN": "33",
+                "EC": "65"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14092,
+      "item": "Anneau du Cycloïde",
+      "url": "https://dofocus.fr/forgemagie/14092",
+      "preset": "moyen_puits10",
+      "pool": 10,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 251.0,
+          "max": 300.0,
+          "value": 276.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "18",
+                "EC": "80"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "43",
+                "EC": "55"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Intelligence",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ine": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "31",
+                "EC": "67"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 201.0,
+          "max": 300.0,
+          "value": 251.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "38",
+                "EC": "60"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Tacle",
+          "min": 4.0,
+          "max": 6.0,
+          "value": 5.0,
+          "runes": {
+            "Tac": {
+              "display": {
+                "SC": "17",
+                "SN": "50",
+                "EC": "33"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Tac": {
+              "display": {
+                "SC": "2",
+                "SN": "33",
+                "EC": "65"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    },
+    {
+      "item_id": 14092,
+      "item": "Anneau du Cycloïde",
+      "url": "https://dofocus.fr/forgemagie/14092",
+      "preset": "force10_puits10",
+      "pool": 10,
+      "rows": [
+        {
+          "stat": "Vitalité",
+          "min": 251.0,
+          "max": 300.0,
+          "value": 276.0,
+          "runes": {
+            "Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "22",
+                "EC": "76"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "47",
+                "EC": "51"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Vi": {
+              "display": {
+                "SC": "2",
+                "SN": "41",
+                "EC": "57"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Force",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 10.0,
+          "runes": {
+            "Fo": {
+              "display": {
+                "SC": "40",
+                "SN": "50",
+                "EC": "10"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Fo": {
+              "display": {
+                "SC": "40",
+                "SN": "50",
+                "EC": "10"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Fo": {
+              "display": {
+                "SC": "40",
+                "SN": "50",
+                "EC": "10"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Intelligence",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ine": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ine": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Agilité",
+          "min": 31.0,
+          "max": 40.0,
+          "value": 36.0,
+          "runes": {
+            "Age": {
+              "display": {
+                "SC": "2",
+                "SN": "50",
+                "EC": "48"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Age": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Age": {
+              "display": {
+                "SC": "2",
+                "SN": "40",
+                "EC": "58"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Neutre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Neutre": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Neutre": {
+              "display": {
+                "SC": "2",
+                "SN": "34",
+                "EC": "64"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Terre (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Terre": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Terre": {
+              "display": {
+                "SC": "2",
+                "SN": "34",
+                "EC": "64"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Feu (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Feu": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Feu": {
+              "display": {
+                "SC": "2",
+                "SN": "34",
+                "EC": "64"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Dommages Air (fixe)",
+          "min": 7.0,
+          "max": 10.0,
+          "value": 9.0,
+          "runes": {
+            "Do Air": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 5.0,
+              "blocked": false
+            },
+            "Pa Do Air": {
+              "display": {
+                "SC": "2",
+                "SN": "34",
+                "EC": "64"
+              },
+              "weight": 15.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Initiative",
+          "min": 201.0,
+          "max": 300.0,
+          "value": 251.0,
+          "runes": {
+            "Ini": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 1.0,
+              "blocked": false
+            },
+            "Pa Ini": {
+              "display": {
+                "SC": "21",
+                "SN": "50",
+                "EC": "29"
+              },
+              "weight": 3.0,
+              "blocked": false
+            },
+            "Ra Ini": {
+              "display": {
+                "SC": "2",
+                "SN": "41",
+                "EC": "57"
+              },
+              "weight": 10.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Résistances Eau (%)",
+          "min": 6.0,
+          "max": 8.0,
+          "value": 7.0,
+          "runes": {
+            "Ré Per Eau": {
+              "display": {
+                "SC": "22",
+                "SN": "50",
+                "EC": "28"
+              },
+              "weight": 6.0,
+              "blocked": false
+            }
+          }
+        },
+        {
+          "stat": "Tacle",
+          "min": 4.0,
+          "max": 6.0,
+          "value": 5.0,
+          "runes": {
+            "Tac": {
+              "display": {
+                "SC": "21",
+                "SN": "50",
+                "EC": "29"
+              },
+              "weight": 4.0,
+              "blocked": false
+            },
+            "Pa Tac": {
+              "display": {
+                "SC": "2",
+                "SN": "37",
+                "EC": "61"
+              },
+              "weight": 12.0,
+              "blocked": false
+            }
+          }
+        }
+      ]
+    }
+  ]
+}

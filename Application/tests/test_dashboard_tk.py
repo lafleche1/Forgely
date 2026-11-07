@@ -115,5 +115,39 @@ class DashboardTkTests(unittest.TestCase):
         self.assertEqual(app.dashboard.activity[1], 'Variation 10 · à vérifier')
 
 
+    def test_dofocus_advice_is_used_in_summary_and_details(self):
+        app=self.app
+        app.observation_only=False
+        app.workshop_active=app.active_equipment_verified=True
+        app.live_after_fusion=False
+        app.item.set('Gelano')
+        app.live_jet,app.live_pool={'PA':0},0
+        app.plan={'item':'Gelano','stats':{'PA':{'current':0,'target':1}}}
+        proposal=app.strategy_current()
+        app.render_plan()
+        app.update()
+        self.assertEqual(proposal.rune,'Ga Pa')
+        self.assertEqual(proposal.estimates['dofocus']['display']['SC'],'66')
+        self.assertEqual(app.plan_action_lbl.cget('text'),proposal.summary)
+        self.assertIn('Dofocus',app.plan_explain_lbl.cget('text'))
+        self.assertLess(len(app.plan_explain_lbl.cget('text')),240)
+        self.assertEqual(app.live_jet,{'PA':0})
+        import tkinter as tk
+        popup=app.open_strategy()
+        app.update()
+        try:
+            canvas=next(w for w in popup.winfo_children() if isinstance(w,tk.Canvas))
+            canvas.yview_moveto(1.)
+            app.update()
+            contents=canvas.winfo_children()[0]
+            from forgely_arrondi import RoundedButton
+            button=next(w for w in contents.winfo_children() if isinstance(w,RoundedButton))
+            self.assertLessEqual(popup.winfo_height(),app.winfo_screenheight())
+            self.assertLessEqual(button.winfo_rooty()+button.winfo_height(),popup.winfo_rooty()+popup.winfo_height())
+        finally:
+            app.strategy_headline=app.strategy_explanation=None
+            popup.destroy()
+
+
 if __name__ == '__main__':
     unittest.main()

@@ -22,6 +22,11 @@ def stat_rows(observed, targets, *, verified=False):
     return rows
 
 
+def advice_window_size(screen_width,screen_height):
+    """Leave desktop margins and let the detail panel scroll on small screens."""
+    return max(1,min(680,int(screen_width)-60)),max(1,min(700,int(screen_height)-80))
+
+
 class ActivityLabel(tk.Label):
     """Keep a small UI-only session feed when existing callbacks update the label."""
     def __init__(self, parent, on_change, **kwargs):

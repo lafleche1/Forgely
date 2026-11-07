@@ -7,7 +7,7 @@ class TestPlan(unittest.TestCase):
             p=Path(d)/'plan.json'
             plan=save_plan('Mon anneau',{'Vitalité':(100,150)},p)
             self.assertEqual(load_plan(p),plan)
-            self.assertIn('Vi',next_action(plan)[0])
+            self.assertIn('Vi',next_action(plan,pool=0)[0])
     def test_unknown_current(self):
         with tempfile.TemporaryDirectory() as d:
             plan=save_plan('Mon anneau',{'Force':(None,45)},Path(d)/'plan.json')

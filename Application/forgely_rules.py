@@ -1,44 +1,21 @@
-"""DOFUS PC FM constraints, community references checked 2026-11-07.
+"""Dofocus weights and conservative Forgely constraints, checked 2026-11-07.
 
 Not the proprietary success algorithm. A partial profile never proves absence.
-Sources: https://huzounet.fr/guides/forgemagie (annex rules),
-https://www.gamosaurus.com/jeux/dofus/forgemagie-le-guide-complet-dofus
+Reference: https://dofocus.fr/forgemagie/
+The retained 101 line/exotic guards are Forgely policy, not a reconstructed
+Dofocus formula. Historical background remains in docs/FM_DOUBLE_OBJECTIF.md.
 """
 from math import isfinite
-from forgely_probabilites import reference
+from forgely_dofocus import (reference, RUNE_CHOICES as DOFOCUS_CHOICES,
+                             WEIGHT_PER_POINT, canonical_stat)
 
 MODES = ('Chances maximales', 'Budget optimisé')
-RUNE_CHOICES = {
-    'Vitalité': ('Vi', 'Pa Vi', 'Ra Vi'),
-    'Force': ('Fo', 'Pa Fo', 'Ra Fo'),
-    'Intelligence': ('Ine', 'Pa Ine', 'Ra Ine'),
-    'Chance': ('Cha', 'Pa Cha', 'Ra Cha'),
-    'Agilité': ('Age', 'Pa Age', 'Ra Age'),
-    'Sagesse': ('Sa', 'Pa Sa', 'Ra Sa'),
-    'Puissance': ('Pui', 'Pa Pui', 'Ra Pui'),
-    'Initiative': ('Ini', 'Pa Ini', 'Ra Ini'),
-    'Prospection': ('Prospe', 'Pa Prospe'),
-    'Pods': ('Pod', 'Pa Pod', 'Ra Pod'),
-    'PA': ('Ga Pa',), 'PM': ('Ga Pme',), 'Portée': ('Po',),
-    'Invocations': ('Invo',), 'Coups critiques': ('Cri',),
-    'Soins': ('So',), 'Tacle': ('Tac', 'Pa Tac'), 'Fuite': ('Fui', 'Pa Fui'),
-    'Dommages': ('Do',),
-}
-for _suffix in ('Terre', 'Feu', 'Eau', 'Air', 'Neutre', 'Cri', 'Pou'):
-    _name = {'Cri': 'critiques', 'Pou': 'poussée'}.get(_suffix, _suffix)
-    RUNE_CHOICES['Dommages ' + _name] = ('Do ' + _suffix, 'Pa Do ' + _suffix)
-for _suffix in ('Terre', 'Feu', 'Eau', 'Air', 'Neutre'):
-    RUNE_CHOICES['Résistance ' + _suffix] = ('Ré ' + _suffix,)
-    RUNE_CHOICES['% Résistance ' + _suffix] = ('Ré Per ' + _suffix,)
+RUNE_CHOICES = {stat:tuple(runes) for stat,runes in DOFOCUS_CHOICES.items()}
+# Keep spellings accepted by earlier objective files.
+for alias in ('Coups critiques','Invocation','Dommages critiques','Dommages poussée'):
+    RUNE_CHOICES[alias]=RUNE_CHOICES[canonical_stat(alias)]
+WEIGHTS = {stat:WEIGHT_PER_POINT[canonical_stat(stat)] for stat in RUNE_CHOICES}
 
-# Exact labels emitted by the OCR parser; retain legacy spellings for saved plans.
-for _name, _source in {'Coups Critiques': 'Coups critiques', 'Invocation': 'Invocations',
-                        'Dommages Critiques': 'Dommages critiques',
-                        'Dommages Poussée': 'Dommages poussée'}.items():
-    RUNE_CHOICES[_name] = RUNE_CHOICES[_source]
-
-WEIGHTS = {stat: reference(runes[0]).weight / reference(runes[0]).gain
-           for stat, runes in RUNE_CHOICES.items()}
 CAP = 101.0
 
 
@@ -90,7 +67,7 @@ def constraints(jets, natural_max, *, complete_profile=True, cap=CAP):
     if exotic > cap + 1e-8:
         return {'valid': False, 'reason': 'Densité cumulée des exos dépassée', 'exotic_weight': exotic}
     return {'valid': None if unknown else True,
-            'reason': 'Contraintes non vérifiables sur toutes les lignes' if unknown else 'Sous les plafonds communautaires',
+            'reason': 'Contraintes non vérifiables sur toutes les lignes' if unknown else 'Sous les gardes conservatrices Forgely (pas une formule Dofocus publiée)',
             'exotic_weight': round(exotic, 4)}
 
 

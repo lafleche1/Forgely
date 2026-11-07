@@ -23,7 +23,7 @@ from forgely_rune_icons import rune_icon_path
 from forgely_typographie import families as font_families
 from forgely_arrondi import RoundedButton, RoundedCard
 from forgely_themes import THEMES, load_theme, save_theme
-from forgely_plan import STATS, load_plan, save_plan, next_action
+from forgely_plan import STATS, load_plan, save_plan
 from forgely_vision import RuneLibrary, icon_patch
 from forgely_catalogue import sync_catalogue, TARGETS
 from forgely_items import item_list, register_item, find_item, remember_candidate, pending_items, item_history, register_item_with_icon, IconIdentityConflict, item_icon
@@ -344,7 +344,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.00')
+        self.title('Forgely · L’atelier — v22.01')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -532,12 +532,12 @@ class Forgely(tk.Tk):
     def render_plan(self):
         if getattr(self, 'dashboard', None) is not None:
             self.dashboard.sync()
-        display_plan=self.plan
-        if self.plan:
-            verified=(self.active_equipment_verified and self.item.get()==self.plan.get('item') and not self.live_after_fusion)
-            jets=self.live_jet if verified else None
-            display_plan={'item':self.plan['item'],'stats':{k:{'target':v.get('target'),'current':jets.get(k) if jets is not None else None} for k,v in self.plan.get('stats',{}).items()}}
-        title,detail=('Collecte active', 'Aucun objectif de rune suggéré dans ce mode.') if self.observation_only else next_action(display_plan)
+        if self.observation_only:
+            title,detail='Collecte active','Aucun objectif de rune suggéré dans ce mode.'
+        else:
+            proposal=self.strategy_current()
+            title=proposal.summary
+            detail='Référence Dofocus · '+proposal.explanation[:170]+('… Voir le détail.' if len(proposal.explanation)>170 else '')
         if hasattr(self,'plan_item_lbl'):
             self.plan_item_lbl.configure(text=self.item.get().strip() or (self.plan['item'] if self.plan else 'Objet à identifier'))
             self.plan_action_lbl.configure(text=title)
@@ -584,7 +584,7 @@ class Forgely(tk.Tk):
         bounds=natural_bounds(self.item.get().strip())
         proposal=advise(jets,targets,pool=pool,counts_for=records_for,
             natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
-            profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
+            item=self.item.get().strip(),profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
         # Contextual measurements are the only measured probabilities that can
         # describe a similar *starting state*. Aggregate rates are not forecasts.
         if proposal.rune and proposal.kind!='bloqué':
@@ -601,7 +601,7 @@ class Forgely(tk.Tk):
                         f"IC95 % SC {rates['ci95_sc'][0]:.1f}–{rates['ci95_sc'][1]:.1f} %. "
                         "Échantillon OCR non vérifié : indicatif seulement, pas une probabilité calibrée.")
                     proposal=replace(proposal,explanation=proposal.explanation+context_text,
-                        evidence='observations OCR exploratoires + contraintes de FM')
+                        evidence='Dofocus · référence ; observations OCR exploratoires séparées')
         return proposal
 
     def waiting_for_item_label(self):
@@ -727,29 +727,45 @@ class Forgely(tk.Tk):
             return
         """Live recommendation viewer. Does not perform game actions."""
         popup=tk.Toplevel(self);popup.title('Forgely — Conseil de forgemagie')
-        popup.configure(bg=BG);popup.geometry('640x650')
+        popup.configure(bg=BG)
+        from forgely_dashboard import advice_window_size
+        width,height=advice_window_size(self.winfo_screenwidth(),self.winfo_screenheight())
+        popup.geometry(f'{width}x{height}')
+        canvas=tk.Canvas(popup,bg=BG,highlightthickness=0)
+        scroll=ttk.Scrollbar(popup,orient='vertical',command=canvas.yview)
+        scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
+        canvas.configure(yscrollcommand=scroll.set)
+        contents=tk.Frame(canvas,bg=BG)
+        window=canvas.create_window((0,0),window=contents,anchor='nw')
+        contents.bind('<Configure>',lambda event:canvas.configure(scrollregion=canvas.bbox('all')))
+        def resize_contents(event):
+            canvas.itemconfigure(window,width=event.width)
+            for widget in contents.winfo_children():
+                if isinstance(widget,tk.Label):widget.configure(wraplength=max(120,event.width-44))
+        canvas.bind('<Configure>',resize_contents)
         popup.attributes('-topmost',True)
-        self.label(popup,'CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE',12,color=GOLD,bold=True).pack(anchor='w',padx=22,pady=(20,5))
+        self.label(contents,'CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE',12,color=GOLD,bold=True).pack(anchor='w',padx=22,pady=(20,5))
         objective=tk.StringVar(value=read_settings()['strategy'])
-        selector=ttk.Combobox(popup,values=OBJECTIVE_MODES,textvariable=objective,state='readonly')
+        selector=ttk.Combobox(contents,values=OBJECTIVE_MODES,textvariable=objective,state='readonly')
         selector.pack(fill='x',padx=22,pady=(4,12))
         def change_objective(_event=None):
             cfg=read_settings();cfg['strategy']=objective.get();save_settings(cfg)
             self.refresh_strategy()
         selector.bind('<<ComboboxSelected>>',change_objective)
         proposal=self.strategy_current()
-        self.strategy_headline=self.label(popup,proposal.summary,20,bold=True,color=GREEN,wraplength=520,justify='left')
+        self.strategy_headline=self.label(contents,proposal.summary,20,bold=True,color=GREEN,wraplength=620,justify='left')
         self.strategy_headline.pack(anchor='w',padx=22,pady=(0,12))
-        self.strategy_explanation=self.label(popup,proposal.explanation,10,color=FG,wraplength=520,justify='left')
+        self.strategy_explanation=self.label(contents,proposal.explanation,10,color=FG,wraplength=620,justify='left')
         self.strategy_explanation.pack(anchor='w',padx=22,pady=(0,14))
-        self.label(popup,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=520,justify='left').pack(anchor='w',padx=22,pady=(0,12))
-        self.button(popup,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
-        self.button(popup,'Prix et budget de cette session',self.open_budget).pack(anchor='w',padx=22,pady=8)
+        self.label(contents,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=620,justify='left').pack(anchor='w',padx=22,pady=(0,12))
+        self.button(contents,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
+        self.button(contents,'Prix et budget de cette session',self.open_budget).pack(anchor='w',padx=22,pady=8)
         def close_popup():
             self.strategy_headline=None
             self.strategy_explanation=None
             popup.destroy()
         popup.protocol('WM_DELETE_WINDOW',close_popup)
+        return popup
 
     def open_plan_editor(self):
         """Only targets are editable; current values always come from verified OCR."""
@@ -2247,4 +2263,3 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
-
