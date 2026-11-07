@@ -21,7 +21,9 @@ Exclus : caches Python, bases locales, journaux, diagnostics privés, captures t
 
 ## Mesures et validation
 
-Validation locale finale : **297 tests réussis, 6 ignorés, 19 sous-tests réussis** ; **129 fichiers Python compilés**. Exécution Python 3.12 / Pillow 11.3.0, compatible avec la plage de dépendances du projet. Commande : `PYTHONPATH=../deps PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q` (le préfixe `../deps` est propre à l'environnement de travail ; une installation normale utilise simplement `python -m pytest -q`). Le workflow GitHub prépare Python 3.11 et Tesseract ; son exécution distante doit être vérifiée séparément.
+Validation locale finale : **297 tests réussis, 6 ignorés, 19 sous-tests réussis** ; **129 fichiers Python compilés**. Exécution Python 3.12 / Pillow 11.3.0, compatible avec la plage de dépendances du projet. Commande : `PYTHONPATH=../deps PYTEST_DISABLE_PLUGIN_AUTOLOAD=1 python -m pytest -q` (le préfixe `../deps` est propre à l'environnement de travail ; une installation normale utilise simplement `python -m pytest -q`).
+
+**Validation GitHub Actions réussie** sur Python 3.11 avec Tesseract : [exécution 42339224322](https://github.com/lafleche1/Forgely/actions/runs/42339224322), commit source `33b6cc44ee8874f4a630ba29cf756d3df3d84aaa`. Installation, compilation et tests sont terminés avec succès. Les 449 fichiers envoyés ont été comparés aux empreintes Git distantes sans différence ; le diagnostic préexistant est conservé.
 
 Les tests couvrent les transitions répétées, la conservation des pertes/gains, les conflits de reliquat, l'absence d'invention de valeur, les aperçus sans écriture en base, leur ordre d'affichage et l'invalidation de contexte.
 
