@@ -1,1 +1,1 @@
-Forgely v22.04 — récupération OCR bornée et dommages singuliers
+Forgely v22.05 — identification indépendante et confirmations parallèles

@@ -93,17 +93,26 @@ class CurrentSlotTracker:
     def reset(self):
         self.icon = None
         self.count = 0
+        self._last_frame_key=None
         self.misses = 0
+        self.absence_confirmed = False
         self.signature = ()
         self.generation = getattr(self, 'generation', 0) + 1
 
-    def observe(self, icon, signature=()):
+    def observe(self, icon, signature=(), *, frame_key=None):
+        duplicate=frame_key is not None and frame_key==self._last_frame_key
         icon = normalize_icon(icon)
         if icon is None:
+            if duplicate:return False,False
+            self._last_frame_key=frame_key
+            if self.absence_confirmed:return False,False
             self.misses += 1
             if self.misses >= 3:
                 self.reset()
+                self.absence_confirmed=True
+                self._last_frame_key=frame_key
             return False, False
+        self.absence_confirmed=False
         changed = self.icon is not None and (
             icon_distance(icon, self.icon) > 17 or
             strong_signature_change(self.signature, signature))
@@ -111,8 +120,9 @@ class CurrentSlotTracker:
             self.reset()
         if self.icon is None:
             self.count = 1
-        else:
+        elif not duplicate:
             self.count += 1
+        self._last_frame_key=frame_key
         self.icon = icon
         self.misses = 0
         if signature:

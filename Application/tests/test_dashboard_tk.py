@@ -148,6 +148,39 @@ class DashboardTkTests(unittest.TestCase):
             app.strategy_headline=app.strategy_explanation=None
             popup.destroy()
 
+    def test_item_name_and_slot_confirm_together_in_three_captures(self):
+        from pathlib import Path
+        from PIL import Image
+        from time import perf_counter_ns
+        app=self.app
+        app.observation_only=True
+        app.workshop_active=True
+        app.latest_observation_id=0
+        app.item_visual_tracker.reset();app.current_slot_tracker.reset()
+        app.messages=queue.Queue()
+        icon=Image.effect_noise((32,32),60).convert('RGB')
+        evidence=('Anneau test',None,'ANNEAU TEST',icon,None,None,(('force',31,40),),(),None,None)
+        with patch('forgely.match_current_item',return_value='Anneau test'), \
+             patch('forgely.natural_bounds',return_value={}), \
+             patch('forgely.register_item',return_value=(1,'Anneau test')), \
+             patch('forgely.remember_current_item'), \
+             patch('forgely.item_icon',return_value=Path(__file__)):
+            for frame in (1,2,3):
+                app.messages.put(('observation',(frame,perf_counter_ns(),'item_visual',evidence)))
+                app.process_messages()
+                self.assertEqual(app.item_visual_tracker.count,frame)
+                self.assertEqual(app.active_equipment_verified,frame==3)
+        self.assertEqual(app.item.get(),'Anneau test')
+        for _ in range(3):app.workshop_readings.observe({'Force':33},2)
+        app.live_jet,app.live_pool={'Force':33},2
+        for frame in (4,5,6):
+            absent=(None,None,'',None,None,None,(),(),None,None)
+            app.messages.put(('observation',(frame,perf_counter_ns(),'item_visual',absent)))
+            app.process_messages()
+        self.assertFalse(app.active_equipment_verified)
+        self.assertIsNone(app.live_jet)
+        self.assertIsNone(app.workshop_readings.snapshot())
+
 
 if __name__ == '__main__':
     unittest.main()

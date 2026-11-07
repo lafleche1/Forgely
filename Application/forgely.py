@@ -394,7 +394,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.04')
+        self.title('Forgely · L’atelier — v22.05')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -1243,6 +1243,7 @@ class Forgely(tk.Tk):
                    'PERFORMANCES LECTURE RAPIDE (ms) : '+repr(self.fast_preview_performance.snapshot() if hasattr(self, 'fast_preview_performance') else {}),
                    'LECTURES : '+str(self.scan_count),
                    'RETARD DERNIÈRE OBSERVATION : '+(f'{self.last_observation_delay_ms:.0f} ms' if self.last_observation_delay_ms is not None else 'Non mesuré'),
+                   'RETARD IDENTIFICATION OBJET : '+str(getattr(self,'last_identity_delay_ms',None))+' ms',
                    'CAPTURES AVEC INFOBULLE SUSPECTÉE : '+str(self.occluded_observations),
                    'CAPTURES INCHANGÉES SANS OCR : '+str(getattr(self,'_unchanged_frames_skipped',0)),
                    'CHANGEMENTS VISUELS OBSERVÉS : '+str(getattr(self,'_visual_changes_seen',0)),
@@ -1521,6 +1522,7 @@ class Forgely(tk.Tk):
         self.status.set('Analyse locale en cours · En attente de l’atelier de FM')
         threading.Thread(target=self.capture_worker,daemon=True).start()
         threading.Thread(target=self.fast_preview_worker,daemon=True).start()
+        threading.Thread(target=self.item_identity_worker,daemon=True).start()
         threading.Thread(target=self.observer_worker,daemon=True).start()
         if self.auto_floating.get():
             # Defer the transition until the start button callback is finished.
@@ -1578,6 +1580,59 @@ class Forgely(tk.Tk):
             # capture reduces the age of the frame available after OCR ends.
             stop_event.wait(self._capture_interval)
         capture.close()
+
+    def item_identity_worker(self):
+        """Identify the current item without waiting for complete atelier OCR."""
+        from forgely_item_identity import ItemIdentityReader
+        reader=ItemIdentityReader()
+        mailbox=self.frame_mailbox
+        stop_event=self.stop_event
+        generation=mailbox.generation()
+        last_frame_id=0
+        retry_at=None
+        while not stop_event.is_set() and mailbox is self.frame_mailbox:
+            if retry_at is not None and forgely_perf_ns()>=retry_at:
+                request=getattr(self,'confirmation_requested',None)
+                if request is not None:request.set()
+                retry_at=forgely_perf_ns()+1_000_000_000
+            current_generation,frame=mailbox.wait_snapshot(last_frame_id,stop_event,generation)
+            if current_generation!=generation:
+                reader.reset();generation=current_generation;retry_at=None
+            if frame is None:continue
+            frame_id,image,title,captured_ns,_=frame
+            last_frame_id=frame_id
+            try:
+                started=forgely_perf_ns()
+                reading=reader.read(image,extract_text,item_list)
+                self.fast_preview_performance.record('identification_objet',forgely_perf_ns()-started)
+                if reading is None:
+                    retry_at=None
+                    continue
+                # Recheck context before publishing; previous-account work is discarded.
+                if stop_event.is_set() or generation!=mailbox.generation():continue
+                # An unresolved fast name must not consume newer identity frames
+                # and starve a successful (slower) full-heading reading.
+                if (reading.icon is not None and not reading.known and not reading.candidate
+                        and match_current_item(reading.icon,reading.signature) is None):
+                    retry_at=forgely_perf_ns()+1_000_000_000
+                    continue
+                retry_at=None
+                if reading.icon is None:
+                    tracker=getattr(self,'current_slot_tracker',None)
+                    request=getattr(self,'confirmation_requested',None)
+                    if tracker is not None and not tracker.absence_confirmed and request is not None:
+                        request.set()
+                verified=getattr(self,'_verified_item_context',None)
+                if bind_event_item(verified,mailbox,generation,title,frame_id,reading.icon,
+                                   reading.signature,name_hint=reading.known or reading.candidate):
+                    continue
+                sink=FrameMessageSink(self.messages,mailbox,generation,title,stop_event)
+                sink.put(('identity_observation',(frame_id,captured_ns,'item_visual',
+                    (reading.known,reading.candidate,reading.raw,reading.icon,None,None,
+                     reading.signature,(),None,None))))
+            except (OSError,ValueError,RuntimeError,__import__('sqlite3').Error):
+                # The complete observer remains a fallback; never reuse failed evidence.
+                reader.reset()
 
     def fast_preview_worker(self):
         """Display provisional results independently of slow effect recovery."""
@@ -1897,6 +1952,7 @@ class Forgely(tk.Tk):
                     break
                 kind,data=self.messages.get_nowait()
                 source_context=None
+                identity_frame_key=None
                 event_already_recorded=False
                 if kind=='worker_message':
                     mailbox,generation,title,kind,data=data
@@ -1944,15 +2000,26 @@ class Forgely(tk.Tk):
                         self.last_displayed_result_frame_id = event_frame_id
                         self.fast_preview_visible = False
                     kind = 'auto_event'
+                identity_only=kind=='identity_observation'
+                if identity_only:kind='observation'
                 if kind == 'observation':
                     frame_id, frame_started_ns, kind, data = data
                     # Keep the two most recent samples for stability checks,
                     # but discard stale UI work. Do not discard rune events.
                     if frame_id < self.latest_observation_id - 1:
                         continue
-                    self.last_observation_delay_ms = (
-                        forgely_perf_ns() - frame_started_ns) / 1_000_000
+                    if kind=='item_visual' and source_context is not None:
+                        from forgely_item_identity import IdentityFrameGate
+                        gate=getattr(self,'_identity_frame_gate',None)
+                        if gate is None:
+                            gate=self._identity_frame_gate=IdentityFrameGate()
+                        if not gate.accept(*source_context,frame_id):continue
+                        identity_frame_key=(*source_context,frame_id)
+                    elapsed=(forgely_perf_ns()-frame_started_ns)/1_000_000
+                    if identity_only:self.last_identity_delay_ms=elapsed
+                    else:self.last_observation_delay_ms=elapsed
                 if kind=='item_visual':
+                    frame_kwargs={'frame_key':identity_frame_key} if identity_frame_key is not None else {}
                     known, new_name, raw, slot_icon, history_identity, history_icon, signature, historical_names, corroborated_history_name, latest_history_candidate = data
                     self.last_history_candidate = latest_history_candidate
                     self.last_history_identity=(
@@ -1961,7 +2028,7 @@ class Forgely(tk.Tk):
                     if historical_names:
                         self.last_history_identity += ' · noms visibles (non confirmés) : ' + ', '.join(historical_names[:3])
                     self.last_item_ocr_text=raw
-                    stable, changed=self.current_slot_tracker.observe(slot_icon, signature)
+                    stable, changed=self.current_slot_tracker.observe(slot_icon, signature, **frame_kwargs)
                     if changed:
                         self.clear_fast_preview()
                         # A different icon in the actual workshop means a new
@@ -1986,22 +2053,20 @@ class Forgely(tk.Tk):
                         self.current_slot_status='Icône absente ou illisible'
                         self.last_item_candidate=''
                         self.item_icon_status='Emplacement actuel non lisible'
-                        if self.current_slot_tracker.misses>=3:
+                        if self.current_slot_tracker.misses>=3 or self.current_slot_tracker.absence_confirmed:
                             self.active_equipment_verified=False
                             self.item_selection_source='none'
                             self.provisional_slot_id=None
                             self.trusted_history_name=None
                             self.live_jet=None;self.live_pool=None
                             self.live_after_fusion=True
+                            self.pending_transition=None
+                            self.workshop_readings.reset()
+                            self.item_visual_tracker.reset()
+                            self._verified_item_context=None
                         self.refresh_strategy()
                         continue
                     self.current_slot_status=f'Icône actuelle · {min(self.current_slot_tracker.count,3)}/3 lectures'
-                    if not stable:
-                        if getattr(self, 'confirmation_requested', None) is not None:
-                            self.confirmation_requested.set()
-                        self.item_icon_status='Stabilisation de l’icône actuelle'
-                        self.refresh_strategy()
-                        continue
                     # Strict icon-first identification. Never derive an item's
                     # name from rune history, even when a historical row matches.
                     # A named reference must already exist in the icon catalogue.
@@ -2040,6 +2105,9 @@ class Forgely(tk.Tk):
                         self.item_icon_status='Conflit entre icône et nom actuel : vérification nécessaire'
                     self.last_item_candidate=name or ''
                     if not name:
+                        self.item_visual_tracker.observe(None,slot_icon, **frame_kwargs)
+                        if getattr(self,'confirmation_requested',None) is not None and not stable:
+                            self.confirmation_requested.set()
                         if self.active_equipment_verified:
                             self.active_equipment_verified=False
                             self.item_selection_source='none'
@@ -2059,10 +2127,10 @@ class Forgely(tk.Tk):
                              if latest_history_candidate else 'aucun candidat historique'))
                         self.refresh_strategy()
                         continue
-                    streak=self.item_visual_tracker.observe(name,slot_icon)
+                    streak=self.item_visual_tracker.observe(name,slot_icon, **frame_kwargs)
                     threshold=3
                     self.item_icon_status=f'Objet actuel et nom cohérents · {min(streak,threshold)}/{threshold}'
-                    if streak<threshold:
+                    if not stable or streak<threshold:
                         if getattr(self, 'confirmation_requested', None) is not None:
                             self.confirmation_requested.set()
                         self.refresh_strategy()

@@ -24,6 +24,11 @@ def official_names():
                                    if row.get('nom_fr', '').strip()))
 
 
+@lru_cache(maxsize=1)
+def _normalized_official_names(names):
+    return tuple((key_for(name),name) for name in names)
+
+
 def match_truncated_official_name(text):
     """Match a left-cropped workshop heading only when the suffix is unique.
 
@@ -37,8 +42,7 @@ def match_truncated_official_name(text):
         fragment = key_for(line.strip(' []:;.,-'))
         if len(fragment) < 11 or len(fragment.split()) < 3:
             continue
-        for name in official_names():
-            target = key_for(name)
+        for target,name in _normalized_official_names(official_names()):
             if len(target) > len(fragment) and target.endswith(fragment) and len(fragment) / len(target) >= .62:
                 results.add(name)
         if len(results) > 1:
