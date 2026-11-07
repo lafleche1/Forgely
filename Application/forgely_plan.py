@@ -20,6 +20,10 @@ STATS = {
     'PM': ('Ga Pme',),
 }
 
+# Same catalogue as the actual advisory engine; OCR names remain selectable.
+from forgely_rules import RUNE_CHOICES
+STATS.update(RUNE_CHOICES)
+
 def save_plan(item, values, path=PLAN_PATH):
     item = item.strip()
     if not item or len(item)>100:
@@ -60,3 +64,4 @@ def next_action(plan):
         return (f'À envisager : {rune}', f'{name} : {cur} → {target} (manque {gap}). Vérifie le jet, le puits et le prix avant de poser la rune ; recommandation indicative, non optimisée.')
     if unknown: return ('Jet à lire', 'Jet actuel manquant pour : '+', '.join(unknown)+'. Il faut le lire correctement avant de proposer une rune.')
     return ('Objectif atteint sur les valeurs saisies','Vérifie le jet réel dans DOFUS avant de terminer.')
+

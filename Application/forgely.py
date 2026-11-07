@@ -41,11 +41,12 @@ from forgely_continuous_identity import (crop_current_item, current_icon,
 from forgely_item_icons import icon_distance
 from forgely_ocr_diagnostic import evaluate as evaluate_ocr
 from forgely_probabilites import reference as rune_reference, summary as rune_summary
-from forgely_decision import advise
+from forgely_decision import advise, Proposal
+from forgely_rules import MODES as OBJECTIVE_MODES, objective_mode
 from forgely_copilote import MODES, player_signal, budget_summary
 from forgely_context import save_transition, context_rates
 from forgely_labo_live import LiveLaboratory
-from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,
+from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,observation_cursor,cost_since,
     export_observations_csv,export_item_summary,backup_local,import_bounds_csv,
     natural_bounds,illustrative_scenario,advisory_status)
 from forgely_gallery import verify_goal,save_success,list_successes,export_gallery_json
@@ -360,8 +361,10 @@ class Forgely(tk.Tk):
         self.mode=tk.StringVar(value='Observateur silencieux')
         self.goal_mode=tk.StringVar(value='Jet propre')
         self.observation_only=load_observation_mode(DATA_DIR)
-        self.budget_kamas=tk.StringVar(value='')
-        self.rune_prices={}
+        cfg=read_settings()
+        self.budget_kamas=tk.StringVar(value=str(cfg['budget_kamas']))
+        self.rune_prices=dict(cfg['prices'])
+        self.budget_start_cursor=observation_cursor()
         self.status=tk.StringVar(value='Prêt à observer · Stockage uniquement sur ton PC')
         self.last_detected=tk.StringVar(value='Aucune tentative détectée')
         self.running=False
@@ -567,7 +570,21 @@ class Forgely(tk.Tk):
             return counts
         # No claim of EXO without a verified complete natural profile.
         # A partial imported CSV is useful for known overmax lines only.
-        proposal=advise(jets,targets,pool=pool,counts_for=records_for)
+        cfg=read_settings()
+        cost=cost_since(self.budget_start_cursor,cfg['prices'])
+        remaining=None
+        if cfg['budget_kamas']:
+            achieved=bool(targets) and all(s in jets and jets[s]>=v for s,v in targets.items())
+            if not cost['complete'] and not achieved:
+                return Proposal(None,'bloqué','Budget incomplet',
+                    f'{cost["unpriced_attempts"]} tentatives enregistrées sans prix depuis le lancement. '
+                    'Complète les prix ; une rune non identifiée laisse son coût inconnu. '
+                    'Le budget ne peut pas être certifié pour cette session.','dépenses enregistrées')
+            remaining=max(0,cfg['budget_kamas']-cost['known_cost'])
+        bounds=natural_bounds(self.item.get().strip())
+        proposal=advise(jets,targets,pool=pool,counts_for=records_for,
+            natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
+            profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
         # Contextual measurements are the only measured probabilities that can
         # describe a similar *starting state*. Aggregate rates are not forecasts.
         if proposal.rune and proposal.kind!='bloqué':
@@ -579,7 +596,7 @@ class Forgely(tk.Tk):
                 if rates['usable']:
                     from dataclasses import replace
                     perc=rates['percentages']
-                    context_text=(f" Dans {rates['n']} tentatives ayant un jet et un puits similaires : "
+                    context_text=(f" Dans {rates['n']} tentatives ayant le même jet observé et la même classe de puits : "
                         f"SC {perc['SC']:.1f} %, SN {perc['SN']:.1f} %, EC {perc['EC']:.1f} % ; "
                         f"IC95 % SC {rates['ci95_sc'][0]:.1f}–{rates['ci95_sc'][1]:.1f} %. "
                         "Échantillon OCR non vérifié : indicatif seulement, pas une probabilité calibrée.")
@@ -673,13 +690,15 @@ class Forgely(tk.Tk):
     def open_budget(self):
         """Manual cost planner; never pretends OCR knows the market price."""
         popup=tk.Toplevel(self);popup.title('Forgely — Budget de runes')
-        popup.configure(bg=BG);popup.geometry('480x365')
+        popup.configure(bg=BG);popup.geometry('520x460')
+        cfg=read_settings()
+        self.budget_kamas.set(str(cfg['budget_kamas']))
         self.label(popup,'Budget des runes',18,bold=True,color=GOLD).pack(anchor='w',padx=20,pady=14)
         self.label(popup,'Les prix sont saisis par toi. Aucun prix de marché n’est inventé.',9,color=MUTED).pack(anchor='w',padx=20)
-        self.label(popup,'Budget maximal (kamas)',10).pack(anchor='w',padx=20,pady=(12,0))
+        self.label(popup,'Budget depuis le lancement (kamas, 0 = sans limite)',10).pack(anchor='w',padx=20,pady=(12,0))
         tk.Entry(popup,textvariable=self.budget_kamas).pack(fill='x',padx=20)
         rune=tk.StringVar(value=self.rune.get() or 'Vi')
-        price=tk.StringVar(value='')
+        price=tk.StringVar(value=str(cfg['prices'].get(rune.get(),'')))
         self.label(popup,'Rune',10).pack(anchor='w',padx=20,pady=(12,0))
         tk.Entry(popup,textvariable=rune).pack(fill='x',padx=20)
         self.label(popup,'Prix unitaire (kamas)',10).pack(anchor='w',padx=20,pady=(12,0))
@@ -687,11 +706,18 @@ class Forgely(tk.Tk):
         result=self.label(popup,'',10,color=GOLD,wraplength=425,justify='left');result.pack(anchor='w',padx=20,pady=12)
         def compute():
             try:
-                if price.get().strip(): self.rune_prices[rune.get().strip()]=max(0,float(price.get()))
-                limit=float(self.budget_kamas.get()) if self.budget_kamas.get().strip() else None
-                # Counts are explicitly manual until a reliable rune-level audit is available.
-                data=budget_summary({},self.rune_prices,limit)
-                result.configure(text=f'Budget : {limit if limit is not None else "non défini"} K. Prix mémorisés : {len(self.rune_prices)}. Dépense vérifiée : inconnue (pas de comptage audité par rune).')
+                fresh=read_settings()
+                if price.get().strip(): fresh['prices'][rune.get().strip()]=int(price.get())
+                fresh['budget_kamas']=int(self.budget_kamas.get() or 0)
+                save_settings(fresh)
+                self.rune_prices=dict(fresh['prices'])
+                cost=cost_since(self.budget_start_cursor,fresh['prices'])
+                remaining=max(0,fresh['budget_kamas']-cost['known_cost']) if fresh['budget_kamas'] else None
+                result.configure(text=f'Dépense enregistrée : {cost["known_cost"]:g} K. '
+                    f'Tentatives sans prix : {cost["unpriced_attempts"]}. '
+                    f'Restant : {remaining if cost["complete"] and remaining is not None else "inconnu ou sans limite"}. '
+                    'Estimation aux prix saisis, tous objets depuis le lancement ; les tentatives non détectées ne sont pas comptées.')
+                self.refresh_strategy()
             except ValueError: messagebox.showerror('Valeur incorrecte','Saisis des nombres positifs.',parent=popup)
         self.button(popup,'Enregistrer les prix',compute,primary=True).pack(anchor='w',padx=20)
 
@@ -701,9 +727,16 @@ class Forgely(tk.Tk):
             return
         """Live recommendation viewer. Does not perform game actions."""
         popup=tk.Toplevel(self);popup.title('Forgely — Conseil de forgemagie')
-        popup.configure(bg=BG);popup.geometry('575x370')
+        popup.configure(bg=BG);popup.geometry('640x650')
         popup.attributes('-topmost',True)
         self.label(popup,'CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE',12,color=GOLD,bold=True).pack(anchor='w',padx=22,pady=(20,5))
+        objective=tk.StringVar(value=read_settings()['strategy'])
+        selector=ttk.Combobox(popup,values=OBJECTIVE_MODES,textvariable=objective,state='readonly')
+        selector.pack(fill='x',padx=22,pady=(4,12))
+        def change_objective(_event=None):
+            cfg=read_settings();cfg['strategy']=objective.get();save_settings(cfg)
+            self.refresh_strategy()
+        selector.bind('<<ComboboxSelected>>',change_objective)
         proposal=self.strategy_current()
         self.strategy_headline=self.label(popup,proposal.summary,20,bold=True,color=GREEN,wraplength=520,justify='left')
         self.strategy_headline.pack(anchor='w',padx=22,pady=(0,12))
@@ -711,6 +744,7 @@ class Forgely(tk.Tk):
         self.strategy_explanation.pack(anchor='w',padx=22,pady=(0,14))
         self.label(popup,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=520,justify='left').pack(anchor='w',padx=22,pady=(0,12))
         self.button(popup,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
+        self.button(popup,'Prix et budget de cette session',self.open_budget).pack(anchor='w',padx=22,pady=8)
         def close_popup():
             self.strategy_headline=None
             self.strategy_explanation=None
@@ -813,9 +847,9 @@ class Forgely(tk.Tk):
         add(strategy,'STRATÉGIE ET BUDGET',GOLD,13)
         add(strategy,'Les prix sont ceux que tu saisis : Forgely ne connaît pas les cours de ton serveur.',MUTED)
         chosen=tk.StringVar(value=cfg['strategy']);budget=tk.StringVar(value=str(cfg['budget_kamas']))
-        combo=ttk.Combobox(strategy,values=STRATEGIES,textvariable=chosen,state='readonly',width=25)
+        combo=ttk.Combobox(strategy,values=OBJECTIVE_MODES,textvariable=chosen,state='readonly',width=25)
         combo.pack(anchor='w',padx=17,pady=7)
-        add(strategy,'Budget maximum en kamas');entry(strategy,budget)
+        add(strategy,'Budget depuis le lancement, tous objets (0 = sans limite)');entry(strategy,budget)
         names=sorted(RUNES);prune=tk.StringVar(value='Vi');price=tk.StringVar(value=str(cfg['prices'].get('Vi','')))
         add(strategy,'Prix local d’une rune (non synchronisé)')
         rune_combo=ttk.Combobox(strategy,values=names,textvariable=prune,width=25,state='readonly')
@@ -829,6 +863,7 @@ class Forgely(tk.Tk):
                 if price.get().strip():prices[prune.get()]=int(price.get())
                 fresh={'strategy':chosen.get(),'budget_kamas':b,'prices':prices}
                 save_settings(fresh);cfg.clear();cfg.update(fresh)
+                self.refresh_strategy()
                 messagebox.showinfo('Forgely','Préférences enregistrées localement.',parent=win)
             except (ValueError,TypeError) as exc:messagebox.showerror('Valeur incorrecte',str(exc),parent=win)
         self.button(strategy,'Enregistrer stratégie, prix et budget',save_preferences,True).pack(anchor='w',padx=17,pady=10)
@@ -2212,3 +2247,4 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
+

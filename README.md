@@ -2,6 +2,10 @@
 
 Application Windows d'assistance à l'observation de la forgemagie DOFUS.
 
+Deux objectifs sont proposés dans le conseil : **Chances maximales** et **Budget
+optimisé**, avec prix locaux et budget de session. Le classement est explicable,
+sans taux de réussite inventé. Voir [le fonctionnement et ses limites](docs/FM_DOUBLE_OBJECTIF.md).
+
 ## État du projet
 
 Sources importées : **v21.02 — surveillance indépendante**. Version de développement : **v22.00 — le nouvel atelier émeraude**.
@@ -38,4 +42,5 @@ Tests : `python -m pip install -r requirements-dev.txt`, puis `python -m pytest 
 ## Confidentialité
 
 Ne pas publier de captures contenant des informations personnelles, des identifiants, des journaux privés ou des secrets.
+
 

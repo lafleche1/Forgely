@@ -7,10 +7,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 import random
+from forgely_rules import WEIGHTS, constraints
 
-WEIGHTS = {"Vitalité":.2,"Force":1.,"Intelligence":1.,"Chance":1.,"Agilité":1.,
-           "Sagesse":3.,"Puissance":2.,"PA":100.,"PM":90.,"Portée":51.,
-           "Invocations":30.,"Coups critiques":10.,"Soins":10.,"Initiative":.1}
 EXTRA_CAP=101.0  # guide communautaire DOFUS, à confirmer selon version
 
 @dataclass(frozen=True)
@@ -57,8 +55,9 @@ def check_budget(jets,natural_max,cap=EXTRA_CAP):
     states=classify_item(jets,natural_max)
     total=extra_weight_total(states)
     if total is None:return {'valid':None,'total':None,'reason':'Poids inconnu pour au moins une caractéristique'}
-    return {'valid':total <= cap+1e-8,'total':round(total,4),'cap':cap,
-            'reason':'Plafond exo/over dépassé' if total>cap else 'Sous le plafond communautaire'}
+    checked=constraints(jets,natural_max,cap=cap)
+    return {'valid':checked['valid'],'total':round(total,4),'cap':cap,
+            'reason':checked['reason'], 'exotic_weight':checked['exotic_weight']}
 
 
 def simulate_distribution(probabilities, n=10000, seed=42):
@@ -81,3 +80,4 @@ def chance_independent_chain(chances):
         if not 0<=x<=1:raise ValueError('Probabilite hors [0,1]')
         p*=x
     return p
+
