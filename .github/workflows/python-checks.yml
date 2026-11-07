@@ -1,0 +1,32 @@
+name: Python checks
+on:
+  push:
+  pull_request:
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Compile Python sources
+        run: |
+          python - <<'PY'
+          import pathlib, py_compile
+          files = [p for p in pathlib.Path('.').rglob('*.py') if '.venv' not in p.parts]
+          for path in files:
+              py_compile.compile(str(path), doraise=True)
+          print(f'Compiled {len(files)} Python files')
+          PY
+      - name: Run tests when available
+        run: |
+          python - <<'PY'
+          import pathlib, subprocess, sys
+          tests = list(pathlib.Path('.').rglob('test_*.py'))
+          if tests:
+              subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pytest'])
+              subprocess.check_call([sys.executable, '-m', 'pytest', '-q'])
+          else:
+              print('No tests uploaded yet')
+          PY
