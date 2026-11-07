@@ -18,7 +18,7 @@ from forgely_observation_mode import load_observation_mode, save_observation_mod
 from forgely_data import connect, insert_observation, insert_unassigned, unassigned_total, stats, recent, RUNES, DB_FILE, DATA_DIR
 from runeforge_observer import extract_text
 from forgely_detection import HistoryTransitionTracker, read_regions, crop_regions
-from forgely_windows import list_dofus_windows, auto_game_window, foreground_handle, is_own_foreground, list_selectable_windows, window_by_handle
+from forgely_windows import list_dofus_windows, auto_game_window, foreground_handle, is_own_foreground, list_selectable_windows, window_by_handle, physical_pixels, read_window_bounds
 from forgely_overlay import FloatingBadge
 from forgely_rune_icons import rune_icon_path
 from forgely_typographie import families as font_families
@@ -292,6 +292,39 @@ class GameCapture:
             del self._screen.session
             session.close()
 
+    def _native_image(self, window):
+        """PrintWindow renders the outer HWND; OCR sees only the client area."""
+        outer = getattr(window, 'outer_rect', None)
+        if outer is None:
+            return capture_window_native(window._hWnd, window.width, window.height)
+        left, top, right, bottom = outer
+        image = capture_window_native(window._hWnd, right-left, bottom-top)
+        if image is None or image.size != (right-left, bottom-top):
+            return None
+        box = (window.left-left, window.top-top,
+               window.left-left+window.width, window.top-top+window.height)
+        if not (0 <= box[0] < box[2] <= image.width and 0 <= box[1] < box[3] <= image.height):
+            return None
+        client = image.crop(box)
+        # A rendered title bar can mask a black GPU client in the outer-frame
+        # check. Validate the exact surface that is about to enter OCR.
+        from PIL import ImageStat
+        if max(ImageStat.Stat(client.resize((64, 36))).stddev) < 5:
+            return None
+        return client
+
+    def _check_geometry(self, window):
+        """Discard a frame if a mode switch/move happened during acquisition."""
+        client = getattr(window, 'client_rect', None)
+        if client is not None:
+            try:
+                current = read_window_bounds(window._hWnd)
+            except OSError as exc:
+                raise GameNotForeground(str(exc)) from exc
+            if current != (window.outer_rect, client):
+                raise GameNotForeground('Affichage DOFUS modifié · recadrage automatique en cours')
+
+    @physical_pixels()
     def capture(self):
         active = foreground_handle()
         candidates = list_dofus_windows()
@@ -317,22 +350,25 @@ class GameCapture:
         # this case; PrintWindow frequently returns black on GPU games.
         if foreground_belongs_to_game(active,self.last_handle):
             image=self._foreground_image(w)
+            self._check_geometry(w)
             self.debug_stage='Capture DOFUS au premier plan · OCR en cours'
             return image,w.title
         # When the diagnostic / overlay owns focus, do not capture its pixels.
         # PrintWindow can capture independently of the foreground app, if the
         # game's renderer supports it.
         try:
-            img=capture_window_native(self.last_handle,w.width,w.height)
+            img=self._native_image(w)
         except (OSError,ValueError):
             img=None
         if img is None:
             self.debug_stage='DOFUS identifié · capture native indisponible (jeu GPU) ; cliquer sur DOFUS pour lire'
             raise GameNotForeground(self.debug_stage)
+        self._check_geometry(w)
         self.debug_stage='Capture native DOFUS · OCR en cours'
         return img,w.title
 
 
+    @physical_pixels()
     def probe_other_workshops(self, reader):
         """Probe other accounts only after OCR has failed on the current one.
 
@@ -359,11 +395,15 @@ class GameCapture:
                     continue
             else:
                 try:
-                    img=capture_window_native(handle,w.width,w.height)
+                    img=self._native_image(w)
                 except (OSError,ValueError):
                     img=None
                 if img is None:
                     continue
+            try:
+                self._check_geometry(w)
+            except GameNotForeground:
+                continue
             if reader(img):
                 self.probe_hits[handle]=self.probe_hits.get(handle,0)+1
                 if self.probe_hits[handle]>=2:
@@ -1543,14 +1583,14 @@ class Forgely(tk.Tk):
                 # meaningful changes; never accumulate a backlog of screenshots.
                 signature = workshop_change_signature(im)
                 changed = workshop_significantly_changed(self._capture_gate_reference, signature)
-                identity=(title,getattr(capture,'last_handle',None))
+                identity=(title,getattr(capture,'last_handle',None),getattr(im,'size',None))
                 context_changed=(getattr(self,'_capture_gate_identity',None) != identity)
                 refresh = started - self._capture_gate_last_sent_ns >= self._capture_gate_force_ns
                 confirmation = self.confirmation_requested.is_set()
                 if changed or refresh or confirmation or context_changed:
                     if context_changed and getattr(self,'_capture_gate_identity',None) is not None:
-                        generation=mailbox.invalidate('Compte ou fenêtre modifié')
-                        self.messages.put(('capture_invalidated',(mailbox,generation,'Compte ou fenêtre modifié')))
+                        generation=mailbox.invalidate('Compte, fenêtre ou dimensions DOFUS modifiés')
+                        self.messages.put(('capture_invalidated',(mailbox,generation,'Compte, fenêtre ou dimensions DOFUS modifiés')))
                     self._capture_gate_identity=identity
                     self.confirmation_requested.clear()
                     self._capture_gate_reference = signature
@@ -2404,4 +2444,3 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
-
