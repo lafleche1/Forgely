@@ -31,7 +31,7 @@ from forgely_items import item_list, register_item, find_item, remember_candidat
 from forgely_item_vision import crop_item_header, identify_known, possible_unknown, recognize_item_header
 from forgely_item_icons import crop_item_icon, normalize_icon, ItemVisualTracker, history_icon_for_name, history_icon_by_visual_row
 from forgely_history_identity import resolve_history_identity, visible_history_names, latest_visible_history_name
-from forgely_atelier import read_atelier, crop_zone, parse_reliquat, choose_reliquat, title_candidates, focus_workshop
+from forgely_atelier import read_atelier, crop_zone, parse_reliquat, choose_reliquat, title_candidates
 from forgely_jet import parse_jet
 from forgely_item_references import download_references
 from forgely_profile_guidance import compare as compare_theoretical_profile
@@ -352,7 +352,7 @@ class GameCapture:
             image=self._foreground_image(w)
             self._check_geometry(w)
             self.debug_stage='Capture DOFUS au premier plan · OCR en cours'
-            return focus_workshop(image),w.title
+            return image,w.title
         # When the diagnostic / overlay owns focus, do not capture its pixels.
         # PrintWindow can capture independently of the foreground app, if the
         # game's renderer supports it.
@@ -365,7 +365,7 @@ class GameCapture:
             raise GameNotForeground(self.debug_stage)
         self._check_geometry(w)
         self.debug_stage='Capture native DOFUS · OCR en cours'
-        return focus_workshop(img),w.title
+        return img,w.title
 
 
     @physical_pixels()
@@ -404,7 +404,7 @@ class GameCapture:
                 self._check_geometry(w)
             except GameNotForeground:
                 continue
-            if reader(focus_workshop(img)):
+            if reader(img):
                 self.probe_hits[handle]=self.probe_hits.get(handle,0)+1
                 if self.probe_hits[handle]>=2:
                     self.probe_hits.clear()
