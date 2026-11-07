@@ -13,3 +13,6 @@ Le diagnostic ajoute des durées séparées pour le titre d'atelier, l'historiqu
 Limites : la borne de trois appels concerne la récupération supplémentaire en direct, pas toute la lecture d'atelier ni les reprises de titre/première/dernière ligne. Elle ne garantit pas un cycle inférieur à une seconde sur chaque PC. Aucun test réel de délai n'a été effectué sur le poste de l'utilisateur et sa capture n'est pas disponible ici. Le diagnostic montre séparément des numéros de runes sans nom et une vision non calibrée ; ces nombres ne suffisent pas à identifier une rune ou à certifier SC/SN/EC. Aucun résultat de tentative n'est fabriqué.
 
 Validation : cinq régressions nouvelles, 416 tests réussis, 15 ignorés et 25 sous-tests sur la suite complète. Revue indépendante sans problème important signalé. Les tests natifs Tk sont vérifiés séparément sur CI.
+
+
+L'outil `learn_icon` existait mais n'était plus relié au menu après la refonte. L'entrée **Outils → Calibrer la reconnaissance des runes** est restaurée. Le fichier choisi doit représenter la fenêtre DOFUS entière, au même cadrage que la capture de Forgely ; une zone OCR déjà recadrée ne permet pas de calculer correctement la position relative. La calibration reste locale et ne certifie pas SC/SN/EC.

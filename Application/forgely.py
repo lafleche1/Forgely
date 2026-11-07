@@ -553,6 +553,7 @@ class Forgely(tk.Tk):
             ('🌐 Actualiser les jets théoriques DOFUS 3',self.update_public_references),
             ('Réussites, kamas et sauvegarde',self.open_workbench),
             ('Budget des runes (manuel)',self.open_budget),
+            ('Calibrer la reconnaissance des runes',self.learn_icon),
             ('Diagnostic OCR',self.show_ocr_diagnostic),
             ('Exporter les zones de lecture',self.request_debug_capture),
             ('Paramètres',self.show_settings),
@@ -1402,7 +1403,7 @@ class Forgely(tk.Tk):
         small=src.resize((max(1,int(src.width*factor)),max(1,int(src.height*factor))))
         photo=ImageTk.PhotoImage(small)
         popup._photo=photo
-        self.label(popup,'Clique sur la rune SÉLECTIONNÉE, puis choisis son nom.',12,bold=True).pack(pady=8)
+        self.label(popup,'Capture de la fenêtre DOFUS entière : clique sur la rune sélectionnée, puis choisis son nom.',12,bold=True,wraplength=850).pack(pady=8)
         canvas=tk.Canvas(popup,width=small.width,height=small.height,highlightthickness=0)
         canvas.pack(padx=12,pady=8)
         canvas.create_image(0,0,image=photo,anchor='nw')
