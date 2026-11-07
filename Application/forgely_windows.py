@@ -7,6 +7,62 @@ Windows permissions / the game launcher may block process name reads.
 """
 from __future__ import annotations
 import re
+from contextlib import contextmanager
+
+
+@contextmanager
+def physical_pixels():
+    """Use physical pixels on this thread without changing Tk's DPI policy."""
+    import ctypes
+    from ctypes import wintypes
+    previous = None
+    setter = None
+    try:
+        user32 = ctypes.WinDLL('user32', use_last_error=True)
+        setter = user32.SetThreadDpiAwarenessContext
+        setter.argtypes = [wintypes.HANDLE]
+        setter.restype = wintypes.HANDLE
+        # Per-monitor aware v2; v1 supports older Windows 10 releases.
+        previous = setter(wintypes.HANDLE(-4)) or setter(wintypes.HANDLE(-3))
+    except (AttributeError, OSError):
+        pass
+    try:
+        yield
+    finally:
+        if previous and setter is not None:
+            setter(previous)
+
+
+def read_window_bounds(handle, user32=None):
+    """Return (outer, client) screen rectangles; never guess decoration sizes.
+
+    Caller uses physical_pixels so MSS and Win32 agree even at 125/150% DPI.
+    A disappearing/minimized/resizing window is rejected by the caller.
+    """
+    import ctypes
+    from ctypes import wintypes
+    if user32 is None:
+        user32 = ctypes.WinDLL('user32', use_last_error=True)
+    user32.GetWindowRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+    user32.GetWindowRect.restype = wintypes.BOOL
+    user32.GetClientRect.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.RECT)]
+    user32.GetClientRect.restype = wintypes.BOOL
+    user32.ClientToScreen.argtypes = [wintypes.HWND, ctypes.POINTER(wintypes.POINT)]
+    user32.ClientToScreen.restype = wintypes.BOOL
+    outer, client = wintypes.RECT(), wintypes.RECT()
+    if not user32.GetWindowRect(handle, ctypes.byref(outer)) or not user32.GetClientRect(handle, ctypes.byref(client)):
+        raise OSError('Géométrie DOFUS indisponible')
+    start = wintypes.POINT(client.left, client.top)
+    end = wintypes.POINT(client.right, client.bottom)
+    if not user32.ClientToScreen(handle, ctypes.byref(start)) or not user32.ClientToScreen(handle, ctypes.byref(end)):
+        raise OSError('Surface DOFUS indisponible')
+    outer_rect = (outer.left, outer.top, outer.right, outer.bottom)
+    client_rect = (start.x, start.y, end.x, end.y)
+    if end.x <= start.x or end.y <= start.y:
+        raise OSError('Surface DOFUS vide')
+    if not (outer.left <= start.x < end.x <= outer.right and outer.top <= start.y < end.y <= outer.bottom):
+        raise OSError('Fenêtre DOFUS en cours de redimensionnement')
+    return outer_rect, client_rect
 
 # Character - class - 3.7.13.17 - Release / Beta patterns observed in DOFUS 3.
 DOFUS_TITLE = re.compile(r'\bDOFUS\b|\b\d+\.\d+\.\d+(?:\.\d+)?\s*-\s*(?:Release|Beta)\b', re.I)
@@ -39,15 +95,18 @@ def select_window(windows, active_handle=None):
 
 class NativeWindow:
     """Minimal HWND adapter, independent of pygetwindow enumeration."""
-    def __init__(self, handle, title, rect, minimized=False):
+    def __init__(self, handle, title, rect, minimized=False, client_rect=None):
         self._hWnd = handle
         self.title = title
-        self.left, self.top, right, bottom = rect
+        self.outer_rect = tuple(rect)
+        self.client_rect = tuple(client_rect) if client_rect is not None else None
+        self.left, self.top, right, bottom = self.client_rect or self.outer_rect
         self.width = right - self.left
         self.height = bottom - self.top
         self.isMinimized = minimized
 
 
+@physical_pixels()
 def native_windows():
     """Enumerate visible top-level HWNDs with pointer-sized Windows signatures."""
     import ctypes
@@ -72,16 +131,16 @@ def native_windows():
     def visit(hwnd, unused):
         if not user32.IsWindowVisible(hwnd) or user32.IsIconic(hwnd):
             return True
-        rect = wintypes.RECT()
-        if not user32.GetWindowRect(hwnd, ctypes.byref(rect)):
+        try:
+            rect, client = read_window_bounds(hwnd, user32)
+        except OSError:
             return True
-        if rect.right - rect.left < 300 or rect.bottom - rect.top < 300:
+        if client[2] - client[0] < 300 or client[3] - client[1] < 300:
             return True
         n = user32.GetWindowTextLengthW(hwnd)
         buf = ctypes.create_unicode_buffer(n + 1)
         user32.GetWindowTextW(hwnd, buf, len(buf))
-        found.append(NativeWindow(int(hwnd), buf.value,
-                                  (rect.left, rect.top, rect.right, rect.bottom)))
+        found.append(NativeWindow(int(hwnd), buf.value, rect, client_rect=client))
         return True
 
     if not user32.EnumWindows(visit, 0):
@@ -89,13 +148,22 @@ def native_windows():
     return found
 
 
+@physical_pixels()
 def list_dofus_windows():
     """Identify Dofus.exe HWNDs without relying on pygetwindow or character names."""
     try:
         windows = native_windows()
     except (OSError, AttributeError):
         import pygetwindow as gw
-        windows = gw.getAllWindows()
+        windows = []
+        for window in gw.getAllWindows():
+            if window.isMinimized:
+                continue
+            try:
+                rect, client = read_window_bounds(window._hWnd)
+            except OSError:
+                continue
+            windows.append(NativeWindow(window._hWnd, window.title, rect, client_rect=client))
     return [w for w in windows if w.width >= 300 and w.height >= 300
             and not w.isMinimized and is_game_window(w)]
 
@@ -194,4 +262,3 @@ def is_own_foreground(handle):
         return pid.value == os.getpid()
     except Exception:
         return False
-
