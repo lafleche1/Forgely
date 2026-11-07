@@ -4,7 +4,11 @@ Application Windows d'assistance à l'observation de la forgemagie DOFUS.
 
 ## État du projet
 
-Base de travail actuelle : **v21.02 — surveillance indépendante**. Le code source complet n'est pas encore importé dans ce dépôt.
+Sources importées : **v21.02 — surveillance indépendante**. Version de développement : **v21.03 — aperçu rune indépendant et confirmations rapides**.
+
+Lancer `OUVRIR FORGELY.bat` sous Windows, ou `python Application/forgely.py` avec les dépendances de `Application/requirements.txt` et Tesseract installés.
+
+La lecture rapide lit uniquement l'historique et la rune dans un thread dédié. Un résultat affiché « à vérifier » est provisoire : il ne crée aucune observation en base et ne guide pas les conseils. L'observateur complet conserve sa validation indépendante. Voir [le bilan technique](docs/IMPORT_OCR_V21_03.md).
 
 ### Objectif prioritaire
 
@@ -23,6 +27,11 @@ Afficher les résultats des runes en **moins d'une seconde**, sans perdre les é
 
 Conserver la surveillance rapide (120 ms) et découpler l'OCR de l'historique, des caractéristiques et du reliquat. Ajouter des tests de non-régression avant toute publication de version.
 
+Tests : `python -m pip install -r requirements-dev.txt`, puis `python -m pytest -q` depuis la racine. Les tests OCR nécessitent Tesseract ; certaines captures de référence privées ne sont pas fournies.
+
+**Le délai inférieur à une seconde reste à mesurer dans DOFUS sous Windows.** Les mesures v21.02 ci-dessous ne constituent pas un résultat v21.03.
+
 ## Confidentialité
 
 Ne pas publier de captures contenant des informations personnelles, des identifiants, des journaux privés ou des secrets.
+

@@ -1,0 +1,6 @@
+Forgely v20.93
+- Détection des bordures blanches de la ligne sélectionnée.
+- Lecture OCR à l’intérieur du cadre, sans supposer Vitalité ou une autre statistique.
+- Diagnostic « LIGNE ENCADRÉE (OCR) ».
+- Aucune valeur n’est déduite du jet théorique.
+- Validation Windows / DOFUS en direct encore nécessaire.

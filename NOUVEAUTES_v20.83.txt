@@ -1,0 +1,7 @@
+Forgely v20.83 — historique multi-équipements
+
+- Diagnostic : dernier nom d’équipement visible dans l’historique, distinct de l’identité confirmée.
+- Identification : le nom historique n’est pas promu sans preuve indépendante de l’icône actuelle.
+- Historique : reconnaissance des gains signés malgré un glyphe OCR entre + et le nombre (+ À 30 Initiative).
+- Aucune inférence de réussite/échec de rune ni d’over sans jet actuel et profil confirmé.
+- Le suivi du reliquat reste isolé lorsque l’équipement change.

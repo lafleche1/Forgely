@@ -1,0 +1,6 @@
+v20.91 - Vitalite : lecture renforcee
+- Passe OCR independante sur la premiere ligne, meme lorsque le cache des effets est incomplet.
+- Plusieurs cadrages et contrastes ; valeur lue sur les pixels, jamais deduite du profil.
+- Aucun changement au systeme de reconnaissance des equipements.
+- Test sur capture fourni : 336 Vitalite.
+- Validation sur DOFUS en direct encore necessaire.

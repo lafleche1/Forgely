@@ -1,0 +1,8 @@
+Forgely v20.98 — première passe d'optimisation (expérimentale)
+
+- Cache exact de l'OCR de l'en-tête de l'objet : évite deux appels Tesseract lorsque la zone de titre ne change pas.
+- Invalidation du cache dès qu'un pixel de la zone d'en-tête change ; réinitialisation au redémarrage et changement de compte.
+- Capture toutes les 120 ms environ au lieu de 350 ms, avec une seule image en attente pour éviter l'accumulation.
+- Lecture du jet, reconnaissance de la ligne encadrée et historique différentiel conservés.
+
+IMPORTANT : la latence de détection et d'affichage d'une rune n'est PAS encore garantie sous une seconde. L'OCR d'atelier reste synchrone et peut prendre plusieurs secondes. Il s'agit d'une optimisation intermédiaire mesurable, pas encore de la refonte complète à deux vitesses.

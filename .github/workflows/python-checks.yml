@@ -10,6 +10,11 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
+      - name: Install OCR and test dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-fra python3-tk
+          python -m pip install -r requirements-dev.txt
       - name: Compile Python sources
         run: |
           python - <<'PY'
@@ -19,14 +24,6 @@ jobs:
               py_compile.compile(str(path), doraise=True)
           print(f'Compiled {len(files)} Python files')
           PY
-      - name: Run tests when available
-        run: |
-          python - <<'PY'
-          import pathlib, subprocess, sys
-          tests = list(pathlib.Path('.').rglob('test_*.py'))
-          if tests:
-              subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'pytest'])
-              subprocess.check_call([sys.executable, '-m', 'pytest', '-q'])
-          else:
-              print('No tests uploaded yet')
-          PY
+      - name: Run regression tests
+        run: python -m pytest -q
+

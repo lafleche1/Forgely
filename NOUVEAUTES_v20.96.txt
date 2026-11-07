@@ -1,0 +1,8 @@
+Forgely v20.96 — historique différentiel prudent
+- Conservation de la lecture OCR du jet et du cadre blanc de v20.95.
+- Nouvelle référence de l'historique au démarrage : aucune ancienne ligne n'est déclarée nouvelle.
+- Détection des extensions en haut ou en bas de l'historique, confirmées par deux lectures identiques.
+- Mise en quarantaine des changements ambigus (défilement, OCR instable, lignes supprimées).
+- Nouveau champ de diagnostic HISTORIQUE DIFFÉRENTIEL (NON CERTIFIÉ).
+- Réinitialisation de la référence lorsque l'objet change ou l'atelier disparaît.
+IMPORTANT : le regroupement en tentatives et la reconnaissance des issues restent à valider en jeu ; les nouvelles lignes ne sont pas des runes certifiées.

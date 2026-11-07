@@ -1,0 +1,8 @@
+Forgely v20.89 — basée sur v20.87
+
+- Historique explicitement vide reconnu comme état normal, sans fausse tentative.
+- Valeur décimale du reliquat dans les effets prioritaire sur la lecture dédiée sans virgule.
+- Identification des équipements de v20.87 préservée.
+
+La Vitalité reste une limitation connue : aucun chiffre n’est inventé si son OCR échoue.
+Le traitement OCR complet reste coûteux ; l’accélération requiert des mesures sur Windows.

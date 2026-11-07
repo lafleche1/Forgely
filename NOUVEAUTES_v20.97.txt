@@ -1,0 +1,10 @@
+Forgely v20.97 — suivi différentiel renforcé
+
+- Conserve intégralement le lecteur des caractéristiques de v20.95/v20.96.
+- Compare l'historique comme une séquence ordonnée : les lignes identiques sont conservées.
+- Reconnaît les extensions avec chevauchement lors du défilement, si au moins deux lignes servent d'ancrage non ambigu.
+- Confirmation de toute nouvelle séquence sur deux observations concordantes.
+- Ne réinitialise pas immédiatement la référence sur une lecture OCR ambiguë.
+- Conserve dans le diagnostic le dernier lot confirmé, même si l'historique est ensuite inchangé.
+- Compteurs de lots confirmés, lignes nouvelles et transitions incertaines.
+- Les résultats des runes et le puits ne sont PAS certifiés par ce mécanisme.

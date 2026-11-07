@@ -1,0 +1,12 @@
+Forgely v20.99 — première séparation entre surveillance visuelle et OCR
+
+- Une signature visuelle rapide surveille les zones historique, effets, runes, reliquat et emplacement de l'objet.
+- Si aucune de ces zones n'a changé, l'OCR complet est ignoré temporairement.
+- Dès qu'une zone change, l'analyse existante est lancée, sans inventer de résultat de rune.
+- Une relecture complète est forcée au plus tard après 1,5 seconde pour éviter de rester bloqué sur un cache visuel.
+- Le diagnostic affiche CAPTURES INCHANGÉES SANS OCR et CHANGEMENTS VISUELS OBSERVÉS.
+- Le lecteur des caractéristiques et la logique d'historique v20.98 sont conservés.
+
+IMPORTANT : ce n'est PAS encore une garantie de résultat sous une seconde.
+Les traitements OCR restent synchrones et peuvent prendre plusieurs secondes.
+Le filtrage visuel sert à réduire les OCR inutiles et à préparer leur séparation.

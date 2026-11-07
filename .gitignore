@@ -22,3 +22,11 @@ logs/
 # OS
 Thumbs.db
 .DS_Store
+tess_*
+*.sqlite3
+*.sqlite3-*
+.superpowers/
+.worktrees/
+Application/diagnostics/
+pytest-of-*/
+

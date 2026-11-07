@@ -1,0 +1,9 @@
+v20.82 — Détection sécurisée du changement d’équipement
+
+- Détection d’un changement de plages Min/Max (pas des valeurs de jet qui bougent pendant la FM).
+- Réinitialisation de l’identité et du puits lorsque le changement est détecté.
+- Protection contre la réutilisation de la référence visuelle Cycloïde si le profil du nouvel objet est incompatible.
+- Les noms anciens présents dans l’historique ne suffisent pas à confirmer un objet.
+- Si le nouvel objet n’est pas identifiable de manière fiable, Forgely reste en attente plutôt que de l’attribuer à l’ancien anneau.
+
+À valider en jeu : reconnaissance du nom du nouvel anneau et changement automatique complet.

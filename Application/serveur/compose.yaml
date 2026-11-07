@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    restart: unless-stopped
+    environment:
+      FORGELY_INGEST_TOKEN: ${FORGELY_INGEST_TOKEN:?set_a_long_random_secret}
+      FORGELY_BIND: 0.0.0.0
+      FORGELY_DB: /data/forgely.sqlite3
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - forgely_data:/data
+    security_opt:
+      - no-new-privileges:true
+volumes:
+  forgely_data:

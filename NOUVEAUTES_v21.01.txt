@@ -1,0 +1,6 @@
+Forgely v21.01
+- Filtre visuel recentré sur historique et valeurs, sans compteurs de stock de runes.
+- Quantification des miniatures pour réduire les faux changements.
+- Rejet des effets masqués par infobulle et invalidation du cache contaminé.
+- Diagnostic du nombre de captures masquées écartées.
+- Aucun engagement de délai inférieur à une seconde : OCR encore synchrone.

@@ -1,0 +1,3 @@
+Correction ciblée de la première ligne des effets : recadrage précis de la Vitalité.
+Test sur la capture DOFUS fournie : 336 Vitalité reconnu en RGB, masque vert et niveaux de gris.
+La valeur doit être confirmée en jeu sur plusieurs lectures.

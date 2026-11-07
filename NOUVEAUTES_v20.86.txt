@@ -1,0 +1,10 @@
+Forgely 20.86 — Optimisations ciblées
+
+- Capture ralentie de 10 à ~2,9 images/s pour réduire la charge CPU/GDI pendant OCR lent.
+- Recherche des autres ateliers espacée de 4 secondes (au lieu de 2).
+- Fenêtres réduites ou trop petites exclues de la recherche multicompte.
+- Le compte précédemment confirmé reste mémorisé durant les échecs OCR temporaires.
+- Cache de titres OCR vidé et tentative en attente annulée lors d’un changement de compte.
+- Atelier verrouillé conservé au redémarrage de l’observation.
+
+Limites : capture Windows des clients Unity masqués non garantie. Tests en jeu nécessaires.

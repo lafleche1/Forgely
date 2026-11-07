@@ -1,0 +1,527 @@
+[
+  {
+    "rune": "de chasse",
+    "file": "rune_001.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "de Signature",
+    "file": "rune_002.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Vi",
+    "file": "rune_003.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Tac",
+    "file": "rune_004.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "So",
+    "file": "rune_005.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Sa",
+    "file": "rune_006.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Terre",
+    "file": "rune_007.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Pou",
+    "file": "rune_008.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Pme",
+    "file": "rune_009.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Terre",
+    "file": "rune_010.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Neutre",
+    "file": "rune_011.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Mé",
+    "file": "rune_012.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Feu",
+    "file": "rune_013.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Eau",
+    "file": "rune_014.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Di",
+    "file": "rune_015.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Per Air",
+    "file": "rune_016.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Pa",
+    "file": "rune_017.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Neutre",
+    "file": "rune_018.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Feu",
+    "file": "rune_019.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Eau",
+    "file": "rune_020.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Cri",
+    "file": "rune_021.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ré Air",
+    "file": "rune_022.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ret Pme",
+    "file": "rune_023.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ret Pa",
+    "file": "rune_024.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Vi",
+    "file": "rune_025.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Sa",
+    "file": "rune_026.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Terre",
+    "file": "rune_027.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Pou",
+    "file": "rune_028.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Neutre",
+    "file": "rune_029.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Feu",
+    "file": "rune_030.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Eau",
+    "file": "rune_031.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Cri",
+    "file": "rune_032.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ré Air",
+    "file": "rune_033.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Pui",
+    "file": "rune_034.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Pod",
+    "file": "rune_035.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Per Pi",
+    "file": "rune_036.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ini",
+    "file": "rune_037.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Ine",
+    "file": "rune_038.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Fo",
+    "file": "rune_039.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Do Pou",
+    "file": "rune_040.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Cha",
+    "file": "rune_041.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ra Age",
+    "file": "rune_042.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pui",
+    "file": "rune_043.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Prospe",
+    "file": "rune_044.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pod",
+    "file": "rune_045.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Po",
+    "file": "rune_046.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Per Pi",
+    "file": "rune_047.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Vi",
+    "file": "rune_048.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Tac",
+    "file": "rune_049.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa So",
+    "file": "rune_050.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Sa",
+    "file": "rune_051.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Terre",
+    "file": "rune_052.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Pou",
+    "file": "rune_053.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Pme",
+    "file": "rune_054.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Pa",
+    "file": "rune_055.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Neutre",
+    "file": "rune_056.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Feu",
+    "file": "rune_057.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Eau",
+    "file": "rune_058.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Cri",
+    "file": "rune_059.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ré Air",
+    "file": "rune_060.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ret Pme",
+    "file": "rune_061.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ret Pa",
+    "file": "rune_062.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Pui",
+    "file": "rune_063.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Prospe",
+    "file": "rune_064.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Pod",
+    "file": "rune_065.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Per Pi",
+    "file": "rune_066.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ini",
+    "file": "rune_067.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Ine",
+    "file": "rune_068.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Fui",
+    "file": "rune_069.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Fo",
+    "file": "rune_070.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Terre",
+    "file": "rune_071.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Ren",
+    "file": "rune_072.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Pou",
+    "file": "rune_073.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Pi",
+    "file": "rune_074.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Neutre",
+    "file": "rune_075.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Feu",
+    "file": "rune_076.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Eau",
+    "file": "rune_077.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Cri",
+    "file": "rune_078.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Do Air",
+    "file": "rune_079.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Cha",
+    "file": "rune_080.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Pa Age",
+    "file": "rune_081.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Invo",
+    "file": "rune_082.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ini",
+    "file": "rune_083.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ine",
+    "file": "rune_084.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ga Pme",
+    "file": "rune_085.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Ga Pa",
+    "file": "rune_086.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Fui",
+    "file": "rune_087.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Fo",
+    "file": "rune_088.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Terre",
+    "file": "rune_089.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Ren",
+    "file": "rune_090.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Pou",
+    "file": "rune_091.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Pi",
+    "file": "rune_092.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Per So",
+    "file": "rune_093.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Per Mé",
+    "file": "rune_094.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Per Di",
+    "file": "rune_095.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Per Ar",
+    "file": "rune_096.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Neutre",
+    "file": "rune_097.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Feu",
+    "file": "rune_098.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Eau",
+    "file": "rune_099.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Cri",
+    "file": "rune_100.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do Air",
+    "file": "rune_101.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Do",
+    "file": "rune_102.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Cri",
+    "file": "rune_103.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Cha",
+    "file": "rune_104.png",
+    "source": "capture_utilisateur"
+  },
+  {
+    "rune": "Age",
+    "file": "rune_105.png",
+    "source": "capture_utilisateur"
+  }
+]

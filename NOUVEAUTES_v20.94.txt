@@ -1,0 +1,1 @@
+v20.94 : récupération de la ligne encadrée sur chaque image actuelle lorsque le jet est incomplet, même si la zone effets est en cache. Diagnostic détaillé, lecture universelle, sans valeurs théoriques.\n

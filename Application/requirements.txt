@@ -1,0 +1,4 @@
+mss>=9,<11
+Pillow>=10,<12
+pygetwindow>=0.0.9,<1
+pytesseract>=0.3.13,<1

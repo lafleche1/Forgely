@@ -1,0 +1,8 @@
+Forgely v21.00 — audit performance ciblé
+
+- Correction: les images inchangées ne provoquent plus un OCR complet toutes les 1,5 secondes. Relecture de sécurité à 12 secondes.
+- Les changements visuels déclenchent toujours la lecture immédiatement (mais l’OCR reste synchrone et peut durer plusieurs secondes).
+- Diagnostic: compteur des OCR terminés sur une image vieille de plus de 1 seconde, et âge de la dernière image.
+- Les 11 statistiques, le suivi différentiel et le lecteur de ligne encadrée sont conservés.
+
+LIMITES: aucune garantie de résultat en moins de 1 seconde. Aucune reconstruction certifiée des runes. Le diagnostic de vieillissement n’empêche pas encore la mise à jour d’une observation ancienne.

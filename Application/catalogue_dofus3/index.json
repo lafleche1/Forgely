@@ -1,0 +1,947 @@
+[
+  {
+    "rune": "Fo",
+    "file": "rune_officielle_1519_78043.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1519,
+    "icon_id": 78043,
+    "type_id": 78,
+    "name_id": 42253
+  },
+  {
+    "rune": "Sa",
+    "file": "rune_officielle_1521_78049.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1521,
+    "icon_id": 78049,
+    "type_id": 78,
+    "name_id": 37263
+  },
+  {
+    "rune": "Ine",
+    "file": "rune_officielle_1522_78037.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1522,
+    "icon_id": 78037,
+    "type_id": 78,
+    "name_id": 39157
+  },
+  {
+    "rune": "Vi",
+    "file": "rune_officielle_1523_78052.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1523,
+    "icon_id": 78052,
+    "type_id": 78,
+    "name_id": 42013
+  },
+  {
+    "rune": "Age",
+    "file": "rune_officielle_1524_78046.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1524,
+    "icon_id": 78046,
+    "type_id": 78,
+    "name_id": 30831
+  },
+  {
+    "rune": "Cha",
+    "file": "rune_officielle_1525_78040.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1525,
+    "icon_id": 78040,
+    "type_id": 78,
+    "name_id": 42019
+  },
+  {
+    "rune": "Pa Fo",
+    "file": "rune_officielle_1545_78044.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1545,
+    "icon_id": 78044,
+    "type_id": 78,
+    "name_id": 32555
+  },
+  {
+    "rune": "Pa Sa",
+    "file": "rune_officielle_1546_78050.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1546,
+    "icon_id": 78050,
+    "type_id": 78,
+    "name_id": 42197
+  },
+  {
+    "rune": "Pa Ine",
+    "file": "rune_officielle_1547_78038.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1547,
+    "icon_id": 78038,
+    "type_id": 78,
+    "name_id": 36501
+  },
+  {
+    "rune": "Pa Vi",
+    "file": "rune_officielle_1548_78053.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1548,
+    "icon_id": 78053,
+    "type_id": 78,
+    "name_id": 42201
+  },
+  {
+    "rune": "Pa Age",
+    "file": "rune_officielle_1549_78047.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1549,
+    "icon_id": 78047,
+    "type_id": 78,
+    "name_id": 42131
+  },
+  {
+    "rune": "Pa Cha",
+    "file": "rune_officielle_1550_78041.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1550,
+    "icon_id": 78041,
+    "type_id": 78,
+    "name_id": 41829
+  },
+  {
+    "rune": "Ra Fo",
+    "file": "rune_officielle_1551_78045.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1551,
+    "icon_id": 78045,
+    "type_id": 78,
+    "name_id": 30535
+  },
+  {
+    "rune": "Ra Sa",
+    "file": "rune_officielle_1552_78051.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1552,
+    "icon_id": 78051,
+    "type_id": 78,
+    "name_id": 43121
+  },
+  {
+    "rune": "Ra Ine",
+    "file": "rune_officielle_1553_78039.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1553,
+    "icon_id": 78039,
+    "type_id": 78,
+    "name_id": 41823
+  },
+  {
+    "rune": "Ra Vi",
+    "file": "rune_officielle_1554_78054.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1554,
+    "icon_id": 78054,
+    "type_id": 78,
+    "name_id": 41825
+  },
+  {
+    "rune": "Ra Age",
+    "file": "rune_officielle_1555_78048.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1555,
+    "icon_id": 78048,
+    "type_id": 78,
+    "name_id": 43103
+  },
+  {
+    "rune": "Ra Cha",
+    "file": "rune_officielle_1556_78042.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1556,
+    "icon_id": 78042,
+    "type_id": 78,
+    "name_id": 32567
+  },
+  {
+    "rune": "Ga Pa",
+    "file": "rune_officielle_1557_78055.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1557,
+    "icon_id": 78055,
+    "type_id": 78,
+    "name_id": 115151
+  },
+  {
+    "rune": "Ga Pme",
+    "file": "rune_officielle_1558_78056.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 1558,
+    "icon_id": 78056,
+    "type_id": 78,
+    "name_id": 115148
+  },
+  {
+    "rune": "Cri",
+    "file": "rune_officielle_7433_78014.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7433,
+    "icon_id": 78014,
+    "type_id": 78,
+    "name_id": 35841
+  },
+  {
+    "rune": "So",
+    "file": "rune_officielle_7434_78013.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7434,
+    "icon_id": 78013,
+    "type_id": 78,
+    "name_id": 47279
+  },
+  {
+    "rune": "Do",
+    "file": "rune_officielle_7435_78015.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7435,
+    "icon_id": 78015,
+    "type_id": 78,
+    "name_id": 47283
+  },
+  {
+    "rune": "Pui",
+    "file": "rune_officielle_7436_78016.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7436,
+    "icon_id": 78016,
+    "type_id": 78,
+    "name_id": 95588
+  },
+  {
+    "rune": "Do Ren",
+    "file": "rune_officielle_7437_78017.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7437,
+    "icon_id": 78017,
+    "type_id": 78,
+    "name_id": 47307
+  },
+  {
+    "rune": "Po",
+    "file": "rune_officielle_7438_78018.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7438,
+    "icon_id": 78018,
+    "type_id": 78,
+    "name_id": 47305
+  },
+  {
+    "rune": "Invo",
+    "file": "rune_officielle_7442_78019.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7442,
+    "icon_id": 78019,
+    "type_id": 78,
+    "name_id": 47257
+  },
+  {
+    "rune": "Pod",
+    "file": "rune_officielle_7443_78020.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7443,
+    "icon_id": 78020,
+    "type_id": 78,
+    "name_id": 38243
+  },
+  {
+    "rune": "Pa Pod",
+    "file": "rune_officielle_7444_78021.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7444,
+    "icon_id": 78021,
+    "type_id": 78,
+    "name_id": 47225
+  },
+  {
+    "rune": "Ra Pod",
+    "file": "rune_officielle_7445_78022.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7445,
+    "icon_id": 78022,
+    "type_id": 78,
+    "name_id": 47249
+  },
+  {
+    "rune": "Do Pi",
+    "file": "rune_officielle_7446_78268.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7446,
+    "icon_id": 78268,
+    "type_id": 78,
+    "name_id": 963076
+  },
+  {
+    "rune": "Per Pi",
+    "file": "rune_officielle_7447_78024.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7447,
+    "icon_id": 78024,
+    "type_id": 78,
+    "name_id": 963080
+  },
+  {
+    "rune": "Ini",
+    "file": "rune_officielle_7448_78025.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7448,
+    "icon_id": 78025,
+    "type_id": 78,
+    "name_id": 47277
+  },
+  {
+    "rune": "Pa Ini",
+    "file": "rune_officielle_7449_78026.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7449,
+    "icon_id": 78026,
+    "type_id": 78,
+    "name_id": 47275
+  },
+  {
+    "rune": "Ra Ini",
+    "file": "rune_officielle_7450_78027.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7450,
+    "icon_id": 78027,
+    "type_id": 78,
+    "name_id": 47007
+  },
+  {
+    "rune": "Prospe",
+    "file": "rune_officielle_7451_78036.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7451,
+    "icon_id": 78036,
+    "type_id": 78,
+    "name_id": 46975
+  },
+  {
+    "rune": "Ré Feu",
+    "file": "rune_officielle_7452_78028.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7452,
+    "icon_id": 78028,
+    "type_id": 78,
+    "name_id": 46969
+  },
+  {
+    "rune": "Ré Air",
+    "file": "rune_officielle_7453_78032.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7453,
+    "icon_id": 78032,
+    "type_id": 78,
+    "name_id": 37277
+  },
+  {
+    "rune": "Ré Eau",
+    "file": "rune_officielle_7454_78030.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7454,
+    "icon_id": 78030,
+    "type_id": 78,
+    "name_id": 46989
+  },
+  {
+    "rune": "Ré Terre",
+    "file": "rune_officielle_7455_78034.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7455,
+    "icon_id": 78034,
+    "type_id": 78,
+    "name_id": 37427
+  },
+  {
+    "rune": "Ré Neutre",
+    "file": "rune_officielle_7456_78057.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7456,
+    "icon_id": 78057,
+    "type_id": 78,
+    "name_id": 46991
+  },
+  {
+    "rune": "Ré Per Feu",
+    "file": "rune_officielle_7457_78029.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7457,
+    "icon_id": 78029,
+    "type_id": 78,
+    "name_id": 47001
+  },
+  {
+    "rune": "Ré Per Air",
+    "file": "rune_officielle_7458_78033.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7458,
+    "icon_id": 78033,
+    "type_id": 78,
+    "name_id": 46999
+  },
+  {
+    "rune": "Ré Per Terre",
+    "file": "rune_officielle_7459_78035.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7459,
+    "icon_id": 78035,
+    "type_id": 78,
+    "name_id": 47009
+  },
+  {
+    "rune": "Ré Per Neutre",
+    "file": "rune_officielle_7460_78058.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7460,
+    "icon_id": 78058,
+    "type_id": 78,
+    "name_id": 32561
+  },
+  {
+    "rune": "de Signature",
+    "file": "rune_officielle_7508_50037.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7508,
+    "icon_id": 50037,
+    "type_id": 78,
+    "name_id": 41391
+  },
+  {
+    "rune": "Ré Per Eau",
+    "file": "rune_officielle_7560_78031.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 7560,
+    "icon_id": 78031,
+    "type_id": 78,
+    "name_id": 39173
+  },
+  {
+    "rune": "de chasse",
+    "file": "rune_officielle_10057_78059.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10057,
+    "icon_id": 78059,
+    "type_id": 78,
+    "name_id": 35411
+  },
+  {
+    "rune": "Pa Do Pi",
+    "file": "rune_officielle_10613_78023.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10613,
+    "icon_id": 78023,
+    "type_id": 78,
+    "name_id": 963077
+  },
+  {
+    "rune": "Pa Per Pi",
+    "file": "rune_officielle_10615_78266.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10615,
+    "icon_id": 78266,
+    "type_id": 78,
+    "name_id": 963082
+  },
+  {
+    "rune": "Ra Per Pi",
+    "file": "rune_officielle_10616_78267.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10616,
+    "icon_id": 78267,
+    "type_id": 78,
+    "name_id": 963081
+  },
+  {
+    "rune": "Pa Pui",
+    "file": "rune_officielle_10618_78269.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10618,
+    "icon_id": 78269,
+    "type_id": 78,
+    "name_id": 95587
+  },
+  {
+    "rune": "Ra Pui",
+    "file": "rune_officielle_10619_78270.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10619,
+    "icon_id": 78270,
+    "type_id": 78,
+    "name_id": 95586
+  },
+  {
+    "rune": "Pa Prospe",
+    "file": "rune_officielle_10662_78271.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 10662,
+    "icon_id": 78271,
+    "type_id": 78,
+    "name_id": 34091
+  },
+  {
+    "rune": "Fui",
+    "file": "rune_officielle_11637_78076.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11637,
+    "icon_id": 78076,
+    "type_id": 78,
+    "name_id": 51477
+  },
+  {
+    "rune": "Pa Fui",
+    "file": "rune_officielle_11638_78075.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11638,
+    "icon_id": 78075,
+    "type_id": 78,
+    "name_id": 51487
+  },
+  {
+    "rune": "Tac",
+    "file": "rune_officielle_11639_78077.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11639,
+    "icon_id": 78077,
+    "type_id": 78,
+    "name_id": 51485
+  },
+  {
+    "rune": "Pa Tac",
+    "file": "rune_officielle_11640_78078.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11640,
+    "icon_id": 78078,
+    "type_id": 78,
+    "name_id": 51457
+  },
+  {
+    "rune": "Ré Pa",
+    "file": "rune_officielle_11641_78083.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11641,
+    "icon_id": 78083,
+    "type_id": 78,
+    "name_id": 115154
+  },
+  {
+    "rune": "Pa Ré Pa",
+    "file": "rune_officielle_11642_78084.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11642,
+    "icon_id": 78084,
+    "type_id": 78,
+    "name_id": 115153
+  },
+  {
+    "rune": "Ré Pme",
+    "file": "rune_officielle_11643_78085.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11643,
+    "icon_id": 78085,
+    "type_id": 78,
+    "name_id": 115144
+  },
+  {
+    "rune": "Pa Ré Pme",
+    "file": "rune_officielle_11644_78086.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11644,
+    "icon_id": 78086,
+    "type_id": 78,
+    "name_id": 115146
+  },
+  {
+    "rune": "Ret Pa",
+    "file": "rune_officielle_11645_78087.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11645,
+    "icon_id": 78087,
+    "type_id": 78,
+    "name_id": 115155
+  },
+  {
+    "rune": "Pa Ret Pa",
+    "file": "rune_officielle_11646_78088.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11646,
+    "icon_id": 78088,
+    "type_id": 78,
+    "name_id": 115152
+  },
+  {
+    "rune": "Ret Pme",
+    "file": "rune_officielle_11647_78089.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11647,
+    "icon_id": 78089,
+    "type_id": 78,
+    "name_id": 115145
+  },
+  {
+    "rune": "Pa Ret Pme",
+    "file": "rune_officielle_11648_78090.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11648,
+    "icon_id": 78090,
+    "type_id": 78,
+    "name_id": 115147
+  },
+  {
+    "rune": "Do Pou",
+    "file": "rune_officielle_11649_78081.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11649,
+    "icon_id": 78081,
+    "type_id": 78,
+    "name_id": 51467
+  },
+  {
+    "rune": "Pa Do Pou",
+    "file": "rune_officielle_11650_78082.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11650,
+    "icon_id": 78082,
+    "type_id": 78,
+    "name_id": 33105
+  },
+  {
+    "rune": "Ré Pou",
+    "file": "rune_officielle_11651_78079.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11651,
+    "icon_id": 78079,
+    "type_id": 78,
+    "name_id": 51447
+  },
+  {
+    "rune": "Pa Ré Pou",
+    "file": "rune_officielle_11652_78080.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11652,
+    "icon_id": 78080,
+    "type_id": 78,
+    "name_id": 51443
+  },
+  {
+    "rune": "Do Cri",
+    "file": "rune_officielle_11653_78073.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11653,
+    "icon_id": 78073,
+    "type_id": 78,
+    "name_id": 291986
+  },
+  {
+    "rune": "Pa Do Cri",
+    "file": "rune_officielle_11654_78074.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11654,
+    "icon_id": 78074,
+    "type_id": 78,
+    "name_id": 291987
+  },
+  {
+    "rune": "Ré Cri",
+    "file": "rune_officielle_11655_78071.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11655,
+    "icon_id": 78071,
+    "type_id": 78,
+    "name_id": 48295
+  },
+  {
+    "rune": "Pa Ré Cri",
+    "file": "rune_officielle_11656_78072.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11656,
+    "icon_id": 78072,
+    "type_id": 78,
+    "name_id": 51451
+  },
+  {
+    "rune": "Do Terre",
+    "file": "rune_officielle_11657_78065.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11657,
+    "icon_id": 78065,
+    "type_id": 78,
+    "name_id": 48481
+  },
+  {
+    "rune": "Pa Do Terre",
+    "file": "rune_officielle_11658_78066.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11658,
+    "icon_id": 78066,
+    "type_id": 78,
+    "name_id": 48465
+  },
+  {
+    "rune": "Do Feu",
+    "file": "rune_officielle_11659_78063.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11659,
+    "icon_id": 78063,
+    "type_id": 78,
+    "name_id": 48325
+  },
+  {
+    "rune": "Pa Do Feu",
+    "file": "rune_officielle_11660_78064.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11660,
+    "icon_id": 78064,
+    "type_id": 78,
+    "name_id": 51419
+  },
+  {
+    "rune": "Do Eau",
+    "file": "rune_officielle_11661_78061.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11661,
+    "icon_id": 78061,
+    "type_id": 78,
+    "name_id": 47929
+  },
+  {
+    "rune": "Pa Do Eau",
+    "file": "rune_officielle_11662_78062.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11662,
+    "icon_id": 78062,
+    "type_id": 78,
+    "name_id": 51425
+  },
+  {
+    "rune": "Do Air",
+    "file": "rune_officielle_11663_78067.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11663,
+    "icon_id": 78067,
+    "type_id": 78,
+    "name_id": 51411
+  },
+  {
+    "rune": "Pa Do Air",
+    "file": "rune_officielle_11664_78068.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11664,
+    "icon_id": 78068,
+    "type_id": 78,
+    "name_id": 47893
+  },
+  {
+    "rune": "Do Neutre",
+    "file": "rune_officielle_11665_78069.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11665,
+    "icon_id": 78069,
+    "type_id": 78,
+    "name_id": 51415
+  },
+  {
+    "rune": "Pa Do Neutre",
+    "file": "rune_officielle_11666_78070.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 11666,
+    "icon_id": 78070,
+    "type_id": 78,
+    "name_id": 51413
+  },
+  {
+    "rune": "Do Per Mé",
+    "file": "rune_officielle_18719_78092.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18719,
+    "icon_id": 78092,
+    "type_id": 78,
+    "name_id": 721482
+  },
+  {
+    "rune": "Do Per Di",
+    "file": "rune_officielle_18720_78091.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18720,
+    "icon_id": 78091,
+    "type_id": 78,
+    "name_id": 721483
+  },
+  {
+    "rune": "Do Per Ar",
+    "file": "rune_officielle_18721_78093.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18721,
+    "icon_id": 78093,
+    "type_id": 78,
+    "name_id": 721485
+  },
+  {
+    "rune": "Do Per So",
+    "file": "rune_officielle_18722_78094.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18722,
+    "icon_id": 78094,
+    "type_id": 78,
+    "name_id": 721487
+  },
+  {
+    "rune": "Ré Per Mé",
+    "file": "rune_officielle_18723_78095.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18723,
+    "icon_id": 78095,
+    "type_id": 78,
+    "name_id": 721489
+  },
+  {
+    "rune": "Ré Per Di",
+    "file": "rune_officielle_18724_78096.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 18724,
+    "icon_id": 78096,
+    "type_id": 78,
+    "name_id": 721492
+  },
+  {
+    "rune": "Pa So",
+    "file": "rune_officielle_19337_78099.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19337,
+    "icon_id": 78099,
+    "type_id": 78,
+    "name_id": 939713
+  },
+  {
+    "rune": "Pa Ré Air",
+    "file": "rune_officielle_19338_78100.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19338,
+    "icon_id": 78100,
+    "type_id": 78,
+    "name_id": 736607
+  },
+  {
+    "rune": "Pa Ré Eau",
+    "file": "rune_officielle_19339_78101.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19339,
+    "icon_id": 78101,
+    "type_id": 78,
+    "name_id": 736609
+  },
+  {
+    "rune": "Pa Ré Feu",
+    "file": "rune_officielle_19340_78102.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19340,
+    "icon_id": 78102,
+    "type_id": 78,
+    "name_id": 736613
+  },
+  {
+    "rune": "Pa Ré Neutre",
+    "file": "rune_officielle_19341_78103.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19341,
+    "icon_id": 78103,
+    "type_id": 78,
+    "name_id": 736616
+  },
+  {
+    "rune": "Pa Ré Terre",
+    "file": "rune_officielle_19342_78104.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 19342,
+    "icon_id": 78104,
+    "type_id": 78,
+    "name_id": 736618
+  },
+  {
+    "rune": "Ra Ré Pou",
+    "file": "rune_officielle_29683_78272.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 29683,
+    "icon_id": 78272,
+    "type_id": 78,
+    "name_id": 1065344
+  },
+  {
+    "rune": "Ra Do Pou",
+    "file": "rune_officielle_29684_78273.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 29684,
+    "icon_id": 78273,
+    "type_id": 78,
+    "name_id": 1065347
+  },
+  {
+    "rune": "Ra Ré Terre",
+    "file": "rune_officielle_30695_78294.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30695,
+    "icon_id": 78294,
+    "type_id": 78,
+    "name_id": 1105773
+  },
+  {
+    "rune": "Ra Ré Neutre",
+    "file": "rune_officielle_30696_78293.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30696,
+    "icon_id": 78293,
+    "type_id": 78,
+    "name_id": 1105776
+  },
+  {
+    "rune": "Ra Ré Feu",
+    "file": "rune_officielle_30697_78295.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30697,
+    "icon_id": 78295,
+    "type_id": 78,
+    "name_id": 1105779
+  },
+  {
+    "rune": "Ra Ré Eau",
+    "file": "rune_officielle_30698_78296.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30698,
+    "icon_id": 78296,
+    "type_id": 78,
+    "name_id": 1105782
+  },
+  {
+    "rune": "Ra Ré Cri",
+    "file": "rune_officielle_30699_78292.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30699,
+    "icon_id": 78292,
+    "type_id": 78,
+    "name_id": 1105785
+  },
+  {
+    "rune": "Ra Ré Air",
+    "file": "rune_officielle_30700_78297.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30700,
+    "icon_id": 78297,
+    "type_id": 78,
+    "name_id": 1105788
+  },
+  {
+    "rune": "Pa Do Ren",
+    "file": "rune_officielle_30942_78017.png",
+    "source": "dofus_sprite_bundle",
+    "item_id": 30942,
+    "icon_id": 78017,
+    "type_id": 78,
+    "name_id": 1117901
+  }
+]

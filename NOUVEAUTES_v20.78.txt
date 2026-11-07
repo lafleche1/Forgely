@@ -1,0 +1,1 @@
+Forgely v20.78 : meilleure lecture des lignes de jet OCR (pourcentages, zero Tacle), diagnostic du jet brut meme avant stabilisation. Identification de la v20.77 conservee. Le reliquat reste soumis a validation stricte; aucun chiffre devine.

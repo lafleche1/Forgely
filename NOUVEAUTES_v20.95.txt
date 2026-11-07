@@ -1,0 +1,7 @@
+Forgely v20.95 — Correctif erreur NumPy
+
+- Le lecteur des lignes encadrées fonctionne désormais sans NumPy.
+- Le masque des caractères verts utilise uniquement Pillow, déjà inclus dans les dépendances.
+- La détection des bordures du cadre blanc utilise également Pillow.
+- Aucun ajout de dépendance ni intervention manuelle dans Python n'est nécessaire.
+- La lecture 11/11 doit encore être validée en jeu.

@@ -1,0 +1,8 @@
+Forgely v20.84 — Catalogue officiel des runes
+
+- 105 entrées de runes de type 78 issues des données DOFUS et du fichier fr.bin.
+- 104 icônes Sprite distinctes extraites des bundles DOFUS, toutes présentes.
+- Correspondance nom / item_id / icon_id vérifiée sur les fichiers fournis.
+- Les icônes du catalogue remplacent les captures dans les conseils; les captures précédentes sont conservées dans catalogue_dofus3/captures_precedentes.
+- Aucun poids de rune, effet ou résultat de tentative n’est déduit des icônes.
+- La reconnaissance de la rune posée en temps réel n’est pas encore activée : cette version fiabilise le référentiel visuel.

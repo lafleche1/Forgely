@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "event_id": "c9f5b5e1-73b6-4fa8-95a1-7dfc37b04d42",
+  "rune": "Ra Vi",
+  "outcome": "SC",
+  "item_type": "anneau",
+  "stat": "vitalite",
+  "rune_weight": 3,
+  "sink_before": 10,
+  "item_level": 200,
+  "verification": "manual"
+}

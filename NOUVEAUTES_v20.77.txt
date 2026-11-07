@@ -1,0 +1,6 @@
+Forgely v20.77 - lecture du nom actuel
+
+La ligne du nom de l objet, visible a gauche de l atelier, est maintenant lue a chaque observation.
+Le nom doit etre connu du catalogue local et coherent avec une icone stable sur 3 images.
+L identification depuis les PNG officiels n est PAS encore active : les images ne sont pas incluses dans ce ZIP.
+Cette version n a pas ete testee en jeu sur Windows.

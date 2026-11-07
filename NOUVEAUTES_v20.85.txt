@@ -1,0 +1,11 @@
+Forgely 20.85 — VERSION TEST
+
+- Recherche automatique d’un atelier sur les fenêtres DOFUS candidates.
+- Deux confirmations OCR avant changement automatique de compte.
+- Priorité à la fenêtre contenant un atelier ; suivi stable sans dépendre du premier plan.
+- Réinitialisation du jet, du puits et de l’identité lors d’un changement de compte.
+- La sélection manuelle reste disponible et interdit les bascules automatiques.
+
+Limites : PrintWindow ne peut pas toujours lire une fenêtre Unity masquée ou minimisée.
+Si la capture native échoue, Forgely attend une fenêtre capturable.
+Test sur Windows/DOFUS nécessaire ; aucun test réel en jeu ici.

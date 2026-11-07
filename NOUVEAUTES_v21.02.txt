@@ -1,0 +1,14 @@
+Forgely v21.02 — Surveillance visuelle indépendante
+
+- Détection des changements dans le thread de capture (~120 ms), même pendant l'OCR.
+- Comparaison tolérante aux petits changements de pixels (filtre médian et seuil).
+- Le thread OCR ne refait plus de comparaison exacte bloquante.
+- Boîte à une seule image : seules les captures récentes sont traitées.
+- Actualisation de sécurité après 12 secondes sans changement notable.
+- Nouveau diagnostic sur le filtre rapide.
+
+LIMITES :
+- L'OCR complet reste synchrone et peut dépasser 2 secondes.
+- Plusieurs runes pendant un OCR peuvent encore être fusionnées/perdues.
+- L'objectif de 1 seconde n'est pas démontré sans mesure sur DOFUS Windows.
+- Le reliquat discordant et l'historique ambigu restent non certifiés.
