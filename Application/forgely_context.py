@@ -51,13 +51,14 @@ def init_context_db(db_file=DB_FILE):
         db.execute('CREATE INDEX IF NOT EXISTS ctx_item_rune ON fusion_contexts(item,rune)')
 
 
-def save_transition(item,rune,outcome,before,after,db_file=DB_FILE):
+def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, confirmed_event=False):
     if not item or not rune or outcome not in ('SC','SN','EC'):
         raise ValueError('Item, rune et résultat requis')
     start=normalize_snapshot(before.get('jet'),before.get('pool')) if before else None
     end=normalize_snapshot(after.get('jet'),after.get('pool')) if after else None
     delta=snapshot_diff(start,end)
-    if delta is None or (not delta['changes'] and delta['pool_delta']==0):
+    if delta is None or (not delta['changes'] and delta['pool_delta']==0
+                         and not (confirmed_event and outcome=='EC' and start['pool']==0)):
         raise ValueError('Deux snapshots cohérents et différents sont nécessaires')
     init_context_db(db_file)
     with sqlite3.connect(str(db_file)) as db:
@@ -86,3 +87,4 @@ def context_rates(item,rune,stat=None,pre_value=None,pre_pool=None,db_file=DB_FI
     pct={k:round(100*v/n,1) for k,v in counts.items()}
     ci=tuple(round(100*x,1) for x in wilson(counts['SC'],n))
     return {'n':n,'counts':counts,'usable':True,'percentages':pct,'ci95_sc':ci}
+

@@ -52,8 +52,21 @@ def extra_mass(jets, natural_max):
     return round(total, 5)
 
 
+def learning_adjustment(group):
+    """Bounded heuristic from coherent local outcomes; never a game probability."""
+    if not isinstance(group,dict) or not group.get('learning_eligible') or not group.get('usable'): return None
+    counts=group.get('counts',{})
+    if any(not isinstance(counts.get(o,0),int) or isinstance(counts.get(o,0),bool) or counts.get(o,0)<0 for o in ('SC','SN','EC')): return None
+    n=sum(counts.get(o,0) for o in ('SC','SN','EC'))
+    if n<30 or n!=group.get('n'): return None
+    # Prior centered on neutral influence; SC/SN both count as rune gains.
+    success=counts.get('SC',0)+counts.get('SN',0)
+    factor=1.+.4*((success+15)/(n+30)-.5)
+    return {'n':n,'factor':factor,'quality':'coherence_ocr_locale_non_certifiee'}
+
+
 def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
-               mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None):
+               mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None,learning_for=None):
     mode = objective_mode(mode)
     if (not targets or not jets or pool is None or not finite_number(pool, nonnegative=True)
             or any(stat not in jets for stat in targets)
@@ -120,6 +133,8 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
             if sampled and not sampled['blocked']:
                 display=sampled['display']
                 utility *= (displayed_number(display['SC'])+displayed_number(display['SN']))/100
+            learned=learning_adjustment(learning_for(rune) if learning_for else None)
+            utility *= learned['factor'] if learned else 1.
             if mode == 'Budget optimisé':
                 # Price plus repair exposure valued at known cheapest cost per density.
                 repair_prices = [p / reference(r).weight for r, p in prices.items()
@@ -134,7 +149,7 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
 
 
 def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fusion=False, *,
-           mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None):
+           mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None,learning_for=None):
     jets=normalise_jet(jets)
     targets=normalise_jet(targets)
     if jets is None or targets is None:
@@ -171,12 +186,13 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
     if remaining_budget == 0:
         return blocked('Budget épuisé', 'Arrêt conseillé : aucune dépense supplémentaire autorisée par le budget.')
     options = candidates(jets, targets, natural_max, pool, counts_for, mode=mode, prices=prices,
-                         remaining_budget=remaining_budget, profile_complete=profile_complete,item=item)
+                         remaining_budget=remaining_budget, profile_complete=profile_complete,item=item,learning_for=learning_for)
     if not options:
         return blocked('Aucune rune à proposer',
                        'Vérifie les prix, le budget restant, les bornes naturelles, les malus et les plafonds de lignes.')
     score, rune, stat, kind, ref, base, obs, weight, current, goal = options[0]
     sampled=lookup(item,jets,pool,rune) if item else None
+    learned=learning_adjustment(learning_for(rune) if learning_for else None)
     exposure = max(0., ref.weight - pool)
     explanation = (f'{mode} · {stat} : {current:g} → minimum {goal:g}. '
                    f'{rune} : gain nominal +{ref.gain:g}, poids {ref.weight:g}, reliquat {pool:g}. '
@@ -194,6 +210,10 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
         explanation += 'Classement par progression/prix et exposition de réparation approximative ; coût final inconnu. '
     else:
         explanation += 'Classement par progression, palier de rune, équilibre des lignes et protection du jet. '
+    if learned:
+        explanation += (f"Apprentissage local : {learned['n']} transitions OCR cohérentes du même jet observé et de la même classe de puits ; "
+                        f"facteur de classement {learned['factor']:.3f}, limité à ±20 %. "
+                        "Contrôle de cohérence automatique, sans certification indépendante ni garantie d'amélioration. ")
     n = obs['n'] if obs else 0
     if n:
         explanation += f'{n} observations agrégées : descriptives, non utilisées comme probabilités du prochain essai. '
@@ -212,7 +232,7 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
     alternatives = [{'rune': row[1], 'stat': row[2], 'score': round(row[0], 6),
                      'price': (prices or {}).get(row[1])} for row in options[:5]]
     return Proposal(rune, kind, f'À envisager : {rune}', explanation, 'Dofocus · référence de base ; classement Forgely',
-                    {'observed': obs, 'benchmark': base,'dofocus':sampled,
+                    {'learning':learned, 'observed': obs, 'benchmark': base,'dofocus':sampled,
                      'objective': {'mode': mode, 'remaining_budget': remaining_budget,
                                    'exposed_weight': exposure, 'alternatives': alternatives,
                                    'goal_probability': None}}, n)
