@@ -22,7 +22,7 @@ def capture_namespace():
     body = [n for n in tree.body if isinstance(n, ast.ClassDef) and n.name in names]
     app = next(n for n in tree.body if isinstance(n, ast.ClassDef) and n.name == 'Forgely')
     body += [n for n in app.body if isinstance(n, ast.FunctionDef) and n.name == 'capture_worker']
-    ns = dict(vars(windows), threading=threading, Image=Image)
+    ns = dict(vars(windows), threading=threading, Image=Image, focus_workshop=lambda im: im)
     # Decorators are evaluated only after the production helper is available.
     exec(compile(ast.Module(body=body, type_ignores=[]), str(source), 'exec'), ns)
     return ns
@@ -89,6 +89,29 @@ class DisplayModes(unittest.TestCase):
         w = windows.NativeWindow(12, 'DOFUS', (-1920, 0, 0, 1080),
                                  client_rect=(-1920, 0, 0, 1080))
         self.assertEqual((w.left, w.top, w.width, w.height), (-1920, 0, 1920, 1080))
+
+    def test_capture_automatically_uses_client_surface_in_both_modes_and_backends(self):
+        for outer, client in (((100, 50, 1116, 889), (108, 81, 1108, 881)),
+                              ((-1920, 0, 0, 1080), (-1920, 0, 0, 1080))):
+            for foreground in (True, False):
+                with self.subTest(client=client, foreground=foreground):
+                    ns = capture_namespace()
+                    w = windows.NativeWindow(12, 'DOFUS', outer, client_rect=client)
+                    frame = Image.new('RGB', (w.width, w.height), 'blue')
+                    frame.paste('white', (w.width//3, 0, w.width//2, w.height))
+                    full = Image.new('RGB', (outer[2]-outer[0], outer[3]-outer[1]), 'red')
+                    full.paste(frame, (client[0]-outer[0], client[1]-outer[1]))
+                    ns.update(foreground_handle=lambda: 12 if foreground else 99,
+                        list_dofus_windows=lambda: [w],
+                        foreground_belongs_to_game=lambda *args: foreground,
+                        capture_window_native=lambda *args: full,
+                        read_window_bounds=lambda handle: (outer, client))
+                    cap = ns['GameCapture']()
+                    cap._foreground_image = Mock(return_value=frame)
+                    result, title = cap.capture()
+                    self.assertEqual(result.size, frame.size)
+                    self.assertEqual(result.tobytes(), frame.tobytes())
+                    self.assertEqual((title, cap.last_handle), ('DOFUS', 12))
 
     def test_native_backend_crops_same_surface_as_foreground(self):
         ns = capture_namespace()
