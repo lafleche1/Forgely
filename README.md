@@ -4,7 +4,9 @@ Application Windows d'assistance à l'observation de la forgemagie DOFUS.
 
 ## État du projet
 
-Sources importées : **v21.02 — surveillance indépendante**. Version de développement : **v21.04 — variations rapides et diagnostic des lectures manquantes**.
+Sources importées : **v21.02 — surveillance indépendante**. Version de développement : **v22.00 — le nouvel atelier émeraude**.
+
+Nouvelle interface : navigation latérale, tableau du jet actuel et des cibles, assistance dédiée, puits visible, fil de lecture et mode flottant redessiné. Les observations provisoires sont indiquées comme telles ; aucune valeur de démonstration n'est ajoutée. Les outils existants restent accessibles dans la rubrique Outils. Voir [la refonte v22](docs/INTERFACE_V22.md).
 
 Lancer `OUVRIR FORGELY.bat` sous Windows, ou `python Application/forgely.py` avec les dépendances de `Application/requirements.txt` et Tesseract installés.
 

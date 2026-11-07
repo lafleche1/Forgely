@@ -9,6 +9,6 @@ def families(root):
     def first(*names):
         return next((n for n in names if n in installed), "TkDefaultFont")
     return {
-        "display": first("Trebuchet MS", "Arial Rounded MT Bold", "Segoe UI", "Arial"),
-        "body": first("Segoe UI", "Trebuchet MS", "Arial", "TkDefaultFont"),
+        "display": first("Segoe UI Semibold", "Segoe UI", "Inter", "DejaVu Sans", "Arial"),
+        "body": first("Segoe UI", "Inter", "DejaVu Sans", "Arial", "TkDefaultFont"),
     }

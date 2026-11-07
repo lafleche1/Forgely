@@ -13,7 +13,7 @@ jobs:
       - name: Install OCR and test dependencies
         run: |
           sudo apt-get update -qq
-          sudo apt-get install -y tesseract-ocr tesseract-ocr-fra python3-tk
+          sudo apt-get install -y tesseract-ocr tesseract-ocr-fra python3-tk xvfb
           python -m pip install -r requirements-dev.txt
       - name: Compile Python sources
         run: |
@@ -26,4 +26,9 @@ jobs:
           PY
       - name: Run regression tests
         run: python -m pytest -q
+      - name: Verify native Tk dashboard
+        env:
+          FORGELY_GUI_TESTS: '1'
+          LOCALAPPDATA: ${{ runner.temp }}/forgely-ui
+        run: xvfb-run -a -s '-screen 0 1440x1000x24' python -m pytest -q Application/tests/test_dashboard_tk.py
 

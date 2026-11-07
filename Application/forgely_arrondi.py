@@ -37,7 +37,7 @@ class RoundedButton(tk.Canvas):
 
     def _paint(self,event=None,hover=False):
         self.delete('all')
-        w=max(1,self.winfo_width());h=max(1,self.winfo_height());r=min(15,h//2,w//2)
+        w=max(1,self.winfo_width());h=max(1,self.winfo_height());r=min(8,h//2,w//2)
         color=self._hover if hover else self._base
         # Smooth rounded rectangle: corners are genuine curves, not square buttons.
         self.create_polygon(r,1,w-r,1,w-1,r,w-1,h-r,w-r,h-1,r,h-1,1,h-r,1,r,

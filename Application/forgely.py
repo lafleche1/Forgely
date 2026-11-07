@@ -343,7 +343,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely • Assistant de forgemagie — Bêta locale')
+        self.title('Forgely · L’atelier — v22.00')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -456,100 +456,11 @@ class Forgely(tk.Tk):
         return RoundedButton(parent,text,command,(self.ui_fonts['display'],10,'bold'),primary, palette=THEMES[self.theme_name])
 
     def card(self,parent,pad=15):
-        return RoundedCard(parent,bg=PANEL,radius=20)
+        return RoundedCard(parent,bg=PANEL,radius=12)
 
     def _build(self):
-        """Simple, action-first dashboard; diagnostic tools live in a separate menu."""
-        self.geometry('960x650')
-        self.minsize(790,590)
-        root=tk.Frame(self,bg=BG)
-        root.pack(fill='both',expand=True,padx=22,pady=18)
-
-        header=tk.Frame(root,bg=BG)
-        header.pack(fill='x',pady=(0,17))
-        # No synthetic emblem: rely on a restrained typographic identity.
-        brand=tk.Frame(header,bg=BG);brand.pack(side='left',padx=10)
-        self.label(brand,'FORGELY',20,bold=True,color=GOLD).pack(anchor='w')
-        self.label(brand,'ATELIER DE FORGEMAGIE  ·  ASSISTANT LOCAL',9,color=MUTED).pack(anchor='w')
-        self.button(header,'⋯  Plus',self.open_more_menu).pack(side='right',padx=(8,0))
-        self.button(header,'Mode discret',self.minimize_to_badge).pack(side='right')
-        self.mode_button=self.button(header,'',self.toggle_observation_mode)
-        self.mode_button.pack(side='right',padx=(0,8))
-        self.update_mode_button()
-
-        banner=self.card(root);banner.pack(fill='x',pady=(0,15))
-        brow=tk.Frame(banner,bg=PANEL);brow.pack(fill='x',padx=19,pady=14)
-        self.game_state_label=self.label(brow,'● Atelier en attente',13,bold=True,color=GOLD)
-        self.game_state_label.pack(side='left')
-        self.observe_button=self.button(brow,'Démarrer l’observation',self.toggle_observer,primary=True)
-        self.observe_button.pack(side='right')
-        tk.Checkbutton(banner,text='Passer en mode flottant automatiquement',
-                       variable=self.auto_floating,command=self.save_floating_preference,
-                       bg=PANEL,fg=FG,selectcolor=PANEL2,activebackground=PANEL,
-                       activeforeground=FG,highlightthickness=0).pack(anchor='e',padx=19,pady=(0,6))
-        self.game_title_label=self.label(banner,'DOFUS sera détecté automatiquement.',9,color=MUTED,wraplength=850,justify='left')
-        self.game_title_label.pack(anchor='w',padx=19,pady=(0,13))
-
-        hero=self.card(root);hero.pack(fill='both',expand=True,pady=(0,14))
-        self.advice_heading=self.label(hero,'CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE',11,bold=True,color=GOLD)
-        self.advice_heading.pack(anchor='w',padx=24,pady=(21,7))
-        advice_row=tk.Frame(hero,bg=PANEL)
-        advice_row.pack(fill='x',padx=24,pady=(0,7))
-        self.main_rune_icon=tk.Label(advice_row,text='FM',fg=GOLD,bg=PANEL2,font=(self.ui_fonts['display'],13,'bold'),width=5,height=3)
-        self.main_rune_icon.pack(side='left',padx=(0,15))
-        self.home_advice_label=self.label(advice_row,'En attente de DOFUS',26,bold=True,color=FG,wraplength=650,justify='left')
-        self.home_advice_label.pack(side='left',fill='x',expand=True)
-        self.home_advice_detail=self.label(hero,'Active l’observateur pour lire le jet et le reliquat.',11,color=MUTED,wraplength=810,justify='left')
-        self.home_advice_detail.pack(anchor='w',padx=24,pady=(0,21))
-        hrow=tk.Frame(hero,bg=PANEL);hrow.pack(fill='x',padx=24,pady=(0,17))
-        self.plan_item_lbl=self.label(hrow,'Équipement : à identifier',11,bold=True)
-        self.plan_item_lbl.pack(side='left')
-        self.button(hrow,'État de la détection',self.open_equipment_quick).pack(side='right')
-        goal=tk.Frame(hero,bg=PANEL);goal.pack(fill='x',padx=24)
-        self.plan_action_lbl=self.label(goal,'',10,color=GREEN,wraplength=800,justify='left')
-        self.plan_action_lbl.pack(anchor='w')
-        self.plan_explain_lbl=self.label(goal,'',9,color=MUTED,wraplength=800,justify='left')
-        self.plan_explain_lbl.pack(anchor='w',pady=(3,0))
-        controls=tk.Frame(hero,bg=PANEL);controls.pack(fill='x',padx=24,pady=(12,14))
-        self.button(controls,'Définir mon jet cible',self.open_plan_editor).pack(side='left')
-        self.label(controls,'Mode :',9,color=MUTED).pack(side='left',padx=(15,5))
-        mode_combo=ttk.Combobox(controls,textvariable=self.goal_mode,values=MODES,state='readonly',width=14)
-        mode_combo.pack(side='left')
-        mode_combo.bind('<<ComboboxSelected>>',lambda e:self.refresh_strategy())
-        self.player_risk_label=self.label(hero,'Risque : inconnu · en attente de lecture',9,color=MUTED)
-        self.player_risk_label.pack(anchor='w',padx=24,pady=(0,10))
-
-        bottom=tk.Frame(root,bg=BG);bottom.pack(fill='x')
-        last=self.card(bottom);last.pack(side='left',fill='both',expand=True,padx=(0,12))
-        self.label(last,'DERNIÈRE TENTATIVE',10,bold=True,color=GOLD).pack(anchor='w',padx=16,pady=(12,5))
-        self.detect_label=self.label(last,'Aucune tentative détectée',12,bold=True,wraplength=350,justify='left')
-        self.detect_label.pack(anchor='w',padx=16)
-        self.detect_help=self.label(last,'Observation en attente',9,color=MUTED,wraplength=350,justify='left')
-        self.detect_help.pack(anchor='w',padx=16,pady=(5,13))
-
-        count=self.card(bottom);count.pack(side='left',fill='both',expand=True)
-        self.label(count,'RÉSULTATS OBSERVÉS',10,bold=True,color=GOLD).pack(anchor='w',padx=16,pady=(12,5))
-        self.total_lbl=self.label(count,'0 tentative',17,bold=True)
-        self.total_lbl.pack(anchor='w',padx=16)
-        self.stats_labels={}
-        rates=tk.Frame(count,bg=PANEL);rates.pack(fill='x',padx=16,pady=(8,14))
-        for k,color in [('SC',GREEN),('SN',GOLD),('EC',RED)]:
-            cell=tk.Frame(rates,bg=PANEL);cell.pack(side='left',padx=(0,18))
-            self.label(cell,k+' ',9,color=MUTED).pack(side='left')
-            l=self.label(cell,'—',10,bold=True,color=color);l.pack(side='left')
-            self.stats_labels[k]=l
-
-        # Keep internal diagnostic labels alive for the existing observer callbacks.
-        # They are deliberately hidden from the everyday dashboard.
-        hidden=tk.Frame(root,bg=BG)
-        self.scan_label=self.label(hidden,'',9)
-        self.ignored_label=self.label(hidden,'',9)
-        self.atelier_info_label=self.label(hidden,'',9)
-        self.reason_label=self.label(hidden,'',9)
-        self.visual_label=self.label(hidden,'',9)
-        self.rune_prob_lbl=self.label(hidden,'',9)
-        footer=tk.Frame(root,bg=BG);footer.pack(fill='x',pady=(12,0))
-        tk.Label(footer,textvariable=self.status,bg=BG,fg=MUTED,font=(self.ui_fonts['body'],9),wraplength=840,justify='left').pack(anchor='w')
+        from forgely_dashboard import AtelierDashboard
+        self.dashboard = AtelierDashboard(self, THEMES[self.theme_name])
         self.render_plan()
         self.refresh_strategy()
 
@@ -564,7 +475,7 @@ class Forgely(tk.Tk):
         self.label(popup,'Plus d’options',19,bold=True).pack(anchor='w',padx=22,pady=(16,4))
         self.label(popup,'Personnalisation et outils de forgemagie',10,color=MUTED).pack(anchor='w',padx=22,pady=(0,8))
         # Always visible even on small laptop displays.
-        self.button(popup,'🎨  Apparence · 4 thèmes',self.show_appearance).pack(fill='x',padx=22,pady=(0,9))
+        self.button(popup,f'Apparence · {len(THEMES)} thèmes',self.show_appearance).pack(fill='x',padx=22,pady=(0,9))
         area=tk.Frame(popup,bg=BG)
         area.pack(fill='both',expand=True,padx=(12,8),pady=(0,10))
         canvas=tk.Canvas(area,bg=BG,highlightthickness=0,borderwidth=0)
@@ -616,6 +527,8 @@ class Forgely(tk.Tk):
         popup.bind('<Destroy>',unbind_wheel)
 
     def render_plan(self):
+        if getattr(self, 'dashboard', None) is not None:
+            self.dashboard.sync()
         display_plan=self.plan
         if self.plan:
             verified=(self.active_equipment_verified and self.item.get()==self.plan.get('item') and not self.live_after_fusion)
@@ -623,7 +536,7 @@ class Forgely(tk.Tk):
             display_plan={'item':self.plan['item'],'stats':{k:{'target':v.get('target'),'current':jets.get(k) if jets is not None else None} for k,v in self.plan.get('stats',{}).items()}}
         title,detail=('Collecte active', 'Aucun objectif de rune suggéré dans ce mode.') if self.observation_only else next_action(display_plan)
         if hasattr(self,'plan_item_lbl'):
-            self.plan_item_lbl.configure(text='Équipement : '+(self.item.get().strip() or (self.plan['item'] if self.plan else 'non identifié')))
+            self.plan_item_lbl.configure(text=self.item.get().strip() or (self.plan['item'] if self.plan else 'Objet à identifier'))
             self.plan_action_lbl.configure(text=title)
             self.plan_explain_lbl.configure(text=detail)
 
@@ -687,6 +600,8 @@ class Forgely(tk.Tk):
         return 'Identification en cours'
 
     def refresh_strategy(self):
+        if getattr(self, 'dashboard', None) is not None:
+            self.dashboard.sync()
         if self.observation_only:
             self.current_proposal=None
             if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
@@ -734,6 +649,8 @@ class Forgely(tk.Tk):
             self._update_main_rune_icon(proposal.rune if not signal.stop else '')
         if hasattr(self,'overlay'):
             self.overlay.show_advice(self.waiting_for_item_label() or ('STOP' if signal.stop else signal.title), signal.risk)
+        if getattr(self, 'dashboard', None) is not None:
+            self.dashboard.fit_advice()
 
     def _update_main_rune_icon(self, rune: str):
         """Display only a uniquely matched local rune icon; no invented substitutes."""
@@ -1077,11 +994,11 @@ class Forgely(tk.Tk):
         box.configure(state='disabled')
 
     def show_appearance(self):
-        """Switch between four local palettes without restarting the observer."""
+        """Switch local palettes without restarting the observer."""
         popup=tk.Toplevel(self)
         popup.title('Forgely — Apparence')
         popup.configure(bg=BG)
-        popup.geometry('440x355')
+        popup.geometry('440x415')
         self.label(popup,'Choisir un thème',18,bold=True,color=GOLD).pack(anchor='w',padx=22,pady=(20,8))
         self.label(popup,'Le choix est appliqué immédiatement et mémorisé.',10,color=MUTED).pack(anchor='w',padx=22,pady=(0,15))
         for name in THEMES:
@@ -1107,7 +1024,7 @@ class Forgely(tk.Tk):
                 updates={}
                 for prop in ('bg','background','fg','foreground','insertbackground','activebackground','activeforeground','highlightbackground'):
                     if prop in config:
-                        value=widget.cget(prop)
+                        value=str(widget.cget(prop))
                         if value in translation and translation[value]!=value:
                             updates[prop]=translation[value]
                 if updates: widget.configure(**updates)
@@ -1118,6 +1035,8 @@ class Forgely(tk.Tk):
             for child in widget.winfo_children():
                 recolor(child)
         recolor(self)
+        if getattr(self, 'dashboard', None) is not None:
+            self.dashboard.apply_palette(THEMES[name])
         if appearance_popup and appearance_popup.winfo_exists():
             appearance_popup.destroy()
         # Overlay is recreated only when hidden, to avoid disrupting the current view.
@@ -2211,6 +2130,8 @@ class Forgely(tk.Tk):
                     self.running=False;self.stop_event.set();self.observe_button.configure(text='Démarrer l’observation');self.overlay.state_color('error')
                     self.game_state_label.configure(text='● Erreur de lecture',fg=RED)
         except queue.Empty: pass
+        if getattr(self, 'dashboard', None) is not None:
+            self.dashboard.sync()
         if self.winfo_exists(): self.after(200,self.process_messages)
 
     def open_confirm(self):
