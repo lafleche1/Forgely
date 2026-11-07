@@ -2,6 +2,7 @@
 from __future__ import annotations
 import re
 import unicodedata
+import threading
 from time import monotonic
 
 def norm(s):
@@ -71,18 +72,19 @@ _FIRST_ROW_FAILURES = {}
 
 def green_effect_mask(patch):
     """Extract green numbers + labels without relying on a fixed row offset."""
-    from PIL import Image
-    rgb = patch.convert('RGB')
-    # Pillow-only mask: NumPy is not installed by the standard Forgely installer.
-    mask = Image.new('L', rgb.size, 255)
-    src = rgb.load()
-    dst = mask.load()
-    for y in range(rgb.height):
-        for x in range(rgb.width):
-            r, g, b = src[x, y]
-            if g >= 74 and g * 100 > r * 117 and g * 100 > b * 106:
-                dst[x, y] = 0
-    return mask
+    from PIL import ImageChops
+    # Channel LUTs preserve the integer comparisons exactly while Pillow's
+    # native operations avoid a Python loop over every crop pixel.
+    red, green, blue = patch.convert('RGB').split()
+    red_limit = red.point([min(255, r * 117 // 100) for r in range(256)])
+    blue_limit = blue.point([min(255, b * 106 // 100) for b in range(256)])
+    positive = [0] + [255] * 255
+    enough_green = green.point([0] * 74 + [255] * 182)
+    above_red = ImageChops.subtract(green, red_limit).point(positive)
+    above_blue = ImageChops.subtract(green, blue_limit).point(positive)
+    selected = ImageChops.multiply(enough_green, ImageChops.multiply(above_red, above_blue))
+    return ImageChops.invert(selected)
+
 
 def first_row_candidates(patch):
     """Scan a broad top area instead of assuming row y=9..16%."""
@@ -202,7 +204,37 @@ def read_highlighted_effect(patch, existing=None, ocr_engine=None):
 
 # Never assume that the selected line is Vitalité. The missing line is found
 # from visible OCR, and its value must be read from the image itself.
+_LIVE_RECOVERY_CACHE = {}
+_LIVE_RECOVERY_LOCK = threading.Lock()
+
+
 def recover_missing_effects_live(patch, existing):
+    """Reuse recovery only for identical current pixels and parsed input.
+
+    Keep four bounded entries and retry unresolved OCR after eight seconds.
+    Exceptions are deliberately not cached, so a failed engine can retry on
+    the next frame. A single changed highlight pixel always triggers recovery.
+    """
+    global LAST_HIGHLIGHT_DIAGNOSTIC
+    from copy import deepcopy
+    signature = (patch.size, patch.mode, patch.tobytes(),
+                 tuple(sorted((existing or {}).items())))
+    now = monotonic()
+    with _LIVE_RECOVERY_LOCK:
+        previous = _LIVE_RECOVERY_CACHE.get(signature)
+    if previous is not None and now - previous[0] < 8.0:
+        recovered, detail = deepcopy(previous[1])
+        LAST_HIGHLIGHT_DIAGNOSTIC = detail
+        return recovered, detail
+    result = _recover_missing_effects_live(patch, existing)
+    with _LIVE_RECOVERY_LOCK:
+        if len(_LIVE_RECOVERY_CACHE) >= 4:
+            _LIVE_RECOVERY_CACHE.pop(next(iter(_LIVE_RECOVERY_CACHE)))
+        _LIVE_RECOVERY_CACHE[signature] = (monotonic(), deepcopy(result))
+    return result
+
+
+def _recover_missing_effects_live(patch, existing):
     global LAST_HIGHLIGHT_DIAGNOSTIC
     from PIL import ImageOps, ImageEnhance
     import pytesseract
@@ -291,3 +323,4 @@ def read_effects_ocr(patch, ocr):
         except Exception:
             pass
     return text
+

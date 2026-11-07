@@ -10,6 +10,7 @@ import re
 
 # Character - class - 3.7.13.17 - Release / Beta patterns observed in DOFUS 3.
 DOFUS_TITLE = re.compile(r'\bDOFUS\b|\b\d+\.\d+\.\d+(?:\.\d+)?\s*-\s*(?:Release|Beta)\b', re.I)
+DOFUS_VERSION_TITLE = re.compile(r'\b\d+\.\d+\.\d+(?:\.\d+)?\s*-\s*(?:Release|Beta)\b', re.I)
 
 
 def looks_like_dofus(title: str) -> bool:
@@ -95,8 +96,8 @@ def list_dofus_windows():
     except (OSError, AttributeError):
         import pygetwindow as gw
         windows = gw.getAllWindows()
-    return [w for w in windows if is_game_window(w)
-            and w.width >= 300 and w.height >= 300 and not w.isMinimized]
+    return [w for w in windows if w.width >= 300 and w.height >= 300
+            and not w.isMinimized and is_game_window(w)]
 
 
 def foreground_handle():
@@ -163,11 +164,14 @@ def is_game_window(window):
     title = getattr(window, 'title', '') or ''
     if title.casefold().startswith('forgely'):
         return False
+    # The same strict fallback is sufficient on its own. Check it before
+    # opening a process: this runs at capture frequency for ordinary game titles.
+    if DOFUS_VERSION_TITLE.search(title):
+        return True
     exe = process_executable(getattr(window, '_hWnd', 0))
     if exe in ('dofus.exe', 'dofus unity.exe', 'dofusunity.exe') or exe.startswith('dofus'):
         return True
-    # Strict versioned title fallback, not a generic substring like "Dofus".
-    return bool(re.search(r'\b\d+\.\d+\.\d+(?:\.\d+)?\s*-\s*(?:Release|Beta)\b', title, re.I))
+    return False
 
 
 def auto_game_window(windows, foreground=None, last_handle=None):
@@ -190,3 +194,4 @@ def is_own_foreground(handle):
         return pid.value == os.getpid()
     except Exception:
         return False
+

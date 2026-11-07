@@ -5,6 +5,7 @@ from __future__ import annotations
 from time import perf_counter_ns as forgely_perf_ns
 from forgely_performance import PerformanceTracker
 from forgely_zone_cache import ZoneCache
+from forgely_pipeline import FrameMessageSink,AcceptedRuneEvent,VerifiedItemContext,bind_event_item
 import io
 from pathlib import Path
 from datetime import datetime
@@ -26,7 +27,7 @@ from forgely_themes import THEMES, load_theme, save_theme
 from forgely_plan import STATS, load_plan, save_plan
 from forgely_vision import RuneLibrary, icon_patch
 from forgely_catalogue import sync_catalogue, TARGETS
-from forgely_items import item_list, register_item, find_item, remember_candidate, pending_items, item_history, register_item_with_icon, IconIdentityConflict, item_icon
+from forgely_items import item_list, register_item, find_item, remember_candidate, pending_items, item_history, register_item_with_icon, IconIdentityConflict, item_icon,key_for
 from forgely_item_vision import crop_item_header, identify_known, possible_unknown, recognize_item_header
 from forgely_item_icons import crop_item_icon, normalize_icon, ItemVisualTracker, history_icon_for_name, history_icon_by_visual_row
 from forgely_history_identity import resolve_history_identity, visible_history_names, latest_visible_history_name
@@ -68,9 +69,15 @@ def workshop_change_signature(image):
     animation make exact checksums unstable even with quantisation.
     """
     from PIL import ImageOps, ImageFilter
+    from forgely_atelier import ZONES
     w, h = image.size
-    regions = ((.177,.275,.286,.784), (.305,.300,.495,.731),
-               (.329,.196,.390,.223), (.391,.194,.409,.232))
+    # Full semantic coverage: rune-only and upper-effect changes must not wait
+    # for the 12-second idle refresh. Tile the tall effects table so a single
+    # changed line remains large enough to survive the noise threshold.
+    left, top, right, bottom = ZONES['effects']
+    step = (bottom-top)/3
+    regions = (ZONES['history'], *( (left,top+i*step,right,top+(i+1)*step) for i in range(3)),
+               ZONES['runes'], ZONES['reliquat'], (.391,.194,.409,.232), ZONES['title'])
     samples = []
     for x1, y1, x2, y2 in regions:
         patch = image.crop((int(x1*w), int(y1*h), int(x2*w), int(y2*h)))
@@ -81,11 +88,16 @@ def workshop_change_signature(image):
 
 def workshop_significantly_changed(previous, current):
     """Tolerant image comparison. Never interprets OCR or certifies events."""
-    if previous is None:
+    if previous is None or len(previous) != len(current):
         return True
+    from PIL import ImageChops
     for old, new in zip(previous, current):
+        if len(old) != len(new):
+            return True
         # Ignore isolated pixel noise; require a small cluster of changed pixels.
-        changed = sum(abs(a-b) >= 36 for a,b in zip(old,new))
+        difference = ImageChops.difference(Image.frombytes('L',(len(old),1),old),
+                                          Image.frombytes('L',(len(new),1),new))
+        changed = sum(difference.histogram()[36:])
         if changed >= max(12, int(len(new) * 0.012)):
             return True
     return False
@@ -102,6 +114,8 @@ class LatestFrameMailbox:
 
     def publish(self, image, title, captured_ns, capture_duration_ns):
         with self._condition:
+            if self._frame is not None and self._frame[2] != title:
+                self._generation += 1
             self._sequence += 1
             self._frame = (self._sequence, image, title, captured_ns, capture_duration_ns)
             self._invalid = None
@@ -109,10 +123,13 @@ class LatestFrameMailbox:
 
     def invalidate(self, reason):
         with self._condition:
+            if self._frame is None and self._invalid == reason:
+                return self._generation
             self._generation += 1
             self._frame = None
             self._invalid = reason
             self._condition.notify_all()
+            return self._generation
 
     def generation(self):
         with self._condition:
@@ -121,6 +138,12 @@ class LatestFrameMailbox:
     def snapshot(self):
         with self._condition:
             return self._generation, self._frame
+
+    def deliver_current(self,generation,title,publish):
+        """Acceptance and queue insertion are atomic against capture invalidation."""
+        with self._condition:
+            if self._generation==generation and self._frame is not None and self._frame[2]==title:
+                publish()
 
     def wait_new(self, last_sequence, stop_event):
         with self._condition:
@@ -132,6 +155,16 @@ class LatestFrameMailbox:
             if self._frame is None or self._frame[0] <= last_sequence:
                 return None
             return self._frame
+
+    def wait_snapshot(self, last_sequence, stop_event, generation):
+        """Atomically bind a frame to its context, waking on invalidation too."""
+        with self._condition:
+            self._condition.wait_for(lambda: stop_event.is_set() or generation != self._generation or
+                (self._frame is not None and self._frame[0] > last_sequence), timeout=0.25)
+            frame=self._frame
+            if stop_event.is_set() or frame is None or frame[0] <= last_sequence:
+                frame=None
+            return self._generation,frame
 
 class GameNotForeground(RuntimeError):
     pass
@@ -236,6 +269,28 @@ class GameCapture:
         self.last_probe_ns = 0
         self.capture_failures = 0
         self.last_good_capture_ns = 0
+        self._screen=threading.local()
+
+    def _foreground_image(self, window):
+        """Reuse MSS only on its creating thread; convert BGRA in native Pillow."""
+        import mss
+        session=getattr(self._screen,'session',None)
+        if session is None:
+            session=self._screen.session=mss.mss()
+        try:
+            shot=session.grab({'left':window.left,'top':window.top,
+                               'width':window.width,'height':window.height})
+            return Image.frombytes('RGB',shot.size,shot.bgra,'raw','BGRX')
+        except Exception:
+            self.close()
+            raise
+
+    def close(self):
+        """Release this thread's capture resources, including after failures."""
+        session=getattr(self._screen,'session',None)
+        if session is not None:
+            del self._screen.session
+            session.close()
 
     def capture(self):
         active = foreground_handle()
@@ -261,11 +316,9 @@ class GameCapture:
         # Foreground may be a Unity child HWND. Prefer the desktop capture in
         # this case; PrintWindow frequently returns black on GPU games.
         if foreground_belongs_to_game(active,self.last_handle):
-            import mss
-            with mss.mss() as sct:
-                shot=sct.grab({'left':w.left,'top':w.top,'width':w.width,'height':w.height})
+            image=self._foreground_image(w)
             self.debug_stage='Capture DOFUS au premier plan · OCR en cours'
-            return Image.frombytes('RGB',shot.size,shot.rgb),w.title
+            return image,w.title
         # When the diagnostic / overlay owns focus, do not capture its pixels.
         # PrintWindow can capture independently of the foreground app, if the
         # game's renderer supports it.
@@ -301,10 +354,7 @@ class GameCapture:
             active=foreground_handle()
             if foreground_belongs_to_game(active,handle):
                 try:
-                    import mss
-                    with mss.mss() as sct:
-                        shot=sct.grab({'left':w.left,'top':w.top,'width':w.width,'height':w.height})
-                    img=Image.frombytes('RGB',shot.size,shot.rgb)
+                    img=self._foreground_image(w)
                 except Exception:
                     continue
             else:
@@ -344,7 +394,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.01')
+        self.title('Forgely · L’atelier — v22.02')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -365,6 +415,7 @@ class Forgely(tk.Tk):
         self.budget_kamas=tk.StringVar(value=str(cfg['budget_kamas']))
         self.rune_prices=dict(cfg['prices'])
         self.budget_start_cursor=observation_cursor()
+        self._verified_item_context=None
         self.status=tk.StringVar(value='Prêt à observer · Stockage uniquement sur ton PC')
         self.last_detected=tk.StringVar(value='Aucune tentative détectée')
         self.running=False
@@ -449,7 +500,7 @@ class Forgely(tk.Tk):
         self.overlay=FloatingBadge(self,self.restore,self.toggle_observer,self.close,self.open_equipment_quick, self.open_strategy, self.open_workbench)
         self.overlay.withdraw()
         self.protocol('WM_DELETE_WINDOW',self.close)
-        self.after(200,self.process_messages)
+        self.after(40,self.process_messages)
         self.after(300,self.refresh_stats)
 
     def label(self,parent,text,size=11,bold=False,color=FG,**kwargs):
@@ -1425,6 +1476,7 @@ class Forgely(tk.Tk):
         self.last_history_identity='Historique non analysé'
         self.pending_transition=None
         old_capture=self.capture
+        self._verified_item_context=None
         self.capture=GameCapture()
         self.capture.manual_handle=old_capture.manual_handle
         self.capture.last_handle=old_capture.last_handle
@@ -1478,6 +1530,7 @@ class Forgely(tk.Tk):
         stop_event = self.stop_event
         mailbox = self.frame_mailbox
         capture = self.capture
+        last_invalid_generation = None
         while not stop_event.is_set():
             try:
                 started = forgely_perf_ns()
@@ -1489,9 +1542,15 @@ class Forgely(tk.Tk):
                 # meaningful changes; never accumulate a backlog of screenshots.
                 signature = workshop_change_signature(im)
                 changed = workshop_significantly_changed(self._capture_gate_reference, signature)
+                identity=(title,getattr(capture,'last_handle',None))
+                context_changed=(getattr(self,'_capture_gate_identity',None) != identity)
                 refresh = started - self._capture_gate_last_sent_ns >= self._capture_gate_force_ns
                 confirmation = self.confirmation_requested.is_set()
-                if changed or refresh or confirmation:
+                if changed or refresh or confirmation or context_changed:
+                    if context_changed and getattr(self,'_capture_gate_identity',None) is not None:
+                        generation=mailbox.invalidate('Compte ou fenêtre modifié')
+                        self.messages.put(('capture_invalidated',(mailbox,generation,'Compte ou fenêtre modifié')))
+                    self._capture_gate_identity=identity
                     self.confirmation_requested.clear()
                     self._capture_gate_reference = signature
                     self._capture_gate_last_sent_ns = started
@@ -1503,13 +1562,21 @@ class Forgely(tk.Tk):
                     self._unchanged_frames_skipped += 1
             except (GameNotForeground, RuntimeError) as exc:
                 self._capture_gate_reference = None
-                mailbox.invalidate(str(exc))
+                generation=mailbox.invalidate(str(exc))
+                if generation != last_invalid_generation:
+                    self.messages.put(('capture_invalidated',(mailbox,generation,str(exc))))
+                    last_invalid_generation=generation
             except Exception as exc:
                 self._capture_gate_reference = None
-                mailbox.invalidate(type(exc).__name__ + ': ' + str(exc))
+                reason=type(exc).__name__ + ': ' + str(exc)
+                generation=mailbox.invalidate(reason)
+                if generation != last_invalid_generation:
+                    self.messages.put(('capture_invalidated',(mailbox,generation,reason)))
+                    last_invalid_generation=generation
             # The latest-frame mailbox prevents backlog. Faster lightweight
             # capture reduces the age of the frame available after OCR ends.
             stop_event.wait(self._capture_interval)
+        capture.close()
 
     def fast_preview_worker(self):
         """Display provisional results independently of slow effect recovery."""
@@ -1560,6 +1627,7 @@ class Forgely(tk.Tk):
     def observer_worker(self):
         stop_event = self.stop_event
         mailbox = self.frame_mailbox
+        capture = self.capture
         missed_workshop = 0
         zone_cache = ZoneCache(refresh_seconds=12.0)
         title_cache = {}
@@ -1567,13 +1635,25 @@ class Forgely(tk.Tk):
         self.performance_tracker = perf
         last_frame_id = 0
         previous_processed_id = 0
+        generation = mailbox.generation()
+        messages = self.messages
         while not stop_event.is_set():
             try:
-                frame = mailbox.wait_new(last_frame_id, stop_event)
+                current_generation,frame = mailbox.wait_snapshot(last_frame_id,stop_event,generation)
+                if stop_event.is_set() or mailbox is not self.frame_mailbox:
+                    break
+                if current_generation != generation:
+                    generation=current_generation
+                    zone_cache.clear();title_cache.clear()
+                    self._item_header_cache=None
+                    self.track=HistoryTransitionTracker(RUNES)
+                    self.history_delta_monitor.reset()
+                    missed_workshop=0
                 if frame is None:
                     continue
                 frame_id, im, title, frame_started_ns, capture_ns = frame
                 last_frame_id = frame_id
+                messages=FrameMessageSink(self.messages,mailbox,generation,title,stop_event)
                 perf.record("capture", capture_ns)
                 perf.record("capture_vers_ocr", forgely_perf_ns() - frame_started_ns)
                 self.last_capture_title = title
@@ -1586,6 +1666,8 @@ class Forgely(tk.Tk):
                 atelier = read_atelier(im, extract_text, zone_cache, title_cache)
                 if stop_event.is_set():
                     break
+                if mailbox is not self.frame_mailbox or generation != mailbox.generation():
+                    continue
                 perf.record("atelier_et_ocr", forgely_perf_ns() - t_ocr)
                 # This is diagnostic only: never claim a late OCR reading is
                 # an instant rune result. A newer frame is already in the mailbox.
@@ -1622,7 +1704,7 @@ class Forgely(tk.Tk):
                         '\nLOGO: '+self.item_icon_status+
                         '\nEMPLACEMENT: '+self.current_slot_status+
                         '\nCONFIRMATIONS: '+str(self.item_visual_tracker.count)+'\n', encoding='utf-8')
-                    self.messages.put(('exported', str(directory)))
+                    messages.put(('exported', str(directory)))
                 if not atelier.active:
                     zone_cache.clear()
                     missed_workshop += 1
@@ -1640,15 +1722,14 @@ class Forgely(tk.Tk):
                             self.track=HistoryTransitionTracker(RUNES)
                             self.workshop_readings.reset()
                             self.pending=None
-                            self.messages.put(('account_switch',found))
+                            messages.put(('account_switch',found))
                             missed_workshop=0
                             zone_cache.clear()
                             continue
                         self.track=HistoryTransitionTracker(RUNES)
                         self.history_delta_monitor.reset()
                         self.history_delta_diagnostic=self.history_delta_monitor.last
-                        self.messages.put(('atelier_waiting',atelier.reason))
-                    self.stop_event.wait(0.8)
+                        messages.put(('atelier_waiting',atelier.reason))
                     continue
                 missed_workshop = 0
                 if self.capture.manual_handle is None:
@@ -1668,7 +1749,7 @@ class Forgely(tk.Tk):
                     # Do not keep a tooltip-contaminated OCR result in cache.
                     zone_cache.entries.pop('effects', None)
                 else:
-                    self.messages.put(('observation', (frame_id, frame_started_ns,
+                    messages.put(('observation', (frame_id, frame_started_ns,
                         'atelier_read', (parse_jet(atelier.effects),choose_reliquat(atelier.effects, atelier.reliquat)))))
                 # Current equipment is identified from the CURRENT SLOT ICON.
                 # The old item-header path did two costly Tesseract launches
@@ -1696,6 +1777,8 @@ class Forgely(tk.Tk):
                 except (OSError, ValueError, RuntimeError) as exc:
                     self._item_header_cache = None
                     found, new_name, item_ocr = None, None, 'OCR nom indisponible: ' + str(exc)
+                if stop_event.is_set() or mailbox is not self.frame_mailbox or generation != mailbox.generation():
+                    continue
                 history_identity = None
                 # Read the ACTUAL equipment slot even if the FM history is empty
                 # or contains an old item's heading. No game interaction.
@@ -1715,7 +1798,7 @@ class Forgely(tk.Tk):
                     break
                 # The event is detected below after rune OCR. Associate its
                 # evidence with this exact frame via a separate message.
-                self.messages.put(('observation', (frame_id, frame_started_ns, 'item_visual', (found, new_name, item_ocr,
+                messages.put(('observation', (frame_id, frame_started_ns, 'item_visual', (found, new_name, item_ocr,
                     slot_icon, history_identity, history_icon, signature, historical_names, corroborated_history_name, latest_history_candidate))))
                 visual_match=None
                 if self.rune_center and self.vision.references:
@@ -1754,7 +1837,7 @@ class Forgely(tk.Tk):
                     self.confirmation_requested.set()
                 self.scan_count += 1
                 if raw.strip(): self.readable_frames += 1
-                self.messages.put(('observation', (frame_id, frame_started_ns, 'scan', (title,raw,self.scan_count,
+                messages.put(('observation', (frame_id, frame_started_ns, 'scan', (title,raw,self.scan_count,
                                              self.track.quarantined,self.skipped_frames,self.track.reason,vision_note))))
                 # Publish only after all observations for this frame are queued.
                 self.latest_observation_id = frame_id
@@ -1762,23 +1845,26 @@ class Forgely(tk.Tk):
                 self.images_remplacees = max(0, frame_id - previous_processed_id - 1)
                 previous_processed_id = frame_id
                 if event:
-                    self.messages.put(('history_event_identity', (
+                    messages.put(('history_event_identity', (
                         (found or new_name) if history_identity and history_identity.outcome else None,
                         slot_icon)))
-                    self.messages.put(('auto_event_frame', (frame_id, event)))
+                    bound_item=bind_event_item(getattr(self,'_verified_item_context',None),
+                        mailbox,generation,title,frame_id,slot_icon,signature,found or new_name)
+                    messages.put(('accepted_event',AcceptedRuneEvent(frame_id,event,bound_item,
+                        mailbox,generation,title)))
             except GameNotForeground as e:
                 self.skipped_frames += 1
                 if self.skipped_frames % 4 == 1:
-                    self.messages.put(('waiting_window',str(e)))
+                    messages.put(('waiting_window',str(e)))
             except RuntimeError as e:
                 self.skipped_frames += 1
                 if self.skipped_frames % 4 == 1:
-                    self.messages.put(('waiting_window',str(e)))
+                    messages.put(('waiting_window',str(e)))
             except Exception as e:
                 self.error_frames += 1
-                self.messages.put(('fatal',type(e).__name__+': '+str(e)))
+                messages.put(('fatal',type(e).__name__+': '+str(e)))
                 break
-            stop_event.wait(0.10)
+        capture.close()
 
     def preview_is_current(self, generation, title, icon, mailbox=None):
         if not self.running or self.stop_event.is_set() or mailbox is not self.frame_mailbox:
@@ -1799,9 +1885,51 @@ class Forgely(tk.Tk):
             self.detect_help.configure(text='Nouvelle lecture de l’atelier nécessaire')
 
     def process_messages(self):
+        pump_started=forgely_perf_ns()
         try:
-            for _ in range(10):
+            for index in range(64):
+                if index and forgely_perf_ns()-pump_started >= 8_000_000:
+                    break
                 kind,data=self.messages.get_nowait()
+                source_context=None
+                event_already_recorded=False
+                if kind=='worker_message':
+                    mailbox,generation,title,kind,data=data
+                    source_context=(mailbox,generation,title)
+                    if mailbox is not self.frame_mailbox:
+                        continue
+                    current_generation,frame=mailbox.snapshot()
+                    if generation!=current_generation or frame is None or frame[2]!=title:
+                        continue
+                if kind=='capture_invalidated':
+                    mailbox,generation,reason=data
+                    if mailbox is not self.frame_mailbox or generation!=mailbox.generation():
+                        continue
+                    kind,data='atelier_waiting',reason
+                if kind=='accepted_event':
+                    receipt=data
+                    event=receipt.event
+                    try:
+                        if receipt.item and event.rune:
+                            insert_observation(receipt.item,event.rune,event.outcome,'ocr_auto',event.evidence)
+                            self.saved_auto+=1
+                        else:
+                            insert_unassigned(event.outcome,'Rune '+str(event.rune or '?')+
+                                ' · identité non confirmée au moment de la lecture · '+event.evidence)
+                    except Exception as exc:
+                        self.status.set('Enregistrement impossible : '+str(exc))
+                        continue
+                    # Persistence uses the immutable original identity. Current
+                    # display/state may have moved on while this receipt waited.
+                    current_generation,frame=self.frame_mailbox.snapshot()
+                    current=(receipt.mailbox is self.frame_mailbox and receipt.generation==current_generation
+                        and frame is not None and frame[2]==receipt.title and receipt.item is not None
+                        and self.active_equipment_verified and self.item.get()==receipt.item)
+                    if not current:
+                        self.refresh_stats_now()
+                        continue
+                    event_already_recorded=True
+                    kind,data='auto_event_frame',(receipt.frame_id,event)
                 show_event_result = True
                 if kind == 'auto_event_frame':
                     event_frame_id, data = data
@@ -1949,6 +2077,10 @@ class Forgely(tk.Tk):
                         continue
                     self.provisional_slot_id=None
                     self.item_icon_status='Icône de l’atelier reconnue : '+name
+                    if source_context is not None:
+                        context_mailbox,context_generation,context_title=source_context
+                        self._verified_item_context=VerifiedItemContext(context_mailbox,context_generation,
+                            context_title,frame_id,name,slot_icon.copy(),tuple(self.current_slot_tracker.signature))
                     if self.item.get()!=name or not self.active_equipment_verified:
                         self.item.set(name)
                         self.active_equipment_verified=True
@@ -2106,7 +2238,8 @@ class Forgely(tk.Tk):
                     self.refresh_strategy()
                     try:
                         if data.rune is None:
-                            insert_unassigned(data.outcome,data.evidence)
+                            if not event_already_recorded:
+                                insert_unassigned(data.outcome,data.evidence)
                             if show_event_result:
                                 self.detect_label.configure(text=f'Action {data.outcome} · rune inconnue')
                                 self.detect_help.configure(text=f'{unassigned_total()} action(s) en attente de rune · exclue(s) des statistiques')
@@ -2114,14 +2247,16 @@ class Forgely(tk.Tk):
                                 self.overlay.state_color('candidate')
                         else:
                             if not self.active_equipment_verified or not self.item.get().strip():
-                                insert_unassigned(data.outcome,'Rune '+data.rune+' · item non identifié · '+data.evidence)
+                                if not event_already_recorded:
+                                    insert_unassigned(data.outcome,'Rune '+data.rune+' · item non identifié · '+data.evidence)
                                 if show_event_result:
                                     self.detect_label.configure(text=f'{data.rune} · {data.outcome} · item inconnu')
                                     self.detect_help.configure(text='Tentative isolée : équipement à identifier via le logo flottant')
                                     self.overlay.state_color('candidate')
                                 continue
-                            insert_observation(self.item.get().strip(),data.rune,data.outcome,'ocr_auto',data.evidence)
-                            self.saved_auto += 1
+                            if not event_already_recorded:
+                                insert_observation(self.item.get().strip(),data.rune,data.outcome,'ocr_auto',data.evidence)
+                                self.saved_auto += 1
                             if show_event_result:
                                 self.detect_label.configure(text=f'{data.rune} · {data.outcome} ✓')
                                 self.detect_help.configure(text=f'{self.saved_auto} action(s) automatiquement enregistrée(s) dans cette session')
@@ -2183,7 +2318,8 @@ class Forgely(tk.Tk):
         except queue.Empty: pass
         if getattr(self, 'dashboard', None) is not None:
             self.dashboard.sync()
-        if self.winfo_exists(): self.after(200,self.process_messages)
+        if self.winfo_exists():
+            self.after(1 if not self.messages.empty() else 40,self.process_messages)
 
     def open_confirm(self):
         if self.pending is None:
@@ -2263,3 +2399,4 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
+

@@ -78,42 +78,6 @@ class OutcomeTracker:
 
 
 def extract_text(image, tesseract_cmd=''):
-    try:
-        import pytesseract
-    except ImportError as exc:
-        raise RuntimeError('OCR manquant : installe pytesseract avec installer.bat') from exc
-    if tesseract_cmd.strip():
-        pytesseract.pytesseract.tesseract_cmd = tesseract_cmd.strip()
-    else:
-        import shutil
-        from pathlib import Path
-        import os
-        known = Path('C:/Program Files/Tesseract-OCR/tesseract.exe')
-        user_known = Path(os.environ.get('LOCALAPPDATA', '')) / 'Programs' / 'Tesseract-OCR' / 'tesseract.exe'
-        x86_known = Path(os.environ.get('ProgramFiles(x86)', 'C:/Program Files (x86)')) / 'Tesseract-OCR' / 'tesseract.exe'
-        if shutil.which('tesseract'):
-            pytesseract.pytesseract.tesseract_cmd = shutil.which('tesseract')
-        elif known.is_file():
-            pytesseract.pytesseract.tesseract_cmd = str(known)
-        elif user_known.is_file():
-            pytesseract.pytesseract.tesseract_cmd = str(user_known)
-        elif x86_known.is_file():
-            pytesseract.pytesseract.tesseract_cmd = str(x86_known)
-    import os
-    tessdir = os.path.join(os.environ.get('LOCALAPPDATA', ''), 'Forgely', 'tessdata')
-    if os.path.isfile(os.path.join(tessdir, 'fra.traineddata')) and os.path.isfile(os.path.join(tessdir, 'eng.traineddata')):
-        os.environ['TESSDATA_PREFIX'] = tessdir
-    try:
-        from PIL import ImageOps, ImageEnhance
-        gray = ImageOps.grayscale(image)
-        if gray.width < 1250:
-            gray = gray.resize((gray.width*2, gray.height*2))
-        gray = ImageEnhance.Contrast(gray).enhance(2)
-        return pytesseract.image_to_string(gray, lang='fra+eng', config='--psm 7' if getattr(image, 'info', {}).get('forgely_title') else '--psm 6')
-    except pytesseract.TesseractNotFoundError as exc:
-        raise RuntimeError('Tesseract absent. Installe le logiciel Tesseract pour Windows.') from exc
-    except pytesseract.TesseractError:
-        try:
-            return pytesseract.image_to_string(image, lang='eng', config='--psm 6')
-        except pytesseract.TesseractError as exc:
-            raise RuntimeError('Tesseract ne peut pas lire cette capture.') from exc
+    # One shared cache also coalesces simultaneous preview/observer requests.
+    from forgely_ocr_backend import extract_text as recognize
+    return recognize(image, tesseract_cmd)

@@ -10,6 +10,7 @@ import os
 import sqlite3
 import zipfile
 from collections import Counter
+from functools import lru_cache
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
@@ -26,9 +27,19 @@ STRATEGIES = MODES + ('Prudent', 'Économique', 'Rapide', 'Jet parfait')
 def settings_default():
     return {'strategy':'Chances maximales','budget_kamas':0,'prices':{}}
 
+@lru_cache(maxsize=16)
+def _settings_json(path, signature):
+    # The signature includes replacement identity and nanosecond modification times.
+    # Never expose this cached dict to callers; read_settings creates fresh values.
+    return json.loads(path.read_text(encoding='utf8'))
+
+
 def read_settings(path=SETTINGS_PATH):
     try:
-        raw=json.loads(Path(path).read_text(encoding='utf8'))
+        path = Path(path).absolute()
+        info = path.stat()
+        signature = (info.st_dev, info.st_ino, info.st_size, info.st_mtime_ns, info.st_ctime_ns)
+        raw = _settings_json(path, signature)
         if not isinstance(raw,dict):raise ValueError('structure invalide')
     except (OSError,ValueError,TypeError):raw={}
     cfg=settings_default()

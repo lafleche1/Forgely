@@ -6,6 +6,10 @@ Deux objectifs sont proposés dans le conseil : **Chances maximales** et **Budge
 optimisé**, avec prix locaux et budget de session. Le classement est explicable,
 sans taux de réussite inventé. Voir [le fonctionnement et ses limites](docs/FM_DOUBLE_OBJECTIF.md).
 
+Capture et OCR optimisés : requêtes identiques mutualisées, récupération des lignes
+réutilisée sur pixels inchangés, affichage plus réactif et isolation renforcée des
+sessions. Voir [les mesures et limites](docs/PERFORMANCE_OCR.md).
+
 ## État du projet
 
 Sources importées : **v21.02 — surveillance indépendante**. Version de développement : **v22.00 — le nouvel atelier émeraude**.
