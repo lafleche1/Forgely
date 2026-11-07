@@ -394,7 +394,7 @@ class Forgely(tk.Tk):
         super().__init__()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.03')
+        self.title('Forgely · L’atelier — v22.04')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -1669,6 +1669,10 @@ class Forgely(tk.Tk):
                 if mailbox is not self.frame_mailbox or generation != mailbox.generation():
                     continue
                 perf.record("atelier_et_ocr", forgely_perf_ns() - t_ocr)
+                for phase,duration in getattr(atelier,'timings',{}).items():
+                    perf.record('atelier_'+phase,duration)
+                if getattr(atelier,'recovery_pending',False):
+                    self.confirmation_requested.set()
                 # This is diagnostic only: never claim a late OCR reading is
                 # an instant rune result. A newer frame is already in the mailbox.
                 self._last_ocr_frame_age_ms = round((forgely_perf_ns() - frame_started_ns) / 1_000_000, 1)

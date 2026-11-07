@@ -28,6 +28,8 @@ def parse_jet(text):
     found={}
     for raw in text.splitlines():
         line=norm(raw).replace('％','%').translate(str.maketrans({'−':'-','–':'-','—':'-','﹣':'-','－':'-'}))
+        # DOFUS uses the singular label for a one-point damage line.
+        line=re.sub(r'\bdommage\b','dommages',line)
         # OCR sometimes reads the zero of a stat as capital O (e.g. O Tacle).
         line=re.sub(r'(?<![\w])o(?=\s+tacle\b)', '0', line)
         # Icons can touch the value, and OCR can insert punctuation.
@@ -194,6 +196,9 @@ def read_highlighted_effect(patch, existing=None, ocr_engine=None):
             raw=pytesseract.image_to_string(large,config='--psm 7') if ocr_engine is None else ocr_engine(large)
             parsed=parse_jet(raw)
             new={k:v for k,v in parsed.items() if k not in existing}
+            if parsed and all(k in existing and existing[k]==v for k,v in parsed.items()):
+                LAST_HIGHLIGHT_DIAGNOSTIC={'status':'ligne_encadree_deja_lue','position':(top,bottom),'ocr':raw.strip()}
+                return {}, LAST_HIGHLIGHT_DIAGNOSTIC
             if new:
                 LAST_HIGHLIGHT_DIAGNOSTIC={'status':'ligne_encadree_lue','position':(top,bottom),'ocr':raw.strip()}
                 return new, LAST_HIGHLIGHT_DIAGNOSTIC
@@ -208,33 +213,58 @@ _LIVE_RECOVERY_CACHE = {}
 _LIVE_RECOVERY_LOCK = threading.Lock()
 
 
-def recover_missing_effects_live(patch, existing):
-    """Reuse recovery only for identical current pixels and parsed input.
+class _RecoveryBudgetReached(Exception):
+    pass
 
-    Keep four bounded entries and retry unresolved OCR after eight seconds.
-    Exceptions are deliberately not cached, so a failed engine can retry on
-    the next frame. A single changed highlight pixel always triggers recovery.
+
+def recover_missing_effects_live(patch, existing):
+    """At most three extra OCR calls per frame, resuming exact-pixel work.
+
+    A changed image or parsed jet never replays earlier text. Completed results
+    retain the previous bounded TTL; unfinished work asks for another capture.
     """
     global LAST_HIGHLIGHT_DIAGNOSTIC
     from copy import deepcopy
+    import pytesseract
+    import os
     signature = (patch.size, patch.mode, patch.tobytes(),
-                 tuple(sorted((existing or {}).items())))
+                 tuple(sorted((existing or {}).items())),
+                 pytesseract.pytesseract.tesseract_cmd,os.environ.get('TESSDATA_PREFIX'))
     now = monotonic()
     with _LIVE_RECOVERY_LOCK:
         previous = _LIVE_RECOVERY_CACHE.get(signature)
-    if previous is not None and now - previous[0] < 8.0:
+    if previous is not None and now - previous[0] < 8.0 and previous[1] is not None:
         recovered, detail = deepcopy(previous[1])
         LAST_HIGHLIGHT_DIAGNOSTIC = detail
         return recovered, detail
-    result = _recover_missing_effects_live(patch, existing)
+    replay=list(previous[2]) if previous is not None and previous[1] is None and now-previous[0]<8.0 else []
+    cursor=0
+    calls=0
+    def limited_ocr(image,psm=6):
+        nonlocal cursor,calls
+        if cursor<len(replay):
+            result=replay[cursor];cursor+=1
+            return result
+        if calls>=3:raise _RecoveryBudgetReached()
+        result=pytesseract.image_to_string(image,config=f'--psm {psm}')
+        calls+=1;cursor+=1;replay.append(result)
+        return result
+    try:
+        result = _recover_missing_effects_live(patch, existing,ocr_engine=limited_ocr)
+        entry=(monotonic(),deepcopy(result))
+    except _RecoveryBudgetReached:
+        LAST_HIGHLIGHT_DIAGNOSTIC={'status':'recuperation_en_cours','ocr_ce_passage':calls,
+            'ocr_deja_effectues':len(replay),'limite_par_passage':3}
+        result=({},LAST_HIGHLIGHT_DIAGNOSTIC)
+        entry=(monotonic(),None,replay)
     with _LIVE_RECOVERY_LOCK:
-        if len(_LIVE_RECOVERY_CACHE) >= 4:
+        if signature not in _LIVE_RECOVERY_CACHE and len(_LIVE_RECOVERY_CACHE) >= 4:
             _LIVE_RECOVERY_CACHE.pop(next(iter(_LIVE_RECOVERY_CACHE)))
-        _LIVE_RECOVERY_CACHE[signature] = (monotonic(), deepcopy(result))
+        _LIVE_RECOVERY_CACHE[signature] = entry
     return result
 
 
-def _recover_missing_effects_live(patch, existing):
+def _recover_missing_effects_live(patch, existing,ocr_engine=None):
     global LAST_HIGHLIGHT_DIAGNOSTIC
     from PIL import ImageOps, ImageEnhance
     import pytesseract
@@ -244,8 +274,9 @@ def _recover_missing_effects_live(patch, existing):
         return {}, LAST_HIGHLIGHT_DIAGNOSTIC
     # First use the outlined-row detector. This is a *live* pass even if the
     # general effects OCR was returned from the cache.
-    recovered, detail = read_highlighted_effect(patch, existing)
-    if recovered:
+    recovered, detail = read_highlighted_effect(patch, existing,
+        ocr_engine=(lambda image:ocr_engine(image,7)) if ocr_engine else None)
+    if recovered or detail.get('status')=='ligne_encadree_deja_lue':
         return recovered, detail
     # The outline may be invisible after scaling/antialiasing. Scan the table
     # in thin, overlapping strips, excluding the Min/Max header and footer.
@@ -260,7 +291,7 @@ def _recover_missing_effects_live(patch, existing):
         # Green-only mask often removes white outline and purple UI clutter.
         for variant in (green_effect_mask(crop), ImageEnhance.Contrast(ImageOps.grayscale(crop)).enhance(2.0)):
             enlarged=variant.resize((variant.width*2, variant.height*2))
-            raw=pytesseract.image_to_string(enlarged, config='--psm 6')
+            raw=(ocr_engine(enlarged,6) if ocr_engine else pytesseract.image_to_string(enlarged, config='--psm 6'))
             scanned += 1
             parsed=parse_jet(raw)
             fresh={k:v for k,v in parsed.items() if k not in existing}

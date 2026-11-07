@@ -5,7 +5,7 @@ They are *not* universal when UI scale/panel layout changes. Keep diagnostic cro
 local and never infer a rune from just a row/column containing inventory counts.
 """
 from __future__ import annotations
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 import re
 import unicodedata
 from difflib import SequenceMatcher
@@ -59,6 +59,8 @@ class AtelierRead:
     runes: str
     reliquat: str
     reason: str
+    recovery_pending: bool = False
+    timings: dict = field(default_factory=dict)
 
 def title_candidates(image):
     """Multiple conservative crops for DOFUS window borders and UI scaling."""
@@ -123,7 +125,10 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
     # visual anchors needs no repeated title OCR until periodic revalidation.
     # The visual check runs on EVERY frame, so closing the workshop invalidates
     # the fast path immediately. A failed visual check still gets normal OCR.
-    from time import monotonic
+    from time import monotonic,perf_counter_ns
+    timings={}
+    title_started=perf_counter_ns()
+    recovery_pending=False
     visual_ok = workshop_visual_fallback(image) if title_cache is not None else False
     cached = bool(visual_ok and title_cache.get("confirmed") and monotonic() - title_cache.get("checked_at", 0) < 20.0)
     title = title_cache.get("title", "") if cached else ""
@@ -157,11 +162,15 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
             title_cache.update(confirmed=confirmed, title=title if confirmed else '', checked_at=monotonic())
         if not confirmed:
             title_cache.clear()
+    timings['titre_atelier']=perf_counter_ns()-title_started
     if not confirmed:
-        return AtelierRead(False,title,'','','','','Atelier non confirmé : aucune tentative enregistrée')
+        return AtelierRead(False,title,'','','','','Atelier non confirmé : aucune tentative enregistrée',timings=timings)
     def read_zone(name, reader):
+        started=perf_counter_ns()
         patch = crop_zone(image, name)
-        return zone_cache.read(name, patch, reader) if zone_cache is not None else reader(patch)
+        result=zone_cache.read(name, patch, reader) if zone_cache is not None else reader(patch)
+        timings[{'history':'historique','effects':'effets','runes':'runes','reliquat':'reliquat'}[name]]=perf_counter_ns()-started
+        return result
     history=read_zone('history', ocr)
     from forgely_jet import read_effects_ocr
     effects=read_zone('effects', lambda patch: read_effects_ocr(patch, ocr))
@@ -177,12 +186,14 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
         'panoplie', 'poids 5', 'niveau 1'))
     if tooltip_visible and zone_cache is not None:
         zone_cache.entries.pop('effects', None)
+    recovery_started=perf_counter_ns()
     try:
         if tooltip_visible:
             raise ValueError('Infobulle détectée : lecture du jet ignorée')
         actual_effects_patch = crop_zone(image, 'effects')
         recovered, frame_info = recover_missing_effects_live(
             actual_effects_patch, parse_jet(effects))
+        recovery_pending=frame_info.get('status')=='recuperation_en_cours'
         if recovered:
             effects += ''.join('\n{} {}'.format(value, name) for name, value in recovered.items())
             if zone_cache is not None:
@@ -192,9 +203,10 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
         forgely_jet.LAST_HIGHLIGHT_DIAGNOSTIC = {
             'status': 'erreur_lecture_ligne', 'detail': str(exc)[:160]}
 
+    timings['recuperation_lignes']=perf_counter_ns()-recovery_started
     runes=read_zone('runes', ocr)
     reliquat=read_zone('reliquat', lambda patch: read_reliquat_ocr(patch, ocr))
-    return AtelierRead(True,title,history,effects,runes,reliquat,'Atelier reconnu ; analyse historique uniquement')
+    return AtelierRead(True,title,history,effects,runes,reliquat,'Atelier reconnu ; analyse historique uniquement',recovery_pending,timings)
 
 def read_reliquat_ocr(patch, ocr):
     """Use an extra focused OCR pass only when the normal pool read is invalid.
