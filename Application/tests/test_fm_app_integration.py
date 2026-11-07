@@ -7,7 +7,7 @@ def app_state():
     return SimpleNamespace(observation_only=False, plan={'item': 'Anneau', 'stats': {'Force': {'target': 10}}},
                            active_equipment_verified=True, item=SimpleNamespace(get=lambda: 'Anneau'),
                            live_jet={'Force': 0}, live_pool=30, live_after_fusion=False,
-                           budget_start_cursor=0, live_laboratory=SimpleNamespace(estimate=lambda *args: None))
+                           budget_start_cursor=0, live_laboratory=SimpleNamespace(estimate=lambda *args: None, learning_estimate=lambda *args: None))
 
 
 def test_saved_economy_prices_drive_actual_app_advice():

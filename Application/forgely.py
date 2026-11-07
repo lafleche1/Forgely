@@ -635,7 +635,9 @@ class Forgely(tk.Tk):
         bounds=natural_bounds(self.item.get().strip())
         proposal=advise(jets,targets,pool=pool,counts_for=records_for,
             natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
-            item=self.item.get().strip(),profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
+            item=self.item.get().strip(),profile_complete=False,
+            learning_for=lambda rune:self.live_laboratory.learning_estimate(self.item.get().strip(),rune,jets,pool),
+            mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
         # Contextual measurements are the only measured probabilities that can
         # describe a similar *starting state*. Aggregate rates are not forecasts.
         if proposal.rune and proposal.kind!='bloqué':
@@ -2141,10 +2143,10 @@ class Forgely(tk.Tk):
                             pending=self.pending_transition
                             # A real history transition and a different stable
                             # snapshot are both required for contextual storage.
-                            if sample != pending['sample'] and self.item.get()==pending['item']:
+                            if (sample != pending['sample'] or (pending['outcome']=='EC' and puits==0)) and self.item.get()==pending['item']:
                                 try:
                                     save_transition(pending['item'],pending['rune'],pending['outcome'],
-                                        pending['before'],{'jet':dict(jet),'pool':puits})
+                                        pending['before'],{'jet':dict(jet),'pool':puits},confirmed_event=True)
                                     self.context_saved += 1
                                     self.live_laboratory.notify_observation()
                                     self.status.set(f'Contexte avant/après sauvegardé : {self.context_saved}')
@@ -2399,4 +2401,3 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
-

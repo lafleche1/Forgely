@@ -9,7 +9,8 @@ from collections import Counter, defaultdict
 from pathlib import Path
 from forgely_data import DB_FILE
 from forgely_probabilites import wilson
-from forgely_rules import finite_number
+from forgely_rules import finite_number, WEIGHTS, RUNE_CHOICES
+from forgely_probabilites import reference
 
 
 def pool_bucket(value):
@@ -27,6 +28,29 @@ def jet_signature(jet):
     return tuple(sorted(jet.items()))
 
 
+def coherent_transition(rune, outcome, before, after):
+    """Necessary consistency checks, not independent certification of OCR."""
+    try:
+        jet_signature(before['jet']); jet_signature(after['jet'])
+        if set(before['jet']) != set(after['jet']): return False
+        if not all(finite_number(x, nonnegative=True) for x in (before['pool'], after['pool'])): return False
+        stat=next((s for s, runes in RUNE_CHOICES.items() if rune in runes), None)
+        ref=reference(rune)
+        if stat not in before['jet'] or ref.gain is None or ref.weight is None: return False
+        delta={s:after['jet'][s]-v for s,v in before['jet'].items()}
+        if any(s not in WEIGHTS or before['jet'][s]<0 or after['jet'][s]<0 for s in delta): return False
+        if any(v>0 and s!=stat for s,v in delta.items()): return False
+        gain=delta[stat]
+        if outcome in ('SC','SN') and abs(gain-ref.gain)>1e-6: return False
+        if outcome=='EC' and gain>0: return False
+        losses=sum(-v*WEIGHTS[s] for s,v in delta.items() if v<0)
+        if outcome=='SC': return losses==0 and abs(after['pool']-before['pool'])<1e-6
+        expected=max(0., before['pool']+losses-ref.weight)
+        return abs(expected-after['pool'])<1e-4
+    except (TypeError, ValueError, KeyError):
+        return False
+
+
 def compute_snapshot(db_file=DB_FILE, *, minimum=30):
     """One consistent read; no simulation or unknown observation sources."""
     path=Path(db_file)
@@ -34,9 +58,11 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
     with sqlite3.connect(str(path), timeout=5) as db:
         exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='fusion_contexts'").fetchone()
         if not exists: return {'groups':{}, 'observations':0, 'rejected':0}
-        rows=db.execute('SELECT item,rune,outcome,before_json,source FROM fusion_contexts').fetchall()
-    groups=defaultdict(Counter); rejected=0
-    for item,rune,outcome,raw,source in rows:
+        columns={r[1] for r in db.execute('PRAGMA table_info(fusion_contexts)')}
+        after_column='after_json' if 'after_json' in columns else 'NULL'
+        rows=db.execute(f'SELECT item,rune,outcome,before_json,source,{after_column} FROM fusion_contexts').fetchall()
+    groups=defaultdict(Counter); learning=defaultdict(Counter); rejected=0
+    for item,rune,outcome,raw,source,after_raw in rows:
         if source!='local_screen' or outcome not in ('SC','SN','EC'):
             rejected+=1;continue
         try:
@@ -46,6 +72,8 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
                 raise ValueError('invalid context')
             key=(item,rune,pool_bucket(pool),jet_signature(jet))
             groups[key][outcome]+=1
+            if after_raw and coherent_transition(rune,outcome,before,json.loads(after_raw)):
+                learning[key][outcome]+=1
         except (TypeError,ValueError,KeyError,OverflowError): rejected+=1
     output={}
     for key,counts in groups.items():
@@ -54,6 +82,8 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
                      'percentages':{o:round(100*counts[o]/n,1) for o in ('SC','SN','EC')} if n>=minimum else None,
                      'ci95_sc':tuple(round(100*x,1) for x in wilson(counts['SC'],n)) if n>=minimum else None,
                      'usable':n>=minimum,
+                     'learning_n':sum(learning[key].values()),
+                     'learning_counts':{o:learning[key][o] for o in ('SC','SN','EC')},
                      'quality':'exploratoire_ocr_non_verifie'}
     return {'groups':output,'observations':sum(map(sum,(c.values() for c in groups.values()))),
             'rejected':rejected}
@@ -92,6 +122,12 @@ class LiveLaboratory:
             key=(item,rune,pool_bucket(float(pool)),jet_signature(jet))
         except (ValueError,TypeError): return None
         with self._lock: return self._snapshot['groups'].get(key)
+
+    def learning_estimate(self,item,rune,jet,pool):
+        group=self.estimate(item,rune,jet,pool)
+        if group is None or group['learning_n'] < max(30,self.minimum): return None
+        return {'n':group['learning_n'], 'counts':dict(group['learning_counts']),
+                'usable':True, 'learning_eligible':True}
 
     def status(self):
         with self._lock:
