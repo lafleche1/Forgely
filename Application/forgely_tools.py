@@ -7,6 +7,7 @@ from __future__ import annotations
 import csv
 import json
 import os
+import shutil
 import sqlite3
 import zipfile
 from collections import Counter
@@ -23,6 +24,45 @@ from forgely_rules import MODES, objective_mode, finite_number
 SETTINGS_PATH = DATA_DIR / 'atelier_preferences.json'
 BOUNDS_PATH = DATA_DIR / 'jets_naturels_verifies.csv'
 STRATEGIES = MODES + ('Prudent', 'Économique', 'Rapide', 'Jet parfait')
+PRICE_METADATA = ('price_reference', 'price_server', 'price_reference_date', 'price_source')
+
+
+def activate_tylezia_reference(path=SETTINGS_PATH):
+    """Install the user's dated HDV reference once, without touching observations.
+
+    A reference is explicitly server-specific. Keep an exact backup of the old
+    preferences before replacing their price grid; never merge unidentified
+    server prices into Tylezia or overwrite subsequent manual edits.
+    """
+    path = Path(path)
+    cfg = read_settings(path)
+    reference_id = 'tylezia-2026-11-08'
+    if cfg.get('price_reference') == reference_id:
+        return cfg
+    source = Path(__file__).parent / 'prices' / (reference_id + '.json')
+    reference = json.loads(source.read_text(encoding='utf8'))
+    prices = reference['prices']
+    if (reference['server'] != 'Tylezia' or reference['reference_id'] != reference_id
+            or len(prices) != 105 or set(prices) != set(RUNES)
+            or any(type(v) is not int or v < 0 for v in prices.values())):
+        raise ValueError('Référence de prix Tylezia invalide')
+    if path.exists():
+        backup = path.with_suffix('.avant-tylezia-2026-11-08.json')
+        if not backup.exists():
+            shutil.copy2(path, backup)
+    cfg.update(strategy='Budget optimisé', prices=dict(prices),
+               price_reference=reference_id, price_server=reference['server'],
+               price_reference_date=reference['recorded_on'], price_source=reference['source'])
+    save_settings(cfg, path)
+    return cfg
+
+
+def price_reference_label(settings):
+    if settings.get('price_server'):
+        return (f"{settings['price_server']} · prix moyens unitaires · relevé reçu le "
+                f"{settings.get('price_reference_date', 'date inconnue')}\n"
+                'Références modifiables, sans actualisation automatique ; prix d’achat non garanti.')
+    return 'Prix unitaires saisis manuellement ; serveur non renseigné.'
 
 def settings_default():
     return {'strategy':'Chances maximales','budget_kamas':0,'prices':{}}
@@ -43,7 +83,7 @@ def read_settings(path=SETTINGS_PATH):
         if not isinstance(raw,dict):raise ValueError('structure invalide')
     except (OSError,ValueError,TypeError):raw={}
     cfg=settings_default()
-    cfg.update({k:raw[k] for k in ('strategy','budget_kamas','prices') if k in raw})
+    cfg.update({k:raw[k] for k in ('strategy','budget_kamas','prices',*PRICE_METADATA) if k in raw})
     if cfg['strategy'] not in STRATEGIES:cfg['strategy']='Chances maximales'
     cfg['strategy']=objective_mode(cfg['strategy'])
     if not isinstance(cfg['prices'],dict):cfg['prices']={}
@@ -216,4 +256,5 @@ def advisory_status(plan,jets,pool,verified,item_bounds=None,stats_count=0):
     complete=all(jets[k]>=v['target'] for k,v in wanted.items())
     if complete:return {'stop':'Objectif affiché atteint : envisager d’arrêter','goal_probability':1.0}
     return {'stop':'Objectif en cours : comparer les risques avant de continuer','goal_probability':None}
+
 

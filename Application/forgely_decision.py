@@ -187,7 +187,7 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
     if kind in ('exo', 'over'):
         explanation += 'Finition fragile : les poses suivantes peuvent dégrader cet ajout. '
     price = (prices or {}).get(rune)
-    explanation += f'Prix saisi : {price:g} kamas. ' if price is not None else 'Prix inconnu. '
+    explanation += f'Prix unitaire de référence : {price:g} kamas. ' if price is not None else 'Prix inconnu. '
     if remaining_budget is not None:
         explanation += f'Budget restant avant pose : {remaining_budget:g} kamas. '
     if mode == 'Budget optimisé':
@@ -216,3 +216,4 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
                      'objective': {'mode': mode, 'remaining_budget': remaining_budget,
                                    'exposed_weight': exposure, 'alternatives': alternatives,
                                    'goal_probability': None}}, n)
+
