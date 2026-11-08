@@ -157,6 +157,7 @@ def rules_text(price_settings=None):
         '16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.',
         '17. Simulateur dynamique : même modèle après chaque clic, minima/prix/budget respectés ; pertes réelles comparables ou transition inconnue, approximation explicite facultative. Les essais virtuels restent séparés des observations. Aucun RL, MCTS, A* ou mélange 40/60 implicite.',
         '18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.',
+        '19. Bilans de sessions : objectifs/coûts locaux, prévisions antérieures au résultat comparées uniquement sur contexte identique et transition cohérente. Les bilans ne créent aucune observation supplémentaire. Les nouvelles transitions qualifiées enrichissent la calibration ; amélioration progressive, non garantie à chaque session.',
         '',
         'PRIX : ' + (f"{price_settings.get('price_server','serveur non renseigné')} ; référence reçue le {price_settings.get('price_reference_date','date inconnue')} ; valeurs modifiables, non actualisées automatiquement." if price_settings else 'Référence locale par serveur, datée et modifiable.'),
         '',

@@ -54,8 +54,9 @@ def insert_observation(item, rune, outcome, source, evidence='', db_file=DB_FILE
     if not item.strip() or rune not in RUNES or outcome not in {'SC','SN','EC'} or source not in {'ocr_confirmed','manual','ocr_auto'}:
         raise ValueError('Équipement, rune ou résultat invalide')
     with connect(db_file) as db:
-        db.execute('INSERT INTO observations(captured_at,item,rune,outcome,source,evidence) VALUES(?,?,?,?,?,?)',
+        cursor=db.execute('INSERT INTO observations(captured_at,item,rune,outcome,source,evidence) VALUES(?,?,?,?,?,?)',
                    (datetime.now(timezone.utc).isoformat(), item.strip(), rune, outcome, source, evidence[:350]))
+        return cursor.lastrowid
 
 def stats(item='', rune='', db_file=DB_FILE):
     with connect(db_file) as db:
@@ -94,3 +95,4 @@ def unassigned_total(db_file=DB_FILE):
             outcome TEXT NOT NULL, evidence TEXT NOT NULL DEFAULT '')''')
         count=db.execute('SELECT count(*) FROM unassigned_actions').fetchone()[0]
     return count
+

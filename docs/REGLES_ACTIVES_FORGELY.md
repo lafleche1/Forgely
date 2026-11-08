@@ -19,6 +19,7 @@ RÈGLES ACTIVES DU COPILOTE — 8 novembre 2026
 16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.
 17. Simulateur dynamique : même modèle après chaque clic, minima/prix/budget respectés ; pertes réelles comparables ou transition inconnue, approximation explicite facultative. Les essais virtuels restent séparés des observations. Aucun RL, MCTS, A* ou mélange 40/60 implicite.
 18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.
+19. Bilans de sessions : objectifs/coûts locaux, prévisions antérieures au résultat comparées uniquement sur contexte identique et transition cohérente. Les bilans ne créent aucune observation supplémentaire. Les nouvelles transitions qualifiées enrichissent la calibration ; amélioration progressive, non garantie à chaque session.
 
 PRIX : Tylezia ; référence reçue le 2026-11-08 ; valeurs modifiables, non actualisées automatiquement.
 
@@ -27,6 +28,7 @@ Client 3.7.13.17 ; extraction : https://github.com/ledouxm/dofus-sqlite/releases
 
 
 Modèle : [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
+Bilans : [BILAN_SESSIONS_APPRENTISSAGE.md](BILAN_SESSIONS_APPRENTISSAGE.md).
 Simulateur : [SIMULATEUR_DYNAMIQUE.md](SIMULATEUR_DYNAMIQUE.md).
 Pertes : [RECHERCHE_PERTES_FM.md](RECHERCHE_PERTES_FM.md).
 Poids : [POIDS_RUNES.md](POIDS_RUNES.md).

@@ -1,6 +1,7 @@
 """Native desktop presentation. This module never reads the game or stores attempts."""
 import tkinter as tk
 from tkinter import ttk
+from forgely_session_ui import show_review
 
 
 def stat_rows(observed, targets, *, verified=False):
@@ -71,6 +72,7 @@ class AtelierDashboard:
                 ('Atelier', lambda: app.focus_set()),
                 ('Jet cible', app.open_plan_editor),
                 ('Historique', app.show_history),
+                ('Bilan de session', lambda: show_review(app)),
                 ('Outils', app.open_more_menu)):
             button = tk.Button(sidebar, text=title, command=action, anchor='w',
                 font=(app.ui_fonts['body'], 11), relief='flat', bd=0, padx=15,
@@ -277,3 +279,4 @@ class AtelierDashboard:
             pool = None
         amount = '—' if pool is None else f'{pool:g}'.replace('.', ',')
         self.pool_label.configure(text='Puits ' + amount + ('  ·  confirmé' if verified and pool is not None else '  ·  provisoire' if pool is not None else '  ·  en attente de lecture'))
+

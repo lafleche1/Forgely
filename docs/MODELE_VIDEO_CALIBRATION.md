@@ -51,3 +51,7 @@ Relancer avec `LANCER_FORGELY_MIS_A_JOUR.bat`, ajouté au dossier cible : cela l
 ## Simulations dynamiques
 
 Le laboratoire et le bouton de simulation utilisent maintenant ce modèle après chaque rune ; les transitions inconnues sont distinguées des pertes approximatives. Voir [SIMULATEUR_DYNAMIQUE.md](SIMULATEUR_DYNAMIQUE.md) et [RECHERCHE_PERTES_FM.md](RECHERCHE_PERTES_FM.md). Les simulations restent séparées des observations réelles.
+
+## Bilans et expérience réelle
+
+Le bouton de clôture produit un bilan local avec journal prospectif et comparaison des prévisions. Les nouvelles transitions qualifiées alimentent la calibration existante sans réimport du bilan. Voir [BILAN_SESSIONS_APPRENTISSAGE.md](BILAN_SESSIONS_APPRENTISSAGE.md).

@@ -52,6 +52,7 @@ from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,o
     natural_bounds,illustrative_scenario,advisory_status)
 from forgely_tools import activate_tylezia_reference, price_reference_label
 from forgely_expert import build_dashboard, render_dashboard, audit_transition, rules_text
+from forgely_session_ui import install_recorder, review_tick, review_event, review_transition, close_review, show_review
 from forgely_gallery import verify_goal,save_success,list_successes,export_gallery_json
 
 BG='#211F1B'; PANEL='#302C26'; PANEL2='#423B30'; ACCENT='#778F35'; GOLD='#E0C28C'
@@ -417,6 +418,7 @@ class Forgely(tk.Tk):
         self.budget_kamas=tk.StringVar(value=str(cfg['budget_kamas']))
         self.rune_prices=dict(cfg['prices'])
         self.budget_start_cursor=observation_cursor()
+        install_recorder(self)
         self._verified_item_context=None
         self.status=tk.StringVar(value='Prêt à observer · Stockage uniquement sur ton PC')
         self.last_detected=tk.StringVar(value='Aucune tentative détectée')
@@ -556,6 +558,7 @@ class Forgely(tk.Tk):
             ('Détail de la recommandation',self.open_strategy),
             ('Basculer Copilote / Observation',self.toggle_observation_mode),
             ('🌐 Actualiser les jets théoriques DOFUS 3',self.update_public_references),
+            ('Terminer et évaluer ma session',lambda:show_review(self)),
             ('Réussites, kamas et sauvegarde',self.open_workbench),
             ('Prix des runes et budget',self.open_budget),
             ('Règles du copilote et poids des runes',self.show_copilot_rules),
@@ -698,6 +701,7 @@ class Forgely(tk.Tk):
             self.dashboard.sync()
         if self.observation_only:
             self.current_proposal=None
+            review_tick(self)
             if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
                 self.strategy_headline.configure(text='Observation passive : aucun conseil')
             if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
@@ -715,6 +719,7 @@ class Forgely(tk.Tk):
             self.advice_heading.configure(text='CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE')
         proposal=self.strategy_current()
         self.current_proposal=proposal
+        review_tick(self,proposal)
         if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
             self.strategy_headline.configure(text=proposal.summary)
         if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
@@ -849,6 +854,7 @@ class Forgely(tk.Tk):
         self.label(contents,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=620,justify='left').pack(anchor='w',padx=22,pady=(0,12))
         self.button(contents,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
         self.button(contents,'Prix et budget de cette session',self.open_budget).pack(anchor='w',padx=22,pady=8)
+        self.button(contents,'Terminer et évaluer ma session',lambda:show_review(self),True).pack(anchor='w',padx=22,pady=8)
         def close_popup():
             self.strategy_headline=None
             self.strategy_explanation=None
@@ -1989,6 +1995,7 @@ class Forgely(tk.Tk):
                 frame_id=event_frame_id=None
                 identity_frame_key=None
                 event_already_recorded=False
+                event_observation_id=None
                 if kind=='worker_message':
                     mailbox,generation,title,kind,data=data
                     source_context=(mailbox,generation,title)
@@ -2007,7 +2014,9 @@ class Forgely(tk.Tk):
                     event=receipt.event
                     try:
                         if receipt.item and event.rune:
-                            insert_observation(receipt.item,event.rune,event.outcome,'ocr_auto',event.evidence)
+                            event_observation_id=insert_observation(receipt.item,event.rune,event.outcome,'ocr_auto',event.evidence)
+                            review_event(self,event_observation_id,receipt.item,event.rune,event.outcome,receipt.frame_id,
+                                str(id(receipt.mailbox))+':'+str(receipt.generation))
                             self.saved_auto+=1
                         else:
                             insert_unassigned(event.outcome,'Rune '+str(event.rune or '?')+
@@ -2268,6 +2277,7 @@ class Forgely(tk.Tk):
                                     self.last_transition_audit={'item':pending['item'],'after':after,
                                         'audit':audit_transition(pending['rune'],pending['outcome'],
                                             pending['before'],after,complete=complete)}
+                                    review_transition(self,pending.get('observation_id'),pending['before'],after,complete)
                                     self.context_saved += 1
                                     self.live_laboratory.notify_observation()
                                     self.status.set(f'Contexte avant/après sauvegardé : {self.context_saved}')
@@ -2364,7 +2374,7 @@ class Forgely(tk.Tk):
                     if before and data.rune and self.active_equipment_verified and self.item.get().strip():
                         self.pending_transition={'item':self.item.get().strip(),
                             'rune':data.rune,'outcome':data.outcome,'sample':self.pre_fusion_sample,
-                            'before':{'jet':before[0],'pool':before[1]}}
+                            'before':{'jet':before[0],'pool':before[1]},'observation_id':event_observation_id}
                     else:
                         self.pending_transition=None
                         if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
@@ -2389,7 +2399,10 @@ class Forgely(tk.Tk):
                                     self.overlay.state_color('candidate')
                                 continue
                             if not event_already_recorded:
-                                insert_observation(self.item.get().strip(),data.rune,data.outcome,'ocr_auto',data.evidence)
+                                event_observation_id=insert_observation(self.item.get().strip(),data.rune,data.outcome,'ocr_auto',data.evidence)
+                                review_event(self,event_observation_id,self.item.get().strip(),data.rune,data.outcome,event_frame_id)
+                                if self.pending_transition is not None:
+                                    self.pending_transition['observation_id']=event_observation_id
                                 self.saved_auto += 1
                             if show_event_result:
                                 self.detect_label.configure(text=f'{data.rune} · {data.outcome} ✓')
@@ -2526,6 +2539,7 @@ class Forgely(tk.Tk):
         self.deiconify();self.lift();self.overlay.withdraw()
 
     def close(self):
+        close_review(self)
         self.live_laboratory.stop()
         self.stop_event.set()
         if hasattr(self,'overlay'):self.overlay.destroy()
