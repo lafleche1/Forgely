@@ -991,23 +991,8 @@ class Forgely(tk.Tk):
                 f'Tentatives sans prix : {cost["unpriced_attempts"]}\n'
                 'Estimation partielle : ne tient pas compte du stock initial.',parent=win)
         self.button(strategy,'Estimer le coût de mon item',show_cost).pack(anchor='w',padx=17)
-        add(strategy,'SIMULATEUR — hypothèses, pas statistiques du jeu',GOLD)
-        add(strategy,'Les fréquences saisies sont uniquement des scénarios hypothétiques. Aucune simulation ne rejoint les observations.',MUTED)
-        prob=tk.StringVar(value='0.20');count=tk.StringVar(value='1000')
-        line=tk.Frame(strategy,bg=PANEL);line.pack(fill='x',padx=17)
-        for lab,var in [('SC supposé (0 à 1)',prob),('Nombre d’essais',count)]:
-            self.label(line,lab,10,color=MUTED).pack(side='left',padx=(0,7))
-            tk.Entry(line,textvariable=var,width=8,bg=PANEL2,fg=FG,insertbackground=FG).pack(side='left',padx=(0,14))
-        def simulate():
-            try:
-                p=float(prob.get());n=int(count.get());
-                if not 0<=p<=1:raise ValueError('SC doit être entre 0 et 1')
-                result=illustrative_scenario(prune.get(),n,int(cfg['prices'].get(prune.get(),0)),p,0,1-p)
-                messagebox.showinfo('Simulation illustrative',f'{n} essais hypothétiques\nSC {result["counts"]["SC"]}\n'
-                    f'EC {result["counts"]["EC"]}\nCoût théorique : {result["cost_kamas"]:,} kamas\n'
-                    'Aucun résultat ajouté aux statistiques réelles.',parent=win)
-            except (ValueError,TypeError) as exc:messagebox.showerror('Simulation',str(exc),parent=win)
-        self.button(strategy,'Simuler ces hypothèses',simulate).pack(anchor='w',padx=17,pady=10)
+        from forgely_simulation_ui import mount_simulator
+        mount_simulator(self,strategy,win)
         add(gallery,'GALERIE DES JETS RÉUSSIS',GOLD,13)
         add(gallery,'Une fiche peut être préparée seulement si toutes les caractéristiques cibles sont atteintes et le jet stable vérifié. Aucune publication Internet.',MUTED)
         state_label=add(gallery,'Vérification du jet...',GOLD)

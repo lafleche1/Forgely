@@ -17,7 +17,7 @@ RÈGLES ACTIVES DU COPILOTE — 8 novembre 2026
 14. Aucun pourcentage de confiance ou de réussite finale inventé. Aucun coefficient de difficulté serveur déduit d’une série d’échecs.
 15. Formule finale vidéo pour SC ; Q = moyenne des ratios actuels/maxima naturels par ligne, bornée à [0,1] selon la définition utilisateur. Exo PA/PM/PO existant : Q=1 sans second +60. SN reconstruit par morceaux ; ces hypothèses sont affichées. Niveau optionnel 1–200 dans les objectifs ; inconnu : aucun bonus. Les relevés Dofocus exacts restent séparés et servent de repli si le modèle manque.
 16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.
-17. Simulations et observations restent séparées. Cette version ne fait ni RL, ni MCTS, ni A*, ni mélange 40 % simulations / 60 % réel.
+17. Simulateur dynamique : même modèle après chaque clic, minima/prix/budget respectés ; pertes réelles comparables ou transition inconnue, approximation explicite facultative. Les essais virtuels restent séparés des observations. Aucun RL, MCTS, A* ou mélange 40/60 implicite.
 18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.
 
 PRIX : Tylezia ; référence reçue le 2026-11-08 ; valeurs modifiables, non actualisées automatiquement.
@@ -26,6 +26,7 @@ PROVENANCE DES POIDS : Données du client Ankama extraites par un tiers ; pas un
 Client 3.7.13.17 ; extraction : https://github.com/ledouxm/dofus-sqlite/releases/tag/v6.0_3.7.13.17
 
 
-Modèle et hypothèses : [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
-
+Modèle : [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
+Simulateur : [SIMULATEUR_DYNAMIQUE.md](SIMULATEUR_DYNAMIQUE.md).
+Pertes : [RECHERCHE_PERTES_FM.md](RECHERCHE_PERTES_FM.md).
 Poids : [POIDS_RUNES.md](POIDS_RUNES.md).

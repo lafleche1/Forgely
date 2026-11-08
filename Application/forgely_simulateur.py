@@ -1,10 +1,8 @@
-"""Simulateur expérimental de progression d'une caractéristique.
+"""Virtual FM entrypoints, never observations in the game database.
 
-Hypothèses fournies par l'utilisateur : probabilités fixes SC/SN/EC.
-SC ajoute le gain ; SN ajoute le gain en consommant du puits ; EC consomme du
-puits. Ne modélise PAS la perte d'autres caractéristiques, les limites d'exo,
-les règles précises de puits, ni les probabilités dépendant du jet.
-Aucun résultat n'est enregistré parmi les observations réelles.
+simulate_item: shared advisor model, multi-line states and dynamic predictions.
+simulate_target: legacy manual fixed probabilities, kept for explicit scenarios.
+See forgely_virtual and docs/SIMULATEUR_DYNAMIQUE.md for loss-model limits.
 """
 from __future__ import annotations
 from dataclasses import dataclass
@@ -71,3 +69,8 @@ def simulate_target(rune, current, target, pool, price, sc, sn, ec, *, trials=20
     return SimResult(trials,len(completed),len(completed)/trials,
         mean(completed) if completed else None,median(completed) if completed else None,
         mean(costs),mean(pools),counts['SC'],counts['SN'],counts['EC'],truncated)
+
+
+# The old fixed-input API remains available for explicitly manual scenarios.
+# Dynamic training/session callers share the advisor's actual prediction engine.
+from forgely_virtual import apply_outcome, simulate_item

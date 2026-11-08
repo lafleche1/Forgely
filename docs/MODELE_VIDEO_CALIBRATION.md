@@ -47,3 +47,7 @@ Les tests portent sur les seuils, les exceptions, la normalisation des trois tau
 Extraire tout le paquet cumulatif puis lancer `INSTALLER_MISE_A_JOUR_LOCALE.bat`. Il détecte les dossiers candidats immédiats ou ouvre un sélecteur de dossier. Le programme utilise le Python de l’installation choisie si disponible, puis le lanceur Python système. L’outil vérifie toutes les empreintes avant remplacement, sauvegarde les sources et refuse les versions locales inconnues. Les bases de données et préférences ne font pas partie du paquet.
 
 Relancer avec `LANCER_FORGELY_MIS_A_JOUR.bat`, ajouté au dossier cible : cela lance le code source actuel plutôt qu’un EXE ancien. Aucun exécutable Windows n’est reconstruit ou remplacé. L’application doit être fermée pendant la mise à jour ; l’installateur ne tue pas les processus et ne lance pas de téléchargement. Les scripts Windows doivent encore être validés sur un PC Windows ; le moteur de remplacement est testé ici.
+
+## Simulations dynamiques
+
+Le laboratoire et le bouton de simulation utilisent maintenant ce modèle après chaque rune ; les transitions inconnues sont distinguées des pertes approximatives. Voir [SIMULATEUR_DYNAMIQUE.md](SIMULATEUR_DYNAMIQUE.md) et [RECHERCHE_PERTES_FM.md](RECHERCHE_PERTES_FM.md). Les simulations restent séparées des observations réelles.
