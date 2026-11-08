@@ -1,4 +1,5 @@
 """Local-only Forgely storage and observation utilities. No network calls."""
+from forgely_sqlite import transaction as closing_transaction, ClosingConnection
 from pathlib import Path
 import os, sqlite3
 from datetime import datetime, timezone
@@ -24,7 +25,7 @@ except (OSError, ValueError, KeyError, TypeError):
 def connect(db_file=DB_FILE):
     path = Path(db_file)
     path.parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(path), timeout=15)
+    conn = sqlite3.connect(str(path), timeout=15, factory=ClosingConnection)
     conn.execute('''CREATE TABLE IF NOT EXISTS observations (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         captured_at TEXT NOT NULL,
@@ -53,12 +54,12 @@ def connect(db_file=DB_FILE):
 def insert_observation(item, rune, outcome, source, evidence='', db_file=DB_FILE):
     if not item.strip() or rune not in RUNES or outcome not in {'SC','SN','EC'} or source not in {'ocr_confirmed','manual','ocr_auto'}:
         raise ValueError('Équipement, rune ou résultat invalide')
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         db.execute('INSERT INTO observations(captured_at,item,rune,outcome,source,evidence) VALUES(?,?,?,?,?,?)',
                    (datetime.now(timezone.utc).isoformat(), item.strip(), rune, outcome, source, evidence[:350]))
 
 def stats(item='', rune='', db_file=DB_FILE):
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         where=[]; params=[]
         if item.strip(): where.append('item=?');params.append(item.strip())
         if rune.strip(): where.append('rune=?');params.append(rune.strip())
@@ -69,7 +70,7 @@ def stats(item='', rune='', db_file=DB_FILE):
     return sum(counts.values()),counts
 
 def recent(limit=8, db_file=DB_FILE):
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         return db.execute('SELECT captured_at, item, rune, outcome, source FROM observations ORDER BY id DESC LIMIT ?', (limit,)).fetchall()
 
 
@@ -77,7 +78,7 @@ def insert_unassigned(outcome, evidence='', db_file=DB_FILE):
     """Uncertain event is kept locally OUTSIDE observation probability tables."""
     if outcome not in {'SC','SN','EC'}:
         raise ValueError('Résultat invalide')
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         db.execute('''CREATE TABLE IF NOT EXISTS unassigned_actions (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             captured_at TEXT NOT NULL,
@@ -88,9 +89,24 @@ def insert_unassigned(outcome, evidence='', db_file=DB_FILE):
 
 
 def unassigned_total(db_file=DB_FILE):
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         db.execute('''CREATE TABLE IF NOT EXISTS unassigned_actions (
             id INTEGER PRIMARY KEY AUTOINCREMENT, captured_at TEXT NOT NULL,
             outcome TEXT NOT NULL, evidence TEXT NOT NULL DEFAULT '')''')
         count=db.execute('SELECT count(*) FROM unassigned_actions').fetchone()[0]
     return count
+
+
+def stats_by_rune(item='', db_file=DB_FILE):
+    """Exact per-rune counts from one database snapshot, without retained cache."""
+    with closing_transaction(connect(db_file)) as db:
+        query = 'SELECT rune, outcome, count(*) FROM observations'
+        params = ()
+        if item.strip():
+            query += ' WHERE item=?'
+            params = (item.strip(),)
+        rows = db.execute(query + ' GROUP BY rune, outcome', params).fetchall()
+    result = {}
+    for rune, outcome, count in rows:
+        result.setdefault(rune, {'SC': 0, 'SN': 0, 'EC': 0})[outcome] = count
+    return result

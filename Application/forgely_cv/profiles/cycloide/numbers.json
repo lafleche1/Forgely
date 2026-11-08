@@ -1,0 +1,250 @@
+{
+  "image_size": [
+    442,
+    680
+  ],
+  "scale_tag": "capture-442x680-cycloide",
+  "fields": [
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "box": {
+        "x": 190,
+        "y": 147,
+        "w": 32,
+        "h": 20
+      },
+      "guard_box": {
+        "x": 224,
+        "y": 147,
+        "w": 60,
+        "h": 20
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Force",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 188,
+        "w": 22,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 214,
+        "y": 188,
+        "w": 45,
+        "h": 22
+      },
+      "guard": "guard-001.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Intelligence",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 231,
+        "w": 22,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 214,
+        "y": 231,
+        "w": 95,
+        "h": 22
+      },
+      "guard": "guard-002.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Agilité",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 273,
+        "w": 22,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 214,
+        "y": 273,
+        "w": 55,
+        "h": 22
+      },
+      "guard": "guard-003.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Neutre",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 315,
+        "w": 12,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 202,
+        "y": 315,
+        "w": 150,
+        "h": 22
+      },
+      "guard": "guard-004.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Terre",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 358,
+        "w": 12,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 202,
+        "y": 358,
+        "w": 150,
+        "h": 22
+      },
+      "guard": "guard-005.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Feu",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 400,
+        "w": 22,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 210,
+        "y": 400,
+        "w": 140,
+        "h": 22
+      },
+      "guard": "guard-006.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Air",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 443,
+        "w": 12,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 202,
+        "y": 443,
+        "w": 150,
+        "h": 22
+      },
+      "guard": "guard-007.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Initiative",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 485,
+        "w": 31,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 222,
+        "y": 485,
+        "w": 85,
+        "h": 22
+      },
+      "guard": "guard-008.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "% Résistance Eau",
+      "kind": "stat",
+      "box": {
+        "x": 189,
+        "y": 527,
+        "w": 9,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 210,
+        "y": 527,
+        "w": 140,
+        "h": 22
+      },
+      "guard": "guard-009.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Tacle",
+      "kind": "stat",
+      "box": {
+        "x": 188,
+        "y": 569,
+        "w": 12,
+        "h": 22
+      },
+      "guard_box": {
+        "x": 202,
+        "y": 569,
+        "w": 55,
+        "h": 22
+      },
+      "guard": "guard-010.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Puits",
+      "kind": "pool",
+      "box": {
+        "x": 138,
+        "y": 27,
+        "w": 23,
+        "h": 18
+      },
+      "guard_box": {
+        "x": 90,
+        "y": 27,
+        "w": 48,
+        "h": 18
+      },
+      "guard": "guard-011.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    ",",
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8"
+  ]
+}

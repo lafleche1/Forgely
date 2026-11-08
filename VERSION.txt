@@ -1,1 +1,1 @@
-Forgely v22.05 — identification indépendante et confirmations parallèles
+Forgely v22.15 - prix unitaires Tylezia et calcul indicatif des coûts du copilote

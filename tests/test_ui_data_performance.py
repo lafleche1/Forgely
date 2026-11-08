@@ -13,20 +13,20 @@ def test_settings_reuses_unchanged_file_and_isolates_mutation(tmp_path):
     original = Path.read_text
     with patch.object(Path, 'read_text', autospec=True, side_effect=original) as read:
         first = read_settings(path)
-        first['prices']['Vi'] = 999
-        assert read_settings(path)['prices']['Vi'] == 5
+        first['strategy'] = 'changed'
+        assert read_settings(path)=={'strategy':'Chances maximales','budget_kamas':0,'prices':{'Vi':5}}
         assert read.call_count == 1
         replacement = path.with_suffix('.new')
         replacement.write_text(json.dumps({'prices': {'Vi': 6}}))
         replacement.replace(path)
-        assert read_settings(path)['prices']['Vi'] == 6
+        assert read_settings(path)=={'strategy':'Chances maximales','budget_kamas':0,'prices':{'Vi':6}}
         assert read.call_count == 2
     path.unlink()
-    assert read_settings(path)['prices'] == {}
+    assert read_settings(path)=={'strategy':'Chances maximales','budget_kamas':0,'prices':{}}
     path.write_text('{broken')
-    assert read_settings(path)['prices'] == {}
+    assert read_settings(path)=={'strategy':'Chances maximales','budget_kamas':0,'prices':{}}
     path.write_text(json.dumps({'prices': {'Vi': 7}}))
-    assert read_settings(path)['prices']['Vi'] == 7
+    assert read_settings(path)=={'strategy':'Chances maximales','budget_kamas':0,'prices':{'Vi':7}}
 
 
 def test_icon_catalogue_reuses_parse_but_not_file_existence(tmp_path):

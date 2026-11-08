@@ -205,4 +205,3 @@ def risk_notes(current, proposed, weight, pool, natural_max=None):
     else:
         notes.append('Reliquat au moins égal au poids nominal ; cela ne garantit pas le passage.')
     return notes
-

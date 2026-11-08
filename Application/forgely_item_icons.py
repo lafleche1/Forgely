@@ -147,16 +147,12 @@ class ItemVisualTracker:
         self.name = None
         self.icon = None
         self.count = 0
-        self._last_frame_key=None
         self.missed = 0
 
-    def observe(self, name, icon, *, frame_key=None):
+    def observe(self, name, icon):
         from forgely_items import key_for
-        duplicate=frame_key is not None and frame_key==self._last_frame_key
         patch = normalize_icon(icon)
         if not name or patch is None:
-            if duplicate:return 0
-            self._last_frame_key=frame_key
             # Small OCR glitches should not restart an otherwise stable
             # identity. Never confirm on a missing frame, and forget after
             # three misses to avoid carrying a previous item forward.
@@ -166,10 +162,9 @@ class ItemVisualTracker:
             return 0
         key = key_for(name)
         if self.name == key and self.missed < 3 and icon_distance(self.icon, patch) <= 14:
-            if not duplicate:self.count += 1
+            self.count += 1
         else:
             self.name, self.count = key, 1
         self.missed = 0
-        self._last_frame_key=frame_key
         self.icon = patch
         return self.count

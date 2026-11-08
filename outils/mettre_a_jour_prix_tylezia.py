@@ -68,6 +68,12 @@ def main():
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
     try:
         payload = root / (sys.argv[2] if len(sys.argv) > 2 else 'mise_a_jour_prix_tylezia')
+        if not (payload / 'manifest.json').exists():
+            sys.path.insert(0, str(root / 'Application'))
+            from forgely_tools import activate_tylezia_reference
+            settings = activate_tylezia_reference()
+            print('Référence Tylezia activée :', len(settings['prices']), 'prix unitaires.')
+            return 0
         backup = apply_update(root, payload)
     except (OSError, ValueError, KeyError) as exc:
         print('Mise à jour non appliquée :', exc)
@@ -75,7 +81,7 @@ def main():
     print('Fichiers mis à jour.' if backup else 'Cette mise à jour est déjà installée.')
     if backup:
         print('Sauvegarde :', backup)
-    print('Relance OUVRIR FORGELY.bat pour charger les nouvelles règles et références.')
+    print('Relance OUVRIR FORGELY.bat : les prix Tylezia seront activés au démarrage.')
     return 0
 
 

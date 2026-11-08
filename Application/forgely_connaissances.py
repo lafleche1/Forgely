@@ -46,7 +46,6 @@ FACTS = (
  Fact('session_pool', 'La persistance du reliquat entre changements de session ou manipulations d’objet doit être vérifiée sur DOFUS 3.', ('fashionista','jeuxonline'), 'incertain'),
  Fact('focus', 'Le focus et le coefficient serveur concernent le BRISAGE, pas la probabilité SC/SN/EC de pose de rune.', ('dofocus',), 'source_explicite', 'brisage'),
  Fact('catalogue', 'Les données d’objets et de runes peuvent être croisées avec DofusDB ; dater et versionner chaque extraction.', ('dofocus_about','dofusdb'), 'source_explicite', 'donnees'),
- Fact('prices', 'Prix de runes et coefficients communautaires sont datés et spécifiques au serveur ; ne pas les considérer comme des constantes.', ('dofocus_about',), 'source_explicite', 'economie'),
 )
 
 # Divergences identifiées dans les guides : aucune correction silencieuse.
@@ -74,5 +73,3 @@ def sources_for(key):
     for fact in FACTS:
         if fact.key==key:return tuple(SOURCES[k] for k in fact.sources)
     raise KeyError(key)
-
-

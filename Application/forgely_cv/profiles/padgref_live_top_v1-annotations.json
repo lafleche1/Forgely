@@ -1,0 +1,209 @@
+{
+  "scale_tag": "padgref-normalized-1902x1033-top",
+  "fields": [
+    {
+      "name": "PM",
+      "kind": "stat",
+      "text": "1",
+      "box": [
+        21,
+        0,
+        6,
+        17
+      ],
+      "guard_box": [
+        33,
+        0,
+        21,
+        17
+      ]
+    },
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "text": "96",
+      "box": [
+        23,
+        35,
+        16,
+        18
+      ],
+      "guard_box": [
+        44,
+        35,
+        49,
+        18
+      ]
+    },
+    {
+      "name": "Intelligence",
+      "kind": "stat",
+      "text": "60",
+      "box": [
+        21,
+        70,
+        16,
+        18
+      ],
+      "guard_box": [
+        43,
+        70,
+        79,
+        18
+      ]
+    },
+    {
+      "name": "Sagesse",
+      "kind": "stat",
+      "text": "30",
+      "box": [
+        22,
+        105,
+        16,
+        18
+      ],
+      "guard_box": [
+        43,
+        105,
+        56,
+        18
+      ]
+    },
+    {
+      "name": "Coups Critiques",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        3,
+        140,
+        5,
+        19
+      ],
+      "guard_box": [
+        18,
+        140,
+        77,
+        19
+      ]
+    },
+    {
+      "name": "Portée",
+      "kind": "stat",
+      "text": "1",
+      "box": [
+        22,
+        175,
+        6,
+        16
+      ],
+      "guard_box": [
+        35,
+        175,
+        44,
+        16
+      ]
+    },
+    {
+      "name": "Invocation",
+      "kind": "stat",
+      "text": "1",
+      "box": [
+        23,
+        210,
+        6,
+        17
+      ],
+      "guard_box": [
+        35,
+        210,
+        72,
+        17
+      ]
+    },
+    {
+      "name": "Dommages Feu",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        21,
+        245,
+        7,
+        18
+      ],
+      "guard_box": [
+        34,
+        245,
+        103,
+        18
+      ]
+    },
+    {
+      "name": "Dommages Air",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        23,
+        280,
+        7,
+        19
+      ],
+      "guard_box": [
+        36,
+        280,
+        98,
+        19
+      ]
+    },
+    {
+      "name": "% Résistance Eau",
+      "kind": "stat",
+      "text": "8",
+      "box": [
+        22,
+        315,
+        7,
+        20
+      ],
+      "guard_box": [
+        31,
+        315,
+        116,
+        20
+      ]
+    },
+    {
+      "name": "Résistance Terre",
+      "kind": "stat",
+      "text": "7",
+      "box": [
+        22,
+        350,
+        7,
+        19
+      ],
+      "guard_box": [
+        35,
+        350,
+        116,
+        19
+      ]
+    },
+    {
+      "name": "Résistance Air",
+      "kind": "stat",
+      "text": "7",
+      "box": [
+        22,
+        385,
+        7,
+        19
+      ],
+      "guard_box": [
+        35,
+        385,
+        100,
+        19
+      ]
+    }
+  ]
+}

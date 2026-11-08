@@ -5,6 +5,7 @@ current object, but NOT of its name. Anonymous visual records are kept separate
 from the named catalogue until there is independent name evidence.
 """
 from __future__ import annotations
+from forgely_sqlite import database_connection
 import json
 import re
 import sqlite3
@@ -13,6 +14,42 @@ from PIL import Image, ImageStat
 from forgely_item_icons import normalize_icon, icon_distance
 from forgely_items import key_for
 from forgely_data import DB_FILE
+from dataclasses import dataclass
+
+
+@dataclass(frozen=True)
+class SlotEvidence:
+    context: tuple
+    icon: object
+    count: int
+    captured_ns: int
+
+
+class RapidSlotTracker:
+    """Icon stability from distinct captures, independent of slow text OCR."""
+    def __init__(self):
+        self.context=None
+        self.tracker=CurrentSlotTracker()
+
+    def observe(self,icon,context,captured_ns):
+        icon=normalize_icon(icon)
+        if context!=self.context or icon is None:
+            self.context=context
+            self.tracker.reset()
+        if icon is None:return None
+        self.tracker.observe(icon)
+        return SlotEvidence(context,self.tracker.icon.copy(),self.tracker.count,captured_ns)
+
+
+def prime_slot_tracker(tracker,evidence,icon,context,now_ns):
+    """Reuse recent same-slot captures; natural-range checks still run in OCR."""
+    if (not isinstance(evidence,SlotEvidence) or evidence.context!=context or
+            evidence.count<3 or not 0<=now_ns-evidence.captured_ns<=2_000_000_000 or
+            icon is None or icon_distance(evidence.icon,icon)>17):return False
+    if tracker.icon is not None and icon_distance(tracker.icon,icon)>17:return False
+    tracker.icon=evidence.icon.copy()
+    tracker.count=max(tracker.count,tracker.frames-1)
+    return True
 
 SLOT_BOX = (.393, .195, .407, .223)  # item slot, from supplied 1648x928 DOFUS capture
 
@@ -73,8 +110,9 @@ def strong_signature_change(a, b):
     if len(a) < 3 or len(b) < 3:
         return False
     conflicts = sum(a[k] != b[k] for k in a.keys() & b.keys())
-    unique = len(set(b) - set(a))
-    return conflicts >= 2 or (conflicts >= 1 and unique >= 2) or unique >= 3
+    # Newly visible names are normal when scrolling. Only incompatible ranges
+    # for shared characteristics support a change; artwork is checked separately.
+    return conflicts >= 2
 
 
 def signatures_compatible(a, b):
@@ -93,26 +131,18 @@ class CurrentSlotTracker:
     def reset(self):
         self.icon = None
         self.count = 0
-        self._last_frame_key=None
         self.misses = 0
-        self.absence_confirmed = False
         self.signature = ()
         self.generation = getattr(self, 'generation', 0) + 1
 
-    def observe(self, icon, signature=(), *, frame_key=None):
-        duplicate=frame_key is not None and frame_key==self._last_frame_key
+    def observe(self, icon, signature=()):
         icon = normalize_icon(icon)
         if icon is None:
-            if duplicate:return False,False
-            self._last_frame_key=frame_key
-            if self.absence_confirmed:return False,False
             self.misses += 1
-            if self.misses >= 3:
+            if self.misses == 3:
                 self.reset()
-                self.absence_confirmed=True
-                self._last_frame_key=frame_key
+                self.misses = 3  # The caller must still see confirmed absence.
             return False, False
-        self.absence_confirmed=False
         changed = self.icon is not None and (
             icon_distance(icon, self.icon) > 17 or
             strong_signature_change(self.signature, signature))
@@ -120,9 +150,8 @@ class CurrentSlotTracker:
             self.reset()
         if self.icon is None:
             self.count = 1
-        elif not duplicate:
+        else:
             self.count += 1
-        self._last_frame_key=frame_key
         self.icon = icon
         self.misses = 0
         if signature:
@@ -204,7 +233,7 @@ def match_current_item(icon, signature=(), db_file=DB_FILE):
         if len(signature) >= 3 and (conflicts >= 2 or extras >= 3):
             return None
         return bundled
-    with sqlite3.connect(str(db_file)) as db:
+    with database_connection(str(db_file)) as db:
         _db_init(db)
         choices = _candidates(db, 'equipment_current_icons', icon, signature)
         if choices and choices[0][0] <= 10 and (len(choices) == 1 or choices[1][0] - choices[0][0] >= 8):
@@ -238,7 +267,7 @@ def remember_current_item(name, icon, signature=(), db_file=DB_FILE, icons_dir=N
     if icon is None:
         raise ValueError('Emplacement de l’objet illisible')
     db_file = Path(db_file)
-    with sqlite3.connect(str(db_file)) as db:
+    with database_connection(str(db_file)) as db:
         _db_init(db)
         row = db.execute('SELECT id FROM equipment WHERE identity_key=?', (key_for(name),)).fetchone()
         if row is None:
@@ -277,7 +306,7 @@ def remember_provisional(icon, signature=(), db_file=DB_FILE, icons_dir=None):
         return None
     db_file = Path(db_file)
     db_file.parent.mkdir(parents=True, exist_ok=True)
-    with sqlite3.connect(str(db_file)) as db:
+    with database_connection(str(db_file)) as db:
         _db_init(db)
         matches = _candidates(db, 'equipment_provisional', icon, signature)
         if matches and matches[0][0] <= 10:

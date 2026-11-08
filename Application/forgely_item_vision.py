@@ -24,11 +24,6 @@ def official_names():
                                    if row.get('nom_fr', '').strip()))
 
 
-@lru_cache(maxsize=1)
-def _normalized_official_names(names):
-    return tuple((key_for(name),name) for name in names)
-
-
 def match_truncated_official_name(text):
     """Match a left-cropped workshop heading only when the suffix is unique.
 
@@ -42,7 +37,8 @@ def match_truncated_official_name(text):
         fragment = key_for(line.strip(' []:;.,-'))
         if len(fragment) < 11 or len(fragment.split()) < 3:
             continue
-        for target,name in _normalized_official_names(official_names()):
+        for name in official_names():
+            target = key_for(name)
             if len(target) > len(fragment) and target.endswith(fragment) and len(fragment) / len(target) >= .62:
                 results.add(name)
         if len(results) > 1:
@@ -117,13 +113,19 @@ def enhanced_item_header(image):
     return gray.resize((gray.width * 3, gray.height * 3))
 
 
-def recognize_item_header(image, ocr, registered):
+def recognize_item_header(image, ocr, registered, *, visual_name=None):
     """Return (known_name, provisional_candidate, raw_text) for the item row.
 
-    Both OCR views are evaluated even if the first one is unreadable. A single
+    visual_name must come from a unique verified current-slot reference with
+    compatible observed bounds, never from historical text or an OCR guess.
+    Without that evidence, both OCR views are evaluated. A single
     plausible view can feed the *multi-frame name+icon tracker*, but can never
     register an item on its own. Conflicting readable names are rejected.
     """
+    # A unique match against a previously labelled CURRENT-slot reference is
+    # already named evidence. Its natural-range veto is enforced by the caller.
+    if visual_name:
+        return visual_name, None, 'Identification par icône actuelle vérifiée'
     raw = ocr(crop_item_header(image))
     enhanced_raw = ocr(enhanced_item_header(image))
     combined = raw + '\n[contrôle] ' + enhanced_raw

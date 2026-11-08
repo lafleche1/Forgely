@@ -1,3 +1,4 @@
+from forgely_sqlite import database_connection
 """Audit local, en lecture seule, des tentatives de forgemagie enregistrées."""
 import argparse
 import csv
@@ -13,7 +14,7 @@ def audit(db_file=DB_FILE):
     path = Path(db_file)
     if not path.is_file():
         raise FileNotFoundError(f'Base de données introuvable : {path}')
-    with sqlite3.connect(f'file:{path.resolve().as_posix()}?mode=ro', uri=True) as db:
+    with database_connection(f'file:{path.resolve().as_posix()}?mode=ro', uri=True) as db:
         rows = [dict(zip(FIELDS,row)) for row in db.execute('SELECT '+','.join(FIELDS)+' FROM observations ORDER BY id')]
         has_unassigned = db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='unassigned_actions'").fetchone()
         uncertain = db.execute('SELECT COUNT(*) FROM unassigned_actions').fetchone()[0] if has_unassigned else 0

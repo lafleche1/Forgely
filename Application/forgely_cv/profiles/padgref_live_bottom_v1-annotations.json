@@ -1,0 +1,226 @@
+{
+  "scale_tag": "padgref-normalized-1902x1033-bottom",
+  "fields": [
+    {
+      "name": "Agilité",
+      "kind": "stat",
+      "text": "58",
+      "box": [
+        23,
+        0,
+        16,
+        19
+      ],
+      "guard_box": [
+        44,
+        0,
+        44,
+        19
+      ]
+    },
+    {
+      "name": "Sagesse",
+      "kind": "stat",
+      "text": "30",
+      "box": [
+        22,
+        35,
+        16,
+        18
+      ],
+      "guard_box": [
+        44,
+        35,
+        55,
+        18
+      ]
+    },
+    {
+      "name": "Coups Critiques",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        3,
+        70,
+        7,
+        19
+      ],
+      "guard_box": [
+        12,
+        70,
+        68,
+        19
+      ]
+    },
+    {
+      "name": "Portée",
+      "kind": "stat",
+      "text": "1",
+      "box": [
+        22,
+        105,
+        6,
+        17
+      ],
+      "guard_box": [
+        35,
+        105,
+        44,
+        17
+      ]
+    },
+    {
+      "name": "Invocation",
+      "kind": "stat",
+      "text": "1",
+      "box": [
+        24,
+        140,
+        5,
+        17
+      ],
+      "guard_box": [
+        35,
+        140,
+        72,
+        17
+      ]
+    },
+    {
+      "name": "Dommages Feu",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        21,
+        175,
+        7,
+        19
+      ],
+      "guard_box": [
+        34,
+        175,
+        103,
+        19
+      ]
+    },
+    {
+      "name": "Dommages Air",
+      "kind": "stat",
+      "text": "6",
+      "box": [
+        23,
+        210,
+        7,
+        19
+      ],
+      "guard_box": [
+        36,
+        210,
+        98,
+        19
+      ]
+    },
+    {
+      "name": "% Résistance Eau",
+      "kind": "stat",
+      "text": "8",
+      "box": [
+        22,
+        245,
+        7,
+        19
+      ],
+      "guard_box": [
+        31,
+        245,
+        116,
+        19
+      ]
+    },
+    {
+      "name": "Résistance Terre",
+      "kind": "stat",
+      "text": "7",
+      "box": [
+        22,
+        280,
+        7,
+        19
+      ],
+      "guard_box": [
+        35,
+        280,
+        116,
+        19
+      ]
+    },
+    {
+      "name": "Résistance Air",
+      "kind": "stat",
+      "text": "7",
+      "box": [
+        22,
+        315,
+        7,
+        19
+      ],
+      "guard_box": [
+        35,
+        315,
+        101,
+        19
+      ]
+    },
+    {
+      "name": "Dommages Critiques",
+      "kind": "stat",
+      "text": "11",
+      "box": [
+        21,
+        350,
+        14,
+        19
+      ],
+      "guard_box": [
+        41,
+        350,
+        138,
+        19
+      ]
+    },
+    {
+      "name": "Tacle",
+      "kind": "stat",
+      "text": "-4",
+      "box": [
+        3,
+        385,
+        13,
+        15
+      ],
+      "guard_box": [
+        21,
+        385,
+        37,
+        15
+      ]
+    },
+    {
+      "name": "Esquive PM",
+      "kind": "stat",
+      "text": "-3",
+      "box": [
+        3,
+        420,
+        12,
+        19
+      ],
+      "guard_box": [
+        21,
+        420,
+        75,
+        19
+      ]
+    }
+  ]
+}

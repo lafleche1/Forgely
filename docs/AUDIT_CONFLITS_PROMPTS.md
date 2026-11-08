@@ -1,5 +1,7 @@
 # Audit des deux prompts — 8 novembre 2026
 
+> Note de fusion PC : ce document décrit le travail historique du téléphone. La version intégrée conserve l’entraîneur expérimental et les validations préalables ; elle ne bloque pas les conseils sur un budget dur. Les règles courantes sont dans REGLES_ACTIVES_FORGELY.md. Vérification PC finale : 1543 tests réussis, 25 ignorés, 42 sous-tests réussis ; exécutable autonome reconstruit et autotest réussi.
+
 Audit de la branche `main` au commit `018157e11f1e610227931e8ee801d66c9a8e7afb`,
 puis des changements du protocole expert. Aucun moteur LLM ni chargement de
 prompts conversationnels n'a été trouvé dans les modules de conseil. Les règles

@@ -66,16 +66,18 @@ def test_application_copilot_uses_activated_reference(tmp_path):
     from forgely import Forgely
     path = tmp_path / 'preferences.json'
     activate(path)
+    from forgely_equipment_catalog import EquipmentCatalog,equipment_bounds
+    item=EquipmentCatalog().get(14092)
+    bounds=equipment_bounds(item)
+    jet={stat:max(pair) for stat,pair in bounds.items()};jet['Force']=0
     app = SimpleNamespace(observation_only=False,
-        plan={'item': 'Anneau', 'stats': {'Force': {'target': 10}}},
-        active_equipment_verified=True, item=SimpleNamespace(get=lambda: 'Anneau'),
-        live_jet={'Force': 0}, live_pool=30, live_after_fusion=False,
-        budget_start_cursor=0, live_laboratory=SimpleNamespace(estimate=lambda *a: None))
-    with patch('forgely.read_settings', side_effect=lambda: tools.read_settings(path)), \
-         patch('forgely.cost_since', return_value={'known_cost': 0, 'complete': True, 'unpriced_attempts': 0}), \
-         patch('forgely.natural_bounds', return_value={'Force': (0, 100)}), \
-         patch('forgely.stats', return_value=(0, {})):
-        proposal = Forgely.strategy_current(app)
+        plan={'item':item.identity_name,'stats':{'Force':{'target':10}}},
+        active_equipment_verified=True,item=SimpleNamespace(get=lambda:item.identity_name),
+        live_jet=jet,live_pool=30,live_after_fusion=False,
+        live_laboratory=SimpleNamespace(estimate=lambda *a:None))
+    with patch('forgely.read_settings',side_effect=lambda:tools.read_settings(path)), \
+         patch('forgely_data.stats_by_rune',return_value={}):
+        proposal=Forgely.strategy_current(app)
     assert proposal.rune in ('Fo', 'Pa Fo', 'Ra Fo')
     assert proposal.estimates['objective']['mode'] == 'Budget optimisé'
     assert str(tools.read_settings(path)['prices'][proposal.rune]) in proposal.explanation

@@ -66,4 +66,3 @@ def baseline(rune, *, exotic=False, natural_stat=None):
 def summary(rune,counts, *, exotic=False,natural_stat=None):
     return {'rune':rune,'reference':reference(rune),'baseline':baseline(rune,exotic=exotic,natural_stat=natural_stat),
             'observed':empirical(counts)}
-

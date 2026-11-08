@@ -10,7 +10,7 @@ from math import isfinite
 from forgely_dofocus import (reference, RUNE_CHOICES as DOFOCUS_CHOICES,
                              WEIGHT_PER_POINT, canonical_stat)
 
-MODES = ('Chances maximales', 'Budget optimisé')
+MODES = ('Chances maximales','Budget optimisé')
 RUNE_CHOICES = {stat:tuple(runes) for stat,runes in DOFOCUS_CHOICES.items()}
 # Keep spellings accepted by earlier objective files.
 for alias in ('Coups critiques','Invocation','Dommages critiques','Dommages poussée'):
@@ -23,11 +23,6 @@ CAP = 101.0
 def finite_number(value, *, nonnegative=False):
     return (isinstance(value, (int, float)) and not isinstance(value, bool)
             and isfinite(value) and (not nonnegative or value >= 0))
-
-
-def known_prices(prices):
-    """Missing/invalid is unknown, never a free rune or a displayable price."""
-    return {r:p for r,p in (prices or {}).items() if finite_number(p,nonnegative=True)}
 
 
 def constraints(jets, natural_max, *, complete_profile=True, cap=CAP):
@@ -73,10 +68,9 @@ def constraints(jets, natural_max, *, complete_profile=True, cap=CAP):
 
 
 def objective_mode(value):
-    """Retain legacy settings; old economy preference maps to the new mode."""
-    if value in ('Économique', 'Budget optimisé'):
-        return MODES[1]
-    if value in (*MODES, 'Prudent', 'Rapide', 'Jet parfait'):
+    """Legacy economic preferences migrate to the sole target-first mode."""
+    if value in MODES:return value
+    if value in (*MODES, 'Économique', 'Budget optimisé', 'Prudent', 'Rapide',
+                 'Jet propre', 'Jet parfait', 'Exo PA', 'Exo PM', 'Exo PO'):
         return MODES[0]
     raise ValueError('Mode de recommandation inconnu')
-

@@ -1,0 +1,403 @@
+{
+  "scope": "Jet complet et puits sur les memes crops ; capture et reperage exclus",
+  "cases": [
+    {
+      "name": "gelano",
+      "image_size": [
+        438,
+        651
+      ],
+      "expected_jet": {
+        "Vitalité": 10,
+        "PA": 0
+      },
+      "expected_pool": "0",
+      "tesseract": {
+        "p50_ms": 870.56845,
+        "p95_ms": 1439.6956599999996,
+        "p99_ms": 1622.7883319999999,
+        "runs": 8,
+        "exact_reads": 8,
+        "outputs": [
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Vitalité": 10,
+              "PA": 0
+            },
+            "pool": "0.0",
+            "exact": true
+          }
+        ]
+      },
+      "cv_numeric": {
+        "p50_ms": 0.27845,
+        "p95_ms": 0.7092299999999994,
+        "p99_ms": 1.0942759999999998,
+        "runs": 500,
+        "exact_reads": 500,
+        "output": {
+          "jet": {
+            "Vitalité": 10,
+            "PA": 0
+          },
+          "pool": "0",
+          "fields": {
+            "Vitalité": {
+              "text": "10",
+              "accepted": true,
+              "error": null
+            },
+            "PA": {
+              "text": "0",
+              "accepted": true,
+              "error": null
+            },
+            "Puits": {
+              "text": "0",
+              "accepted": true,
+              "error": null
+            }
+          },
+          "accepted": true,
+          "temporal_confirmation": false,
+          "source": "local_glyph_templates"
+        }
+      },
+      "median_ratio": 3126.4803375830493
+    },
+    {
+      "name": "cycloide",
+      "image_size": [
+        442,
+        680
+      ],
+      "expected_jet": {
+        "Vitalité": 342,
+        "Force": 40,
+        "Intelligence": 40,
+        "Agilité": 36,
+        "Dommages Neutre": 8,
+        "Dommages Terre": 8,
+        "Dommages Feu": 10,
+        "Dommages Air": 5,
+        "Initiative": 270,
+        "% Résistance Eau": 6,
+        "Tacle": 0
+      },
+      "expected_pool": "0.1",
+      "tesseract": {
+        "p50_ms": 1028.9378000000002,
+        "p95_ms": 1183.575355,
+        "p99_ms": 1185.655951,
+        "runs": 8,
+        "exact_reads": 8,
+        "outputs": [
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          },
+          {
+            "jet": {
+              "Force": 40,
+              "Intelligence": 40,
+              "Agilité": 36,
+              "Dommages Neutre": 8,
+              "Dommages Terre": 8,
+              "Dommages Feu": 10,
+              "Dommages Air": 5,
+              "Initiative": 270,
+              "% Résistance Eau": 6,
+              "Tacle": 0,
+              "Vitalité": 342
+            },
+            "pool": "0.1",
+            "exact": true
+          }
+        ]
+      },
+      "cv_numeric": {
+        "p50_ms": 1.27115,
+        "p95_ms": 2.086854999999999,
+        "p99_ms": 2.6484649999999994,
+        "runs": 500,
+        "exact_reads": 500,
+        "output": {
+          "jet": {
+            "Vitalité": 342,
+            "Force": 40,
+            "Intelligence": 40,
+            "Agilité": 36,
+            "Dommages Neutre": 8,
+            "Dommages Terre": 8,
+            "Dommages Feu": 10,
+            "Dommages Air": 5,
+            "Initiative": 270,
+            "% Résistance Eau": 6,
+            "Tacle": 0
+          },
+          "pool": "0.1",
+          "fields": {
+            "Vitalité": {
+              "text": "342",
+              "accepted": true,
+              "error": null
+            },
+            "Force": {
+              "text": "40",
+              "accepted": true,
+              "error": null
+            },
+            "Intelligence": {
+              "text": "40",
+              "accepted": true,
+              "error": null
+            },
+            "Agilité": {
+              "text": "36",
+              "accepted": true,
+              "error": null
+            },
+            "Dommages Neutre": {
+              "text": "8",
+              "accepted": true,
+              "error": null
+            },
+            "Dommages Terre": {
+              "text": "8",
+              "accepted": true,
+              "error": null
+            },
+            "Dommages Feu": {
+              "text": "10",
+              "accepted": true,
+              "error": null
+            },
+            "Dommages Air": {
+              "text": "5",
+              "accepted": true,
+              "error": null
+            },
+            "Initiative": {
+              "text": "270",
+              "accepted": true,
+              "error": null
+            },
+            "% Résistance Eau": {
+              "text": "6",
+              "accepted": true,
+              "error": null
+            },
+            "Tacle": {
+              "text": "0",
+              "accepted": true,
+              "error": null
+            },
+            "Puits": {
+              "text": "0,1",
+              "accepted": true,
+              "error": null
+            }
+          },
+          "accepted": true,
+          "temporal_confirmation": false,
+          "source": "local_glyph_templates"
+        }
+      },
+      "median_ratio": 809.4542736891792
+    }
+  ],
+  "limitations": [
+    "Captures CV utilisees pour la calibration : pas de precision independante ni generalisable.",
+    "Repetitions des memes deux images, pas de nouvelles sessions de jeu.",
+    "Tesseract utilise la chaine actuelle de Forgely, pas une optimisation experimentale des seules ROIs numeriques.",
+    "Profils CV partiels et tailles fixes ; resultats inconnus hors calibration.",
+    "Aucune mesure du delai affichage-apparition ni de la capture dans ces chiffres."
+  ],
+  "cv_full_frame_tracking": {
+    "p50_ms": 1.53275,
+    "p95_ms": 2.50167,
+    "p99_ms": 3.115114000000001,
+    "runs": 100,
+    "exact_reads": 100,
+    "scope": "Image complete + suivi ancre + masques + jet et puits ; capture exclue. Ancre issue de la meme image."
+  },
+  "tesseract_full_frame": {
+    "p50_ms": 1326.6865,
+    "p95_ms": 1395.33607,
+    "p99_ms": 1401.438254,
+    "runs": 3,
+    "exact_reads": 3,
+    "scope": "Image complete + zones atelier + jet et puits ; capture exclue, caches vides."
+  }
+}

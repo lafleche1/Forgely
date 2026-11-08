@@ -1,0 +1,53 @@
+{
+  "image_size": [
+    230,
+    76
+  ],
+  "scale_tag": "padgref-negative-live-1536",
+  "fields": [
+    {
+      "name": "Tacle",
+      "kind": "stat",
+      "box": {
+        "x": 149,
+        "y": 15,
+        "w": 12,
+        "h": 12
+      },
+      "guard_box": {
+        "x": 164,
+        "y": 15,
+        "w": 30,
+        "h": 12
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Esquive PM",
+      "kind": "stat",
+      "box": {
+        "x": 150,
+        "y": 50,
+        "w": 11,
+        "h": 15
+      },
+      "guard_box": {
+        "x": 165,
+        "y": 50,
+        "w": 61,
+        "h": 15
+      },
+      "guard": "guard-001.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "-",
+    "3",
+    "4"
+  ]
+}

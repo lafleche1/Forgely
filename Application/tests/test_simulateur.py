@@ -6,12 +6,12 @@ class TestSimulateur(unittest.TestCase):
         r=simulate_target('Vi',0,10,0,100,1,0,0,trials=100,max_attempts=5)
         self.assertEqual(r.completed,100)
         self.assertEqual(r.mean_attempts,2)
-        self.assertEqual(r.mean_cost,200)
+        self.assertFalse(hasattr(r,'mean_cost'))
         self.assertEqual(r.sc,200)
     def test_no_pool_failure(self):
         r=simulate_target('Vi',0,10,0,100,0,0,1,trials=100,max_attempts=5)
         self.assertEqual(r.completed,0)
-        self.assertEqual(r.mean_cost,0)
+        self.assertFalse(hasattr(r,'mean_cost'))
     def test_sn_uses_pool(self):
         r=simulate_target('Vi',0,10,2,100,0,1,0,trials=10)
         self.assertEqual(r.completed,10)

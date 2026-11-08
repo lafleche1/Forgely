@@ -32,6 +32,11 @@ def parse_jet(text):
         line=re.sub(r'\bdommage\b','dommages',line)
         # OCR sometimes reads the zero of a stat as capital O (e.g. O Tacle).
         line=re.sub(r'(?<![\w])o(?=\s+tacle\b)', '0', line)
+        # A min/max pair supplies table-row context; never read an item name
+        # such as OPA or missing text as a zero-valued stat.
+        if re.match(r'^\s*\d{1,4}\s+\d{1,4}\s+',line):
+            line=re.sub(r'(?<![\w])o(?=\s*(?:pa|pm)\b)','0',line)
+
         # Icons can touch the value, and OCR can insert punctuation.
         line=re.sub(r'(?<=\d)[|:]\s*(?=[a-z])', ' ', line)
         # OCR may place the percent sign before or after the number.
@@ -71,6 +76,9 @@ def read_jet(image,extract_text):
 # This is independent of the position of the Min/Max header and does not
 # presume the first stat is Vitalité (other items may not have Vitalité).
 _FIRST_ROW_FAILURES = {}
+# Successful edge-row recovery is also reused only for identical pixels.
+# A short TTL retains periodic OCR retries; changed frames bypass it immediately.
+_FIRST_ROW_SUCCESSES = {}
 
 def green_effect_mask(patch):
     """Extract green numbers + labels without relying on a fixed row offset."""
@@ -113,7 +121,12 @@ def read_first_effect_row(patch, ocr_engine=None):
     import hashlib
     from time import monotonic
     from PIL import ImageOps
-    signature = (patch.size, patch.mode, hashlib.sha256(patch.tobytes()).digest())
+    import os
+    signature = (patch.size, patch.mode, hashlib.sha256(patch.tobytes()).digest(),
+                 pytesseract.pytesseract.tesseract_cmd, os.environ.get("TESSDATA_PREFIX"))
+    cached = _FIRST_ROW_SUCCESSES.get(signature)
+    if cached and monotonic() - cached[1] < 8.0:
+        return cached[0]
     if monotonic() - _FIRST_ROW_FAILURES.get(signature, -1e10) < 8.0:
         return ''
     w, h = patch.size
@@ -135,7 +148,11 @@ def read_first_effect_row(patch, ocr_engine=None):
             parsed = parse_jet(raw)
             if 'Vitalité' in parsed:
                 _FIRST_ROW_FAILURES.pop(signature, None)
-                return f"{parsed['Vitalité']} Vitalité"
+                result = f"{parsed['Vitalité']} Vitalité"
+                if len(_FIRST_ROW_SUCCESSES) >= 32:
+                    _FIRST_ROW_SUCCESSES.pop(next(iter(_FIRST_ROW_SUCCESSES)))
+                _FIRST_ROW_SUCCESSES[signature] = (result, monotonic())
+                return result
     # Equipment without Vitalité must not trigger ten identical subprocesses
     # on every confirmation. Changed pixels always bypass this failure cache.
     if len(_FIRST_ROW_FAILURES) >= 32:
@@ -354,4 +371,3 @@ def read_effects_ocr(patch, ocr):
         except Exception:
             pass
     return text
-

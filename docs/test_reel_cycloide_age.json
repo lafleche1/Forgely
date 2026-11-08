@@ -1,0 +1,217 @@
+{
+  "scope": "Independent exported before/after images, no new calibration; capture and UI excluded",
+  "expected_jet": {
+    "Vitalité": 297,
+    "Force": 38,
+    "Intelligence": 40,
+    "Agilité": 39,
+    "Dommages Neutre": 7,
+    "Dommages Terre": 7,
+    "Dommages Feu": 0,
+    "Dommages Air": 1,
+    "Initiative": 142,
+    "% Résistance Eau": 2,
+    "Tacle": 0
+  },
+  "cases": [
+    {
+      "stamp": "20261107_224701",
+      "expected_pool": 2.9,
+      "image_size": [
+        442,
+        625
+      ],
+      "cv": {
+        "median_ms": 132.49330001417547,
+        "result": {
+          "jet": {},
+          "pool": null,
+          "fields": {
+            "Puits": {
+              "accepted": false,
+              "error": "libelle_ou_position_modifie"
+            },
+            "Vitalité": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Force": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Intelligence": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Agilité": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Neutre": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Terre": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Feu": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Air": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Initiative": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "% Résistance Eau": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Tacle": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            }
+          },
+          "accepted": false,
+          "temporal_confirmation": false,
+          "source": "local_glyph_templates"
+        },
+        "exact": false
+      },
+      "tesseract_numbers": {
+        "ms": 1578.8961000507697,
+        "jet": {
+          "Vitalité": 297,
+          "Force": 38,
+          "Intelligence": 40,
+          "Agilité": 39,
+          "Dommages Neutre": 7,
+          "Dommages Feu": 0,
+          "Dommages Air": 1,
+          "Initiative": 142,
+          "% Résistance Eau": 2,
+          "Tacle": 0
+        },
+        "pool": 2.9,
+        "raw": "reliquat : 2,9 LA 2s Jg\n((eGsiomieRroury (EUSENNER)\n| Min Max Effets / Carac. Modif.\n251 300 @ 297 Vitalité\n31 40 Ÿ 38 Force\n31 40 @ 40 Intelligence\n31 40 & 39 Agilité\n7 10 € 7 Dommages Neutre\n7 10 @ 0 Dommage Feu\n7 10 & 1 Dommage Air\n201 300 À 142 Initiative\n6 8 © 2% Résistance Eau\n4 6 + 0 Tacle\n|\n",
+        "pool_raw": "reliquat : 2,9 3\n",
+        "exact": false
+      },
+      "tesseract_history": {
+        "ms": 550.3997000632808,
+        "raw": "D GELANO D\n“) Echec\n",
+        "summary": {
+          "visible_stat_changes": 0,
+          "recent_changes": [],
+          "reliquat_mentioned": false,
+          "has_explicit_outcome": true,
+          "rune_attempt_confirmed": false
+        }
+      }
+    },
+    {
+      "stamp": "20261107_224821",
+      "expected_pool": 1.9,
+      "image_size": [
+        442,
+        625
+      ],
+      "cv": {
+        "median_ms": 124.0653499844484,
+        "result": {
+          "jet": {},
+          "pool": null,
+          "fields": {
+            "Puits": {
+              "accepted": false,
+              "error": "libelle_ou_position_modifie"
+            },
+            "Vitalité": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Force": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Intelligence": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Agilité": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Neutre": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Terre": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Feu": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Dommages Air": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Initiative": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "% Résistance Eau": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            },
+            "Tacle": {
+              "accepted": false,
+              "error": "libelle_absent_ou_ambigu"
+            }
+          },
+          "accepted": false,
+          "temporal_confirmation": false,
+          "source": "local_glyph_templates"
+        },
+        "exact": false
+      },
+      "tesseract_numbers": {
+        "ms": 1471.7420999659225,
+        "jet": {
+          "Vitalité": 297,
+          "Force": 38,
+          "Intelligence": 40,
+          "Agilité": 39,
+          "Dommages Neutre": 7,
+          "Dommages Terre": 7,
+          "Dommages Feu": 0,
+          "Dommages Air": 1,
+          "Initiative": 142,
+          "% Résistance Eau": 2,
+          "Tacle": 0
+        },
+        "pool": 1.9,
+        "raw": "reliquat : 1,9 os J\n| Min Max Effets / Carac. Modif.\n251 300 @ 297 Vitalité\n31 40 Ÿ 38 Force\n31 40 6 40 Intelligence\n31 40 & 39 Agilité\n7 10 @ 7 Dommages Neutre\n7 10 Ÿ 7 Dommages Terre\n7 10 @ 0 Dommage Feu\n7 10 & 1 Dommage Air\n201 300 À 142 Initiative\n6 8 © 2% Résistance Eau\n4 6 + 0 Tacle\n",
+        "pool_raw": "reliquat : 1,9 3\n",
+        "exact": true
+      },
+      "tesseract_history": {
+        "ms": 665.2025000657886,
+        "raw": "D GELANO D\n“ Échec\n\nNM) ANNEAU DU CYCLOÏDE D\n=) -reliquat\n",
+        "summary": {
+          "visible_stat_changes": 0,
+          "recent_changes": [],
+          "reliquat_mentioned": true,
+          "has_explicit_outcome": true,
+          "rune_attempt_confirmed": false
+        }
+      }
+    }
+  ]
+}

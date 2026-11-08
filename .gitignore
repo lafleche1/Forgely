@@ -33,3 +33,12 @@ pytest-of-*/
 
 # Versioned read-only simulation reference, not player observations
 !Application/assets/dofocus/reference.sqlite3
+
+# Local training runs, temporary test/build output and downloaded icon cache
+.test-tmp/
+Entrainements/
+Application/assets/equipment_icons/
+
+# Restored copies and assembled release archives
+Forgely-complet-*/
+distribution/restauration-*/

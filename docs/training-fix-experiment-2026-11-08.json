@@ -1,0 +1,184 @@
+{
+  "training": {
+    "run_id": "20261108-021833-877007-14092-5ff083",
+    "signature": "aa17cd07f0523ad19fcf9fc2bb61e633bc1b75ff2eedfd3d448814d30c96c79f",
+    "item_id": 14092,
+    "item_name": "Anneau du Cycloïde",
+    "source": "simulation",
+    "real_observations": 0,
+    "automatically_enabled_in_live_advice": false,
+    "eligible_for_advice": false,
+    "advice_validation": {
+      "eligible": false,
+      "criterion": "complete_jet_wilson95_superiority",
+      "minimum_episodes": 50,
+      "reason": "no_demonstrated_gain",
+      "intervals": {
+        "learned": [
+          0.7995121871510563,
+          0.8971071486469359
+        ],
+        "baseline": [
+          0.744558352034882,
+          0.8539455843549424
+        ]
+      }
+    },
+    "simulation_contribution_only": true,
+    "model_version": "dofocus-2026-11-07-6a559153678e",
+    "policy_version": "tabular-no-currency-4",
+    "reward_version": "complete-target-first-2",
+    "episodes_completed": 100,
+    "prior_episodes": 0,
+    "episodes_total": 100,
+    "training_seed_start": 0,
+    "training_seed_end": 100,
+    "resumed_from": null,
+    "cancelled": false,
+    "training_successes": 65,
+    "training_runes": {
+      "Do Terre": 1008,
+      "Vi": 768,
+      "Do Neutre": 1017,
+      "Do Feu": 919,
+      "Fo": 86,
+      "Ra Fo": 95,
+      "Do Air": 923,
+      "Pa Age": 648,
+      "Pa Tac": 103,
+      "Ine": 1027,
+      "Ra Ine": 54,
+      "Pa Ine": 647,
+      "Ra Vi": 56,
+      "Pa Vi": 690,
+      "Age": 901,
+      "Pa Fo": 384,
+      "Pa Do Neutre": 90,
+      "Ra Age": 73,
+      "Tac": 1048,
+      "Pa Do Air": 84,
+      "Pa Do Feu": 96,
+      "Ra Ini": 21,
+      "Pa Do Terre": 62,
+      "Ini": 36,
+      "Pa Ini": 43
+    },
+    "configuration": {
+      "item_id": 14092,
+      "targets": {
+        "Vitalité": 290.0,
+        "Force": 30.0,
+        "Intelligence": 40.0,
+        "Agilité": 40.0,
+        "Initiative": 50.0,
+        "Dommages Neutre": 10.0,
+        "Dommages Terre": 10.0,
+        "Dommages Feu": 10.0,
+        "Dommages Air": 10.0,
+        "% Résistance Eau": 0.0,
+        "Tacle": 6.0
+      },
+      "episodes": 100,
+      "max_steps": 200,
+      "evaluation_episodes": 200,
+      "initial_preset": "moyen",
+      "initial_pool": 0.0,
+      "seed": 20261107,
+      "resume": false
+    },
+    "evaluation": {
+      "learned": {
+        "episodes": 200,
+        "successes": 171,
+        "success_rate": 0.855,
+        "mean_attempts": 102.595,
+        "mean_reward": 0.9377067039106197,
+        "stops": 0,
+        "truncated": 29,
+        "unseen_states": 19402
+      },
+      "baseline": {
+        "episodes": 200,
+        "successes": 161,
+        "success_rate": 0.805,
+        "mean_attempts": 107.505,
+        "mean_reward": 0.8827067039106125,
+        "stops": 0,
+        "truncated": 39,
+        "unseen_states": 0
+      }
+    },
+    "evaluation_protocol": {
+      "version": 1,
+      "seed": 20261107,
+      "seed_domain": "evaluation",
+      "seed_derivation": "sha256(seed:domain:index)",
+      "paired_seeds": true,
+      "training_replay": false,
+      "policy_frozen": true,
+      "selection_benchmark": true
+    },
+    "curriculum": {
+      "replayed_episodes": 22,
+      "buffered_failures": 35,
+      "capacity": 64,
+      "evaluation_replay": false,
+      "source": "simulation",
+      "sampling": "reservoir_per_failed_episode",
+      "preserves_horizon": true
+    },
+    "elapsed_seconds": 88.73555390001275,
+    "states": 9339,
+    "limitations": [
+      "Résultats synthétiques du modèle local, pas des taux officiels du jeu.",
+      "État discrétisé : politique approximative, à comparer au témoin.",
+      "Banc fixe utilisé pour sélectionner la meilleure archive ; un audit avec une autre graine reste nécessaire pour établir la généralisation."
+    ],
+    "selection": {
+      "selected_run": "20261108-021833-877007-14092-5ff083",
+      "candidate_selected": true,
+      "criterion": "validation_then_wilson95_lower_bound",
+      "archives_preserved": true
+    }
+  },
+  "audit": {
+    "source": "simulation",
+    "real_observations": 0,
+    "checkpoint_sha256": "2c200d7f25b9ec67a866ae42e8bf1720b52db61ee36cfa3021b60e8b2037db7b",
+    "seed": 20261108,
+    "seed_domain": "independent_audit",
+    "training": false,
+    "promotion": false,
+    "evaluation": {
+      "learned": {
+        "episodes": 200,
+        "successes": 170,
+        "success_rate": 0.85,
+        "mean_attempts": 104.82
+      },
+      "baseline": {
+        "episodes": 200,
+        "successes": 167,
+        "success_rate": 0.835,
+        "mean_attempts": 102.73
+      }
+    },
+    "validation": {
+      "eligible": false,
+      "criterion": "complete_jet_wilson95_superiority",
+      "minimum_episodes": 50,
+      "reason": "no_demonstrated_gain",
+      "intervals": {
+        "learned": [
+          0.7939430617334484,
+          0.892864734123727
+        ],
+        "baseline": [
+          0.7773410172613647,
+          0.8800321587733603
+        ]
+      }
+    },
+    "limitation": "Audit synthétique du modèle local ; aucune amélioration réelle en jeu démontrée."
+  }
+}

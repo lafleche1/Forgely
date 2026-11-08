@@ -12,7 +12,6 @@ class RechercheTests(unittest.TestCase):
     def test_geometrique(self):
         self.assertAlmostEqual(probabilite_au_moins_un_succes(.01,100),1-.99**100)
         self.assertEqual(tentatives_pour_chance(.01,.5),69)
-        self.assertEqual(cout_moyen_jusqu_au_succes(.01,1000),100000)
     def test_pas_de_taux_invente(self):
         self.assertFalse(exemple_exo_lourd()['estimation_dofus3'])
         self.assertEqual(tentatives_pour_chance(0,.5),None)

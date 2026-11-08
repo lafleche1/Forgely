@@ -1,0 +1,230 @@
+{
+  "source": "User-authorized live DOFUS window capture",
+  "purpose": "Independent numeric reader evaluation; not used for glyph calibration",
+  "frames": [
+    {
+      "file": "frame_001.png",
+      "time": "2026-11-07T21:13:44.176Z",
+      "sha256": "cd73a318520622dae71b211aa4bba5e2ad6e3ff54129b98fa4c1c2ed327cbaa2",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_002.png",
+      "time": "2026-11-07T21:13:44.328Z",
+      "sha256": "07c49c689beb89c6234b7ab634e6bacb76ea9af3aaac14c71304f83fd83d9619",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_003.png",
+      "time": "2026-11-07T21:13:44.447Z",
+      "sha256": "c5d8987ce2ff51ced9ed5173c67cf15c2a85e359f346f7ab0740e79a49a3c832",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_004.png",
+      "time": "2026-11-07T21:13:44.567Z",
+      "sha256": "8a145585ea606a789258214163c06a357f09764e69fbc7fe561db17111ee06b7",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_005.png",
+      "time": "2026-11-07T21:13:44.680Z",
+      "sha256": "bda7795a4578f5e33f9cb2e4bcc2327fead2ca28019db31dab8f579b5f0a72ca",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_006.png",
+      "time": "2026-11-07T21:13:44.820Z",
+      "sha256": "4943a85ad23e98869bc03b95d971ddf26b23e815b7978e9c21f20f199aedc86c",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_007.png",
+      "time": "2026-11-07T21:13:44.937Z",
+      "sha256": "0d33cbda80876c63c4a891d904687c659797a30716c91686b7ae2d2336167e2d",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_008.png",
+      "time": "2026-11-07T21:13:45.060Z",
+      "sha256": "d19bd63b8926e1884f8b08b7d50859e70e63c686eff2fc2234117a960e2d3dbd",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_009.png",
+      "time": "2026-11-07T21:13:45.181Z",
+      "sha256": "32935693234c4f0fbd80aa805e7d972206adf998bd64d56e883a4e6dd70a0da1",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_010.png",
+      "time": "2026-11-07T21:13:45.305Z",
+      "sha256": "96320d18e2f44d6acde8675c6827c42d3d6dc1f13af79637a5c4a2cf84f326df",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_011.png",
+      "time": "2026-11-07T21:13:45.452Z",
+      "sha256": "dcf5d7b6d8b6805f9c5e6f15011ef8f54b9e93daf8a710794723af69a3bb31a6",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_012.png",
+      "time": "2026-11-07T21:13:45.570Z",
+      "sha256": "727f7805b73b9f77717b88d4e1ac39934b88cd237f1e4e5841f1720544b8864d",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_013.png",
+      "time": "2026-11-07T21:13:45.675Z",
+      "sha256": "4671ae06ec25792b203b167e42a96d89b5116f25f78ad76eb4390094f1725ff6",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_014.png",
+      "time": "2026-11-07T21:13:45.791Z",
+      "sha256": "f05e4eb23cedf4ed24e6c8a1e5fcf4bf7db33e3d243b02497c5b17d3862554df",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_015.png",
+      "time": "2026-11-07T21:13:45.949Z",
+      "sha256": "fd192624611527c268799e388c9f2eb405a16834d49adececb57f7812aab3ebd",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_016.png",
+      "time": "2026-11-07T21:13:46.090Z",
+      "sha256": "b91d48775591618870dd94d72ef2e7f89bb68c6188c8aacfd9752ae440b0df8d",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_017.png",
+      "time": "2026-11-07T21:13:46.224Z",
+      "sha256": "7c968b7d847bfbd95e1ab369cdef7966a7ffac0b960785779f495eecfc661fdf",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_018.png",
+      "time": "2026-11-07T21:13:46.363Z",
+      "sha256": "5e35a9b635843b55f87471f2a69af84385a84f4c540351094db7d4d5a2b7f27c",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_019.png",
+      "time": "2026-11-07T21:13:46.500Z",
+      "sha256": "6ec5f4f5fc9c1e5f599c86541abfef9066d5f04ed46cce287ca0d7b15085648b",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_020.png",
+      "time": "2026-11-07T21:13:46.610Z",
+      "sha256": "799d890cf4724d49b526a198f5940066233187de0192b2f9b156198b47367c35",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_021.png",
+      "time": "2026-11-07T21:13:46.723Z",
+      "sha256": "99e145a19c0fced436c82be77633299f92373e638ad87a408da7fba3d0eeb0a9",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_022.png",
+      "time": "2026-11-07T21:14:05.150Z",
+      "sha256": "65a2602275d3f24324724e77bc09d3fd9d323da57fba234a173384999eeeb694",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_023.png",
+      "time": "2026-11-07T21:14:13.973Z",
+      "sha256": "19e499cfa54f0d9e1fea3c7bf24be5c7657614c90ffbd156fbf31a651fc3338a",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_024.png",
+      "time": "2026-11-07T21:14:20.446Z",
+      "sha256": "5f917fa78a9171b883adc9a2520b2abfdee15cd6f2a58e9237c3077b90b95741",
+      "width": 1536,
+      "height": 864,
+      "status": "occluded_by_chatgpt"
+    },
+    {
+      "file": "frame_025.png",
+      "time": "2026-11-07T21:14:27.700Z",
+      "sha256": "9381a077b8560601fc9988291dafb6cc34c4b51c17e5c07c9c1168a619fd852e",
+      "width": 1536,
+      "height": 864,
+      "status": "occluded_by_chatgpt"
+    },
+    {
+      "file": "frame_027.png",
+      "time": "2026-11-07T21:14:55.098Z",
+      "sha256": "c6ae9d469767ccfa5934cf7cd882ec3aeaea8a54283ecd396e6397e2e54535a9",
+      "width": 1536,
+      "height": 864,
+      "status": "unannotated"
+    },
+    {
+      "file": "frame_028.png",
+      "time": "2026-11-07T21:15:05.856Z",
+      "sha256": "bc9b3ae6d9e512bc2090b28cffe2e58d3824b53a8342f4e6126053c7d69f4b7f",
+      "width": 1536,
+      "height": 864,
+      "status": "occluded_by_chatgpt"
+    },
+    {
+      "file": "frame_029.png",
+      "time": "2026-11-07T21:15:18.847Z",
+      "sha256": "9423b8af01b4199cfd757ff2425ddf2f548b2eabc5ad1b3f952f0e6e445858ff",
+      "width": 1536,
+      "height": 864,
+      "status": "occluded_by_chatgpt"
+    }
+  ]
+}

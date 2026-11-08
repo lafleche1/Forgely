@@ -1,0 +1,88 @@
+{
+  "new_policy_path": "Entrainements\\recherche-generalisation-20261108\\20261108-023450-692842-14092-bfa388\\policy.json",
+  "previous_policy_path": "Entrainements\\verification-20261108\\20261108-021833-877007-14092-5ff083\\policy.json",
+  "new": {
+    "source": "simulation",
+    "real_observations": 0,
+    "checkpoint_sha256": "02490e96b310266161e683e9de310c9a0779de74e9d336507b1845a7772dedfe",
+    "seed": 20261110,
+    "seed_domain": "independent_audit",
+    "training": false,
+    "promotion": false,
+    "evaluation": {
+      "learned": {
+        "episodes": 1000,
+        "successes": 834,
+        "success_rate": 0.834,
+        "mean_attempts": 107.145
+      },
+      "baseline": {
+        "episodes": 1000,
+        "successes": 860,
+        "success_rate": 0.86,
+        "mean_attempts": 102.598
+      }
+    },
+    "validation": {
+      "eligible": false,
+      "criterion": "complete_jet_wilson95_superiority",
+      "minimum_episodes": 50,
+      "reason": "no_demonstrated_gain",
+      "intervals": {
+        "learned": [
+          0.809668727086498,
+          0.8557749046577932
+        ],
+        "baseline": [
+          0.8371128627361262,
+          0.8801317702816727
+        ]
+      }
+    },
+    "limitation": "Audit synthétique du modèle local ; aucune amélioration réelle en jeu démontrée."
+  },
+  "previous": {
+    "source": "simulation",
+    "real_observations": 0,
+    "checkpoint_sha256": "2c200d7f25b9ec67a866ae42e8bf1720b52db61ee36cfa3021b60e8b2037db7b",
+    "seed": 20261110,
+    "seed_domain": "independent_audit",
+    "training": false,
+    "promotion": false,
+    "evaluation": {
+      "learned": {
+        "episodes": 1000,
+        "successes": 840,
+        "success_rate": 0.84,
+        "mean_attempts": 102.636
+      },
+      "baseline": {
+        "episodes": 1000,
+        "successes": 860,
+        "success_rate": 0.86,
+        "mean_attempts": 102.598
+      }
+    },
+    "validation": {
+      "eligible": false,
+      "criterion": "complete_jet_wilson95_superiority",
+      "minimum_episodes": 50,
+      "reason": "no_demonstrated_gain",
+      "intervals": {
+        "learned": [
+          0.8159826014957384,
+          0.861415107465516
+        ],
+        "baseline": [
+          0.8371128627361262,
+          0.8801317702816727
+        ]
+      }
+    },
+    "limitation": "Audit synthétique du modèle local ; aucune amélioration réelle en jeu démontrée."
+  },
+  "frozen_before_audit": true,
+  "selection_after_audit": false,
+  "advice_selector_audited": false,
+  "real_observations_used": 0
+}

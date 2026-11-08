@@ -1,14 +1,15 @@
 """Forgely local workbench. No game automation, networking or fabricated probabilities.
 
 Catalogue natural bounds are imported only from user-verified CSV. Simulations
-are illustrative cost/risk scenarios and never write to observation tables.
+are illustrative outcome scenarios and never write to observation tables.
 """
 from __future__ import annotations
+from forgely_sqlite import database_connection, transaction as closing_transaction
 import csv
 import json
 import os
-import shutil
 import sqlite3
+import shutil
 import zipfile
 from collections import Counter
 from functools import lru_cache
@@ -23,7 +24,8 @@ from forgely_rules import MODES, objective_mode, finite_number
 
 SETTINGS_PATH = DATA_DIR / 'atelier_preferences.json'
 BOUNDS_PATH = DATA_DIR / 'jets_naturels_verifies.csv'
-STRATEGIES = MODES + ('Prudent', 'Économique', 'Rapide', 'Jet parfait')
+STRATEGIES = MODES + ('Budget optimisé', 'Prudent', 'Économique', 'Rapide', 'Jet parfait')
+
 PRICE_METADATA = ('price_reference', 'price_server', 'price_reference_date', 'price_source')
 
 
@@ -93,11 +95,15 @@ def read_settings(path=SETTINGS_PATH):
     return cfg
 
 def save_settings(settings,path=SETTINGS_PATH):
+    merged=read_settings(path)
+    merged.update(settings)
+    settings=merged
     if settings.get('strategy') not in STRATEGIES:raise ValueError('Stratégie inconnue')
     if not isinstance(settings.get('budget_kamas'),int) or settings['budget_kamas']<0:raise ValueError('Budget invalide')
     prices=settings.get('prices')
     if not isinstance(prices,dict) or any(k not in RUNES or not isinstance(v,int) or v<0 for k,v in prices.items()):
         raise ValueError('Prix de runes invalides')
+    settings['strategy']=objective_mode(settings['strategy'])
     target=Path(path);target.parent.mkdir(parents=True,exist_ok=True)
     tmp=target.with_suffix('.tmp')
     tmp.write_text(json.dumps(settings,ensure_ascii=False,indent=2),encoding='utf8')
@@ -129,16 +135,21 @@ def import_bounds_csv(source,target=BOUNDS_PATH):
 
 def natural_bounds(item,path=BOUNDS_PATH):
     result={}
+    if Path(path)==Path(BOUNDS_PATH):
+        from forgely_equipment_catalog import bundled_bounds
+        result=bundled_bounds(item)
     try:
         with open(path,newline='',encoding='utf8') as f:
             for row in csv.DictReader(f):
-                if key_for(row['equipement'])==key_for(item):result[row['statistique']]=(int(row['min']),int(row['max']))
-    except (OSError,ValueError,KeyError):return {}
+                if key_for(row['equipement'])==key_for(item):
+                    result[row['statistique']]=(int(row['min']),int(row['max']))
+    except (OSError,ValueError,KeyError):pass
     return result
+
 
 def export_observations_csv(target,db_file=DB_FILE,only_item=None):
     """CSV export of real observations, not simulated scenarios."""
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         if only_item:
             rows=db.execute('SELECT captured_at,item,rune,outcome,source FROM observations WHERE item=? ORDER BY id',(only_item,)).fetchall()
         else:
@@ -149,7 +160,7 @@ def export_observations_csv(target,db_file=DB_FILE,only_item=None):
     return len(rows)
 
 def export_item_summary(target,db_file=DB_FILE):
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         rows=db.execute('''SELECT item,rune,COUNT(*),SUM(outcome='SC'),SUM(outcome='SN'),SUM(outcome='EC')
                            FROM observations GROUP BY item,rune ORDER BY item,rune''').fetchall()
     with open(target,'w',encoding='utf-8-sig',newline='') as f:
@@ -162,7 +173,7 @@ def backup_local(target,db_file=DB_FILE,settings_path=SETTINGS_PATH,bounds_path=
     import tempfile
     with tempfile.TemporaryDirectory() as d:
         snapshot=Path(d)/'observations_locales.sqlite3'
-        with connect(db_file) as source, sqlite3.connect(str(snapshot)) as dest:
+        with closing_transaction(connect(db_file)) as source, database_connection(str(snapshot)) as dest:
             source.backup(dest)
         with zipfile.ZipFile(target,'w',compression=zipfile.ZIP_DEFLATED) as z:
             z.write(snapshot,'observations_locales.sqlite3')
@@ -172,19 +183,9 @@ def backup_local(target,db_file=DB_FILE,settings_path=SETTINGS_PATH,bounds_path=
             z.writestr('MANIFESTE.txt','Sauvegarde locale Forgely. Ne pas importer une base SQLite inconnue sans validation.\n')
     return target
 
-def session_cost(item,settings=None,db_file=DB_FILE):
-    """Approximate only: counts observed attempts, cannot know inventory or refund."""
-    cfg=settings if settings is not None else read_settings()
-    with connect(db_file) as db:
-        rows=db.execute('SELECT rune,COUNT(*) FROM observations WHERE item=? GROUP BY rune',(item,)).fetchall()
-    known_cost=sum(n*cfg['prices'][r] for r,n in rows if r in cfg['prices'])
-    unknown=sum(n for r,n in rows if r not in cfg['prices'])
-    return {'known_cost':known_cost,'unpriced_attempts':unknown,'total_attempts':sum(n for _,n in rows)}
-
-
 def observation_cursor(db_file=DB_FILE):
     """Consistent launch boundary for assigned AND unassigned attempts."""
-    with connect(db_file) as db:
+    with closing_transaction(connect(db_file)) as db:
         db.execute('''CREATE TABLE IF NOT EXISTS unassigned_actions (
             id INTEGER PRIMARY KEY AUTOINCREMENT, captured_at TEXT NOT NULL,
             outcome TEXT NOT NULL, evidence TEXT NOT NULL DEFAULT '')''')
@@ -193,34 +194,6 @@ def observation_cursor(db_file=DB_FILE):
         return {table:db.execute(f'SELECT COALESCE(MAX(id),0) FROM {table}').fetchone()[0]
                 for table in ('observations','unassigned_actions')}
 
-
-def cost_since(cursor, prices, db_file=DB_FILE):
-    """Recorded rune consumption since launch, not inventory or guaranteed coverage.
-
-    All items in this application session share the budget. OCR events remain
-    estimates of consumption. Repricing intentionally revalues the whole session.
-    """
-    # Legacy integer cursors conservatively include all unknown-rune attempts.
-    boundary={'observations':cursor,'unassigned_actions':0} if isinstance(cursor,int) else cursor
-    if (not isinstance(boundary,dict) or set(boundary)!= {'observations','unassigned_actions'}
-            or any(not isinstance(v,int) or isinstance(v,bool) or v<0 for v in boundary.values())):
-        raise ValueError('Début de session invalide')
-    with connect(db_file) as db:
-        db.execute('BEGIN')
-        rows=db.execute('SELECT rune,COUNT(*) FROM observations WHERE id>? GROUP BY rune', (boundary['observations'],)).fetchall()
-        exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='unassigned_actions'").fetchone()
-        unassigned=db.execute('SELECT COUNT(*) FROM unassigned_actions WHERE id>?',
-                              (boundary['unassigned_actions'],)).fetchone()[0] if exists else 0
-    known=0.; unknown=unassigned
-    for rune,n in rows:
-        price=prices.get(rune)
-        if not finite_number(price,nonnegative=True):
-            unknown+=n
-        else:
-            known+=n*price
-    return {'known_cost':known,'unpriced_attempts':unknown,
-            'total_attempts':sum(n for _,n in rows)+unassigned,
-            'unassigned_attempts':unassigned,'complete':unknown==0}
 
 def observed_distribution(item,rune,db_file=DB_FILE,min_samples=30):
     from forgely_data import stats
@@ -236,12 +209,12 @@ def illustrative_scenario(rune,attempts,price,sc,sn,ec,seed=11):
     import random
     if rune not in RUNES:raise ValueError('Rune inconnue')
     if not isinstance(attempts,int) or not 1<=attempts<=100000:raise ValueError('Essais invalides')
-    if price<0 or min(sc,sn,ec)<0 or abs(sc+sn+ec-1)>1e-8:raise ValueError('Probabilités invalides')
+    if min(sc,sn,ec)<0 or abs(sc+sn+ec-1)>1e-8:raise ValueError('Probabilités invalides')
     rng=random.Random(seed)
     counts={'SC':0,'SN':0,'EC':0}
     for _ in range(attempts):
         x=rng.random();counts['SC' if x<sc else 'SN' if x<sc+sn else 'EC']+=1
-    return {'rune':rune,'scenarios':attempts,'counts':counts,'assumptions':{'SC':sc,'SN':sn,'EC':ec},'cost_kamas':attempts*price,'is_real_observation':False}
+    return {'rune':rune,'scenarios':attempts,'counts':counts,'assumptions':{'SC':sc,'SN':sn,'EC':ec},'is_real_observation':False}
 
 def advisory_status(plan,jets,pool,verified,item_bounds=None,stats_count=0):
     """Explicit safety gate for probability of final target and stop advice."""
@@ -256,5 +229,3 @@ def advisory_status(plan,jets,pool,verified,item_bounds=None,stats_count=0):
     complete=all(jets[k]>=v['target'] for k,v in wanted.items())
     if complete:return {'stop':'Objectif affiché atteint : envisager d’arrêter','goal_probability':1.0}
     return {'stop':'Objectif en cours : comparer les risques avant de continuer','goal_probability':None}
-
-

@@ -18,7 +18,7 @@ from forgely_observation_mode import load_observation_mode, save_observation_mod
 from forgely_data import connect, insert_observation, insert_unassigned, unassigned_total, stats, recent, RUNES, DB_FILE, DATA_DIR
 from runeforge_observer import extract_text
 from forgely_detection import HistoryTransitionTracker, read_regions, crop_regions
-from forgely_windows import list_dofus_windows, auto_game_window, foreground_handle, is_own_foreground, list_selectable_windows, window_by_handle
+from forgely_windows import list_dofus_windows, auto_game_window, foreground_handle, is_own_foreground, list_selectable_windows, window_by_handle, physical_pixels, read_window_bounds
 from forgely_overlay import FloatingBadge
 from forgely_rune_icons import rune_icon_path
 from forgely_typographie import families as font_families
@@ -31,11 +31,13 @@ from forgely_items import item_list, register_item, find_item, remember_candidat
 from forgely_item_vision import crop_item_header, identify_known, possible_unknown, recognize_item_header
 from forgely_item_icons import crop_item_icon, normalize_icon, ItemVisualTracker, history_icon_for_name, history_icon_by_visual_row
 from forgely_history_identity import resolve_history_identity, visible_history_names, latest_visible_history_name
-from forgely_atelier import read_atelier, crop_zone, parse_reliquat, choose_reliquat, title_candidates
+from forgely_atelier import read_atelier, crop_zone, parse_reliquat, choose_reliquat, title_candidates, focus_workshop
 from forgely_jet import parse_jet
 from forgely_item_references import download_references
 from forgely_profile_guidance import compare as compare_theoretical_profile
 from forgely_workshop_readings import WorkshopReadings
+from forgely_equipment_session import ManualEquipmentSession
+from forgely_measured_goals import MeasuredGoals,current_snapshot,bound_session
 from forgely_continuous_identity import (crop_current_item, current_icon,
     effect_signature, CurrentSlotTracker, match_current_item,
     remember_current_item, remember_provisional)
@@ -44,14 +46,16 @@ from forgely_ocr_diagnostic import evaluate as evaluate_ocr
 from forgely_probabilites import reference as rune_reference, summary as rune_summary
 from forgely_decision import advise, Proposal
 from forgely_rules import MODES as OBJECTIVE_MODES, objective_mode
-from forgely_copilote import MODES, player_signal, budget_summary
+from forgely_copilote import MODES, player_signal
 from forgely_context import save_transition, context_rates
+from forgely_learning import complete_learning_profile
+from forgely_expert import build_dashboard, render_dashboard, audit_transition, rules_text
+from forgely_simulation_live import SimulationWorker
+from forgely_simulation_journal import SimulationJournal
 from forgely_labo_live import LiveLaboratory
-from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,observation_cursor,cost_since,
+from forgely_tools import (read_settings,save_settings,STRATEGIES,
     export_observations_csv,export_item_summary,backup_local,import_bounds_csv,
     natural_bounds,illustrative_scenario,advisory_status)
-from forgely_tools import activate_tylezia_reference, price_reference_label
-from forgely_expert import build_dashboard, render_dashboard, audit_transition, rules_text
 from forgely_gallery import verify_goal,save_success,list_successes,export_gallery_json
 
 BG='#211F1B'; PANEL='#302C26'; PANEL2='#423B30'; ACCENT='#778F35'; GOLD='#E0C28C'
@@ -65,12 +69,11 @@ def set_palette(name):
 
 
 def workshop_change_signature(image):
-    """Low-resolution greyscale regions used only for change detection.
+    """Native-resolution semantic regions used only for change detection.
 
     Keep pixels rather than an exact hash: anti-aliasing, blinking cursors and
     animation make exact checksums unstable even with quantisation.
     """
-    from PIL import ImageOps, ImageFilter
     from forgely_atelier import ZONES
     w, h = image.size
     # Full semantic coverage: rune-only and upper-effect changes must not wait
@@ -83,7 +86,9 @@ def workshop_change_signature(image):
     samples = []
     for x1, y1, x2, y2 in regions:
         patch = image.crop((int(x1*w), int(y1*h), int(x2*w), int(y2*h)))
-        patch = ImageOps.grayscale(patch).resize((96, 96)).filter(ImageFilter.MedianFilter(3))
+        # Keep native text pixels: a changed digit must not disappear during
+        # reduction of a tall history/effects panel to a 96-pixel thumbnail.
+        patch = patch.convert('RGB')
         samples.append(patch.tobytes())
     return tuple(samples)
 
@@ -100,7 +105,7 @@ def workshop_significantly_changed(previous, current):
         difference = ImageChops.difference(Image.frombytes('L',(len(old),1),old),
                                           Image.frombytes('L',(len(new),1),new))
         changed = sum(difference.histogram()[36:])
-        if changed >= max(12, int(len(new) * 0.012)):
+        if changed >= 6:
             return True
     return False
 
@@ -272,6 +277,20 @@ class GameCapture:
         self.capture_failures = 0
         self.last_good_capture_ns = 0
         self._screen=threading.local()
+        self._workshop_locators=threading.local()
+        self.reacquire_layout=threading.Event()
+
+    def _focus_workshop(self, image, handle):
+        from forgely_workshop_layout import WorkshopLocator
+        locator = getattr(self._workshop_locators, 'locator', None)
+        if locator is None:
+            locator = self._workshop_locators.locator = WorkshopLocator()
+        if self.reacquire_layout.is_set():
+            self.reacquire_layout.clear()
+            locator.transform=None
+            locator.last_search=-1e10
+        normalized = locator.normalize(image, handle)
+        return focus_workshop(normalized)
 
     def _foreground_image(self, window):
         """Reuse MSS only on its creating thread; convert BGRA in native Pillow."""
@@ -294,6 +313,39 @@ class GameCapture:
             del self._screen.session
             session.close()
 
+    def _native_image(self, window):
+        """PrintWindow renders the outer HWND; OCR sees only the client area."""
+        outer = getattr(window, 'outer_rect', None)
+        if outer is None:
+            return capture_window_native(window._hWnd, window.width, window.height)
+        left, top, right, bottom = outer
+        image = capture_window_native(window._hWnd, right-left, bottom-top)
+        if image is None or image.size != (right-left, bottom-top):
+            return None
+        box = (window.left-left, window.top-top,
+               window.left-left+window.width, window.top-top+window.height)
+        if not (0 <= box[0] < box[2] <= image.width and 0 <= box[1] < box[3] <= image.height):
+            return None
+        client = image.crop(box)
+        # A rendered title bar can mask a black GPU client in the outer-frame
+        # check. Validate the exact surface that is about to enter OCR.
+        from PIL import ImageStat
+        if max(ImageStat.Stat(client.resize((64, 36))).stddev) < 5:
+            return None
+        return client
+
+    def _check_geometry(self, window):
+        """Discard a frame if a mode switch/move happened during acquisition."""
+        client = getattr(window, 'client_rect', None)
+        if client is not None:
+            try:
+                current = read_window_bounds(window._hWnd)
+            except OSError as exc:
+                raise GameNotForeground(str(exc)) from exc
+            if current != (window.outer_rect, client):
+                raise GameNotForeground('Affichage DOFUS modifié · recadrage automatique en cours')
+
+    @physical_pixels()
     def capture(self):
         active = foreground_handle()
         candidates = list_dofus_windows()
@@ -319,22 +371,32 @@ class GameCapture:
         # this case; PrintWindow frequently returns black on GPU games.
         if foreground_belongs_to_game(active,self.last_handle):
             image=self._foreground_image(w)
+            if not foreground_belongs_to_game(foreground_handle(),self.last_handle):
+                raise GameNotForeground('Focus modifie pendant la capture : image ecartee, attente de DOFUS.')
+            self._check_geometry(w)
             self.debug_stage='Capture DOFUS au premier plan · OCR en cours'
-            return image,w.title
+            return self._focus_workshop(image, self.last_handle),w.title
         # When the diagnostic / overlay owns focus, do not capture its pixels.
         # PrintWindow can capture independently of the foreground app, if the
         # game's renderer supports it.
         try:
-            img=capture_window_native(self.last_handle,w.width,w.height)
+            img=self._native_image(w)
         except (OSError,ValueError):
             img=None
         if img is None:
             self.debug_stage='DOFUS identifié · capture native indisponible (jeu GPU) ; cliquer sur DOFUS pour lire'
             raise GameNotForeground(self.debug_stage)
+        self._check_geometry(w)
         self.debug_stage='Capture native DOFUS · OCR en cours'
-        return img,w.title
+        focused=self._focus_workshop(img,self.last_handle)
+        locator=getattr(self._workshop_locators,'locator',None)
+        if locator is not None and not locator.verified:
+            self.debug_stage='Capture native non exploitable : atelier non cadre ; remets DOFUS au premier plan.'
+            raise GameNotForeground(self.debug_stage)
+        return focused,w.title
 
 
+    @physical_pixels()
     def probe_other_workshops(self, reader):
         """Probe other accounts only after OCR has failed on the current one.
 
@@ -361,12 +423,16 @@ class GameCapture:
                     continue
             else:
                 try:
-                    img=capture_window_native(handle,w.width,w.height)
+                    img=self._native_image(w)
                 except (OSError,ValueError):
                     img=None
                 if img is None:
                     continue
-            if reader(img):
+            try:
+                self._check_geometry(w)
+            except GameNotForeground:
+                continue
+            if reader(self._focus_workshop(img, handle)):
                 self.probe_hits[handle]=self.probe_hits.get(handle,0)+1
                 if self.probe_hits[handle]>=2:
                     self.probe_hits.clear()
@@ -394,9 +460,11 @@ def ocr_engine_status():
 class Forgely(tk.Tk):
     def __init__(self):
         super().__init__()
+        from forgely_tools import activate_tylezia_reference
+        activate_tylezia_reference()
         self.theme_name=load_theme()
         set_palette(self.theme_name)
-        self.title('Forgely · L’atelier — v22.05')
+        self.title('Forgely · L’atelier - v22.14')
         screen_w=self.winfo_screenwidth()
         screen_h=self.winfo_screenheight()
         self.geometry(f'{min(1220, max(740, screen_w-70))}x{min(790, max(510, screen_h-110))}')
@@ -407,16 +475,16 @@ class Forgely(tk.Tk):
         except Exception: pass
         self.window_name=tk.StringVar(value='Détection automatique')
         self.item=tk.StringVar(value='')
+        self.manual_equipment=None
+        self.equipment_mode=tk.StringVar(value='manual')
+        self.equipment_picker=None
         self.rune=tk.StringVar(value='Vi')
         self.result=tk.StringVar(value='SC')
         self.filter_rune=tk.StringVar(value='Toutes')
         self.mode=tk.StringVar(value='Observateur silencieux')
-        self.goal_mode=tk.StringVar(value='Jet propre')
+        self.goal_mode=tk.StringVar(value='')
+        self.perfect_goal_checked=tk.BooleanVar(value=False)
         self.observation_only=load_observation_mode(DATA_DIR)
-        cfg=activate_tylezia_reference()
-        self.budget_kamas=tk.StringVar(value=str(cfg['budget_kamas']))
-        self.rune_prices=dict(cfg['prices'])
-        self.budget_start_cursor=observation_cursor()
         self._verified_item_context=None
         self.status=tk.StringVar(value='Prêt à observer · Stockage uniquement sur ton PC')
         self.last_detected=tk.StringVar(value='Aucune tentative détectée')
@@ -433,6 +501,15 @@ class Forgely(tk.Tk):
             pass
         self.stop_event=threading.Event()
         self.messages=queue.Queue()
+        self.simulation_journal=SimulationJournal(DATA_DIR/'simulations.sqlite3')
+        self.simulator=SimulationWorker(on_ready=self.publish_simulation,
+            real_for=lambda item,rune,jet,pool:self.live_laboratory.estimate(item,rune,jet,pool),
+            experience_for=lambda item,rune,jet,pool,targets,bounds:self.live_laboratory.experience(item,rune,jet,pool,targets,bounds))
+        self._simulation_key=None
+        self.simulation_io_error=None
+        self._virtual_totals={}
+        self.simulation_totals=tk.StringVar(value='Réelles : 0 · Simulées : 0 · Total : 0')
+        threading.Thread(target=self.load_virtual_totals,name='Forgely-Stats-virtuelles',daemon=True).start()
         # UI only consumes recent visual observations; historical events remain queued.
         self.latest_observation_id = 0
         self.last_observation_delay_ms = None
@@ -475,6 +552,8 @@ class Forgely(tk.Tk):
         self.missing_item_frames=0
         self.plan=load_plan()
         self.workshop_readings=WorkshopReadings(required_frames=3)
+        self.pool_tracking_status={'value':None,'origin':'unknown'}
+        self.measured_goals=MeasuredGoals()
         self.workshop_active=False
         self.first_item_name_seen=False
         self.before_identity_reading=None
@@ -486,7 +565,18 @@ class Forgely(tk.Tk):
         self.pending_transition=None
         self.last_transition_audit=None
         self.context_saved=0
+        self.reading_reviews=None
+        self.reading_review_status={}
+        self.reading_review_error=''
+        try:
+            from forgely_reading_review import ReviewStore
+            from forgely_review_collection import ReviewCollector
+            self.reading_reviews=ReviewCollector(ReviewStore(DATA_DIR/'vision_v1'/'reviews.sqlite3'))
+        except (ImportError,OSError) as exc:
+            self.reading_review_error=str(exc)
         self.context_rejected=0
+        self.learning_summary=tk.StringVar(value='Apprentissage en direct : en attente d’une tentative confirmée')
+        self.last_learning=None
         self.current_proposal=None
         self.live_laboratory=LiveLaboratory()
         self.live_laboratory.start()
@@ -500,7 +590,9 @@ class Forgely(tk.Tk):
         self.active_equipment_verified=False
         self._build()
         connect().close()
-        self.overlay=FloatingBadge(self,self.restore,self.toggle_observer,self.close,self.open_equipment_quick, self.open_strategy, self.open_workbench)
+        self.overlay=FloatingBadge(self,self.restore,self.toggle_observer,self.close,self.open_equipment_quick, self.open_strategy, self.open_workbench,on_goals=self.open_floating_goals,
+                                  on_reviews=None,on_perfect=self.toggle_perfect_goal)
+        self.refresh_reading_reviews()
         self.overlay.withdraw()
         self.protocol('WM_DELETE_WINDOW',self.close)
         self.after(40,self.process_messages)
@@ -514,6 +606,27 @@ class Forgely(tk.Tk):
 
     def card(self,parent,pad=15):
         return RoundedCard(parent,bg=PANEL,radius=12)
+
+    def refresh_reading_reviews(self):
+        service=self.reading_reviews
+        count=len(service.store.pending()) if service is not None else 0
+        self.reading_review_status={**self.reading_review_status,'pending':0,
+                                    'automatic_candidates':count}
+        if hasattr(self,'review_button'):
+            self.review_button.pack_forget()
+        if hasattr(self,'overlay'):
+            self.overlay.sync_review(0)
+
+    def show_reading_reviews(self):
+        # Compatibility with old callbacks: user annotation is no longer part
+        # of the product workflow. Archived crops never replace live readings.
+        self.overlay.close_review()
+        self.status.set('Lecture et calibration automatiques actives.')
+
+    def finish_reading_review(self):
+        self.refresh_reading_reviews()
+        self.overlay.close_review()
+        self.status.set('Réponse enregistrée. Les références candidates attendent des exemples concordants ; le jet actuel n’a pas été modifié.')
 
     def _build(self):
         from forgely_dashboard import AtelierDashboard
@@ -532,7 +645,7 @@ class Forgely(tk.Tk):
         self.label(popup,'Plus d’options',19,bold=True).pack(anchor='w',padx=22,pady=(16,4))
         self.label(popup,'Personnalisation et outils de forgemagie',10,color=MUTED).pack(anchor='w',padx=22,pady=(0,8))
         # Always visible even on small laptop displays.
-        self.button(popup,f'Apparence · {len(THEMES)} thèmes',self.show_appearance).pack(fill='x',padx=22,pady=(0,9))
+        self.button(popup,'Affichage · Obsidienne / Copilote',self.show_appearance).pack(fill='x',padx=22,pady=(0,9))
         area=tk.Frame(popup,bg=BG)
         area.pack(fill='both',expand=True,padx=(12,8),pady=(0,10))
         canvas=tk.Canvas(area,bg=BG,highlightthickness=0,borderwidth=0)
@@ -552,11 +665,10 @@ class Forgely(tk.Tk):
         for title,fn in [
             ('Statistiques et historique',self.show_history),
             ('Détail de la recommandation',self.open_strategy),
+            ('Règles du copilote et poids des runes',self.show_copilot_rules),
             ('Basculer Copilote / Observation',self.toggle_observation_mode),
             ('🌐 Actualiser les jets théoriques DOFUS 3',self.update_public_references),
-            ('Réussites, kamas et sauvegarde',self.open_workbench),
-            ('Prix des runes et budget',self.open_budget),
-            ('Règles du copilote et poids des runes',self.show_copilot_rules),
+            ('Réussites et sauvegarde',self.open_workbench),
             ('Calibrer la reconnaissance des runes',self.learn_icon),
             ('Diagnostic OCR',self.show_ocr_diagnostic),
             ('Exporter les zones de lecture',self.request_debug_capture),
@@ -595,7 +707,10 @@ class Forgely(tk.Tk):
             title=proposal.summary
             detail='Référence Dofocus · '+proposal.explanation[:170]+('… Voir le détail.' if len(proposal.explanation)>170 else '')
         if hasattr(self,'plan_item_lbl'):
-            self.plan_item_lbl.configure(text=self.item.get().strip() or (self.plan['item'] if self.plan else 'Objet à identifier'))
+            manual=getattr(self,'manual_equipment',None)
+            from forgely_dashboard import current_card
+            card=current_card(self)
+            self.plan_item_lbl.configure(text=card['title'])
             self.plan_action_lbl.configure(text=title)
             self.plan_explain_lbl.configure(text=detail)
 
@@ -611,8 +726,19 @@ class Forgely(tk.Tk):
         self.refresh_strategy()
 
     def strategy_current(self):
+        self._simulation_key=None
         if self.observation_only:
             return None
+        from forgely_pricing import book_from_settings,active_price_book
+        settings=read_settings()
+        price_book=book_from_settings(settings) or active_price_book()
+        advice_mode=settings.get('strategy','Chances maximales')
+        measured=getattr(self,'measured_goals',None)
+        if isinstance(measured,MeasuredGoals) and measured.targets:
+            goal_mode=getattr(self,'goal_mode',None)
+            return measured.proposal(current_snapshot(self),
+                item=self.item.get() if self.active_equipment_verified else None,
+                mode=advice_mode,price_book=price_book)
         """Only stable post-fusion OCR, confirmed equipment and saved goal can drive advice."""
         if not self.plan or not self.active_equipment_verified or self.item.get()!=self.plan.get('item'):
             return advise({}, {}, pool=None)
@@ -621,26 +747,31 @@ class Forgely(tk.Tk):
         pool=self.live_pool
         if self.live_after_fusion:
             return advise(jets,targets,pool=pool,after_fusion=True)
+        rune_counts=None
         def records_for(rune):
-            _, counts=stats(item=self.item.get().strip(),rune=rune)
-            return counts
+            nonlocal rune_counts
+            if rune_counts is None:
+                from forgely_data import stats_by_rune
+                rune_counts=stats_by_rune(item=self.item.get().strip())
+            return dict(rune_counts.get(rune, {'SC':0,'SN':0,'EC':0}))
         # No claim of EXO without a verified complete natural profile.
         # A partial imported CSV is useful for known overmax lines only.
-        cfg=read_settings()
-        cost=cost_since(self.budget_start_cursor,cfg['prices'])
-        remaining=None
-        if cfg['budget_kamas']:
-            achieved=bool(targets) and all(s in jets and jets[s]>=v for s,v in targets.items())
-            if not cost['complete'] and not achieved:
-                return Proposal(None,'bloqué','Budget incomplet',
-                    f'{cost["unpriced_attempts"]} tentatives enregistrées sans prix depuis le lancement. '
-                    'Complète les prix ; une rune non identifiée laisse son coût inconnu. '
-                    'Le budget ne peut pas être certifié pour cette session.','dépenses enregistrées')
-            remaining=max(0,cfg['budget_kamas']-cost['known_cost'])
         bounds=natural_bounds(self.item.get().strip())
-        proposal=advise(jets,targets,pool=pool,counts_for=records_for,
-            natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
-            item=self.item.get().strip(),profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
+        experience_lookup=getattr(self.live_laboratory,'experience',None)
+        experience_bounds=complete_learning_profile(self.item.get().strip())
+        simulator=getattr(self,'simulator',None)
+        simulation_context=(simulator.context(self.item.get().strip(),jets,pool,targets,revision=self.live_laboratory.revision)
+            if isinstance(simulator,SimulationWorker) else None)
+        self._simulation_key=simulation_context.key if simulation_context else None
+        from forgely_pricing import active_price_book
+        proposal=advise(jets,targets,pool=pool,counts_for=records_for,price_book=price_book,mode=advice_mode,
+            predictive_policy=True,
+            natural_max=experience_bounds or ({s:v[1] for s,v in bounds.items()} if bounds else None),
+            item=self.item.get().strip(),profile_complete=bool(experience_bounds),
+            contextual_for=lambda rune: self.live_laboratory.estimate(self.item.get().strip(),rune,jets,pool),
+            experience_for=(lambda rune:experience_lookup(self.item.get().strip(),rune,jets,pool,targets,experience_bounds))
+                if callable(experience_lookup) else None,
+            simulation_for=simulation_context.evidence if simulation_context else None)
         # Contextual measurements are the only measured probabilities that can
         # describe a similar *starting state*. Aggregate rates are not forecasts.
         if proposal.rune and proposal.kind!='bloqué':
@@ -652,38 +783,69 @@ class Forgely(tk.Tk):
                 if rates['usable']:
                     from dataclasses import replace
                     perc=rates['percentages']
-                    context_text=(f" Dans {rates['n']} tentatives ayant le même jet observé et la même classe de puits : "
+                    context_text=(f" Dans {rates['n']} tentatives ayant le même jet observé et le même puits : "
                         f"SC {perc['SC']:.1f} %, SN {perc['SN']:.1f} %, EC {perc['EC']:.1f} % ; "
                         f"IC95 % SC {rates['ci95_sc'][0]:.1f}–{rates['ci95_sc'][1]:.1f} %. "
                         "Échantillon OCR non vérifié : indicatif seulement, pas une probabilité calibrée.")
                     proposal=replace(proposal,explanation=proposal.explanation+context_text,
                         evidence='Dofocus · référence ; observations OCR exploratoires séparées')
+        return proposal
+
+    def expert_detail(self,proposal,detail=None):
+        """Add an auditable board without replacing the predictive evidence."""
+        measured=getattr(self,'measured_goals',None)
+        snapshot=current_snapshot(self) if isinstance(measured,MeasuredGoals) and measured.targets else None
+        targets=(measured.targets if isinstance(measured,MeasuredGoals) and measured.targets else
+            {k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None})
+        jets=snapshot[0] if snapshot else self.live_jet or {}
+        pool=snapshot[1] if snapshot else self.live_pool
+        item=self.item.get().strip() if self.active_equipment_verified else None
+        complete=complete_learning_profile(item) if item else None
+        bounds=natural_bounds(item) if item else {}
         previous=getattr(self,'last_transition_audit',None)
-        audit=(previous['audit'] if previous and previous['item']==self.item.get().strip()
+        audit=(previous['audit'] if previous and previous['item']==item
                and previous['after']=={'jet':jets,'pool':pool} else None)
         board=build_dashboard(proposal,jets,targets,pool,
-            natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
-            item=self.item.get().strip(),profile_complete=False,
-            mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining,
-            verified=self.active_equipment_verified,after_fusion=self.live_after_fusion,
-            last_transition=audit)
-        from dataclasses import replace
-        return replace(proposal,estimates=dict(proposal.estimates or {},expert=board))
+            natural_max=complete or ({s:v[1] for s,v in bounds.items()} if bounds else None),
+            profile_complete=bool(complete),item=item,mode=read_settings().get('strategy','Chances maximales'),
+            verified=self.active_equipment_verified or snapshot is not None,
+            after_fusion=False if snapshot else self.live_after_fusion,last_transition=audit)
+        if detail is None:
+            from forgely_predictive import report_text
+            detail=report_text(proposal,jets,targets,complete or None,pool)
+        return render_dashboard(board)+'\n\nDétail du classement :\n'+detail
 
-    def expert_detail(self,proposal):
-        board=(proposal.estimates or {}).get('expert')
-        if board is None:
-            targets={k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None}
-            board=build_dashboard(proposal,self.live_jet or {},targets,self.live_pool,
-                verified=self.active_equipment_verified,after_fusion=self.live_after_fusion)
-        return render_dashboard(board)+'\n\nDétail du classement :\n'+proposal.explanation
+    def show_copilot_rules(self):
+        popup=tk.Toplevel(self)
+        popup.title('Forgely — Règles et poids des runes')
+        popup.configure(bg=BG);popup.geometry('780x650')
+        scroll=ttk.Scrollbar(popup);scroll.pack(side='right',fill='y')
+        text=tk.Text(popup,wrap='word',bg=PANEL,fg=FG,font=(self.ui_fonts['body'],10),
+                     padx=16,pady=16,yscrollcommand=scroll.set)
+        text.pack(fill='both',expand=True);scroll.configure(command=text.yview)
+        text.insert('1.0',rules_text(read_settings()));text.configure(state='disabled')
+        return popup
 
     def waiting_for_item_label(self):
         """Small overlay message while the workshop is readable but item is not."""
         if not self.running or not self.workshop_active or self.active_equipment_verified:
             return None
+        measured=getattr(self,'measured_goals',None)
+        if bound_session(self):
+            return None if current_snapshot(self) is not None else 'Actualisation du jet'
+        if isinstance(measured,MeasuredGoals) and current_snapshot(self):
+            return None if measured.targets else 'Définir le jet souhaité'
+        manual=getattr(self,'manual_equipment',None)
+        readings=getattr(self,'workshop_readings',None)
+        jet_read=bool(getattr(readings,'partial_jet',None))
+        if isinstance(manual,ManualEquipmentSession):
+            if manual.invalidated:return manual.reason
+            return ('Jet lu · association de l’objet' if jet_read
+                    else 'Détection de l’objet choisi')
+        if jet_read:
+            return 'Jet lu · identification de l’objet'
         if self.last_item_candidate:
-            return 'Objet à confirmer'
+            return 'Objet à confirmer' 
         if self.current_slot_tracker.count < 3:
             return 'Lecture de l’objet'
         if self.provisional_slot_id:
@@ -709,16 +871,35 @@ class Forgely(tk.Tk):
                 self.overlay.show_advice(self.waiting_for_item_label() or 'Observation', 'collecte')
             return
         if hasattr(self,'advice_heading'):
-            self.advice_heading.configure(text='CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE')
+            self.advice_heading.configure(text='PROCHAINE RUNE')
         proposal=self.strategy_current()
         self.current_proposal=proposal
         if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
             self.strategy_headline.configure(text=proposal.summary)
         if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
-            self.strategy_explanation.configure(text=self.expert_detail(proposal))
+            self.strategy_explanation.configure(text=proposal.explanation)
         targets={k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None}
-        signal=player_signal(proposal,self.live_jet,targets,self.live_pool,
-            self.active_equipment_verified,self.live_after_fusion,self.goal_mode.get())
+        measured=getattr(self,'measured_goals',None)
+        snapshot=current_snapshot(self) if isinstance(measured,MeasuredGoals) and measured.targets else None
+        if isinstance(measured,MeasuredGoals) and measured.targets:targets=measured.targets
+        signal=player_signal(proposal,snapshot[0] if snapshot else self.live_jet,targets,
+            snapshot[1] if snapshot else self.live_pool,
+            self.active_equipment_verified or snapshot is not None,
+            False if snapshot else self.live_after_fusion,self.goal_mode.get())
+        from forgely_predictive import report_text
+        from forgely_vision_guidance import reference_for
+        report_jet=snapshot[0] if snapshot else self.live_jet or {}
+        report_pool=snapshot[1] if snapshot else self.live_pool
+        report_bounds=reference_for(self.item.get()) if self.active_equipment_verified else {}
+        report_max={k:max(v) for k,v in report_bounds.items()} or None
+        tracking=getattr(self,'pool_tracking_status',None)
+        pool_origin=('calculé' if isinstance(tracking,dict) and tracking.get('origin')=='calculated' else 'lu')
+        self.predictive_report=report_text(proposal,report_jet,targets,report_max,report_pool,pool_origin=pool_origin)
+        self.predictive_report=self.expert_detail(proposal,self.predictive_report)
+        compact_report=report_text(proposal,report_jet,targets,report_max,report_pool,pool_origin=pool_origin,compact=True)
+        if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
+            self.strategy_explanation.configure(text=self.predictive_report)
+        if hasattr(self,'overlay'):self.overlay.show_prediction(compact_report)
         if hasattr(self,'player_risk_label'):
             classification = ''
             if self.active_equipment_verified and self.live_jet:
@@ -736,7 +917,12 @@ class Forgely(tk.Tk):
         if hasattr(self,'home_advice_label'):
             self.home_advice_label.configure(text=signal.title,fg=GOLD if signal.stop else GREEN if proposal.rune else GOLD)
 
-            self.home_advice_detail.configure(text=signal.detail + '  ' + proposal.explanation)
+            sequence=(proposal.estimates or {}).get('objective',{}).get('sequence')
+            if sequence:
+                detail=signal.detail+' Anticipation : jusqu’à '+str(sequence['horizon'])+' poses pour atteindre tout le jet.'
+            else:
+                detail=signal.detail+'  '+proposal.explanation
+            self.home_advice_detail.configure(text=compact_report)
             self._update_main_rune_icon(proposal.rune if not signal.stop else '')
         if hasattr(self,'overlay'):
             self.overlay.show_advice(self.waiting_for_item_label() or ('STOP' if signal.stop else signal.title), signal.risk)
@@ -761,52 +947,6 @@ class Forgely(tk.Tk):
         self.main_rune_photo = None
         self.main_rune_icon.configure(image='', text='FM', width=5, height=3)
 
-    def show_copilot_rules(self):
-        popup=tk.Toplevel(self);popup.title('Forgely — Règles et poids des runes')
-        popup.configure(bg=BG);popup.geometry('780x650')
-        scroll=ttk.Scrollbar(popup);scroll.pack(side='right',fill='y')
-        text=tk.Text(popup,wrap='word',bg=PANEL,fg=FG,font=(self.ui_fonts['body'],10),
-                     padx=16,pady=16,yscrollcommand=scroll.set)
-        text.pack(fill='both',expand=True);scroll.configure(command=text.yview)
-        text.insert('1.0',rules_text(read_settings()));text.configure(state='disabled')
-        return popup
-
-    def open_budget(self):
-        """Manual cost planner; never pretends OCR knows the market price."""
-        popup=tk.Toplevel(self);popup.title('Forgely — Budget de runes')
-        popup.configure(bg=BG);popup.geometry('580x540')
-        cfg=read_settings()
-        self.budget_kamas.set(str(cfg['budget_kamas']))
-        self.label(popup,'Budget des runes',18,bold=True,color=GOLD).pack(anchor='w',padx=20,pady=14)
-        self.label(popup,price_reference_label(cfg),9,color=MUTED,wraplength=530,justify='left').pack(anchor='w',padx=20)
-        self.label(popup,'Budget depuis le lancement (kamas, 0 = sans limite)',10).pack(anchor='w',padx=20,pady=(12,0))
-        tk.Entry(popup,textvariable=self.budget_kamas).pack(fill='x',padx=20)
-        rune=tk.StringVar(value=self.rune.get() or 'Vi')
-        price=tk.StringVar(value=str(cfg['prices'].get(rune.get(),'')))
-        self.label(popup,'Rune',10).pack(anchor='w',padx=20,pady=(12,0))
-        rune_selector=ttk.Combobox(popup,textvariable=rune,values=sorted(RUNES),state='readonly')
-        rune_selector.pack(fill='x',padx=20)
-        rune_selector.bind('<<ComboboxSelected>>',lambda _e:price.set(str(read_settings()['prices'].get(rune.get(),''))))
-        self.label(popup,'Prix unitaire (kamas)',10).pack(anchor='w',padx=20,pady=(12,0))
-        tk.Entry(popup,textvariable=price).pack(fill='x',padx=20)
-        result=self.label(popup,'',10,color=GOLD,wraplength=425,justify='left');result.pack(anchor='w',padx=20,pady=12)
-        def compute():
-            try:
-                fresh=read_settings()
-                if price.get().strip(): fresh['prices'][rune.get().strip()]=int(price.get())
-                fresh['budget_kamas']=int(self.budget_kamas.get() or 0)
-                save_settings(fresh)
-                self.rune_prices=dict(fresh['prices'])
-                cost=cost_since(self.budget_start_cursor,fresh['prices'])
-                remaining=max(0,fresh['budget_kamas']-cost['known_cost']) if fresh['budget_kamas'] else None
-                result.configure(text=f'Dépense enregistrée : {cost["known_cost"]:g} K. '
-                    f'Tentatives sans prix : {cost["unpriced_attempts"]}. '
-                    f'Restant : {remaining if cost["complete"] and remaining is not None else "inconnu ou sans limite"}. '
-                    'Estimation aux prix saisis, tous objets depuis le lancement ; les tentatives non détectées ne sont pas comptées.')
-                self.refresh_strategy()
-            except ValueError: messagebox.showerror('Valeur incorrecte','Saisis des nombres positifs.',parent=popup)
-        self.button(popup,'Enregistrer les prix',compute,primary=True).pack(anchor='w',padx=20)
-
     def open_strategy(self):
         if self.observation_only:
             messagebox.showinfo('Mode Observation', 'Les recommandations sont désactivées. Passe en mode Copilote pour les consulter.')
@@ -830,14 +970,8 @@ class Forgely(tk.Tk):
                 if isinstance(widget,tk.Label):widget.configure(wraplength=max(120,event.width-44))
         canvas.bind('<Configure>',resize_contents)
         popup.attributes('-topmost',True)
-        self.label(contents,'CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE',12,color=GOLD,bold=True).pack(anchor='w',padx=22,pady=(20,5))
-        objective=tk.StringVar(value=read_settings()['strategy'])
-        selector=ttk.Combobox(contents,values=OBJECTIVE_MODES,textvariable=objective,state='readonly')
-        selector.pack(fill='x',padx=22,pady=(4,12))
-        def change_objective(_event=None):
-            cfg=read_settings();cfg['strategy']=objective.get();save_settings(cfg)
-            self.refresh_strategy()
-        selector.bind('<<ComboboxSelected>>',change_objective)
+        self.label(contents,'PROCHAINE RUNE',12,color=GOLD,bold=True).pack(anchor='w',padx=22,pady=(20,5))
+        self.label(contents,'Objectif : atteindre le jet souhaité',10,color=MUTED).pack(anchor='w',padx=22,pady=(4,12))
         proposal=self.strategy_current()
         self.strategy_headline=self.label(contents,proposal.summary,20,bold=True,color=GREEN,wraplength=620,justify='left')
         self.strategy_headline.pack(anchor='w',padx=22,pady=(0,12))
@@ -845,7 +979,6 @@ class Forgely(tk.Tk):
         self.strategy_explanation.pack(anchor='w',padx=22,pady=(0,14))
         self.label(contents,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=620,justify='left').pack(anchor='w',padx=22,pady=(0,12))
         self.button(contents,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
-        self.button(contents,'Prix et budget de cette session',self.open_budget).pack(anchor='w',padx=22,pady=8)
         def close_popup():
             self.strategy_headline=None
             self.strategy_explanation=None
@@ -854,57 +987,10 @@ class Forgely(tk.Tk):
         return popup
 
     def open_plan_editor(self):
-        """Only targets are editable; current values always come from verified OCR."""
-        popup=tk.Toplevel(self);popup.title('Forgely — Définir les jets souhaités')
-        popup.configure(bg=BG);popup.geometry('630x690');popup.transient(self)
-        self.label(popup,'Mes jets souhaités',20,bold=True).pack(anchor='w',padx=22,pady=(19,4))
-        self.label(popup,'L’équipement et les jets actuels sont détectés automatiquement dans DOFUS.',10,color=MUTED,wraplength=570).pack(anchor='w',padx=22,pady=(0,13))
-        equipment=self.label(popup,'',11,bold=True,color=GOLD)
-        equipment.pack(anchor='w',padx=22,pady=(0,8))
-        self.label(popup,'Caractéristique                 Jet actuel (OCR)       Jet souhaité',10,color=GOLD).pack(anchor='w',padx=22,pady=(0,8))
-        holder=tk.Frame(popup,bg=PANEL);holder.pack(fill='both',expand=True,padx=22,pady=(0,12))
-        canvas=tk.Canvas(holder,bg=PANEL,highlightthickness=0);scroll=ttk.Scrollbar(holder,orient='vertical',command=canvas.yview)
-        inside=tk.Frame(canvas,bg=PANEL)
-        inside.bind('<Configure>',lambda e:canvas.configure(scrollregion=canvas.bbox('all')))
-        canvas.create_window((0,0),window=inside,anchor='nw');canvas.configure(yscrollcommand=scroll.set)
-        scroll.pack(side='right',fill='y');canvas.pack(side='left',fill='both',expand=True)
-        fields={}
-        for name in STATS:
-            previous=(self.plan or {}).get('stats',{}).get(name,{}) if self.plan and self.plan.get('item')==self.item.get() else {}
-            target=tk.StringVar(value='' if previous.get('target') is None else str(previous['target']))
-            current=tk.StringVar(value='Non détecté')
-            line=tk.Frame(inside,bg=PANEL);line.pack(fill='x',padx=9,pady=6)
-            tk.Label(line,text=name,anchor='w',width=19,bg=PANEL,fg=FG,font=(self.ui_fonts['body'],10)).pack(side='left')
-            tk.Label(line,textvariable=current,anchor='center',width=13,bg=PANEL,fg=MUTED,font=(self.ui_fonts['body'],10)).pack(side='left',padx=4)
-            tk.Entry(line,textvariable=target,width=10,bg=PANEL2,fg=FG,insertbackground=FG,relief='flat',font=(self.ui_fonts['body'],11),justify='center').pack(side='left',padx=8)
-            fields[name]=(current,target)
-        def refresh():
-            if not popup.winfo_exists(): return
-            name=self.item.get().strip() if self.active_equipment_verified else ''
-            equipment.configure(text='Équipement : '+(name or 'identification en cours'))
-            jet=self.live_jet if name and not self.live_after_fusion else None
-            for stat,(current,_) in fields.items():
-                current.set(str(jet[stat]) if jet is not None and stat in jet else 'Non détecté')
-            popup.after(650,refresh)
-        refresh()
-        def save():
-            name=self.item.get().strip() if self.active_equipment_verified else ''
-            if not name:
-                messagebox.showwarning('Équipement non identifié','Attends que Forgely confirme automatiquement l’équipement avant d’enregistrer les objectifs.',parent=popup)
-                return
-            values={}
-            try:
-                for stat,(_,target) in fields.items():
-                    if target.get().strip():
-                        values[stat]=(None,int(target.get()))
-                self.plan=save_plan(name,values)
-            except (ValueError,TypeError) as exc:
-                messagebox.showerror('Objectif invalide',str(exc),parent=popup);return
-            # Saving goals must not invalidate the identified item or reset live OCR.
-            self.render_plan();self.refresh_stats_now();self.refresh_strategy()
-            self.status.set('Jets souhaités enregistrés pour '+name+' · jets actuels lus automatiquement')
-            popup.destroy()
-        self.button(popup,'✓  Enregistrer mes jets souhaités',save,primary=True).pack(fill='x',padx=22,pady=(0,18))
+        self.open_equipment_picker(goals_only=True)
+
+    def open_floating_goals(self):
+        self.open_equipment_picker(goals_only=True,floating=True)
 
     def make_combo(self,parent,var,values):
         combo=ttk.Combobox(parent,textvariable=var,values=list(values),state='readonly',font=(self.ui_fonts['body'],10))
@@ -939,47 +1025,17 @@ class Forgely(tk.Tk):
         win.geometry('795x670');win.minsize(690,530);win.configure(bg=BG)
         book=ttk.Notebook(win);book.pack(fill='both',expand=True,padx=13,pady=13)
         strategy=tk.Frame(book,bg=PANEL);gallery=tk.Frame(book,bg=PANEL);data=tk.Frame(book,bg=PANEL)
-        book.add(strategy,text='Stratégie et kamas');book.add(gallery,text='Galerie des réussites');book.add(data,text='Données et sauvegarde')
+        book.add(strategy,text='Simulation');book.add(gallery,text='Galerie des réussites');book.add(data,text='Données et sauvegarde')
         def add(parent,text,color=FG,size=10):
             w=self.label(parent,text,size,color=color,wraplength=710,justify='left');w.pack(anchor='w',padx=17,pady=(8,3));return w
         def entry(parent,var,width=20):
             e=tk.Entry(parent,textvariable=var,width=width,font=(self.ui_fonts['body'],11),bg=PANEL2,fg=FG,insertbackground=FG,relief='flat',bd=7)
             e.pack(anchor='w',padx=17,pady=4);return e
-        cfg=read_settings()
-        add(strategy,'STRATÉGIE ET BUDGET',GOLD,13)
-        add(strategy,price_reference_label(cfg),MUTED)
-        chosen=tk.StringVar(value=cfg['strategy']);budget=tk.StringVar(value=str(cfg['budget_kamas']))
-        combo=ttk.Combobox(strategy,values=OBJECTIVE_MODES,textvariable=chosen,state='readonly',width=25)
-        combo.pack(anchor='w',padx=17,pady=7)
-        add(strategy,'Budget depuis le lancement, tous objets (0 = sans limite)');entry(strategy,budget)
-        names=sorted(RUNES);prune=tk.StringVar(value='Vi');price=tk.StringVar(value=str(cfg['prices'].get('Vi','')))
-        add(strategy,'Prix local d’une rune (non synchronisé)')
-        rune_combo=ttk.Combobox(strategy,values=names,textvariable=prune,width=25,state='readonly')
-        rune_combo.pack(anchor='w',padx=17,pady=5)
-        rune_combo.bind('<<ComboboxSelected>>',lambda _e:price.set(str(cfg['prices'].get(prune.get(),''))))
-        entry(strategy,price)
-        def save_preferences():
-            try:
-                b=int(budget.get())
-                prices=dict(cfg['prices'])
-                if price.get().strip():prices[prune.get()]=int(price.get())
-                fresh=dict(read_settings(),strategy=chosen.get(),budget_kamas=b,prices=prices)
-                save_settings(fresh);cfg.clear();cfg.update(fresh)
-                self.refresh_strategy()
-                messagebox.showinfo('Forgely','Préférences enregistrées localement.',parent=win)
-            except (ValueError,TypeError) as exc:messagebox.showerror('Valeur incorrecte',str(exc),parent=win)
-        self.button(strategy,'Enregistrer stratégie, prix et budget',save_preferences,True).pack(anchor='w',padx=17,pady=10)
-        def show_cost():
-            item=self.item.get().strip()
-            if not item:messagebox.showinfo('Équipement','Identifie un équipement avant de calculer son coût.',parent=win);return
-            cost=session_cost(item,cfg)
-            messagebox.showinfo('Coût observé',f'{item}\n{cost["total_attempts"]} tentatives\n'
-                f'Coût connu : {cost["known_cost"]:,} kamas\n'
-                f'Tentatives sans prix : {cost["unpriced_attempts"]}\n'
-                'Estimation partielle : ne tient pas compte du stock initial.',parent=win)
-        self.button(strategy,'Estimer le coût de mon item',show_cost).pack(anchor='w',padx=17)
         add(strategy,'SIMULATEUR — hypothèses, pas statistiques du jeu',GOLD)
         add(strategy,'Les fréquences saisies sont uniquement des scénarios hypothétiques. Aucune simulation ne rejoint les observations.',MUTED)
+        prune=tk.StringVar(value=self.rune.get() or 'Vi')
+        add(strategy,'Rune à simuler')
+        ttk.Combobox(strategy,values=sorted(RUNES),textvariable=prune,state='readonly',width=25).pack(anchor='w',padx=17,pady=7)
         prob=tk.StringVar(value='0.20');count=tk.StringVar(value='1000')
         line=tk.Frame(strategy,bg=PANEL);line.pack(fill='x',padx=17)
         for lab,var in [('SC supposé (0 à 1)',prob),('Nombre d’essais',count)]:
@@ -989,9 +1045,9 @@ class Forgely(tk.Tk):
             try:
                 p=float(prob.get());n=int(count.get());
                 if not 0<=p<=1:raise ValueError('SC doit être entre 0 et 1')
-                result=illustrative_scenario(prune.get(),n,int(cfg['prices'].get(prune.get(),0)),p,0,1-p)
+                result=illustrative_scenario(prune.get(),n,0,p,0,1-p)
                 messagebox.showinfo('Simulation illustrative',f'{n} essais hypothétiques\nSC {result["counts"]["SC"]}\n'
-                    f'EC {result["counts"]["EC"]}\nCoût théorique : {result["cost_kamas"]:,} kamas\n'
+                    f'EC {result["counts"]["EC"]}\n'
                     'Aucun résultat ajouté aux statistiques réelles.',parent=win)
             except (ValueError,TypeError) as exc:messagebox.showerror('Simulation',str(exc),parent=win)
         self.button(strategy,'Simuler ces hypothèses',simulate).pack(anchor='w',padx=17,pady=10)
@@ -1074,32 +1130,251 @@ class Forgely(tk.Tk):
     def show_dashboard(self): pass
 
     def open_equipment_quick(self):
-        """Read-only automatic equipment detection: no manual item selection."""
         popup=tk.Toplevel(self)
-        popup.title('Forgely — Détection automatique de l’équipement')
+        popup.title('Forgely - Identification de l’objet')
         popup.configure(bg=BG)
-        popup.geometry('530x320')
-        popup.attributes('-topmost',True)
-        self.label(popup,'Équipement détecté automatiquement',17,bold=True).pack(
-            anchor='w',padx=19,pady=(19,12))
-        detected=self.label(popup,'',12,bold=True,color=GOLD,wraplength=480)
-        detected.pack(anchor='w',padx=19,pady=(0,12))
-        detail=self.label(popup,'',10,color=MUTED,wraplength=480,justify='left')
-        detail.pack(anchor='w',padx=19,pady=(0,15))
-        def update():
-            if not popup.winfo_exists(): return
-            if self.active_equipment_verified and self.item_selection_source=='ocr':
-                detected.configure(text='✓ '+self.item.get().strip(),fg=GREEN)
-                detail.configure(text='Nom confirmé par les lectures automatiques. Les jets actuels sont lus depuis DOFUS.')
+        popup.geometry('510x300')
+        self.label(popup,'Comment identifier ton objet ?',18,bold=True).pack(anchor='w',padx=20,pady=18)
+        self.label(popup,'Automatique : Forgely lit le nom et le logo dans DOFUS.\n'
+            'Manuelle : choisis ton objet dans le catalogue, puis ton jet cible.',
+            11,color=MUTED,wraplength=460,justify='left').pack(anchor='w',padx=20,pady=(0,15))
+        def choose(mode):
+            self.set_equipment_mode(mode)
+            popup.destroy()
+            if mode=='manual':self.open_equipment_picker()
+        self.button(popup,'Détection automatique',lambda:choose('automatic')).pack(fill='x',padx=20,pady=5)
+        self.button(popup,'Sélection manuelle de l’objet',lambda:choose('manual'),primary=True).pack(fill='x',padx=20,pady=5)
+
+    def set_equipment_mode(self,mode):
+        """Changing identity source starts a fresh, unverified workshop context."""
+        if mode not in ('manual','automatic'):
+            raise ValueError('Mode d’identification inconnu')
+        if self.running:self.toggle_observer()
+        picker=getattr(self,'equipment_picker',None)
+        if picker is not None and picker.winfo_exists():picker.close()
+        self.equipment_picker=None
+        self.equipment_mode.set(mode)
+        self.manual_equipment=None
+        self.measured_goals=MeasuredGoals()
+        self.perfect_goal_checked.set(False)
+        self.goal_mode.set('')
+        self.current_slot_tracker=CurrentSlotTracker()
+        self.item_visual_tracker.reset()
+        self.workshop_readings.reset()
+        self.active_equipment_verified=False
+        self._verified_item_context=None
+        self.item_selection_source='none'
+        self.item.set('')
+        self.last_item_candidate=''
+        self.live_jet=None;self.live_pool=None;self.live_after_fusion=True
+        self.pending_transition=None;self.pre_fusion_sample=None
+        self.before_identity_reading=None;self.item_initial_reading=None
+        self.provisional_slot_id=None
+        self.trusted_history_name=None;self.trusted_history_generation=None
+        self.item_icon_status=('Détection automatique : démarre l’observation.' if mode=='automatic'
+                               else 'Sélection manuelle : choisis ton objet et ton jet cible.')
+        self.status.set(self.item_icon_status)
+        self.render_plan();self.refresh_strategy()
+
+    def open_equipment_picker(self,goals_only=False,floating=False):
+        if goals_only and current_snapshot(self) is not None:
+            self.prompt_measured_goals()
+            return
+        from forgely_equipment_picker import EquipmentPicker
+        from forgely_equipment_catalog import EquipmentCatalog
+        picker=getattr(self,'equipment_picker',None)
+        if (picker is not None and picker.winfo_exists() and goals_only and
+            self.equipment_mode.get()=='automatic' and
+            (not self.active_equipment_verified or
+             key_for(getattr(getattr(picker,'selected',None),'identity_name',''))!=key_for(self.item.get()))):
+            picker.close();self.equipment_picker=None;picker=None
+        if picker is not None and picker.winfo_exists():
+            if floating:
+                picker.transient(self.overlay)
+                picker.attributes('-topmost',True)
+            picker.deiconify();picker.lift();return
+        session=getattr(self,'manual_equipment',None)
+        selected_id=session.equipment.item_id if isinstance(session,ManualEquipmentSession) else None
+        if goals_only and self.equipment_mode.get()=='automatic':
+            if not self.active_equipment_verified:
+                messagebox.showinfo('Jet cible','Attends que Forgely confirme l’objet dans DOFUS, puis ouvre Jet cible.',parent=self.overlay if floating else self)
+                return
+            matches=[item for item in EquipmentCatalog().items
+                     if key_for(item.identity_name)==key_for(self.item.get())]
+            if len(matches)!=1:
+                messagebox.showinfo('Jet cible','L’objet détecté ne correspond pas à une fiche unique du catalogue. '
+                    'Attends une identification complète ou utilise la sélection manuelle.',parent=self.overlay if floating else self)
+                return
+            detected_name=self.item.get()
+            def save_detected_goals(equipment,values,start=False):
+                self.commit_automatic_goals(equipment,values,start,detected_name=detected_name)
+            self.equipment_picker=EquipmentPicker(self,THEMES[self.theme_name],
+                save_detected_goals,selected_id=matches[0].item_id,
+                goals_only=True,lock_equipment=True,floating=floating)
+            return
+        self.equipment_picker=EquipmentPicker(self,THEMES[self.theme_name],
+            self.commit_equipment_selection,selected_id,goals_only,floating=floating)
+
+    def commit_automatic_goals(self,equipment,values,start=False,*,detected_name=None):
+        """Save targets for the independently detected item without rebinding it."""
+        from forgely_equipment_catalog import EquipmentCatalog
+        # Opening a Forgely window takes focus from DOFUS and temporarily
+        # invalidates live readings. Targets can still be saved for the item
+        # confirmed when the editor opened; this never revalidates its jet.
+        if (self.equipment_mode.get()!='automatic'
+                or (not self.active_equipment_verified and detected_name is None)
+                or (detected_name is not None and key_for(detected_name)!=key_for(equipment.identity_name))
+                or key_for(self.item.get())!=key_for(equipment.identity_name)
+                or EquipmentCatalog().get(equipment.item_id)!=equipment):
+            raise ValueError('L’objet ou le mode a changé. Rouvre Jet cible pour l’objet actuellement détecté.')
+        self.plan=save_plan(self.item.get(),values,item_id=equipment.item_id)
+        self.perfect_goal_checked.set(False)
+        self.goal_mode.set('')
+        self.status.set('Jet cible enregistré pour '+equipment.name+' · Détection automatique conservée')
+        self.render_plan();self.refresh_strategy()
+        if start and not self.running:self.after(0,self.toggle_observer)
+
+    def prompt_measured_goals(self):
+        snapshot=current_snapshot(self)
+        if snapshot is None:return
+        session=self.measured_goals
+        if self.overlay.goal_editing:return
+        session.prompted=True
+        revision=session.revision
+        jet=dict(snapshot[0])
+        from forgely_perfect_goal import perfect_goal
+        try:allowed=perfect_goal(self)[2]
+        except ValueError:allowed={}
+        def save(targets):
+            session.save(targets,jet,revision,allowed=allowed)
+            perfect=bool(self.perfect_goal_checked.get() and targets==allowed)
+            self.goal_mode.set('Jet parfait' if perfect else '')
+            self.perfect_goal_checked.set(perfect)
+            self.overlay.close_targets()
+            self.status.set('Jet souhaité enregistré · conseils automatiques actifs')
+            self.render_plan();self.refresh_strategy()
+            self.after(100,self.resume_game_after_targets)
+        self.overlay.deiconify()
+        existing=(self.plan or {}).get('stats',{}) if self.active_equipment_verified and (self.plan or {}).get('item')==self.item.get() else {}
+        defaults=session.targets or {k:v['target'] for k,v in existing.items() if v.get('target') is not None}
+        def fill_perfect():
+            if not self.perfect_goal_checked.get():return
+            try:
+                values=perfect_goal(self)[2]
+                allowed.update(values)
+                self.overlay.goal_panel.fill_targets(values)
+            except ValueError as exc:
+                self.perfect_goal_checked.set(False)
+                self.overlay.goal_panel.error.configure(text=str(exc))
+        self.overlay.open_targets(jet,defaults,save,on_perfect=fill_perfect)
+
+    def toggle_perfect_goal(self):
+        if self.perfect_goal_checked.get():
+            self.apply_perfect_goal()
+        else:
+            self.goal_mode.set('')
+            self.refresh_strategy()
+
+    def resume_game_after_targets(self):
+        from forgely_windows import activate_game_window
+        handle=getattr(self.capture,'last_handle',None)
+        if isinstance(handle,int):activate_game_window(handle)
+
+    def apply_perfect_goal(self):
+        from forgely_perfect_goal import perfect_goal
+        try:
+            name,ident,targets=perfect_goal(self)
+            observed=self.live_jet or self.workshop_readings.partial_jet or {}
+            values={k:(observed.get(k),v) for k,v in targets.items()}
+            plan=save_plan(name,values,item_id=ident)
+        except (ValueError,OSError) as exc:
+            self.status.set(str(exc))
+            self.overlay.show_advice(str(exc),'unknown')
+            self.goal_mode.set('')
+            self.perfect_goal_checked.set(False)
+            return
+        self.plan=plan
+        measured=getattr(self,'measured_goals',None)
+        if isinstance(measured,MeasuredGoals):
+            from forgely_perfect_goal import signature_equipment
+            inferred=signature_equipment(measured.signature)
+            if (measured.icon is not None and self.active_equipment_verified
+                    and key_for(self.item.get())==key_for(name)) or (
+                    measured.icon is not None and inferred is not None and key_for(inferred.identity_name)==key_for(name)):
+                measured.save(targets,observed,measured.revision,allowed=targets)
             else:
-                detected.configure(text='Identification automatique en cours',fg=GOLD)
-                detail.configure(text=(self.item_icon_status or 'En attente de lectures fiables')+'\n'
-                    'Laisse l’atelier de forgemagie visible. Forgely utilise l’icône '
-                    'actuelle et les informations lisibles à l’écran. '
-                    'Aucun équipement ne peut être choisi manuellement.')
-            popup.after(750,update)
-        update()
-        self.button(popup,'Fermer',popup.destroy).pack(fill='x',padx=19,pady=8)
+                measured.targets={}
+        self.goal_mode.set('Jet parfait')
+        self.perfect_goal_checked.set(True)
+        self.overlay.close_targets()
+        self.status.set('Jet parfait enregistré pour '+name+' · toutes les caractéristiques au maximum théorique')
+        self.render_plan();self.refresh_strategy()
+        self.after(100,self.resume_game_after_targets)
+
+    def commit_equipment_selection(self,equipment,values,start=False):
+        from forgely_equipment_catalog import EquipmentCatalog
+        official=EquipmentCatalog().get(equipment.item_id)
+        if official!=equipment:raise ValueError('Équipement absent du catalogue.')
+        plan=save_plan(equipment.identity_name,values,item_id=equipment.item_id)
+        resume_observation=bool(self.running or start)
+        if self.running:self.toggle_observer()
+        register_item(equipment.identity_name)
+        self.plan=plan
+        self.equipment_mode.set('manual')
+        self.measured_goals=MeasuredGoals()
+        self.perfect_goal_checked.set(False)
+        self.goal_mode.set('')
+        self.manual_equipment=ManualEquipmentSession(equipment)
+        self.current_slot_tracker=self.manual_equipment.tracker
+        self.item.set(equipment.identity_name)
+        self.item_selection_source='manual'
+        self.active_equipment_verified=False
+        self._verified_item_context=None
+        self.live_jet=None;self.live_pool=None;self.live_after_fusion=True
+        self.pending_transition=None;self.pre_fusion_sample=None
+        self.workshop_readings.reset();self.item_visual_tracker.reset()
+        self.current_slot_status=self.manual_equipment.reason
+        self.item_icon_status='Objet choisi : '+equipment.name
+        self.last_item_candidate=''
+        self.last_item_ocr_text=''
+        self._item_header_cache=None
+        self.status.set('Objet et jet souhaité enregistrés. Place le même objet dans DOFUS, puis démarre la session.')
+        self.render_plan();self.refresh_stats_now();self.refresh_strategy()
+        if resume_observation:self.after(0,self.toggle_observer)
+
+    def process_manual_equipment(self,slot_icon,signature,source_context,frame_id):
+        session=self.manual_equipment
+        from forgely_continuous_identity import prime_slot_tracker
+        prime_slot_tracker(session.tracker,getattr(self,'fast_slot_evidence',None),
+                           slot_icon,source_context,forgely_perf_ns())
+        ready=session.observe(slot_icon,signature)
+        self.current_slot_status=session.reason
+        self.item_icon_status=session.reason
+        self.active_equipment_verified=ready
+        self.item_selection_source='manual'
+        if not ready:
+            if slot_icon is None:
+                self.workshop_readings.reset()
+            self._verified_item_context=None
+            self.live_jet=None;self.live_pool=None;self.live_after_fusion=True
+            if session.invalidated:
+                self.pending_transition=None
+                self.workshop_readings.reset()
+                self.status.set(session.reason)
+            elif slot_icon is not None:
+                self.confirmation_requested.set()
+        else:
+            self.item.set(session.equipment.identity_name)
+            if source_context is not None:
+                mailbox,generation,title=source_context
+                self._verified_item_context=VerifiedItemContext(mailbox,generation,title,
+                    frame_id,session.equipment.identity_name,slot_icon.copy(),tuple(signature))
+            snapshot=(self.workshop_readings.snapshot()
+                      if self.workshop_readings.context is not None else None)
+            if snapshot and self.pending_transition is None:
+                self.live_jet,self.live_pool=snapshot
+                self.live_after_fusion=False
+        self.render_plan();self.refresh_strategy()
 
     def show_item_table(self, name):
         if not name or not find_item(name):
@@ -1131,16 +1406,15 @@ class Forgely(tk.Tk):
         box.configure(state='disabled')
 
     def show_appearance(self):
-        """Switch local palettes without restarting the observer."""
+        """One visual identity, two workspace sizes."""
         popup=tk.Toplevel(self)
-        popup.title('Forgely — Apparence')
+        popup.title('Forgely · Affichage')
         popup.configure(bg=BG)
-        popup.geometry('440x415')
-        self.label(popup,'Choisir un thème',18,bold=True,color=GOLD).pack(anchor='w',padx=22,pady=(20,8))
-        self.label(popup,'Le choix est appliqué immédiatement et mémorisé.',10,color=MUTED).pack(anchor='w',padx=22,pady=(0,15))
-        for name in THEMES:
-            self.button(popup,('●  ' if name==self.theme_name else '○  ')+name,
-                        lambda n=name: self.apply_theme(n,popup)).pack(fill='x',padx=22,pady=5)
+        popup.geometry('440x290')
+        self.label(popup,'Obsidienne',20,bold=True).pack(anchor='w',padx=22,pady=(22,8))
+        self.label(popup,'Une interface sombre, deux façons de travailler.',10,color=MUTED).pack(anchor='w',padx=22,pady=(0,18))
+        self.button(popup,'Atelier complet',lambda: (popup.destroy(),self.restore()),primary=True).pack(fill='x',padx=22,pady=6)
+        self.button(popup,'Copilote compact',lambda: (popup.destroy(),self.minimize_to_badge())).pack(fill='x',padx=22,pady=6)
 
     def apply_theme(self,name,appearance_popup=None):
         if name not in THEMES:
@@ -1237,7 +1511,17 @@ class Forgely(tk.Tk):
         refresh()
 
     def show_settings(self):
-        popup=tk.Toplevel(self);popup.title('Forgely — Paramètres locaux');popup.configure(bg=BG);popup.geometry('520x290')
+        popup=tk.Toplevel(self);popup.title('Forgely — Paramètres locaux');popup.configure(bg=BG);popup.geometry('520x470')
+        from forgely_tools import read_settings, save_settings, price_reference_label
+        from forgely_rules import MODES
+        settings=read_settings()
+        self.label(popup,'Conseils et prix des runes',17,bold=True).pack(anchor='w',padx=20,pady=(17,8))
+        economic_mode=tk.StringVar(value=settings['strategy'])
+        choice=ttk.Combobox(popup,textvariable=economic_mode,values=MODES,state='readonly')
+        choice.pack(fill='x',padx=20)
+        choice.bind('<<ComboboxSelected>>',lambda event: save_settings({'strategy':economic_mode.get()}))
+        self.label(popup,price_reference_label(settings),10,color=MUTED,wraplength=470).pack(anchor='w',padx=20,pady=8)
+        self.label(popup,'Budget optimisé favorise la progression par kama. Les probabilités de passage restent inchangées.',10,color=MUTED,wraplength=470).pack(anchor='w',padx=20)
         self.label(popup,'Paramètres de capture',17,bold=True).pack(anchor='w',padx=20,pady=(17,12))
         self.label(popup,'Fenêtre actuelle : '+self.window_name.get(),10,color=MUTED,wraplength=470).pack(anchor='w',padx=20)
         self.button(popup,'Choisir la fenêtre DOFUS',lambda: open_option_and_close_menu(self.show_window_picker),primary=True).pack(fill='x',padx=20,pady=10)
@@ -1262,7 +1546,7 @@ class Forgely(tk.Tk):
         def content():
             raw_effects=self.last_ocr_text.partition('\nEFFETS\n')[2].partition('\nRUNES (Pa / Ra)\n')[0]
             raw_jet=parse_jet(raw_effects)
-            profile=compare_theoretical_profile(self.item.get() if self.active_equipment_verified else '',raw_jet)
+            profile=compare_theoretical_profile(self.item.get() if self.active_equipment_verified or isinstance(getattr(self,'manual_equipment',None),ManualEquipmentSession) else '',raw_jet)
             report=evaluate_ocr(self.last_ocr_text,running=self.running,
                 item_verified=self.active_equipment_verified,
                 jet_verified=self.live_jet is not None and self.live_pool is not None,
@@ -1277,7 +1561,6 @@ class Forgely(tk.Tk):
                    'PERFORMANCES LECTURE RAPIDE (ms) : '+repr(self.fast_preview_performance.snapshot() if hasattr(self, 'fast_preview_performance') else {}),
                    'LECTURES : '+str(self.scan_count),
                    'RETARD DERNIÈRE OBSERVATION : '+(f'{self.last_observation_delay_ms:.0f} ms' if self.last_observation_delay_ms is not None else 'Non mesuré'),
-                   'RETARD IDENTIFICATION OBJET : '+str(getattr(self,'last_identity_delay_ms',None))+' ms',
                    'CAPTURES AVEC INFOBULLE SUSPECTÉE : '+str(self.occluded_observations),
                    'CAPTURES INCHANGÉES SANS OCR : '+str(getattr(self,'_unchanged_frames_skipped',0)),
                    'CHANGEMENTS VISUELS OBSERVÉS : '+str(getattr(self,'_visual_changes_seen',0)),
@@ -1288,6 +1571,8 @@ class Forgely(tk.Tk):
                    'ÂGE DERNIÈRE IMAGE APRÈS OCR : '+str(getattr(self,'_last_ocr_frame_age_ms',None))+' ms',
                    'PERFORMANCES p50/p95 (ms) : '+repr({k:(round(v['p50'],1),round(v['p95'],1)) for k,v in getattr(self,'performance_tracker',PerformanceTracker()).snapshot().items()}),
                    'ÉQUIPEMENT : '+(self.item.get() if self.active_equipment_verified else 'Non confirmé'),
+                   'OBJET CHOISI DANS FORGELY : '+(self.item.get() or 'aucun'),
+                   'MODE IDENTIFICATION : '+self.equipment_mode.get(),
                    'JET OCR INSTANTANÉ (NON STABILISÉ) : '+repr(raw_jet),
                    'LIGNE ENCADRÉE (OCR) : '+repr(__import__('forgely_jet').LAST_HIGHLIGHT_DIAGNOSTIC),
                    'JET PROVISOIRE : '+(repr(self.workshop_readings.jet) if self.workshop_readings.jet is not None else 'En cours de stabilisation'),
@@ -1312,6 +1597,7 @@ class Forgely(tk.Tk):
                    'LOGO OBJET : '+self.item_icon_status,
                    'EMPLACEMENT ACTUEL : '+self.current_slot_status,
                    'FICHE PROVISOIRE : '+str(self.provisional_slot_id or 'aucune'),
+                   'V1 / VÉRIFICATIONS MANUELLES (DIAGNOSTIC UNIQUEMENT) : '+repr(getattr(self,'reading_review_status',{})),
                    '', 'POINTS À CONTRÔLER :']
             lines += ['• '+r for r in report.reasons] or ['• Aucune anomalie détectée par les contrôles de présence.']
             lines += ['', 'ZONES OCR (texte brut, non corrigé) :']
@@ -1489,6 +1775,19 @@ class Forgely(tk.Tk):
             self.status.set('Observation arrêtée · Toutes les données restent locales')
             self.game_state_label.configure(text='● Observateur arrêté',fg=MUTED)
             return
+        session=getattr(self,'manual_equipment',None)
+        automatic=self.equipment_mode.get()=='automatic'
+        if not automatic and (not isinstance(session,ManualEquipmentSession) or session.invalidated
+                or not self.plan or self.plan.get('item')!=session.equipment.identity_name
+                or not self.plan.get('stats')):
+            self.open_equipment_quick()
+            return
+        # A fresh observation session never inherits a previously bound slot.
+        if automatic:
+            self.manual_equipment=None
+            self.current_slot_tracker=CurrentSlotTracker()
+        else:
+            session.bound=False;session.tracker.reset()
         self.running=True;self.stop_event=threading.Event();self.track=HistoryTransitionTracker(RUNES)
         from forgely_history_delta import HistoryDeltaMonitor
         self.history_delta_monitor=HistoryDeltaMonitor()
@@ -1500,7 +1799,7 @@ class Forgely(tk.Tk):
         self.last_transition_audit=None
         # Never carry a previous session's verified item into a new capture.
         self.active_equipment_verified=False
-        self.item_selection_source='none'
+        self.item_selection_source='none' if automatic else 'manual'
         self.item_ocr_last=None;self.item_ocr_streak=0;self.missing_item_frames=0
         self.item_visual_tracker.reset()
         self.current_slot_tracker.reset()
@@ -1557,11 +1856,11 @@ class Forgely(tk.Tk):
         self.status.set('Analyse locale en cours · En attente de l’atelier de FM')
         threading.Thread(target=self.capture_worker,daemon=True).start()
         threading.Thread(target=self.fast_preview_worker,daemon=True).start()
-        threading.Thread(target=self.item_identity_worker,daemon=True).start()
         threading.Thread(target=self.observer_worker,daemon=True).start()
         if self.auto_floating.get():
             # Defer the transition until the start button callback is finished.
             self.after(150,self.minimize_to_badge)
+            self.after(250,self.resume_game_after_targets)
 
     def capture_worker(self):
         """Capture independently of slow OCR; keep only the newest frame."""
@@ -1569,6 +1868,10 @@ class Forgely(tk.Tk):
         mailbox = self.frame_mailbox
         capture = self.capture
         last_invalid_generation = None
+        from forgely_continuous_identity import RapidSlotTracker
+        from forgely_atelier import workshop_visual_fallback
+        rapid_slot=RapidSlotTracker()
+        self.fast_slot_evidence=None
         while not stop_event.is_set():
             try:
                 started = forgely_perf_ns()
@@ -1580,14 +1883,14 @@ class Forgely(tk.Tk):
                 # meaningful changes; never accumulate a backlog of screenshots.
                 signature = workshop_change_signature(im)
                 changed = workshop_significantly_changed(self._capture_gate_reference, signature)
-                identity=(title,getattr(capture,'last_handle',None))
+                identity=(title,getattr(capture,'last_handle',None),getattr(im,'size',None))
                 context_changed=(getattr(self,'_capture_gate_identity',None) != identity)
                 refresh = started - self._capture_gate_last_sent_ns >= self._capture_gate_force_ns
                 confirmation = self.confirmation_requested.is_set()
                 if changed or refresh or confirmation or context_changed:
                     if context_changed and getattr(self,'_capture_gate_identity',None) is not None:
-                        generation=mailbox.invalidate('Compte ou fenêtre modifié')
-                        self.messages.put(('capture_invalidated',(mailbox,generation,'Compte ou fenêtre modifié')))
+                        generation=mailbox.invalidate('Compte, fenêtre ou dimensions DOFUS modifiés')
+                        self.messages.put(('capture_invalidated',(mailbox,generation,'Compte, fenêtre ou dimensions DOFUS modifiés')))
                     self._capture_gate_identity=identity
                     self.confirmation_requested.clear()
                     self._capture_gate_reference = signature
@@ -1598,13 +1901,24 @@ class Forgely(tk.Tk):
                         self._capture_gate_changes += 1
                 else:
                     self._unchanged_frames_skipped += 1
+                try:
+                    self.fast_slot_evidence=rapid_slot.observe(
+                        current_icon(im) if workshop_visual_fallback(im) else None,
+                        (mailbox,mailbox.generation(),title),forgely_perf_ns())
+                except Exception:
+                    # Optional acceleration must never invalidate a valid OCR
+                    # frame. Fall back to normal multi-analysis association.
+                    self.fast_slot_evidence=None
+                    rapid_slot=RapidSlotTracker()
             except (GameNotForeground, RuntimeError) as exc:
+                self.fast_slot_evidence=None
                 self._capture_gate_reference = None
                 generation=mailbox.invalidate(str(exc))
                 if generation != last_invalid_generation:
                     self.messages.put(('capture_invalidated',(mailbox,generation,str(exc))))
                     last_invalid_generation=generation
             except Exception as exc:
+                self.fast_slot_evidence=None
                 self._capture_gate_reference = None
                 reason=type(exc).__name__ + ': ' + str(exc)
                 generation=mailbox.invalidate(reason)
@@ -1615,59 +1929,6 @@ class Forgely(tk.Tk):
             # capture reduces the age of the frame available after OCR ends.
             stop_event.wait(self._capture_interval)
         capture.close()
-
-    def item_identity_worker(self):
-        """Identify the current item without waiting for complete atelier OCR."""
-        from forgely_item_identity import ItemIdentityReader
-        reader=ItemIdentityReader()
-        mailbox=self.frame_mailbox
-        stop_event=self.stop_event
-        generation=mailbox.generation()
-        last_frame_id=0
-        retry_at=None
-        while not stop_event.is_set() and mailbox is self.frame_mailbox:
-            if retry_at is not None and forgely_perf_ns()>=retry_at:
-                request=getattr(self,'confirmation_requested',None)
-                if request is not None:request.set()
-                retry_at=forgely_perf_ns()+1_000_000_000
-            current_generation,frame=mailbox.wait_snapshot(last_frame_id,stop_event,generation)
-            if current_generation!=generation:
-                reader.reset();generation=current_generation;retry_at=None
-            if frame is None:continue
-            frame_id,image,title,captured_ns,_=frame
-            last_frame_id=frame_id
-            try:
-                started=forgely_perf_ns()
-                reading=reader.read(image,extract_text,item_list)
-                self.fast_preview_performance.record('identification_objet',forgely_perf_ns()-started)
-                if reading is None:
-                    retry_at=None
-                    continue
-                # Recheck context before publishing; previous-account work is discarded.
-                if stop_event.is_set() or generation!=mailbox.generation():continue
-                # An unresolved fast name must not consume newer identity frames
-                # and starve a successful (slower) full-heading reading.
-                if (reading.icon is not None and not reading.known and not reading.candidate
-                        and match_current_item(reading.icon,reading.signature) is None):
-                    retry_at=forgely_perf_ns()+1_000_000_000
-                    continue
-                retry_at=None
-                if reading.icon is None:
-                    tracker=getattr(self,'current_slot_tracker',None)
-                    request=getattr(self,'confirmation_requested',None)
-                    if tracker is not None and not tracker.absence_confirmed and request is not None:
-                        request.set()
-                verified=getattr(self,'_verified_item_context',None)
-                if bind_event_item(verified,mailbox,generation,title,frame_id,reading.icon,
-                                   reading.signature,name_hint=reading.known or reading.candidate):
-                    continue
-                sink=FrameMessageSink(self.messages,mailbox,generation,title,stop_event)
-                sink.put(('identity_observation',(frame_id,captured_ns,'item_visual',
-                    (reading.known,reading.candidate,reading.raw,reading.icon,None,None,
-                     reading.signature,(),None,None))))
-            except (OSError,ValueError,RuntimeError,__import__('sqlite3').Error):
-                # The complete observer remains a fallback; never reuse failed evidence.
-                reader.reset()
 
     def fast_preview_worker(self):
         """Display provisional results independently of slow effect recovery."""
@@ -1716,6 +1977,12 @@ class Forgely(tk.Tk):
                 self.fast_preview_reason = 'Lecture rapide indisponible : ' + str(exc)[:160]
 
     def observer_worker(self):
+        from forgely_learning import FusionContextTracker
+        from forgely_dofocus import natural_profile
+        fusion_contexts = FusionContextTracker()
+        from forgely_pool_observer import PoolObserver
+        pool_observer=PoolObserver()
+        pool_cycle=0
         stop_event = self.stop_event
         mailbox = self.frame_mailbox
         capture = self.capture
@@ -1740,6 +2007,8 @@ class Forgely(tk.Tk):
                     self.track=HistoryTransitionTracker(RUNES)
                     self.history_delta_monitor.reset()
                     missed_workshop=0
+                    fusion_contexts.reset()
+                    pool_observer.reset()
                 if frame is None:
                     continue
                 frame_id, im, title, frame_started_ns, capture_ns = frame
@@ -1800,7 +2069,36 @@ class Forgely(tk.Tk):
                         '\nEMPLACEMENT: '+self.current_slot_status+
                         '\nCONFIRMATIONS: '+str(self.item_visual_tracker.count)+'\n', encoding='utf-8')
                     messages.put(('exported', str(directory)))
-                if not atelier.active:
+                review_service=getattr(self,'reading_reviews',None)
+                numeric_reading=(parse_jet(atelier.effects),choose_reliquat(atelier.effects,atelier.reliquat))
+                if atelier.active and review_service is not None:
+                    try:
+                        from forgely_vision_guidance import reference_for,merge_observation
+                        confirmed=getattr(self,'_verified_item_context',None)
+                        expected=(reference_for(confirmed.item) if isinstance(confirmed,VerifiedItemContext)
+                                  and confirmed.mailbox is mailbox and confirmed.generation==generation
+                                  and confirmed.title==title else {})
+                        review=review_service.observe(crop_zone(im,'review_effects'),crop_zone(im,'reliquat'),
+                            atelier.effects,atelier.reliquat,context=title+' · '+str(getattr(self,'last_item_candidate','')),
+                            token=frame_id,expected=expected)
+                        if review is not None:
+                            jets,puits,source=merge_observation(numeric_reading[0],review['visual_jet'],
+                                                              numeric_reading[1],review['visual_pool'])
+                            numeric_reading=(jets,puits)
+                            review['numeric_source']=source
+                            review['eligible_for_live_reading']=source=='hybrid'
+                            messages.put(('reading_review_status',review))
+                    except Exception as exc:
+                        messages.put(('reading_review_status',{'error':str(exc)[:180],'used_for_advice':False}))
+                if not atelier.active or (getattr(atelier,'readable',True) is False and not numeric_reading[0]):
+                    pool_observer.reset()
+                    if atelier.active:
+                        capture.reacquire_layout.set()
+                        self.confirmation_requested.set()
+                        self.last_ocr_attempt_reason=atelier.reason
+                        self.last_ocr_text=('HISTORIQUE\n'+atelier.history+'\nEFFETS\n'+atelier.effects+'\nRUNES (Pa / Ra)\n'+atelier.runes+'\nRELIQUAT\n'+atelier.reliquat+'\nVISION\nLecture non exploitable')
+                        messages.put(('atelier_waiting',atelier.reason))
+                    fusion_contexts.reset()
                     zone_cache.clear()
                     missed_workshop += 1
                     if missed_workshop >= 3:
@@ -1843,16 +2141,19 @@ class Forgely(tk.Tk):
                     self._occluded_frames_rejected += 1
                     # Do not keep a tooltip-contaminated OCR result in cache.
                     zone_cache.entries.pop('effects', None)
-                else:
-                    messages.put(('observation', (frame_id, frame_started_ns,
-                        'atelier_read', (parse_jet(atelier.effects),choose_reliquat(atelier.effects, atelier.reliquat)))))
-                # Current equipment is identified from the CURRENT SLOT ICON.
-                # The old item-header path did two costly Tesseract launches
-                # every frame, although its OCR must never identify the item.
-                # v20.77: the ACTIVE item heading is visible in the left panel,
-                # independently of whether a new FM result appears in history.
-                # Two OCR treatments and a multi-frame stable slot are required;
-                # never activate a free-form, unregistered OCR guess.
+                # Resolve verified current-slot references before spending time
+                # on header OCR. Unknown/ambiguous icons retain the OCR path.
+                t_icon = forgely_perf_ns()
+                slot_icon = current_icon(im)
+                signature = effect_signature(atelier.effects)
+                manual_session=getattr(self,'manual_equipment',None)
+                manual_selected=isinstance(manual_session,ManualEquipmentSession)
+                visual_name = (match_current_item(slot_icon, signature)
+                               if not manual_selected and slot_icon is not None and not occluded else None)
+                perf.record("extraction_icone", forgely_perf_ns() - t_icon)
+                # A known current-slot reference can identify the equipment.
+                # Otherwise retain both OCR views of the active item heading.
+                # Neither path bypasses temporal slot/name confirmation.
                 try:
                     # Most forgemagie actions leave the item's name untouched.
                     # Avoid launching Tesseract twice for that identical region.
@@ -1860,7 +2161,12 @@ class Forgely(tk.Tk):
                     header_key = (header_patch.size, header_patch.mode,
                                   header_patch.tobytes())
                     cached_header = self._item_header_cache
-                    if cached_header is not None and cached_header[0] == header_key:
+                    if manual_selected:
+                        found,new_name,item_ocr=None,None,'Nom choisi dans le catalogue Forgely'
+                    elif visual_name:
+                        found, new_name, item_ocr = recognize_item_header(
+                            im, extract_text, (), visual_name=visual_name)
+                    elif cached_header is not None and cached_header[0] == header_key:
                         found, new_name, item_ocr = cached_header[1]
                         self._item_header_cache_hits += 1
                     else:
@@ -1877,9 +2183,6 @@ class Forgely(tk.Tk):
                 history_identity = None
                 # Read the ACTUAL equipment slot even if the FM history is empty
                 # or contains an old item's heading. No game interaction.
-                t_icon = forgely_perf_ns()
-                slot_icon = current_icon(im)
-                perf.record("extraction_icone", forgely_perf_ns() - t_icon)
                 historical_names = visible_history_names(history_text, item_list())
                 latest_history_candidate = latest_visible_history_name(history_text, item_list())
                 # Historical icons are not a source of current-item identity.
@@ -1888,7 +2191,6 @@ class Forgely(tk.Tk):
                 # Explicit diagnostic exports can still locate a history icon.
                 history_icon = None
                 corroborated_history_name = None
-                signature = effect_signature(atelier.effects)
                 if stop_event.is_set():
                     break
                 # The event is detected below after rune OCR. Associate its
@@ -1923,6 +2225,39 @@ class Forgely(tk.Tk):
                        + ' variations de caractéristiques visibles ; tentative non certifiée\n'
                        + 'HISTORIQUE\n'+history_text+'\nEFFETS\n'+atelier.effects+'\nRUNES (Pa / Ra)\n'+rune_text+'\nRELIQUAT\n'+atelier.reliquat+'\nVISION\n'+vision_note)
                 event = self.track.observe(history_text,selected_rune)
+                context_item = bind_event_item(getattr(self,'_verified_item_context',None),
+                    mailbox,generation,title,frame_id,slot_icon,signature,found or new_name)
+                context_jet = parse_jet(atelier.effects)
+                pool_cycle+=1
+                pool_name=context_item or (manual_session.equipment.identity_name if manual_selected
+                    and not manual_session.invalidated else None)
+                if pool_name is None:
+                    from forgely_perfect_goal import signature_equipment
+                    inferred=signature_equipment(signature)
+                    pool_name=inferred.identity_name if inferred is not None else None
+                pool_profile=complete_learning_profile(pool_name) if pool_name else None
+                numeric_jet,numeric_pool=numeric_reading
+                pool_complete=bool(pool_profile and set(pool_profile)<=numeric_jet.keys()
+                                   and slot_icon is not None and not occluded)
+                pool_context=(id(mailbox),generation,title,pool_name,
+                              slot_icon.tobytes() if slot_icon is not None else None)
+                tracking=pool_observer.observe(pool_context,history_text,numeric_jet,numeric_pool,event,
+                                               pool_complete,pool_cycle)
+                if tracking['pending']:self.confirmation_requested.set()
+                if numeric_pool is None and tracking['origin']=='calculated' and tracking['value'] is not None:
+                    numeric_pool=float(tracking['value'])
+                messages.put(('observation',(frame_id,frame_started_ns,'pool_tracking',tracking)))
+                if not occluded:
+                    messages.put(('observation',(frame_id,frame_started_ns,'atelier_read',(numeric_jet,numeric_pool))))
+                profile=complete_learning_profile(context_item) if context_item else None
+                from forgely_dofocus import normalise_jet
+                complete=profile is not None and set(profile).issubset(normalise_jet(context_jet) or {}) and not occluded
+                transition = fusion_contexts.observe(context_item if complete else None,
+                    history_text, context_jet, choose_reliquat(atelier.effects, atelier.reliquat), event)
+                if transition is not None and event is None:
+                    messages.put(('learning_transition', (context_item, transition)))
+                if fusion_contexts.pending_event is not None:
+                    self.confirmation_requested.set()
                 if (self.track.pending_count or
                     (self.track.baseline is None and self.track._init_count == 1) or
                     self.history_delta_monitor.pending is not None):
@@ -1946,20 +2281,77 @@ class Forgely(tk.Tk):
                     bound_item=bind_event_item(getattr(self,'_verified_item_context',None),
                         mailbox,generation,title,frame_id,slot_icon,signature,found or new_name)
                     messages.put(('accepted_event',AcceptedRuneEvent(frame_id,event,bound_item,
-                        mailbox,generation,title)))
+                        mailbox,generation,title,transition)))
             except GameNotForeground as e:
+                pool_observer.reset()
                 self.skipped_frames += 1
                 if self.skipped_frames % 4 == 1:
                     messages.put(('waiting_window',str(e)))
             except RuntimeError as e:
+                pool_observer.reset()
                 self.skipped_frames += 1
                 if self.skipped_frames % 4 == 1:
                     messages.put(('waiting_window',str(e)))
             except Exception as e:
+                pool_observer.reset()
                 self.error_frames += 1
                 messages.put(('fatal',type(e).__name__+': '+str(e)))
                 break
         capture.close()
+
+    def load_virtual_totals(self):
+        try:
+            totals=self.simulation_journal.totals_by_item()
+            self.messages.put(('simulation_totals_ready',totals))
+        except (OSError,__import__('sqlite3').Error) as exc:
+            self.simulation_io_error=str(exc)
+
+    def publish_simulation(self,key):
+        """Worker callback: persist virtual batches without touching Tk."""
+        # Refinement is available immediately, even if the journal is locked.
+        self.messages.put(('simulator_ready',key))
+        try:
+            results=self.simulator.results_for(key)
+            if results:self.simulation_journal.record(key,results)
+            count=self.simulation_journal.totals(key[1])['virtual']
+            self.messages.put(('simulation_totals_ready',{key[1]:count}))
+            self.simulation_io_error=None
+        except (OSError,ValueError,__import__('sqlite3').Error) as exc:
+            self.simulation_io_error=str(exc)
+
+    def record_learning(self,item,rune,outcome,before,after):
+        """Persist once, publish new experience, then refresh visible advice."""
+        from forgely_online_experience import OnlineExperience
+        if not OnlineExperience(max_samples=1).observe(1,item,rune,outcome,before,after):
+            raise ValueError('Transition contradictoire ou incomplète : exclue de l’apprentissage')
+        from forgely_dofocus import normalise_jet
+        profile=complete_learning_profile(item)
+        if not profile or any(not set(profile).issubset(normalise_jet(state['jet']) or {}) for state in (before,after)):
+            raise ValueError('Profil complet et toutes ses lignes lus avant/après requis pour apprendre')
+        started=forgely_perf_ns()
+        delta=save_transition(item,rune,outcome,before,after,event_confirmed=True)
+        from copy import deepcopy
+        self.last_transition_audit={'item':item,'after':deepcopy(after),
+            'audit':audit_transition(rune,outcome,before,after,complete=True)}
+        self.context_saved+=1
+        try:
+            self.live_laboratory.refresh()
+            memory_ready=True
+        except (OSError,__import__('sqlite3').Error):
+            self.live_laboratory.notify_observation()
+            memory_ready=False
+        effects=', '.join(f'{stat} {amount:+g}' for stat,amount in delta['changes'].items()) or 'jet inchangé'
+        summary=(f'Mémoire +1 · {item} · {rune} / {outcome} · {effects} · '
+                 f'puits {delta["pool_delta"]:+g}')
+        if not memory_ready:summary+=' · actualisation en attente'
+        self.last_learning={'item':item,'rune':rune,'outcome':outcome,
+            'changes':delta['changes'],'pool_delta':delta['pool_delta'],'summary':summary,
+            'update_ms':round((forgely_perf_ns()-started)/1_000_000,2)}
+        self.learning_summary.set(summary)
+        if hasattr(self,'overlay'):
+            self.overlay.show_learning(f'Mémoire +{self.context_saved} · {rune} / {outcome}')
+        self.refresh_strategy()
+        return delta
 
     def preview_is_current(self, generation, title, icon, mailbox=None):
         if not self.running or self.stop_event.is_set() or mailbox is not self.frame_mailbox:
@@ -1987,8 +2379,17 @@ class Forgely(tk.Tk):
                     break
                 kind,data=self.messages.get_nowait()
                 source_context=None
-                identity_frame_key=None
                 event_already_recorded=False
+                learning_receipt=False
+                if kind=='simulator_ready':
+                    if data==getattr(self,'_simulation_key',None):self.refresh_strategy()
+                    self.refresh_stats_now()
+                    continue
+                if kind=='simulation_totals_ready':
+                    for ident,count in data.items():
+                        self._virtual_totals[ident]=max(self._virtual_totals.get(ident,0),count)
+                    self.refresh_stats_now()
+                    continue
                 if kind=='worker_message':
                     mailbox,generation,title,kind,data=data
                     source_context=(mailbox,generation,title)
@@ -2005,10 +2406,18 @@ class Forgely(tk.Tk):
                 if kind=='accepted_event':
                     receipt=data
                     event=receipt.event
+                    learning_receipt=True
                     try:
                         if receipt.item and event.rune:
                             insert_observation(receipt.item,event.rune,event.outcome,'ocr_auto',event.evidence)
                             self.saved_auto+=1
+                            if receipt.transition is not None:
+                                try:
+                                    self.record_learning(receipt.item,event.rune,event.outcome,
+                                        receipt.transition['before'],receipt.transition['after'])
+                                except Exception as exc:
+                                    self.context_rejected += 1
+                                    self.status.set('Contexte non enregistré : '+str(exc))
                         else:
                             insert_unassigned(event.outcome,'Rune '+str(event.rune or '?')+
                                 ' · identité non confirmée au moment de la lecture · '+event.evidence)
@@ -2026,6 +2435,15 @@ class Forgely(tk.Tk):
                         continue
                     event_already_recorded=True
                     kind,data='auto_event_frame',(receipt.frame_id,event)
+                if kind=='learning_transition':
+                    context_item, transition = data
+                    try:
+                        self.record_learning(context_item,transition['rune'],transition['outcome'],
+                            transition['before'],transition['after'])
+                    except Exception as exc:
+                        self.context_rejected += 1
+                        self.status.set('Contexte non enregistré : '+str(exc))
+                    continue
                 show_event_result = True
                 if kind == 'auto_event_frame':
                     event_frame_id, data = data
@@ -2035,27 +2453,29 @@ class Forgely(tk.Tk):
                         self.last_displayed_result_frame_id = event_frame_id
                         self.fast_preview_visible = False
                     kind = 'auto_event'
-                identity_only=kind=='identity_observation'
-                if identity_only:kind='observation'
                 if kind == 'observation':
                     frame_id, frame_started_ns, kind, data = data
                     # Keep the two most recent samples for stability checks,
                     # but discard stale UI work. Do not discard rune events.
                     if frame_id < self.latest_observation_id - 1:
                         continue
-                    if kind=='item_visual' and source_context is not None:
-                        from forgely_item_identity import IdentityFrameGate
-                        gate=getattr(self,'_identity_frame_gate',None)
-                        if gate is None:
-                            gate=self._identity_frame_gate=IdentityFrameGate()
-                        if not gate.accept(*source_context,frame_id):continue
-                        identity_frame_key=(*source_context,frame_id)
-                    elapsed=(forgely_perf_ns()-frame_started_ns)/1_000_000
-                    if identity_only:self.last_identity_delay_ms=elapsed
-                    else:self.last_observation_delay_ms=elapsed
+                    self.last_observation_delay_ms = (
+                        forgely_perf_ns() - frame_started_ns) / 1_000_000
                 if kind=='item_visual':
-                    frame_kwargs={'frame_key':identity_frame_key} if identity_frame_key is not None else {}
                     known, new_name, raw, slot_icon, history_identity, history_icon, signature, historical_names, corroborated_history_name, latest_history_candidate = data
+                    measured=getattr(self,'measured_goals',None)
+                    if isinstance(measured,MeasuredGoals) and source_context is not None:
+                        before=measured.revision
+                        measured.observe_slot(slot_icon,signature,(source_context[0],source_context[2]))
+                        if measured.revision!=before:
+                            self.perfect_goal_checked.set(False)
+                            self.goal_mode.set('')
+                        if measured.revision!=before and self.overlay.goal_editing:
+                            self.overlay.close_targets()
+                    if isinstance(getattr(self,'manual_equipment',None),ManualEquipmentSession):
+                        self.process_manual_equipment(slot_icon,signature,source_context,
+                            frame_id if source_context is not None else 0)
+                        continue
                     self.last_history_candidate = latest_history_candidate
                     self.last_history_identity=(
                         (history_identity.name or 'aucun')+' · '+history_identity.source
@@ -2063,7 +2483,10 @@ class Forgely(tk.Tk):
                     if historical_names:
                         self.last_history_identity += ' · noms visibles (non confirmés) : ' + ', '.join(historical_names[:3])
                     self.last_item_ocr_text=raw
-                    stable, changed=self.current_slot_tracker.observe(slot_icon, signature, **frame_kwargs)
+                    from forgely_continuous_identity import prime_slot_tracker
+                    fast_slot=prime_slot_tracker(self.current_slot_tracker,
+                        getattr(self,'fast_slot_evidence',None),slot_icon,source_context,forgely_perf_ns())
+                    stable, changed=self.current_slot_tracker.observe(slot_icon, signature)
                     if changed:
                         self.clear_fast_preview()
                         # A different icon in the actual workshop means a new
@@ -2084,24 +2507,33 @@ class Forgely(tk.Tk):
                         self.before_identity_reading=None
                         self.refresh_strategy()
                     if slot_icon is None:
+                        self.workshop_readings.reset()
+                        self.live_jet=None;self.live_pool=None;self.live_after_fusion=True
                         self.clear_fast_preview()
                         self.current_slot_status='Icône absente ou illisible'
                         self.last_item_candidate=''
                         self.item_icon_status='Emplacement actuel non lisible'
-                        if self.current_slot_tracker.misses>=3 or self.current_slot_tracker.absence_confirmed:
+                        if self.current_slot_tracker.misses>=3:
+                            self.workshop_readings.reset()
                             self.active_equipment_verified=False
                             self.item_selection_source='none'
                             self.provisional_slot_id=None
                             self.trusted_history_name=None
                             self.live_jet=None;self.live_pool=None
                             self.live_after_fusion=True
-                            self.pending_transition=None
-                            self.workshop_readings.reset()
-                            self.item_visual_tracker.reset()
-                            self._verified_item_context=None
                         self.refresh_strategy()
                         continue
                     self.current_slot_status=f'Icône actuelle · {min(self.current_slot_tracker.count,3)}/3 lectures'
+                    # Confirm the name and slot concurrently on independent
+                    # captured frames; preserve the existing three-frame rule.
+                    candidate_streak = self.item_visual_tracker.observe(
+                        known or new_name, slot_icon)
+                    if not stable:
+                        if getattr(self, 'confirmation_requested', None) is not None:
+                            self.confirmation_requested.set()
+                        self.item_icon_status='Stabilisation de l’icône actuelle'
+                        self.refresh_strategy()
+                        continue
                     # Strict icon-first identification. Never derive an item's
                     # name from rune history, even when a historical row matches.
                     # A named reference must already exist in the icon catalogue.
@@ -2140,9 +2572,6 @@ class Forgely(tk.Tk):
                         self.item_icon_status='Conflit entre icône et nom actuel : vérification nécessaire'
                     self.last_item_candidate=name or ''
                     if not name:
-                        self.item_visual_tracker.observe(None,slot_icon, **frame_kwargs)
-                        if getattr(self,'confirmation_requested',None) is not None and not stable:
-                            self.confirmation_requested.set()
                         if self.active_equipment_verified:
                             self.active_equipment_verified=False
                             self.item_selection_source='none'
@@ -2162,10 +2591,11 @@ class Forgely(tk.Tk):
                              if latest_history_candidate else 'aucun candidat historique'))
                         self.refresh_strategy()
                         continue
-                    streak=self.item_visual_tracker.observe(name,slot_icon, **frame_kwargs)
-                    threshold=3
+                    streak=(candidate_streak if name == (known or new_name)
+                            else self.item_visual_tracker.observe(name,slot_icon))
+                    threshold=1 if fast_slot and matched else 3
                     self.item_icon_status=f'Objet actuel et nom cohérents · {min(streak,threshold)}/{threshold}'
-                    if not stable or streak<threshold:
+                    if streak<threshold:
                         if getattr(self, 'confirmation_requested', None) is not None:
                             self.confirmation_requested.set()
                         self.refresh_strategy()
@@ -2193,7 +2623,8 @@ class Forgely(tk.Tk):
                         self.item.set(name)
                         self.active_equipment_verified=True
                         self.item_selection_source='ocr'
-                        stable_snapshot=self.workshop_readings.snapshot()
+                        stable_snapshot=(self.workshop_readings.snapshot()
+                                         if self.workshop_readings.context is not None else None)
                         if stable_snapshot and self.pending_transition is None:
                             self.live_jet,self.live_pool=stable_snapshot
                             self.live_after_fusion=False
@@ -2233,11 +2664,28 @@ class Forgely(tk.Tk):
                 elif kind=='atelier_read':
                     jet,puits=data
                     self.workshop_active=True
+                    manual=getattr(self,'manual_equipment',None)
+                    selected=(manual.equipment.identity_name if isinstance(manual,ManualEquipmentSession)
+                              and not manual.invalidated else None)
+                    if self.active_equipment_verified or selected:
+                        from forgely_vision_guidance import reference_for
+                        profile_name=selected or self.item.get().strip()
+                        self.workshop_readings.configure(
+                            (source_context, profile_name),
+                            reference_for(profile_name) or complete_learning_profile(profile_name))
                     # Read the jet and the pool *before* the item name appears.
                     # These values are provisional and must never drive advice
                     # or item statistics until the item/logo is confirmed.
                     previous_sample=self.workshop_readings.sample
-                    stable=self.workshop_readings.observe(jet,puits)
+                    stable=self.workshop_readings.observe(jet,puits,
+                        sequence=frame_id if source_context is not None else None)
+                    if (not stable and jet and puits is not None and
+                            self.workshop_readings.streak < self.workshop_readings.required_frames):
+                        # Ask for another distinct capture now, instead of
+                        # waiting for the long idle refresh after a rune.
+                        self.confirmation_requested.set()
+                    if stable:
+                        jet,puits=self.workshop_readings.snapshot()
                     sample=self.workshop_readings.sample
                     if self.active_equipment_verified and previous_sample != sample:
                         # Do not display old verified jet/pool as current while
@@ -2249,24 +2697,18 @@ class Forgely(tk.Tk):
                             pending=self.pending_transition
                             # A real history transition and a different stable
                             # snapshot are both required for contextual storage.
-                            if sample != pending['sample'] and self.item.get()==pending['item']:
+                            if self.item.get()==pending['item'] and self.workshop_readings.atomic_snapshot:
                                 try:
-                                    save_transition(pending['item'],pending['rune'],pending['outcome'],
+                                    self.record_learning(pending['item'],pending['rune'],pending['outcome'],
                                         pending['before'],{'jet':dict(jet),'pool':puits})
-                                    after={'jet':dict(jet),'pool':puits}
-                                    self.last_transition_audit={'item':pending['item'],'after':after,
-                                        'audit':audit_transition(pending['rune'],pending['outcome'],
-                                            pending['before'],after,complete=False)}
-                                    self.context_saved += 1
-                                    self.live_laboratory.notify_observation()
                                     self.status.set(f'Contexte avant/après sauvegardé : {self.context_saved}')
                                 except (ValueError,TypeError,KeyError):
                                     self.context_rejected += 1
                                 self.pending_transition=None
-                            elif self.item.get()!=pending['item']:
+                            elif self.item.get()!=pending['item'] or not self.workshop_readings.atomic_snapshot:
                                 self.pending_transition=None
                                 self.context_rejected += 1
-                        if self.pending_transition is None and (self.pre_fusion_sample is None or sample != self.pre_fusion_sample):
+                        if self.pending_transition is None:
                             self.live_jet=dict(jet)
                             self.live_pool=puits
                             self.live_after_fusion=False
@@ -2279,6 +2721,12 @@ class Forgely(tk.Tk):
                         self.live_after_fusion=True
                     self.overlay.state_color('active')
                     self.refresh_strategy();self.render_plan()
+                    measured=getattr(self,'measured_goals',None)
+                    matching_plan=(self.active_equipment_verified and self.plan and self.plan.get('item')==self.item.get()
+                                   and any(v.get('target') is not None for v in self.plan.get('stats',{}).values()))
+                    if (stable and not matching_plan and isinstance(measured,MeasuredGoals) and measured.icon is not None
+                            and not measured.targets and not measured.prompted and not self.observation_only):
+                        self.after(0,self.prompt_measured_goals)
                     jet_text=', '.join(f'{k} {v}' for k,v in jet.items()) if jet else 'illisible'
                     puits_text=f'{puits:g}' if puits is not None else 'inconnu'
                     if not self.active_equipment_verified:
@@ -2287,8 +2735,13 @@ class Forgely(tk.Tk):
                                if stable else f'lecture provisoire · {phase}')
                     else:
                         state=('lecture stabilisée' if self.live_jet is not None and self.live_pool is not None
-                               else 'en attente de stabilisation du jet et du puits')
+                               else 'Jet partiel · fais défiler les lignes à lire ou à revérifier')
                     self.atelier_info_label.configure(text=f'Atelier détecté · Reliquat lu : {puits_text} · Jet lu : {jet_text} · {state}')
+                elif kind=='reading_review_status':
+                    self.reading_review_status=data
+                    self.refresh_reading_reviews()
+                elif kind=='pool_tracking':
+                    self.pool_tracking_status=data
                 elif kind=='catalogue':
                     self.vision.load()
                     ok=len(data['ok']); bad=len(data['errors'])
@@ -2341,13 +2794,14 @@ class Forgely(tk.Tk):
                     # Save last stable pre-fusion state BEFORE invalidating it.
                     before=(dict(self.live_jet),self.live_pool) if self.live_jet is not None else None
                     self.pre_fusion_sample=(tuple(sorted(before[0].items())),before[1]) if before else None
-                    if before and data.rune and self.active_equipment_verified and self.item.get().strip():
+                    if not learning_receipt and before and self.workshop_readings.atomic_snapshot and data.rune and self.active_equipment_verified and self.item.get().strip():
                         self.pending_transition={'item':self.item.get().strip(),
                             'rune':data.rune,'outcome':data.outcome,'sample':self.pre_fusion_sample,
                             'before':{'jet':before[0],'pool':before[1]}}
                     else:
                         self.pending_transition=None
-                    self.live_after_fusion=True;self.live_jet=None;self.live_pool=None;self.workshop_readings.reset()
+                    self.live_after_fusion=True;self.live_jet=None;self.live_pool=None;self.workshop_readings.invalidate()
+                    self.confirmation_requested.set()
                     self.refresh_strategy()
                     try:
                         if data.rune is None:
@@ -2384,6 +2838,10 @@ class Forgely(tk.Tk):
                     self.detect_help.configure(text='Lecture OCR à vérifier avant enregistrement')
                     self.overlay.state_color('candidate')
                 elif kind=='account_switch':
+                    manual_session=getattr(self,'manual_equipment',None)
+                    if isinstance(manual_session,ManualEquipmentSession):
+                        manual_session.invalidate('Compte changé : sélectionne à nouveau ton objet.')
+                        self._verified_item_context=None
                     self.clear_fast_preview()
                     self.workshop_active=False
                     self.active_equipment_verified=False
@@ -2398,6 +2856,10 @@ class Forgely(tk.Tk):
                     self.status.set('Atelier détecté automatiquement : '+data)
                     self.window_name.set(data)
                 elif kind=='atelier_waiting':
+                    manual_session=getattr(self,'manual_equipment',None)
+                    if isinstance(manual_session,ManualEquipmentSession):
+                        manual_session.workshop_lost()
+                        self._verified_item_context=None
                     self.clear_fast_preview()
                     self.workshop_active=False
                     self.workshop_readings.reset()
@@ -2471,11 +2933,20 @@ class Forgely(tk.Tk):
         self.refresh_stats()
 
     def refresh_stats(self):
+        timer=getattr(self,'_stats_refresh_timer',None)
+        if timer is not None:
+            self.after_cancel(timer)
+        self._stats_refresh_timer=None
         self.refresh_stats_now()
-        self.after(2500,self.refresh_stats)
+        self._stats_refresh_timer=self.after(2500,self.refresh_stats)
 
     def refresh_stats_now(self):
         n,counts=stats(item=self.item.get().strip())
+        if isinstance(getattr(self,'simulation_journal',None),SimulationJournal):
+            name=self.item.get().strip()
+            ident=self.simulator.item_id(name) if name else None
+            virtual=self._virtual_totals.get(ident,0) if name else sum(self._virtual_totals.values())
+            self.simulation_totals.set(f'Réelles : {n} · Simulées : {virtual} · Total : {n+virtual}')
         self.total_lbl.configure(text=f'{n} tentative'+('s' if n!=1 else ''))
         for kind in ('SC','SN','EC'):
             self.stats_labels[kind].configure(text=f'{counts[kind]/n:.0%}' if n else '—')
@@ -2504,6 +2975,7 @@ class Forgely(tk.Tk):
         self.deiconify();self.lift();self.overlay.withdraw()
 
     def close(self):
+        if isinstance(getattr(self,'simulator',None),SimulationWorker):self.simulator.stop()
         self.live_laboratory.stop()
         self.stop_event.set()
         if hasattr(self,'overlay'):self.overlay.destroy()
@@ -2512,5 +2984,3 @@ class Forgely(tk.Tk):
 
 if __name__=='__main__':
     Forgely().mainloop()
-
-

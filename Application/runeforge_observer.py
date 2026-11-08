@@ -8,6 +8,7 @@ from __future__ import annotations
 import re
 import unicodedata
 from dataclasses import dataclass
+from functools import lru_cache
 
 
 def normalized(s: str) -> str:
@@ -28,20 +29,25 @@ def find_outcome(ocr_text: str):
     return next(iter(hits)) if len(hits) == 1 else None
 
 
+@lru_cache(maxsize=16)
+def _rune_patterns(rune_names):
+    patterns=[]
+    for rune in sorted(rune_names,key=len,reverse=True):
+        body=r'\s+'.join(re.escape(part) for part in normalized(rune).split())
+        patterns.append((rune,re.compile(rf'\brune\s+(?:de\s+)?{body}\b')))
+    return tuple(patterns)
+
+
 def find_rune(ocr_text: str, rune_names):
     """Require explicit 'rune' prefix to avoid confusing item stats for uses.
 
     Conflicting rune mentions are rejected; do not guess from selection UI.
     """
     s = normalized(ocr_text)
-    names = sorted(rune_names, key=len, reverse=True)
     matched = []
-    for rune in names:
-        name = normalized(rune)
-        # Allow multiple spaces, but never match 'Vi' inside 'Ra Vi'.
-        body = r'\s+'.join(re.escape(part) for part in name.split())
-        pat = rf'\brune\s+(?:de\s+)?{body}\b'
-        if re.search(pat, s):
+    # Cache labels and expressions only; every OCR text is independently read.
+    for rune,pattern in _rune_patterns(tuple(rune_names)):
+        if pattern.search(s):
             matched.append(rune)
     return matched[0] if len(matched) == 1 else None
 
