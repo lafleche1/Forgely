@@ -1,3 +1,5 @@
+> Mise à jour : le modèle vidéo est désormais prioritaire et les transitions réelles qualifiées calibrent les estimations. Les descriptions anciennes de taux indisponibles et d’absence de calibration sont historiques. Voir [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
+
 # Audit des deux prompts — 8 novembre 2026
 
 Audit de la branche `main` au commit `018157e11f1e610227931e8ee801d66c9a8e7afb`,

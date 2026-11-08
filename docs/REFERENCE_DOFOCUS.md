@@ -1,3 +1,5 @@
+> Actualisation : le modèle vidéo est désormais prioritaire ; les relevés ponctuels restent séparés et servent de repli. Voir [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
+
 # Dofocus, référence des conseils Forgely v22.03
 
 **Actualisation du 8 novembre 2026 :** ce document conserve l’historique des

@@ -34,9 +34,11 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
     with sqlite3.connect(str(path), timeout=5) as db:
         exists=db.execute("SELECT 1 FROM sqlite_master WHERE type='table' AND name='fusion_contexts'").fetchone()
         if not exists: return {'groups':{}, 'observations':0, 'rejected':0}
-        rows=db.execute('SELECT item,rune,outcome,before_json,source FROM fusion_contexts').fetchall()
-    groups=defaultdict(Counter); rejected=0
-    for item,rune,outcome,raw,source in rows:
+        columns={r[1] for r in db.execute('PRAGMA table_info(fusion_contexts)')}
+        flag='calibration_verified' if 'calibration_verified' in columns else '0'
+        rows=db.execute(f'SELECT item,rune,outcome,before_json,source,{flag} FROM fusion_contexts').fetchall()
+    groups=defaultdict(Counter); calibration=defaultdict(Counter); rejected=0
+    for item,rune,outcome,raw,source,qualified in rows:
         if source!='local_screen' or outcome not in ('SC','SN','EC'):
             rejected+=1;continue
         try:
@@ -46,6 +48,8 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
                 raise ValueError('invalid context')
             key=(item,rune,pool_bucket(pool),jet_signature(jet))
             groups[key][outcome]+=1
+            if qualified==1:
+                calibration[(item,rune,float(pool),jet_signature(jet))][outcome]+=1
         except (TypeError,ValueError,KeyError,OverflowError): rejected+=1
     output={}
     for key,counts in groups.items():
@@ -55,7 +59,7 @@ def compute_snapshot(db_file=DB_FILE, *, minimum=30):
                      'ci95_sc':tuple(round(100*x,1) for x in wilson(counts['SC'],n)) if n>=minimum else None,
                      'usable':n>=minimum,
                      'quality':'exploratoire_ocr_non_verifie'}
-    return {'groups':output,'observations':sum(map(sum,(c.values() for c in groups.values()))),
+    return {'groups':output,'calibration':{k:{'counts':dict(v),'verified':True} for k,v in calibration.items()},'observations':sum(map(sum,(c.values() for c in groups.values()))),
             'rejected':rejected}
 
 
@@ -93,6 +97,12 @@ class LiveLaboratory:
         except (ValueError,TypeError): return None
         with self._lock: return self._snapshot['groups'].get(key)
 
+    def calibration(self,item,rune,jet,pool):
+        if not finite_number(pool,nonnegative=True):return None
+        try:key=(item,rune,float(pool),jet_signature(jet))
+        except (ValueError,TypeError):return None
+        with self._lock:return self._snapshot.get('calibration',{}).get(key)
+
     def status(self):
         with self._lock:
             return {'observations':self._snapshot['observations'],
@@ -102,4 +112,5 @@ class LiveLaboratory:
     def stop(self):
         self._stop.set();self._wake.set()
         if self._thread and self._thread.is_alive():self._thread.join(timeout=2)
+
 

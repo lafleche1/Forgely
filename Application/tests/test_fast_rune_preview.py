@@ -1,3 +1,4 @@
+from forgely_context import FusionPairing
 import unittest
 import queue
 import threading
@@ -59,6 +60,7 @@ class FastPreviewTests(unittest.TestCase):
 
     def test_preview_ui_displays_unverified_result_without_database_write(self):
         obj = Mock()
+        obj.fusion_pairing=FusionPairing()
         obj.messages = queue.Queue()
         obj.last_full_event_frame_id = 0
         obj.last_displayed_result_frame_id = 0
@@ -76,6 +78,7 @@ class FastPreviewTests(unittest.TestCase):
 
     def test_late_preview_does_not_replace_fully_processed_result(self):
         obj = Mock()
+        obj.fusion_pairing=FusionPairing()
         obj.messages = queue.Queue()
         obj.last_full_event_frame_id = 4
         obj.last_displayed_result_frame_id = 4
@@ -118,6 +121,7 @@ class FastPreviewTests(unittest.TestCase):
 
     def test_old_full_event_is_saved_without_replacing_newer_preview(self):
         obj = Mock()
+        obj.fusion_pairing=FusionPairing()
         obj.messages = queue.Queue()
         obj.last_full_event_frame_id = 0
         obj.last_displayed_result_frame_id = 20
@@ -135,3 +139,4 @@ class FastPreviewTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

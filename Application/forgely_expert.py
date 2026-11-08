@@ -56,12 +56,14 @@ def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
                  and goals is not None and finite_number(pool, nonnegative=True))
     action = proposal.rune if confirmed else None
     ref = reference(action)
+    prediction=(proposal.estimates or {}).get('prediction') if confirmed else None
     result = {'pool': {'value': pool if confirmed else None,
                        'status': 'confirmé' if confirmed else 'inconnu ou à confirmer'},
+              'prediction':prediction,
               'action': {'rune': action, 'weight': ref.weight, 'gain': ref.gain},
               'phase': 'Lecture ou objectif à confirmer', 'branches': {},
               'risk': 'Inconnu', 'goal_probability': None, 'confidence_percent': None,
-              'confidence': 'Classement heuristique ; probabilité finale non estimée.',
+              'confidence': ('Modèle vidéo estimé et calibration réelle si disponible ; probabilité finale non estimée.' if prediction else 'Classement heuristique ; probabilité finale non estimée.'),
               'stop': confirmed and proposal.kind == 'atteint',
               'status': proposal.summary, 'transition': last_transition if confirmed else None}
     if not confirmed or not action or ref.gain is None or ref.weight is None:
@@ -112,6 +114,9 @@ def render_dashboard(board):
             lines.append('Contradiction détectée : vérifier les lectures ; aucune correction automatique du puits.')
     action = board['action']
     lines.append('[ACTION SUIVANTE] ' + (f"{action['rune']} · poids {action['weight']:g}" if action['rune'] else board['status']))
+    prediction=board.get('prediction')
+    if prediction:
+        lines.append(f"[PROBABILITÉS ESTIMÉES] SC {prediction['SC']:.2f} % · SN {prediction['SN']:.2f} % · EC {prediction['EC']:.2f} % ; {prediction['calibration_n']} essais comparables.")
     lines.append('[PLAN À MOYEN TERME] ' + board['phase'])
     for outcome, branch in board['branches'].items():
         if outcome == 'SC':
@@ -120,7 +125,7 @@ def render_dashboard(board):
             lines.append(f"{outcome} → {branch['formula']} ; relire puis recalculer.")
     lines.extend(('[RISQUE] ' + board['risk'] + ' · exposition indicative, pas un taux de perte.',
                   '[FIABILITÉ] ' + board['confidence'],
-                  '[APPRENTISSAGE] Fréquences descriptives séparées ; aucun coefficient serveur déduit d’un échec.'))
+                  '[APPRENTISSAGE] Modèle prioritaire ; calibration après 30 essais comparables avec prior de 200 essais. OCR partiels et simulations exclus.'))
     return '\n'.join(lines)
 
 
@@ -138,13 +143,13 @@ def rules_text(price_settings=None):
         '7. Gardes conservatrices : densité totale d’une ligne over ≤101, sauf maximum naturel supérieur ; densité cumulée des lignes exotiques ≤101. Ce sont des gardes de Forgely, pas une formule officielle reconstituée.',
         '8. Exo possible sans puits. Aucun sacrifice automatique et aucun ordre universel de quatre phases. Remonter une ligne naturelle ciblée disponible avant une finition over/exo.',
         '9. Minima atteints : arrêt. Budget restant nul : arrêt. Aucun seuil automatique à 98 % du jet parfait et aucun seuil de risque fictif à 60 %.',
-        '10. Chances maximales : progression, équilibre, palier simple/Pa/Ra et exposition. Budget optimisé : progression rapportée au prix et exposition indicative de réparation. Aucun coût final minimal garanti.',
+        '10. Modèle vidéo prioritaire : seuil 80 %, pression dès ×14, over et qualité globale. Chances maximales : progression pondérée par SC+SN estimés. Budget optimisé : prix et exposition de réparation approximative. Aucun coût final minimal garanti.',
         '11. Prix absents : runes exclues du mode économique et des conseils sous budget. Budget 0 dans les préférences = sans limite ; dépenses inconnues = conseil sous budget suspendu.',
         '12. Scénario SC : gain nominal, puits conservé, prix déduit du budget, puis nouveau conseil hypothétique. SN/EC : relire les pertes avant de choisir la prochaine rune.',
         '13. Risque qualitatif : Faible si rune couverte ; Moyen si poids non couvert ; Critique pour finition ou over/exo déjà présent et identifié. Ce ne sont pas des probabilités. Un profil partiel peut laisser une fragilité inconnue.',
         '14. Aucun pourcentage de confiance ou de réussite finale inventé. Aucun coefficient de difficulté serveur déduit d’une série d’échecs.',
-        '15. Relevés Dofocus : réutilisation seulement pour le même objet, jet complet et puits exacts. Leur SC+SN affiché peut pondérer le classement ; cela ne valide pas ces chiffres comme probabilités du jeu.',
-        '16. Observations réelles agrégées : descriptives. Statistiques OCR contextuelles à partir de 30 échantillons, par objet, rune, jet exact et classe de puits, avec intervalle SC ; elles restent exploratoires et ne recalibrent pas le classement.',
+        '15. Formule finale vidéo pour SC ; Q = moyenne des ratios actuels/maxima naturels par ligne, bornée à [0,1] selon la définition utilisateur. Exo PA/PM/PO existant : Q=1 sans second +60. SN reconstruit par morceaux ; ces hypothèses sont affichées. Niveau inconnu : aucun bonus. Les relevés Dofocus exacts restent séparés et servent de repli si le modèle manque.',
+        '16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.',
         '17. Simulations et observations restent séparées. Cette version ne fait ni RL, ni MCTS, ni A*, ni mélange 40 % simulations / 60 % réel.',
         '18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.',
         '',

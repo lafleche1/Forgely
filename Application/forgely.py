@@ -45,7 +45,7 @@ from forgely_probabilites import reference as rune_reference, summary as rune_su
 from forgely_decision import advise, Proposal
 from forgely_rules import MODES as OBJECTIVE_MODES, objective_mode
 from forgely_copilote import MODES, player_signal, budget_summary
-from forgely_context import save_transition, context_rates
+from forgely_context import save_transition, context_rates, FusionPairing
 from forgely_labo_live import LiveLaboratory
 from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,observation_cursor,cost_since,
     export_observations_csv,export_item_summary,backup_local,import_bounds_csv,
@@ -484,6 +484,8 @@ class Forgely(tk.Tk):
         self.live_after_fusion=True
         self.pre_fusion_sample=None
         self.pending_transition=None
+        if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
+        self.fusion_pairing=FusionPairing()
         self.last_transition_audit=None
         self.context_saved=0
         self.context_rejected=0
@@ -640,7 +642,8 @@ class Forgely(tk.Tk):
         bounds=natural_bounds(self.item.get().strip())
         proposal=advise(jets,targets,pool=pool,counts_for=records_for,
             natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
-            item=self.item.get().strip(),profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining)
+            item=self.item.get().strip(),profile_complete=False,mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining, level=self.plan.get('level'),
+            context_for=lambda rune:self.live_laboratory.calibration(self.item.get().strip(),rune,jets,pool))
         # Contextual measurements are the only measured probabilities that can
         # describe a similar *starting state*. Aggregate rates are not forecasts.
         if proposal.rune and proposal.kind!='bloqué':
@@ -1512,6 +1515,7 @@ class Forgely(tk.Tk):
         self.last_item_ocr_text='';self.last_item_candidate=''
         self.last_history_identity='Historique non analysé'
         self.pending_transition=None
+        if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
         old_capture=self.capture
         self._verified_item_context=None
         self.capture=GameCapture()
@@ -1987,6 +1991,7 @@ class Forgely(tk.Tk):
                     break
                 kind,data=self.messages.get_nowait()
                 source_context=None
+                frame_id=event_frame_id=None
                 identity_frame_key=None
                 event_already_recorded=False
                 if kind=='worker_message':
@@ -2080,6 +2085,7 @@ class Forgely(tk.Tk):
                         self.provisional_slot_id=None
                         self.live_jet=None;self.live_pool=None
                         self.live_after_fusion=True;self.pending_transition=None
+                        if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                         self.workshop_readings.reset()
                         self.before_identity_reading=None
                         self.refresh_strategy()
@@ -2096,6 +2102,7 @@ class Forgely(tk.Tk):
                             self.live_jet=None;self.live_pool=None
                             self.live_after_fusion=True
                             self.pending_transition=None
+                            if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                             self.workshop_readings.reset()
                             self.item_visual_tracker.reset()
                             self._verified_item_context=None
@@ -2148,6 +2155,7 @@ class Forgely(tk.Tk):
                             self.item_selection_source='none'
                             self.live_jet=None; self.live_pool=None
                             self.live_after_fusion=True; self.pending_transition=None
+                            if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                         if self.provisional_slot_id is None:
                             try:
                                 self.provisional_slot_id=remember_provisional(slot_icon, self.current_slot_tracker.signature)
@@ -2242,29 +2250,43 @@ class Forgely(tk.Tk):
                     if self.active_equipment_verified and previous_sample != sample:
                         # Do not display old verified jet/pool as current while
                         # the new OCR values are still being confirmed.
+                        if self.live_jet is not None and self.live_pool is not None:
+                            self.fusion_pairing.preserve(self.item.get(),frame_id if frame_id is not None else self.latest_observation_id,
+                                {'jet':dict(self.live_jet),'pool':self.live_pool})
                         self.live_jet=None;self.live_pool=None
                         self.live_after_fusion=True
                     if stable and self.active_equipment_verified:
                         if self.pending_transition is not None:
                             pending=self.pending_transition
-                            # A real history transition and a different stable
-                            # snapshot are both required for contextual storage.
-                            if sample != pending['sample'] and self.item.get()==pending['item']:
+                            # A real history transition and stable post-read are required.
+                            # SN/EC may legitimately leave the same visible state.
+                            if (sample != pending['sample'] or pending['outcome'] in ('SN','EC')) and self.item.get()==pending['item']:
                                 try:
+                                    from forgely_dofocus import natural_profile
+                                    full_profile=natural_profile(pending['item'])
+                                    complete=bool(full_profile and set(full_profile).issubset(jet)
+                                                  and set(full_profile).issubset(pending['before']['jet']))
                                     save_transition(pending['item'],pending['rune'],pending['outcome'],
-                                        pending['before'],{'jet':dict(jet),'pool':puits})
+                                        pending['before'],{'jet':dict(jet),'pool':puits},
+                                        natural_max=full_profile,complete=complete)
                                     after={'jet':dict(jet),'pool':puits}
                                     self.last_transition_audit={'item':pending['item'],'after':after,
                                         'audit':audit_transition(pending['rune'],pending['outcome'],
-                                            pending['before'],after,complete=False)}
+                                            pending['before'],after,complete=complete)}
                                     self.context_saved += 1
                                     self.live_laboratory.notify_observation()
                                     self.status.set(f'Contexte avant/après sauvegardé : {self.context_saved}')
                                 except (ValueError,TypeError,KeyError):
                                     self.context_rejected += 1
+                                # A confirmed SN/EC may leave both jet and pool unchanged.
+                                # Release the old-state barrier so advice resumes.
+                                if pending['outcome'] in ('SN','EC'):
+                                    self.pre_fusion_sample=None
                                 self.pending_transition=None
+                                if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                             elif self.item.get()!=pending['item']:
                                 self.pending_transition=None
+                                if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                                 self.context_rejected += 1
                         if self.pending_transition is None and (self.pre_fusion_sample is None or sample != self.pre_fusion_sample):
                             self.live_jet=dict(jet)
@@ -2339,7 +2361,10 @@ class Forgely(tk.Tk):
                 elif kind=='auto_event':
                     self.last_transition_audit=None
                     # Save last stable pre-fusion state BEFORE invalidating it.
-                    before=(dict(self.live_jet),self.live_pool) if self.live_jet is not None else None
+                    live_before=({'jet':dict(self.live_jet),'pool':self.live_pool} if self.live_jet is not None else None)
+                    preserved=self.fusion_pairing.take(self.item.get(),
+                        event_frame_id if event_frame_id is not None else self.latest_observation_id,live_before)
+                    before=(preserved['jet'],preserved['pool']) if preserved else None
                     self.pre_fusion_sample=(tuple(sorted(before[0].items())),before[1]) if before else None
                     if before and data.rune and self.active_equipment_verified and self.item.get().strip():
                         self.pending_transition={'item':self.item.get().strip(),
@@ -2347,6 +2372,7 @@ class Forgely(tk.Tk):
                             'before':{'jet':before[0],'pool':before[1]}}
                     else:
                         self.pending_transition=None
+                        if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                     self.live_after_fusion=True;self.live_jet=None;self.live_pool=None;self.workshop_readings.reset()
                     self.refresh_strategy()
                     try:
@@ -2394,6 +2420,7 @@ class Forgely(tk.Tk):
                     self.provisional_slot_id=None
                     self.trusted_history_name=None
                     self.pending_transition=None
+                    if hasattr(self,'fusion_pairing'): self.fusion_pairing.clear()
                     self.item_icon_status='Nouveau compte : identification en cours'
                     self.status.set('Atelier détecté automatiquement : '+data)
                     self.window_name.set(data)

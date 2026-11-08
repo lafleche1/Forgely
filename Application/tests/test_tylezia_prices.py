@@ -70,7 +70,7 @@ def test_application_copilot_uses_activated_reference(tmp_path):
         plan={'item': 'Anneau', 'stats': {'Force': {'target': 10}}},
         active_equipment_verified=True, item=SimpleNamespace(get=lambda: 'Anneau'),
         live_jet={'Force': 0}, live_pool=30, live_after_fusion=False,
-        budget_start_cursor=0, live_laboratory=SimpleNamespace(estimate=lambda *a: None))
+        budget_start_cursor=0, live_laboratory=SimpleNamespace(estimate=lambda *a: None, calibration=lambda *a: None))
     with patch('forgely.read_settings', side_effect=lambda: tools.read_settings(path)), \
          patch('forgely.cost_since', return_value={'known_cost': 0, 'complete': True, 'unpriced_attempts': 0}), \
          patch('forgely.natural_bounds', return_value={'Force': (0, 100)}), \

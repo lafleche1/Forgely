@@ -1,3 +1,4 @@
+from forgely_context import FusionPairing
 import queue
 import threading
 from types import SimpleNamespace
@@ -189,6 +190,7 @@ def test_accepted_event_survives_restart_and_keeps_original_equipment():
     event=SimpleNamespace(rune='Fo',outcome='SC',evidence='confirmed old result')
     receipt=AcceptedRuneEvent(1,event,'Old item',old,0,'A')
     obj=Mock(frame_mailbox=LatestFrameMailbox())
+    obj.fusion_pairing=FusionPairing()
     obj.messages=queue.Queue();obj.messages.put(('accepted_event',receipt))
     obj.saved_auto=0;obj.live_jet={'Force':50};obj.live_pool=10
     obj.item.get.return_value='New item';obj.winfo_exists.return_value=False
@@ -205,6 +207,7 @@ def test_current_accepted_event_is_not_persisted_twice():
     event=SimpleNamespace(rune='Fo',outcome='SC',evidence='confirmed current result')
     receipt=AcceptedRuneEvent(1,event,'Current item',mailbox,0,'A')
     obj=Mock(frame_mailbox=mailbox)
+    obj.fusion_pairing=FusionPairing()
     obj.messages=queue.Queue();obj.messages.put(('accepted_event',receipt))
     obj.saved_auto=0;obj.live_jet={'Force':50};obj.live_pool=10
     obj.last_full_event_frame_id=0;obj.last_displayed_result_frame_id=0
@@ -221,6 +224,7 @@ def test_unbound_accepted_event_is_kept_as_unassigned():
     mailbox=LatestFrameMailbox();mailbox.publish('pixels','A',1,0)
     receipt=AcceptedRuneEvent(1,SimpleNamespace(rune='Fo',outcome='EC',evidence='seen'),None,mailbox,0,'A')
     obj=Mock(frame_mailbox=mailbox)
+    obj.fusion_pairing=FusionPairing()
     obj.messages=queue.Queue();obj.messages.put(('accepted_event',receipt))
     obj.winfo_exists.return_value=False
     with patch('forgely.insert_observation') as insert,patch('forgely.insert_unassigned') as unknown:
@@ -251,3 +255,4 @@ def test_atomic_sink_preserves_accepted_receipt_after_later_invalidation():
     sink.put(('accepted_event',receipt))
     mailbox.invalidate('closed')
     assert messages.get_nowait()==('accepted_event',receipt)
+

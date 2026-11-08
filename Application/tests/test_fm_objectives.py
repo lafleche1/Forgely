@@ -53,7 +53,8 @@ def test_natural_restoration_before_final_exotic():
 
 def test_small_gap_can_cross_target_without_unwanted_over():
     p = advise({'Vitalité': 299}, {'Vitalité': 300}, natural_max={'Vitalité': 350}, pool=5)
-    assert p.rune == 'Vi'
+    # A bigger rune stays natural and has better predicted success near this target.
+    assert p.rune == 'Ra Vi'
     assert not candidates({'Vitalité': 299}, {'Vitalité': 300}, {'Vitalité': 300}, 5)
 
 
@@ -74,3 +75,4 @@ def test_invalid_prices_are_unknown_in_all_outputs(price):
     assert p.rune == 'Fo'
     assert 'Prix inconnu' in p.explanation
     assert p.estimates['objective']['alternatives'][0]['price'] is None
+

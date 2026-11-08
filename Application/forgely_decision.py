@@ -3,6 +3,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Mapping
 from forgely_probabilites import empirical
+from forgely_predictive import estimate, calibrate
 from forgely_dofocus import (reference, lookup, lookup_context, natural_profile, line_limit,
     normalise_jet, displayed_number, risk_notes)
 from forgely_rules import (RUNE_CHOICES, WEIGHTS as WEIGHT_PER_POINT, CAP,
@@ -53,7 +54,7 @@ def extra_mass(jets, natural_max):
 
 
 def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
-               mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None):
+               mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None, level=None, context_for=None):
     mode = objective_mode(mode)
     if (not targets or not jets or pool is None or not finite_number(pool, nonnegative=True)
             or any(stat not in jets for stat in targets)
@@ -103,21 +104,28 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
             obs = empirical(counts) if counts is not None else None
             base={'SC':None,'SN':None,'EC':None,'kind':'dofocus_non_documente',
                   'note':'Aucun taux fixe extrapolé depuis une autre source.'}
+            prediction = estimate(jets,natural_max,rune,level=level,profile_complete=profile_complete)
+            prediction = calibrate(prediction,context_for(rune) if context_for and prediction else None)
+            base['prediction'] = prediction
             remaining = goal - current
             progress = min(1., ref.gain / remaining)
             # Approximate exposure, not expected losses: actual loss distribution is unknown.
             exposed = max(0., ref.weight - pool)
             exposure = exposed / max(ref.weight, 1.)
-            overshoot = max(0., proposed - goal) / max(1., remaining)
+            overshoot = max(0., proposed - goal) / max(1., ref.gain if prediction else remaining)
             # Community tier heuristic: soft penalty, never an impossibility threshold.
-            tier_pressure = min(4., max(0., current / (20 * ref.gain) - 1.))
+            tier_pressure = 0. if prediction else min(4., max(0., current / (20 * ref.gain) - 1.))
             finish_penalty = .8 if pending_natural and kind in ('exo', 'over') else 0.
             balance = 0.
             if natural_max and stat in natural_max and natural_max[stat] > 0:
                 balance = .15 * max(0., 1 - current / natural_max[stat])
-            utility = (progress + balance) / (1 + .7 * exposure + .5 * tier_pressure + overshoot)
+            non_sc = (100-prediction['SC'])/100 if prediction else 1.
+            utility = (progress + balance) / (1 + .7 * exposure * non_sc + .5 * tier_pressure + overshoot)
             utility /= 1 + finish_penalty
-            if sampled and not sampled['blocked']:
+            if prediction:
+                # Predicted progress, with repair exposure weighted by non-SC mass.
+                utility *= (prediction['SC']+prediction['SN'])/100
+            elif sampled and not sampled['blocked']:
                 display=sampled['display']
                 utility *= (displayed_number(display['SC'])+displayed_number(display['SN']))/100
             if mode == 'Budget optimisé':
@@ -125,6 +133,7 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
                 repair_prices = [p / reference(r).weight for r, p in prices.items()
                                  if finite_number(p, nonnegative=True) and reference(r).weight]
                 repair_proxy = exposed * min(repair_prices) if repair_prices else 0.
+                if prediction: repair_proxy *= (100-prediction['SC'])/100
                 score = utility / max(1., price + repair_proxy)
             else:
                 score = utility - .04 * ref.weight / 100 - finish_penalty
@@ -138,7 +147,7 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
 
 
 def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fusion=False, *,
-           mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None):
+           mode='Chances maximales', prices=None, remaining_budget=None, profile_complete=True,item=None, level=None, context_for=None):
     jets=normalise_jet(jets)
     targets=normalise_jet(targets)
     if jets is None or targets is None:
@@ -175,7 +184,7 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
     if remaining_budget == 0:
         return blocked('Budget épuisé', 'Arrêt conseillé : aucune dépense supplémentaire autorisée par le budget.')
     options = candidates(jets, targets, natural_max, pool, counts_for, mode=mode, prices=prices,
-                         remaining_budget=remaining_budget, profile_complete=profile_complete,item=item)
+                         remaining_budget=remaining_budget, profile_complete=profile_complete,item=item,level=level,context_for=context_for)
     if not options:
         return blocked('Aucune rune à proposer',
                        'Vérifie les prix, le budget restant, les bornes naturelles, les malus et les plafonds de lignes.')
@@ -198,6 +207,11 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
         explanation += 'Classement par progression/prix et exposition de réparation approximative ; coût final inconnu. '
     else:
         explanation += 'Classement par progression, palier de rune, équilibre des lignes et protection du jet. '
+    prediction=base.get('prediction')
+    if prediction:
+        explanation += (f"Modèle vidéo estimé : SC {prediction['SC']:.2f} %, SN {prediction['SN']:.2f} %, EC {prediction['EC']:.2f} %. "
+                        f"Calibration : {prediction['calibration_n']} résultats réels comparables ; poids réel {100*prediction['real_weight']:.1f} %. "
+                        + '; '.join(prediction['assumptions']) + '. ')
     n = obs['n'] if obs else 0
     if n:
         explanation += f'{n} observations agrégées : descriptives, non utilisées comme probabilités du prochain essai. '
@@ -207,16 +221,16 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
                       f"SC {display['SC']} %, SN {display['SN']} %, EC {display['EC']} %. "
                       "Valeurs affichées arrondies, non validées comme probabilités du jeu. ")
     else:
-        explanation+='Aucun relevé Dofocus pour ce contexte exact : pourcentages non disponibles. '
+        explanation+=('Aucun relevé Dofocus pour ce contexte exact. ' if prediction else 'Aucun relevé Dofocus pour ce contexte exact : pourcentages non disponibles. ')
     for note in risk_notes(current,current+ref.gain,ref.weight,pool,
                           natural_max.get(stat,0) if natural_max is not None and profile_complete else None):
         explanation+=note+' '
     explanation+='Politique Forgely : gardes conservatrices de plafond par ligne et d’exos cumulés à 101 ; pas une formule Dofocus publiée. '
     explanation+='Choix de rune indicatif selon l’objectif, sans garantie de réussite.'
     alternatives = [{'rune': row[1], 'stat': row[2], 'score': round(row[0], 6),
-                     'price': (prices or {}).get(row[1])} for row in options[:5]]
-    return Proposal(rune, kind, f'À envisager : {rune}', explanation, 'Densités du client · relevés Dofocus séparés ; classement Forgely',
-                    {'observed': obs, 'benchmark': base,'dofocus':sampled,
+                     'price': (prices or {}).get(row[1]), 'prediction':row[5].get('prediction')} for row in options[:5]]
+    return Proposal(rune, kind, f'À envisager : {rune}', explanation, 'Modèle vidéo estimé · Densités du client · relevés Dofocus séparés ; classement Forgely',
+                    {'observed': obs, 'benchmark': base,'dofocus':sampled,'prediction':prediction,
                      'objective': {'mode': mode, 'remaining_budget': remaining_budget,
                                    'exposed_weight': exposure, 'alternatives': alternatives,
                                    'goal_probability': None}}, n)

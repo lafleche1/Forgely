@@ -1,3 +1,5 @@
+> Mise à jour : le modèle vidéo est désormais prioritaire et les transitions réelles qualifiées calibrent les estimations. Les descriptions anciennes de taux indisponibles et d’absence de calibration sont historiques. Voir [MODELE_VIDEO_CALIBRATION.md](MODELE_VIDEO_CALIBRATION.md).
+
 # Deux modes de recommandation
 
 Actualisation du 8 novembre 2026 : les densités sont partagées à partir de

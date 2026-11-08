@@ -11,14 +11,15 @@ from datetime import datetime, timezone
 from pathlib import Path
 from forgely_data import DB_FILE
 from forgely_probabilites import wilson
+from forgely_rules import finite_number
 
 
 def normalize_snapshot(jet, pool):
-    if not isinstance(jet, dict) or not jet or pool is None or not isinstance(pool, (int,float)) or pool < 0:
+    if not isinstance(jet, dict) or not jet or pool is None or not finite_number(pool, nonnegative=True):
         return None
     clean = {}
     for name, amount in jet.items():
-        if not isinstance(name,str) or not isinstance(amount,(int,float)) or amount < 0 or amount > 30000:
+        if not isinstance(name,str) or not finite_number(amount) or amount < 0 or amount > 30000:
             return None
         clean[name] = amount
     return {'jet': dict(sorted(clean.items())), 'pool': float(pool)}
@@ -48,21 +49,29 @@ def init_context_db(db_file=DB_FILE):
             source TEXT NOT NULL DEFAULT 'local_screen',
             CHECK(source='local_screen')
         )''')
+        columns={r[1] for r in db.execute('PRAGMA table_info(fusion_contexts)')}
+        if 'calibration_verified' not in columns:
+            db.execute('ALTER TABLE fusion_contexts ADD COLUMN calibration_verified INTEGER NOT NULL DEFAULT 0')
         db.execute('CREATE INDEX IF NOT EXISTS ctx_item_rune ON fusion_contexts(item,rune)')
 
 
-def save_transition(item,rune,outcome,before,after,db_file=DB_FILE):
+def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, natural_max=None,complete=False):
     if not item or not rune or outcome not in ('SC','SN','EC'):
         raise ValueError('Item, rune et résultat requis')
     start=normalize_snapshot(before.get('jet'),before.get('pool')) if before else None
     end=normalize_snapshot(after.get('jet'),after.get('pool')) if after else None
     delta=snapshot_diff(start,end)
-    if delta is None or (not delta['changes'] and delta['pool_delta']==0):
+    qualified=False
+    if delta is not None and complete and isinstance(natural_max,dict) and natural_max:
+        from forgely_expert import audit_transition
+        qualified=(set(natural_max).issubset(start['jet'])
+                   and audit_transition(rune,outcome,start,end,complete=True)['status']=='cohérent')
+    if delta is None or (not qualified and not delta['changes'] and delta['pool_delta']==0):
         raise ValueError('Deux snapshots cohérents et différents sont nécessaires')
     init_context_db(db_file)
     with sqlite3.connect(str(db_file)) as db:
-        db.execute('INSERT INTO fusion_contexts(observed_at,item,rune,outcome,before_json,after_json,deltas_json) VALUES(?,?,?,?,?,?,?)',
-            (datetime.now(timezone.utc).isoformat(),item,rune,outcome,json.dumps(start,ensure_ascii=False),json.dumps(end,ensure_ascii=False),json.dumps(delta,ensure_ascii=False)))
+        db.execute('INSERT INTO fusion_contexts(observed_at,item,rune,outcome,before_json,after_json,deltas_json,calibration_verified) VALUES(?,?,?,?,?,?,?,?)',
+            (datetime.now(timezone.utc).isoformat(),item,rune,outcome,json.dumps(start,ensure_ascii=False),json.dumps(end,ensure_ascii=False),json.dumps(delta,ensure_ascii=False),int(qualified)))
     return delta
 
 
@@ -86,3 +95,30 @@ def context_rates(item,rune,stat=None,pre_value=None,pre_pool=None,db_file=DB_FI
     pct={k:round(100*v/n,1) for k,v in counts.items()}
     ci=tuple(round(100*x,1) for x in wilson(counts['SC'],n))
     return {'n':n,'counts':counts,'usable':True,'percentages':pct,'ci95_sc':ci}
+
+
+
+class FusionPairing:
+    """Preserve pre-change state across atelier_read -> accepted history event.
+
+    Expire uncertain pairings instead of treating stabilized post-state as pre.
+    Caller resets on identity/session changes; each event consumes the cache.
+    """
+    def __init__(self):
+        self.clear()
+
+    def clear(self):
+        self.pending=None
+
+    def preserve(self,item,frame,snapshot):
+        if self.pending is None and item and normalize_snapshot(snapshot.get('jet'),snapshot.get('pool')):
+            self.pending=(item,frame,normalize_snapshot(snapshot['jet'],snapshot['pool']))
+
+    def take(self,item,frame,fallback):
+        cached=self.pending
+        self.clear()
+        if cached is None:return fallback
+        name,first,state=cached
+        if name!=item or type(frame) is not int or type(first) is not int or not 0<=frame-first<=8:
+            return None
+        return state
