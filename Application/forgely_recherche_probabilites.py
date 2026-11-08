@@ -74,12 +74,6 @@ def tentatives_pour_chance(p: float, cible: float) -> int | None:
     if p==1: return 1
     return ceil(log1p(-cible)/log1p(-p))
 
-def cout_moyen_jusqu_au_succes(p: float, cout_tentative: float) -> float | None:
-    """Coût des runes seulement; exclut réparations du jet, sous p constant."""
-    if not isfinite(p) or not 0<=p<=1 or not isfinite(cout_tentative) or cout_tentative<0:
-        raise ValueError('Paramètres invalides')
-    return cout_tentative/p if p else None
-
 def exemple_exo_lourd(tentatives=100):
     """Illustration du taux communautaire de 1 %, PAS une estimation DOFUS 3."""
     return {'hypothese_sc':0.01, 'tentatives':tentatives,

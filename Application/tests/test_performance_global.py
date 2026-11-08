@@ -46,7 +46,7 @@ def test_parsed_jets_are_fast_without_mutable_aliases():
     assert parse_jet('31 Force')['Force']==31
 
 
-def test_stable_advice_cached_but_state_prices_and_learning_invalidate():
+def test_advice_recomputed_without_stale_state_prices_or_learning():
     import forgely
     cfg={'strategy':'Budget optimisé','budget_kamas':0,'prices':{'Fo':36,'Pa Fo':132,'Ra Fo':382}}
     app=SimpleNamespace(observation_only=False,plan={'item':'Test','stats':{'Force':{'target':10}}},
@@ -54,6 +54,7 @@ def test_stable_advice_cached_but_state_prices_and_learning_invalidate():
         live_jet={'Force':0},live_pool=30,live_after_fusion=False,budget_start_cursor={'observations':0,'unassigned_actions':0},
         last_transition_audit=None,live_laboratory=SimpleNamespace(estimate=lambda *a:None,calibration=lambda *a:None,revision=0))
     with patch('forgely.read_settings',return_value=cfg), \
+         patch('forgely.complete_learning_profile',return_value={'Force':100}), \
          patch('forgely.natural_bounds',return_value={'Force':(0,100)}), \
          patch('forgely.stats_by_rune',return_value={}), \
          patch('forgely.cost_since',side_effect=AssertionError('unlimited budget queried')), \
@@ -61,13 +62,13 @@ def test_stable_advice_cached_but_state_prices_and_learning_invalidate():
         first=forgely.Forgely.strategy_current(app)
         first.estimates['prediction']['SC']=-1
         second=forgely.Forgely.strategy_current(app)
-        assert second.estimates['prediction']['SC']>=0 and engine.call_count==1
+        assert second.estimates['prediction']['SC']>=0 and engine.call_count==2
         app.live_pool=29;forgely.Forgely.strategy_current(app)
-        assert engine.call_count==2
-        cfg['prices']['Fo']=37;forgely.Forgely.strategy_current(app)
         assert engine.call_count==3
-        app.live_laboratory.revision=1;forgely.Forgely.strategy_current(app)
+        cfg['prices']['Fo']=37;forgely.Forgely.strategy_current(app)
         assert engine.call_count==4
+        app.live_laboratory.revision=1;forgely.Forgely.strategy_current(app)
+        assert engine.call_count==5
         app.live_after_fusion=True
         assert forgely.Forgely.strategy_current(app).rune is None
 

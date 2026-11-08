@@ -23,6 +23,17 @@ def capture_scope(app):
     return str(id(mailbox))+':'+str(mailbox.generation())
 
 
+def current_plan(app):
+    from forgely_measured_goals import MeasuredGoals
+    measured=getattr(app,'measured_goals',None)
+    plan=getattr(app,'plan',None) or {}
+    if isinstance(measured,MeasuredGoals) and measured.targets:
+        item=app.item.get()
+        return {'item':item,'stats':{s:{'target':v} for s,v in measured.targets.items()},
+                'level':plan.get('level') if plan.get('item')==item else None}
+    return plan
+
+
 def _guard(app,operation):
     try:return operation()
     except (OSError,sqlite3.Error,ValueError,TypeError,KeyError) as exc:
@@ -34,7 +45,7 @@ def review_boundary(app):
     rec=recorder(app)
     if rec is None or rec.active is None:return
     def run():
-        plan=app.plan or {}
+        plan=current_plan(app)
         goals={s:v['target'] for s,v in plan.get('stats',{}).items() if v.get('target') is not None}
         identity=(app.item.get(),goals,plan.get('level'),capture_scope(app))
         if not app.active_equipment_verified or plan.get('item')!=app.item.get() or identity!=rec.active['identity']:
@@ -47,13 +58,18 @@ def review_tick(app,proposal=None):
     if rec is None:return
     review_boundary(app)
     def run():
-        plan=app.plan
-        if (not plan or not app.active_equipment_verified or app.live_after_fusion
-                or not app.live_jet or app.live_pool is None or plan.get('item')!=app.item.get()):return
+        plan=current_plan(app)
+        from forgely_measured_goals import MeasuredGoals,current_snapshot
+        measured=getattr(app,'measured_goals',None)
+        snapshot=current_snapshot(app) if isinstance(measured,MeasuredGoals) and measured.targets else None
+        if isinstance(measured,MeasuredGoals) and measured.targets and snapshot is None:return
+        jets,pool=snapshot if snapshot else (app.live_jet,app.live_pool)
+        if (not plan or not app.active_equipment_verified or (not snapshot and app.live_after_fusion)
+                or not jets or pool is None or plan.get('item')!=app.item.get()):return
         from forgely_tools import read_settings
         goals={s:v['target'] for s,v in plan['stats'].items() if v.get('target') is not None}
         cfg=read_settings()
-        rec.ensure_session(item=app.item.get(),targets=goals,jets=app.live_jet,pool=app.live_pool,
+        rec.ensure_session(item=app.item.get(),targets=goals,jets=jets,pool=pool,
                            prices=cfg['prices'],scope=capture_scope(app),level=plan.get('level'),mode=cfg.get('strategy'))
         if proposal is not None and proposal.rune:
             prediction=(proposal.estimates or {}).get('prediction')

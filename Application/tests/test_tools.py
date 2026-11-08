@@ -5,14 +5,14 @@ import unittest
 import zipfile
 from pathlib import Path
 from forgely_tools import (import_bounds_csv,natural_bounds,save_settings,read_settings,
-  export_observations_csv,backup_local,illustrative_scenario,advisory_status,session_cost)
+  export_observations_csv,backup_local,illustrative_scenario,advisory_status)
 from forgely_data import insert_observation,connect
 
 class ToolsTest(unittest.TestCase):
  def test_settings(self):
   with tempfile.TemporaryDirectory() as tmp:
    f=Path(tmp)/'s.json';save_settings({'strategy':'Économique','budget_kamas':500,'prices':{'Vi':10}},f)
-   self.assertEqual(read_settings(f)['prices']['Vi'],10)
+   self.assertEqual(read_settings(f),{'strategy':'Chances maximales','budget_kamas':500,'prices':{'Vi':10}})
  def test_bounds(self):
   with tempfile.TemporaryDirectory() as tmp:
    s=Path(tmp)/'in.csv';dest=Path(tmp)/'jets.csv'
@@ -24,7 +24,6 @@ class ToolsTest(unittest.TestCase):
    db=Path(tmp)/'test.sqlite';connect(db).close()
    insert_observation('Objet','Vi','EC','manual',db_file=db)
    csvpath=Path(tmp)/'obs.csv';self.assertEqual(export_observations_csv(csvpath,db),1)
-   self.assertEqual(session_cost('Objet',{'prices':{'Vi':20}},db)['known_cost'],20)
    z=Path(tmp)/'backup.zip';backup_local(z,db,Path(tmp)/'none',Path(tmp)/'none')
    with zipfile.ZipFile(z) as archive:self.assertIn('observations_locales.sqlite3',archive.namelist())
  def test_scenario_separate(self):

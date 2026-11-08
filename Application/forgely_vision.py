@@ -9,7 +9,7 @@ from dataclasses import dataclass
 from pathlib import Path
 import json
 import math
-from PIL import Image, ImageOps, ImageFilter
+from PIL import Image, ImageOps, ImageFilter, ImageChops
 
 SIDE = 32
 # Distance thresholds intentionally strict: tune from labeled real captures.
@@ -41,6 +41,21 @@ def distance(image_a: Image.Image, image_b: Image.Image) -> float:
     return .48*color + .22*luminance + .30*contours
 
 
+def _planes(image):
+    rgb = canonical(image)
+    gray = ImageOps.grayscale(rgb)
+    return rgb, gray, gray.filter(ImageFilter.FIND_EDGES)
+
+
+def _plane_distance(a, b):
+    sums = []
+    for left, right in zip(a, b):
+        histogram = ImageChops.difference(left, right).histogram()
+        sums.append(sum((i % 256) * count for i, count in enumerate(histogram)))
+    n = SIDE * SIDE
+    return .48*(sums[0]/(3*255*n)) + .22*(sums[1]/(255*n)) + .30*(sums[2]/(255*n))
+
+
 @dataclass(frozen=True)
 class IconMatch:
     rune: str | None
@@ -55,10 +70,12 @@ class RuneLibrary:
         self.catalogue_directory=self.directory.parent / "catalogue_dofus3"
         self.allowed=set(rune_names)
         self.references=[]
+        self._feature_cache={}
         self.load()
 
     def load(self):
         self.references=[]
+        self._feature_cache={}
         folders = [self.directory, self.catalogue_directory]
         if self.directory.name == "icones_runes" and self.directory.parent.name == "Forgely":
             folders.append(Path(__file__).parent / "catalogue_dofus3")
@@ -96,9 +113,22 @@ class RuneLibrary:
     def predict(self, patch: Image.Image):
         if not self.references:return IconMatch(None,None,None,'Bibliothèque d’icônes vide : ajouter des références')
         by_rune={}
+        query = _planes(patch)
+        # Content keys also detect callers editing reference images in place.
+        # Retain only current references, keeping memory bounded by the library.
+        previous = self._feature_cache
+        current = {}
         for name,ref in self.references:
-            d=distance(patch,ref)
+            key = (ref.mode, ref.size, ref.tobytes())
+            planes = current.get(key)
+            if planes is None:
+                planes = previous.get(key)
+                if planes is None:
+                    planes = _planes(ref)
+                current[key] = planes
+            d=_plane_distance(query,planes)
             by_rune[name]=min(d,by_rune.get(name,1.0))
+        self._feature_cache = current
         ranked=sorted(by_rune.items(),key=lambda kv:kv[1])
         winner,best=ranked[0]
         runner=ranked[1][1] if len(ranked)>1 else 1.0

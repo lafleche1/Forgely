@@ -1,5 +1,6 @@
 """Local-only showcase queue. Not a public service, no upload or DOFUS automation."""
 from __future__ import annotations
+from forgely_sqlite import transaction as closing_transaction
 import json
 import hashlib
 import sqlite3
@@ -53,7 +54,7 @@ def save_success(plan,item,jets,pool,verified=False,stable=False,db_file=DB_FILE
     values={k:float(jets[k]) for k in targets}
     serial=json.dumps({'item':key_for(item),'target':targets,'actual':values},sort_keys=True,ensure_ascii=False)
     fp=hashlib.sha256(serial.encode('utf8')).hexdigest()
-    with gallery_connect(db_file) as db:
+    with closing_transaction(gallery_connect(db_file)) as db:
         db.execute('''INSERT OR IGNORE INTO success_gallery
             (created_at,item,target_json,actual_json,pool,fingerprint)
             VALUES (?,?,?,?,?,?)''',(datetime.now(timezone.utc).isoformat(),item,
@@ -63,7 +64,7 @@ def save_success(plan,item,jets,pool,verified=False,stable=False,db_file=DB_FILE
 
 
 def list_successes(db_file=DB_FILE):
-    with gallery_connect(db_file) as db:
+    with closing_transaction(gallery_connect(db_file)) as db:
         rows=db.execute('SELECT id,created_at,item,target_json,actual_json,pool FROM success_gallery ORDER BY id DESC').fetchall()
     return [{'id':r[0],'date':r[1],'item':r[2],'targets':json.loads(r[3]),
              'actual':json.loads(r[4]),'pool':r[5],'visibility':'locale'} for r in rows]

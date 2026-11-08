@@ -1,0 +1,71 @@
+{
+  "image_size": [
+    442,
+    625
+  ],
+  "scale_tag": "effects-442x625-gelano-native-export",
+  "fields": [
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "box": {
+        "x": 190,
+        "y": 135,
+        "w": 16,
+        "h": 15
+      },
+      "guard_box": {
+        "x": 209,
+        "y": 135,
+        "w": 47,
+        "h": 15
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "PA",
+      "kind": "stat",
+      "box": {
+        "x": 189,
+        "y": 178,
+        "w": 10,
+        "h": 15
+      },
+      "guard_box": {
+        "x": 203,
+        "y": 178,
+        "w": 17,
+        "h": 15
+      },
+      "guard": "guard-001.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Puits",
+      "kind": "pool",
+      "box": {
+        "x": 139,
+        "y": 16,
+        "w": 8,
+        "h": 16
+      },
+      "guard_box": {
+        "x": 90,
+        "y": 16,
+        "w": 48,
+        "h": 16
+      },
+      "guard": "guard-002.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0",
+    "1"
+  ]
+}

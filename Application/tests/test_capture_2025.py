@@ -13,13 +13,17 @@ class Window:
 def test_native_capture_used_when_forgely_focused():
     from PIL import Image
     cap=forgely.GameCapture()
-    img=Image.new('RGB',(1648,928),'blue')
+    from test_workshop_layout import workshop_scene
+    img=workshop_scene()
     with patch.object(forgely,'foreground_handle',return_value=456), \
          patch.object(forgely,'list_dofus_windows',return_value=[Window()]), \
          patch.object(forgely,'foreground_belongs_to_game',return_value=False), \
          patch.object(forgely,'capture_window_native',return_value=img) as native:
         result,title=cap.capture()
-    assert result is img
+    assert result.size == img.size
+    assert result.getpixel((0, 0)) == (0, 0, 0)
+    assert result.getpixel((600, 400)) == img.getpixel((600, 400))
+    assert img.getpixel((0, 0)) == (23, 23, 23)
     assert 'Agglou' in title
     native.assert_called_once_with(123,1648,928)
 

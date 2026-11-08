@@ -1,0 +1,43 @@
+{
+  "results": [
+    {
+      "file": "cv_gelano_20261107_224516.png",
+      "split": "held_out",
+      "jet": {
+        "Vitalité": 10,
+        "PA": 0
+      },
+      "pool": "0",
+      "jet_exact": true,
+      "pool_exact": true,
+      "p50_ms": 14.475450036115944,
+      "runs": 30,
+      "capture_included": false
+    },
+    {
+      "file": "cv_cycloide_holdout_224632.png",
+      "split": "held_out",
+      "jet": {
+        "Vitalité": 297,
+        "Force": 38,
+        "Intelligence": 40,
+        "Agilité": 39,
+        "Dommages Neutre": 7,
+        "Dommages Terre": 7,
+        "Dommages Feu": 0,
+        "Dommages Air": 1,
+        "Initiative": 142,
+        "% Résistance Eau": 2,
+        "Tacle": 0
+      },
+      "pool": "2.9",
+      "jet_exact": true,
+      "pool_exact": true,
+      "p50_ms": 24.316499999258667,
+      "runs": 30,
+      "capture_included": false
+    }
+  ],
+  "coverage": "Two held-out known objects at supplied interface scale; no universal accuracy guarantee",
+  "method": "generic numeric rows and label templates, plus small pool crop; no theoretical values fill the jet"
+}

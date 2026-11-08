@@ -21,6 +21,7 @@ class AcceptedRuneEvent:
     mailbox: object
     generation: int
     title: str
+    transition: dict | None = None
 
 
 def bind_event_item(context,mailbox,generation,title,frame_id,icon,signature,name_hint=None):

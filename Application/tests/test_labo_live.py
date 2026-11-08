@@ -1,3 +1,4 @@
+from forgely_sqlite import database_connection
 import json,sqlite3,tempfile,time,unittest
 from pathlib import Path
 from forgely_labo_live import LiveLaboratory,compute_snapshot
@@ -9,7 +10,7 @@ class TestLiveLabo(unittest.TestCase):
     def test_update_and_filter(self):
         with tempfile.TemporaryDirectory() as d:
             db=Path(d)/'test.db'
-            with sqlite3.connect(db) as conn:
+            with database_connection(db) as conn:
                 conn.execute('CREATE TABLE fusion_contexts(item TEXT,rune TEXT,outcome TEXT,before_json TEXT,source TEXT)')
                 before=json.dumps({'jet':{'Vitalité':100},'pool':5})
                 for i in range(30):conn.execute('INSERT INTO fusion_contexts VALUES(?,?,?,?,?)',('Anneau','Ra Vi','SC' if i<12 else 'EC',before,'local_screen'))

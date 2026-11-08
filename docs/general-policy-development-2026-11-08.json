@@ -1,0 +1,243 @@
+{
+  "training": {
+    "run_id": "20261108-023450-692842-14092-bfa388",
+    "signature": "41fb4e31d199d6d1d524fed0dd2cd9e290dbd7e6eaf5ba551fd5c597b8fd6b4d",
+    "item_id": 14092,
+    "item_name": "Anneau du Cycloïde",
+    "source": "simulation",
+    "real_observations": 0,
+    "automatically_enabled_in_live_advice": false,
+    "eligible_for_advice": false,
+    "advice_validation": {
+      "eligible": false,
+      "criterion": "complete_jet_wilson95_superiority",
+      "minimum_episodes": 50,
+      "reason": "no_demonstrated_gain",
+      "intervals": {
+        "learned": [
+          0.8051000619915237,
+          0.9013308137472852
+        ],
+        "baseline": [
+          0.744558352034882,
+          0.8539455843549424
+        ]
+      }
+    },
+    "simulation_contribution_only": true,
+    "model_version": "dofocus-2026-11-07-6a559153678e",
+    "policy_version": "generalized-no-currency-5",
+    "reward_version": "complete-target-first-2",
+    "episodes_completed": 1024,
+    "prior_episodes": 0,
+    "episodes_total": 1024,
+    "training_seed_start": 0,
+    "training_seed_end": 1024,
+    "resumed_from": null,
+    "cancelled": false,
+    "training_successes": 665,
+    "training_runes": {
+      "Do Terre": 9839,
+      "Vi": 6221,
+      "Do Neutre": 9379,
+      "Do Feu": 8502,
+      "Fo": 605,
+      "Ra Fo": 925,
+      "Do Air": 8260,
+      "Pa Age": 6222,
+      "Pa Tac": 1140,
+      "Ine": 8825,
+      "Ra Ine": 705,
+      "Pa Ine": 6158,
+      "Ra Vi": 662,
+      "Pa Vi": 6599,
+      "Age": 7780,
+      "Pa Fo": 3561,
+      "Pa Do Neutre": 886,
+      "Ra Age": 740,
+      "Tac": 10142,
+      "Pa Do Air": 1071,
+      "Pa Do Feu": 1007,
+      "Ra Ini": 191,
+      "Pa Do Terre": 619,
+      "Ini": 348,
+      "Pa Ini": 538
+    },
+    "configuration": {
+      "item_id": 14092,
+      "targets": {
+        "Vitalité": 290.0,
+        "Force": 30.0,
+        "Intelligence": 40.0,
+        "Agilité": 40.0,
+        "Initiative": 50.0,
+        "Dommages Neutre": 10.0,
+        "Dommages Terre": 10.0,
+        "Dommages Feu": 10.0,
+        "Dommages Air": 10.0,
+        "% Résistance Eau": 0.0,
+        "Tacle": 6.0
+      },
+      "episodes": 1024,
+      "max_steps": 200,
+      "evaluation_episodes": 200,
+      "policy_search_episodes": 256,
+      "initial_preset": "moyen",
+      "initial_pool": 0.0,
+      "seed": 20261107,
+      "resume": false
+    },
+    "evaluation": {
+      "learned": {
+        "episodes": 200,
+        "successes": 172,
+        "success_rate": 0.86,
+        "mean_attempts": 105.635,
+        "mean_reward": 0.9432067039106171,
+        "stops": 0,
+        "truncated": 28,
+        "unseen_states": 17913
+      },
+      "baseline": {
+        "episodes": 200,
+        "successes": 161,
+        "success_rate": 0.805,
+        "mean_attempts": 107.505,
+        "mean_reward": 0.8827067039106125,
+        "stops": 0,
+        "truncated": 39,
+        "unseen_states": 0
+      }
+    },
+    "policy_search": {
+      "episodes": 252,
+      "training_only": true,
+      "paired_seeds": true,
+      "seed_domain": "policy_search:0",
+      "candidates": [
+        {
+          "parameters": null,
+          "episodes": 28,
+          "successes": 16
+        },
+        {
+          "parameters": [
+            1.0,
+            1.0,
+            1.0,
+            0.0
+          ],
+          "episodes": 28,
+          "successes": 20
+        },
+        {
+          "parameters": [
+            1.0,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "episodes": 28,
+          "successes": 21
+        },
+        {
+          "parameters": [
+            1.0,
+            0.5,
+            1.0,
+            0.0
+          ],
+          "episodes": 28,
+          "successes": 13
+        },
+        {
+          "parameters": [
+            0.5,
+            0.0,
+            1.0,
+            0.0
+          ],
+          "episodes": 28,
+          "successes": 19
+        },
+        {
+          "parameters": [
+            1.0,
+            0.0,
+            3.0,
+            1.0
+          ],
+          "episodes": 28,
+          "successes": 16
+        },
+        {
+          "parameters": [
+            1.0,
+            0.5,
+            3.0,
+            1.0
+          ],
+          "episodes": 28,
+          "successes": 19
+        },
+        {
+          "parameters": [
+            1.0,
+            0.0,
+            0.0,
+            1.0
+          ],
+          "episodes": 28,
+          "successes": 17
+        },
+        {
+          "parameters": [
+            1.0,
+            0.0,
+            1.0,
+            2.0
+          ],
+          "episodes": 28,
+          "successes": 18
+        }
+      ],
+      "selected": 2,
+      "targeted_episodes": 63,
+      "preserves_horizon": true,
+      "criterion": "complete_jets_only"
+    },
+    "evaluation_protocol": {
+      "version": 1,
+      "seed": 20261107,
+      "seed_domain": "evaluation",
+      "seed_derivation": "sha256(seed:domain:index)",
+      "paired_seeds": true,
+      "training_replay": false,
+      "policy_frozen": true,
+      "selection_benchmark": true
+    },
+    "curriculum": {
+      "replayed_episodes": 253,
+      "buffered_failures": 64,
+      "capacity": 64,
+      "evaluation_replay": false,
+      "source": "simulation",
+      "sampling": "reservoir_per_failed_episode",
+      "preserves_horizon": true
+    },
+    "elapsed_seconds": 445.7533305999823,
+    "states": 50000,
+    "limitations": [
+      "Résultats synthétiques du modèle local, pas des taux officiels du jeu.",
+      "État discrétisé : politique approximative, à comparer au témoin.",
+      "Banc fixe utilisé pour sélectionner la meilleure archive ; un audit avec une autre graine reste nécessaire pour établir la généralisation."
+    ],
+    "selection": {
+      "selected_run": "20261108-023450-692842-14092-bfa388",
+      "candidate_selected": true,
+      "criterion": "validation_then_wilson95_lower_bound",
+      "archives_preserved": true
+    }
+  },
+  "policy_path": "Entrainements\\recherche-generalisation-20261108\\20261108-023450-692842-14092-bfa388\\policy.json"
+}

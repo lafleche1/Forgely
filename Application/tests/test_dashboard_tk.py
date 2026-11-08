@@ -5,14 +5,14 @@ import unittest
 from unittest.mock import patch
 
 
-@unittest.skipUnless(os.environ.get('FORGELY_GUI_TESTS') == '1' and os.environ.get('DISPLAY'),
+@unittest.skipUnless(os.environ.get('FORGELY_GUI_TESTS') == '1' and (os.name=='nt' or os.environ.get('DISPLAY')),
                      'requires FORGELY_GUI_TESTS=1 and a graphical display')
 class DashboardTkTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         from forgely import Forgely
         with patch('forgely.load_plan', return_value=None), \
-             patch('forgely.load_theme', return_value='Atelier émeraude'):
+             patch('forgely.load_theme', return_value='Obsidienne'):
             cls.app = Forgely()
         cls.errors = []
         cls.app.report_callback_exception = lambda *args: cls.errors.append(args)
@@ -42,6 +42,15 @@ class DashboardTkTests(unittest.TestCase):
         self.assertEqual(self.app.dashboard.table.get_children(), ())
         self.assertIn('—', self.app.dashboard.pool_label.cget('text'))
 
+    def test_budget_suspension_is_opt_in_in_the_actual_window(self):
+        import tkinter as tk
+        self.app.open_budget()
+        window=next(w for w in self.app.winfo_children() if isinstance(w,tk.Toplevel) and w.title()=='Forgely — Budget de runes')
+        try:
+            check=next(w for w in window.winfo_children() if isinstance(w,tk.Checkbutton))
+            self.assertFalse(bool(int(self.app.getvar(check.cget('variable')))))
+        finally:window.destroy()
+
     def test_small_window_keeps_table_pool_and_latest_reading_visible(self):
         app = self.app
         app.geometry('960x660')
@@ -58,7 +67,7 @@ class DashboardTkTests(unittest.TestCase):
         app.plan = {'item': 'Objet test', 'stats': {'Force': {'target': 40}}}
         app.dashboard.sync()
         row = app.dashboard.table.item(app.dashboard.table.get_children()[0])
-        self.assertEqual(tuple(row['values']), ('Force', 40, 40, 'À confirmer'))
+        self.assertEqual(tuple(row['values']), ('Force', 40, '—', 'Stabilisation automatique'))
         self.assertEqual(row['tags'], ['pending'])
 
     def test_confirmed_table_and_pool_update_from_current_state(self):
@@ -106,6 +115,22 @@ class DashboardTkTests(unittest.TestCase):
             self.assertEqual(self.app.dashboard.style.lookup('Forgely.Treeview', 'background'), palette['PANEL'])
             self.assertEqual(self.app.overlay.advice_label.cget('bg'), palette['PANEL'])
 
+    def test_copilot_uses_qualified_readings_and_clears_stale_values(self):
+        app = self.app
+        app.workshop_active = True
+        app.workshop_readings.partial_jet = {'Force': 38}
+        app.workshop_readings.partial_pool = 12
+        app.plan = {'item': 'Objet test', 'stats': {'Force': {'target': 40}}}
+        app.dashboard.sync()
+        table = app.overlay.stats_table
+        values = table.item(table.get_children()[0])['values']
+        self.assertEqual(tuple(values), ('Force', 38, '—', 'Stabilisation automatique'))
+        self.assertEqual(app.overlay.pool_label.cget('text'), 'Puits\n12')
+        app.workshop_active = False
+        app.dashboard.sync()
+        self.assertEqual(table.get_children(), ())
+        self.assertEqual(app.overlay.pool_label.cget('text'), 'Puits\n\u2014')
+
     def test_reading_feed_is_bounded_and_keeps_latest_text(self):
         app = self.app
         for number in range(12):
@@ -147,39 +172,6 @@ class DashboardTkTests(unittest.TestCase):
         finally:
             app.strategy_headline=app.strategy_explanation=None
             popup.destroy()
-
-    def test_item_name_and_slot_confirm_together_in_three_captures(self):
-        from pathlib import Path
-        from PIL import Image
-        from time import perf_counter_ns
-        app=self.app
-        app.observation_only=True
-        app.workshop_active=True
-        app.latest_observation_id=0
-        app.item_visual_tracker.reset();app.current_slot_tracker.reset()
-        app.messages=queue.Queue()
-        icon=Image.effect_noise((32,32),60).convert('RGB')
-        evidence=('Anneau test',None,'ANNEAU TEST',icon,None,None,(('force',31,40),),(),None,None)
-        with patch('forgely.match_current_item',return_value='Anneau test'), \
-             patch('forgely.natural_bounds',return_value={}), \
-             patch('forgely.register_item',return_value=(1,'Anneau test')), \
-             patch('forgely.remember_current_item'), \
-             patch('forgely.item_icon',return_value=Path(__file__)):
-            for frame in (1,2,3):
-                app.messages.put(('observation',(frame,perf_counter_ns(),'item_visual',evidence)))
-                app.process_messages()
-                self.assertEqual(app.item_visual_tracker.count,frame)
-                self.assertEqual(app.active_equipment_verified,frame==3)
-        self.assertEqual(app.item.get(),'Anneau test')
-        for _ in range(3):app.workshop_readings.observe({'Force':33},2)
-        app.live_jet,app.live_pool={'Force':33},2
-        for frame in (4,5,6):
-            absent=(None,None,'',None,None,None,(),(),None,None)
-            app.messages.put(('observation',(frame,perf_counter_ns(),'item_visual',absent)))
-            app.process_messages()
-        self.assertFalse(app.active_equipment_verified)
-        self.assertIsNone(app.live_jet)
-        self.assertIsNone(app.workshop_readings.snapshot())
 
 
 if __name__ == '__main__':

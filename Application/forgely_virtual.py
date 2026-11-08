@@ -110,7 +110,7 @@ def simulate_item(jets,targets,natural_max,pool,*,prices,level=None,profile_comp
             options=candidates(state['jet'],targets,bounds,state['pool'],mode=mode,prices=prices,
                                remaining_budget=left,profile_complete=profile_complete,level=level,item=item,
                                context_for=callback)
-            priced=[row for row in options if row[1] in prices]
+            priced=[row for row in options if row[1] in prices and (left is None or prices[row[1]]<=left)]
             if not priced:stops['no_affordable_rune']+=1;break
             row=priced[0];rune=row[1];prediction=row[5].get('prediction')
             if prediction is None:stops['model_unavailable']+=1;break

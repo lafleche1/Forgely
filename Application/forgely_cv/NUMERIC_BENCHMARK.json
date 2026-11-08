@@ -1,0 +1,39 @@
+{
+  "scope": "Lecture numerique seule sur images de calibration ; ni capture ni localisation",
+  "independent_game_validation": false,
+  "gelano": {
+    "dimensions": [
+      438,
+      651
+    ],
+    "jet": {
+      "Vitalité": 10,
+      "PA": 0
+    },
+    "pool": "0",
+    "samples": 200,
+    "p50_ms": 0.2121,
+    "p95_ms": 0.43577
+  },
+  "cycloide": {
+    "dimensions": [
+      442,
+      680
+    ],
+    "stat_fields": 11,
+    "known_values": {
+      "Vitalité": 342,
+      "Tacle": 0
+    },
+    "pool": "0.1",
+    "samples": 200,
+    "p50_ms": 1.1864,
+    "p95_ms": 1.978055
+  },
+  "limitations": [
+    "Profils appris sur ces memes images, pas de mesure de precision generalisable.",
+    "Dictionnaires incomplets ; chiffre9 et signes a ajouter depuis des exemples reels.",
+    "Les mesures ne prouvent pas une latence totale inferieure a5ms.",
+    "Application principale et apprentissage inchanges."
+  ]
+}

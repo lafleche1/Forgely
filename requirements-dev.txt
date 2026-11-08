@@ -1,2 +1,3 @@
 -r Application/requirements.txt
+-r Application/requirements-vision.txt
 pytest>=8,<10

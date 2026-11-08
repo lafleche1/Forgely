@@ -5,6 +5,7 @@ recognised rune/result, and a different stable post-fusion reading. Partial OCR
 samples are stored as diagnostics, NOT proof of a full item jet.
 """
 from __future__ import annotations
+from forgely_sqlite import database_connection
 import json
 import sqlite3
 from datetime import datetime, timezone
@@ -15,11 +16,11 @@ from forgely_rules import finite_number
 
 
 def normalize_snapshot(jet, pool):
-    if not isinstance(jet, dict) or not jet or pool is None or not finite_number(pool, nonnegative=True):
+    if not isinstance(jet, dict) or not jet or not finite_number(pool, nonnegative=True):
         return None
     clean = {}
     for name, amount in jet.items():
-        if not isinstance(name,str) or not finite_number(amount) or amount < 0 or amount > 30000:
+        if not isinstance(name,str) or not name or not finite_number(amount) or not -30000 <= amount <= 30000:
             return None
         clean[name] = amount
     return {'jet': dict(sorted(clean.items())), 'pool': float(pool)}
@@ -36,7 +37,7 @@ def snapshot_diff(before, after):
 
 def init_context_db(db_file=DB_FILE):
     path=Path(db_file);path.parent.mkdir(parents=True,exist_ok=True)
-    with sqlite3.connect(str(path)) as db:
+    with database_connection(str(path)) as db:
         db.execute('''CREATE TABLE IF NOT EXISTS fusion_contexts (
             id INTEGER PRIMARY KEY,
             observed_at TEXT NOT NULL,
@@ -55,7 +56,7 @@ def init_context_db(db_file=DB_FILE):
         db.execute('CREATE INDEX IF NOT EXISTS ctx_item_rune ON fusion_contexts(item,rune)')
 
 
-def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, natural_max=None,complete=False):
+def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, event_confirmed=False,natural_max=None,complete=False):
     if not item or not rune or outcome not in ('SC','SN','EC'):
         raise ValueError('Item, rune et résultat requis')
     start=normalize_snapshot(before.get('jet'),before.get('pool')) if before else None
@@ -66,10 +67,11 @@ def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, natural_m
         from forgely_expert import audit_transition
         qualified=(set(natural_max).issubset(start['jet'])
                    and audit_transition(rune,outcome,start,end,complete=True)['status']=='cohérent')
-    if delta is None or (not qualified and not delta['changes'] and delta['pool_delta']==0):
+    if delta is None or (not delta['changes'] and delta['pool_delta']==0
+                         and not qualified and not (event_confirmed is True and outcome == 'EC')):
         raise ValueError('Deux snapshots cohérents et différents sont nécessaires')
     init_context_db(db_file)
-    with sqlite3.connect(str(db_file)) as db:
+    with database_connection(str(db_file)) as db:
         db.execute('INSERT INTO fusion_contexts(observed_at,item,rune,outcome,before_json,after_json,deltas_json,calibration_verified) VALUES(?,?,?,?,?,?,?,?)',
             (datetime.now(timezone.utc).isoformat(),item,rune,outcome,json.dumps(start,ensure_ascii=False),json.dumps(end,ensure_ascii=False),json.dumps(delta,ensure_ascii=False),int(qualified)))
     return delta
@@ -78,7 +80,7 @@ def save_transition(item,rune,outcome,before,after,db_file=DB_FILE, *, natural_m
 def context_rates(item,rune,stat=None,pre_value=None,pre_pool=None,db_file=DB_FILE):
     """Condition on approximate *observed* pre-jet and pool; return no forecast if n<30."""
     init_context_db(db_file)
-    with sqlite3.connect(str(db_file)) as db:
+    with database_connection(str(db_file)) as db:
         rows=db.execute('SELECT outcome,before_json FROM fusion_contexts WHERE item=? AND rune=?',(item,rune)).fetchall()
     counts={'SC':0,'SN':0,'EC':0}
     for outcome,raw in rows:
