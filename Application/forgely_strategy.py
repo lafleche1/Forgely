@@ -45,9 +45,10 @@ def recommend(plan, puits=None, jets_confirmed=False, records=None, last_rune=No
         return Advice(None,'Jet incomplet','Valeur actuelle ou objectif inconnu.','bloqué')
     proposal=advise({s:v['current'] for s,v in plan['stats'].items()},
                     {s:v['target'] for s,v in plan['stats'].items()},
-                    pool=puits,counts_for=counts_for,item=plan.get('item'))
+                    pool=puits,counts_for=counts_for,item=plan.get('item'),level=plan.get('level'))
     details=proposal.explanation
     if last_rune:details+=f' Dernière rune détectée : {last_rune}.'
     if last_results:details+=' Les échecs passés ne garantissent pas le succès suivant.'
     rates,_=describe_observed(records(proposal.rune)[1]) if records and proposal.rune else (None,0)
     return Advice(proposal.rune,proposal.summary,details,proposal.evidence,rates,proposal.sample)
+

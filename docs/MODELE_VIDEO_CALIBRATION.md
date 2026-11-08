@@ -10,7 +10,7 @@ Le copilote utilise maintenant le modèle de la vidéo « J’ai cracké le secr
 - over : +65 et +4 par point de densité de dépassement du jet proposé ; cette convention de franchissement est une reconstruction ;
 - taille de rune : +12 × max(0, valeur actuelle / gain nominal de la rune −14) ;
 - qualité : +60 Q^12 ;
-- niveau connu inférieur à 170 : −20 max(0,1.1−Q). Niveau absent : bonus omis et avertissement. L’interface actuelle ne collecte pas systématiquement le niveau ; aucun niveau n’est deviné ;
+- niveau connu inférieur à 170 : −20 max(0,1.1−Q). Niveau absent : bonus omis et avertissement. Le niveau optionnel 1–200 se renseigne dans l’éditeur des jets souhaités et est conservé par objet avec l’objectif ; il est transmis à tous les points d’entrée et au scénario SC. Aucun niveau n’est deviné ;
 - SC : max(2,(100−D)/2), borné à 100 ;
 - SN : reconstruction du premier écran, appliquée au score x=(100−D)/2 avant plancher : min(50,100−SC) si x≥0, sinon max(15,50−0.75|x|), puis −10 en over. Borné entre 0 et 100−SC ; EC=100−SC−SN.
 
@@ -41,3 +41,9 @@ Pour les objets sans profil complet documenté ou avec lecture partielle, pas de
 ## Vérification et limites
 
 Les tests portent sur les seuils, les exceptions, la normalisation des trois taux, le branchement du conseil, la migration SQLite, la séparation des contextes et l’affichage. La comparaison avant/après démontre un changement de décision, pas une amélioration mesurée en jeu. Le gain réel devra être évalué sur des sessions réelles indépendantes (calibration des taux, coût et atteinte du jet cible). Aucun test natif Windows ni exécution du nouvel EXE depuis cet environnement.
+
+## Installation Windows
+
+Extraire tout le paquet cumulatif puis lancer `INSTALLER_MISE_A_JOUR_LOCALE.bat`. Il détecte les dossiers candidats immédiats ou ouvre un sélecteur de dossier. Le programme utilise le Python de l’installation choisie si disponible, puis le lanceur Python système. L’outil vérifie toutes les empreintes avant remplacement, sauvegarde les sources et refuse les versions locales inconnues. Les bases de données et préférences ne font pas partie du paquet.
+
+Relancer avec `LANCER_FORGELY_MIS_A_JOUR.bat`, ajouté au dossier cible : cela lance le code source actuel plutôt qu’un EXE ancien. Aucun exécutable Windows n’est reconstruit ou remplacé. L’application doit être fermée pendant la mise à jour ; l’installateur ne tue pas les processus et ne lance pas de téléchargement. Les scripts Windows doivent encore être validés sur un PC Windows ; le moteur de remplacement est testé ici.

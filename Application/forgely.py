@@ -669,7 +669,7 @@ class Forgely(tk.Tk):
             item=self.item.get().strip(),profile_complete=False,
             mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining,
             verified=self.active_equipment_verified,after_fusion=self.live_after_fusion,
-            last_transition=audit)
+            last_transition=audit,level=self.plan.get('level'))
         from dataclasses import replace
         return replace(proposal,estimates=dict(proposal.estimates or {},expert=board))
 
@@ -864,6 +864,12 @@ class Forgely(tk.Tk):
         self.label(popup,'L’équipement et les jets actuels sont détectés automatiquement dans DOFUS.',10,color=MUTED,wraplength=570).pack(anchor='w',padx=22,pady=(0,13))
         equipment=self.label(popup,'',11,bold=True,color=GOLD)
         equipment.pack(anchor='w',padx=22,pady=(0,8))
+        level_item=[self.item.get().strip()]
+        previous_level=(self.plan or {}).get('level') if (self.plan or {}).get('item')==level_item[0] else None
+        level_var=tk.StringVar(value='' if previous_level is None else str(previous_level))
+        level_row=tk.Frame(popup,bg=BG);level_row.pack(fill='x',padx=22,pady=(0,8))
+        self.label(level_row,'Niveau de l’objet (optionnel, 1–200)',10).pack(side='left')
+        tk.Entry(level_row,textvariable=level_var,width=5,bg=PANEL2,fg=FG,insertbackground=FG).pack(side='left',padx=10)
         self.label(popup,'Caractéristique                 Jet actuel (OCR)       Jet souhaité',10,color=GOLD).pack(anchor='w',padx=22,pady=(0,8))
         holder=tk.Frame(popup,bg=PANEL);holder.pack(fill='both',expand=True,padx=22,pady=(0,12))
         canvas=tk.Canvas(holder,bg=PANEL,highlightthickness=0);scroll=ttk.Scrollbar(holder,orient='vertical',command=canvas.yview)
@@ -884,6 +890,10 @@ class Forgely(tk.Tk):
         def refresh():
             if not popup.winfo_exists(): return
             name=self.item.get().strip() if self.active_equipment_verified else ''
+            if name and name!=level_item[0]:
+                level_item[0]=name
+                stored=(self.plan or {}).get('level') if (self.plan or {}).get('item')==name else None
+                level_var.set('' if stored is None else str(stored))
             equipment.configure(text='Équipement : '+(name or 'identification en cours'))
             jet=self.live_jet if name and not self.live_after_fusion else None
             for stat,(current,_) in fields.items():
@@ -900,7 +910,7 @@ class Forgely(tk.Tk):
                 for stat,(_,target) in fields.items():
                     if target.get().strip():
                         values[stat]=(None,int(target.get()))
-                self.plan=save_plan(name,values)
+                self.plan=save_plan(name,values,level=int(level_var.get()) if name==level_item[0] and level_var.get().strip() else None)
             except (ValueError,TypeError) as exc:
                 messagebox.showerror('Objectif invalide',str(exc),parent=popup);return
             # Saving goals must not invalidate the identified item or reset live OCR.

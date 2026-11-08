@@ -45,7 +45,7 @@ def audit_transition(rune, outcome, before, after, *, complete=False):
 def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
                     profile_complete=True, item=None, mode='Chances maximales',
                     prices=None, remaining_budget=None, verified=True,
-                    after_fusion=False, last_transition=None):
+                    after_fusion=False, last_transition=None, level=None):
     clean, goals = normalise_jet(jets), normalise_jet(targets)
     documented = natural_profile(item) if item else None
     if documented is not None:
@@ -91,7 +91,7 @@ def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
     from forgely_decision import advise
     next_proposal = advise(post, goals, natural_max=natural_max, pool=pool,
                            mode=mode, prices=prices, remaining_budget=left,
-                           profile_complete=profile_complete, item=item)
+                           profile_complete=profile_complete, item=item,level=level)
     result['branches']['SC'] = {'pool': pool, 'next_rune': next_proposal.rune,
         'status': next_proposal.summary, 'remaining_budget': left,
         'condition': 'Hypothèse : gain nominal sans perte ; relecture réelle obligatoire.'}
@@ -116,6 +116,11 @@ def render_dashboard(board):
     lines.append('[ACTION SUIVANTE] ' + (f"{action['rune']} · poids {action['weight']:g}" if action['rune'] else board['status']))
     prediction=board.get('prediction')
     if prediction:
+        if prediction.get('difficulty') is not None:
+            terms=prediction['terms']
+            parts=' ; '.join(f'{label} {terms[key]:+g}' for key,label in
+                [('base','base'),('threshold','80 %'),('over','over'),('tier','×14'),('level','niveau'),('quality','qualité')])
+            lines.append(f"[DIFFICULTÉ] D={prediction['difficulty']:.4f} ; Q={prediction['quality']:.4f} ; {parts}.")
         lines.append(f"[PROBABILITÉS ESTIMÉES] SC {prediction['SC']:.2f} % · SN {prediction['SN']:.2f} % · EC {prediction['EC']:.2f} % ; {prediction['calibration_n']} essais comparables.")
     lines.append('[PLAN À MOYEN TERME] ' + board['phase'])
     for outcome, branch in board['branches'].items():
@@ -148,7 +153,7 @@ def rules_text(price_settings=None):
         '12. Scénario SC : gain nominal, puits conservé, prix déduit du budget, puis nouveau conseil hypothétique. SN/EC : relire les pertes avant de choisir la prochaine rune.',
         '13. Risque qualitatif : Faible si rune couverte ; Moyen si poids non couvert ; Critique pour finition ou over/exo déjà présent et identifié. Ce ne sont pas des probabilités. Un profil partiel peut laisser une fragilité inconnue.',
         '14. Aucun pourcentage de confiance ou de réussite finale inventé. Aucun coefficient de difficulté serveur déduit d’une série d’échecs.',
-        '15. Formule finale vidéo pour SC ; Q = moyenne des ratios actuels/maxima naturels par ligne, bornée à [0,1] selon la définition utilisateur. Exo PA/PM/PO existant : Q=1 sans second +60. SN reconstruit par morceaux ; ces hypothèses sont affichées. Niveau inconnu : aucun bonus. Les relevés Dofocus exacts restent séparés et servent de repli si le modèle manque.',
+        '15. Formule finale vidéo pour SC ; Q = moyenne des ratios actuels/maxima naturels par ligne, bornée à [0,1] selon la définition utilisateur. Exo PA/PM/PO existant : Q=1 sans second +60. SN reconstruit par morceaux ; ces hypothèses sont affichées. Niveau optionnel 1–200 dans les objectifs ; inconnu : aucun bonus. Les relevés Dofocus exacts restent séparés et servent de repli si le modèle manque.',
         '16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.',
         '17. Simulations et observations restent séparées. Cette version ne fait ni RL, ni MCTS, ni A*, ni mélange 40 % simulations / 60 % réel.',
         '18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.',

@@ -62,3 +62,9 @@ def test_update_accepts_an_explicitly_supported_prior_release(tmp_path):
     (payload/'manifest.json').write_text(json.dumps(manifest))
     updater().apply_update(root,payload)
     assert (root / 'Application/forgely.py').read_text()=='updated\n'
+
+
+def test_update_can_be_run_from_an_external_download_folder(tmp_path):
+    root,payload=fixture(tmp_path)
+    assert updater().main(['--root',str(root),'--payload',str(payload)])==0
+    assert (root/'Application/forgely.py').read_text()=='updated\n'

@@ -4,6 +4,7 @@ Only files listed in the shipped manifest are replaced. No observation database,
 training file or user preference file is included in the payload.
 """
 import hashlib
+import argparse
 import json
 from pathlib import Path
 import shutil
@@ -64,10 +65,16 @@ def apply_update(root, payload):
     return backup
 
 
-def main():
-    root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
+def main(argv=None):
+    parser=argparse.ArgumentParser(description='Mise à jour locale Forgely avec sauvegarde.')
+    parser.add_argument('root_legacy',nargs='?')
+    parser.add_argument('payload_legacy',nargs='?')
+    parser.add_argument('--root')
+    parser.add_argument('--payload')
+    args=parser.parse_args(argv)
+    root=Path(args.root or args.root_legacy or Path(__file__).resolve().parents[1])
     try:
-        payload = root / (sys.argv[2] if len(sys.argv) > 2 else 'mise_a_jour_prix_tylezia')
+        payload = root / (args.payload or args.payload_legacy or 'mise_a_jour_prix_tylezia')
         backup = apply_update(root, payload)
     except (OSError, ValueError, KeyError) as exc:
         print('Mise à jour non appliquée :', exc)
@@ -75,7 +82,8 @@ def main():
     print('Fichiers mis à jour.' if backup else 'Cette mise à jour est déjà installée.')
     if backup:
         print('Sauvegarde :', backup)
-    print('Relance OUVRIR FORGELY.bat pour charger les nouvelles règles et références.')
+    launcher='LANCER_FORGELY_MIS_A_JOUR.bat' if (root/'LANCER_FORGELY_MIS_A_JOUR.bat').exists() else 'OUVRIR FORGELY.bat'
+    print(f'Relance {launcher} pour charger les nouvelles règles et références.')
     return 0
 
 

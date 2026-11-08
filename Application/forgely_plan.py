@@ -9,10 +9,12 @@ from forgely_rules import RUNE_CHOICES
 STATS = {stat:tuple(runes) for stat,runes in RUNE_CHOICES.items()}
 
 
-def save_plan(item, values, path=PLAN_PATH):
+def save_plan(item, values, path=PLAN_PATH, *, level=None):
     item = item.strip()
     if not item or len(item)>100:
         raise ValueError('Indique le nom de l’équipement (100 caractères maximum).')
+    if level is not None and (type(level) is not int or not 1<=level<=200):
+        raise ValueError('Le niveau doit être un entier entre 1 et 200, ou rester vide.')
     clean={}
     for name,pair in values.items():
         if name not in STATS: raise ValueError('Statistique inconnue : '+name)
@@ -22,9 +24,11 @@ def save_plan(item, values, path=PLAN_PATH):
         if type(target) is not int or target< -20000 or target>20000: raise ValueError('Objectif invalide')
         clean[name]={'current':current,'target':target}
     if not clean: raise ValueError('Renseigne au moins une caractéristique cible.')
+    data={'item':item,'stats':clean}
+    if level is not None:data['level']=level
     path=Path(path); path.parent.mkdir(parents=True,exist_ok=True)
-    path.write_text(json.dumps({'item':item,'stats':clean},ensure_ascii=False,indent=2),encoding='utf-8')
-    return {'item':item,'stats':clean}
+    path.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
+    return data
 
 def load_plan(path=PLAN_PATH):
     try:
@@ -40,5 +44,6 @@ def next_action(plan, pool=None):
         return ('Jet à lire','Il faut confirmer les valeurs actuelles avant de proposer une rune.')
     from forgely_decision import advise
     proposal=advise({s:v['current'] for s,v in plan['stats'].items()},
-                    {s:v['target'] for s,v in plan['stats'].items()},pool=pool,item=plan.get('item'))
+                    {s:v['target'] for s,v in plan['stats'].items()},pool=pool,item=plan.get('item'),level=plan.get('level'))
     return proposal.summary,proposal.explanation
+
