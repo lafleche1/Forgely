@@ -1,0 +1,23 @@
+{
+  "item_id": 14092,
+  "targets": {
+    "Vitalité": 290.0,
+    "Force": 30.0,
+    "Intelligence": 40.0,
+    "Agilité": 40.0,
+    "Initiative": 50.0,
+    "Dommages Neutre": 10.0,
+    "Dommages Terre": 10.0,
+    "Dommages Feu": 10.0,
+    "Dommages Air": 10.0,
+    "% Résistance Eau": 0.0,
+    "Tacle": 6.0
+  },
+  "episodes": 100,
+  "max_steps": 200,
+  "evaluation_episodes": 200,
+  "initial_preset": "moyen",
+  "initial_pool": 0.0,
+  "seed": 20261107,
+  "resume": false
+}

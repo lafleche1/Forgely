@@ -1,0 +1,5406 @@
+{
+  "version": "22.16",
+  "remote_base": "f3d94809126a6d452c028e8ac72d63b312dca3e4",
+  "pc_published_base": "88b095d599fde6a1820e884be0600b16740519a1",
+  "scope": "Sources PC et nouveautés GitHub; distribution historique 22.15 conservée",
+  "remote_changes": [
+    {
+      "path": ".gitattributes",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "10bf242e2a0f612ca3e5cf3ebe76570c1552bdc5"
+    },
+    {
+      "path": ".gitignore",
+      "status": "M",
+      "before_blob": "e396d238d428bd4000ff84421eb4bfd62c461f2b",
+      "after_blob": "a2a05d2bd4b5fe3ebacbf3a36160f3f0f8146202"
+    },
+    {
+      "path": "Application/assets/dofocus/reference.sqlite3",
+      "status": "M",
+      "before_blob": "449ab110df3e311c8d1901a9efb256a0c0dd9c96",
+      "after_blob": "3042dcc3a211190f3c128a8affd5be09dc941624"
+    },
+    {
+      "path": "Application/assets/equipment_bounds.csv",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5d4870a466c68707ae71fa23a14007cba0a28892"
+    },
+    {
+      "path": "Application/assets/prices/tylezia-20261108.csv",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "92c2ef87aefcf9bdaf606f476cb5c471b9a68620"
+    },
+    {
+      "path": "Application/assets/training/cycloid-exo-pa-clean-20261107/attempts.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7be74eb7b42ecb2ada50746487c3637f93d14fe2"
+    },
+    {
+      "path": "Application/assets/training/cycloid-exo-pa-clean-20261107/result.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b80be2d9ec088722e2f05261913830cc05b98ab4"
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/RESULTATS.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "590474a812fa0cfb6e83bd696659c59ca763b0ae"
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/metrics.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bd3902bfee5ecde5b9c0f7ec0f0dc01ce5e34daf"
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/policy.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6a3c1125169cd9470bcfeb2d2d1a387ee3670419"
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/reproduce.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4b8e33005aade857e4ce85b7e7fb8dcbba03a33d"
+    },
+    {
+      "path": "Application/auditer_politique.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ce1065d72da71bafc2555df2d87984f39a6024a5"
+    },
+    {
+      "path": "Application/benchmark_numeric_ocr.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d9a1d016a3a8a3566240f9f3cb25dbda221d95e8"
+    },
+    {
+      "path": "Application/benchmark_ocr_vs_cv.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1b659af54650c654f18aae926639e958d5098d4a"
+    },
+    {
+      "path": "Application/catalogue_dofus3/index.json",
+      "status": "M",
+      "before_blob": "36f7c8de3cb8a286c0316f7a388937bdbf6ba40e",
+      "after_blob": "1cfe82cea77180d0853bc0a4790e100023ce11f1"
+    },
+    {
+      "path": "Application/catalogue_objets_icones.csv",
+      "status": "M",
+      "before_blob": "7236f8d919a90727107b129723c8bae70d097345",
+      "after_blob": "e9dee546571983f8e0ad62a395e745a2abd3c254"
+    },
+    {
+      "path": "Application/catalogue_objets_noms_fr.csv",
+      "status": "M",
+      "before_blob": "7dfef3767b255afd538aaa63d591f814799bb19b",
+      "after_blob": "bb7e4d996b63170da661b1744d292ae90b41d519"
+    },
+    {
+      "path": "Application/catalogue_runes_officiel.csv",
+      "status": "M",
+      "before_blob": "dd866c8bcd6abc867e3520f99f10c1ef83b6d93a",
+      "after_blob": "2f3b70968542593e18c3400286c398d5cc190d2b"
+    },
+    {
+      "path": "Application/demarrer_forgely.bat",
+      "status": "M",
+      "before_blob": "8652356e511d6a25d2c4e348d708499635e4a0ae",
+      "after_blob": "6e85769cefc613f81026b8ba3ef7b5fb534f45cf"
+    },
+    {
+      "path": "Application/entrainer_forgely.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ee06df16738687e19f429c11a4c2b59233a501bb"
+    },
+    {
+      "path": "Application/evaluer_sequences.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e5e22f18f07ea22803569da7dff4053fba8816fb"
+    },
+    {
+      "path": "Application/extract_equipment_assets.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4ed8713b4a76e21b19bf868b6bef3a0fe3b93853"
+    },
+    {
+      "path": "Application/fabriquer_entrainement.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "72e5b07a20354b1cbd3511a86235da6b5ac8f870"
+    },
+    {
+      "path": "Application/fabriquer_exe.bat",
+      "status": "M",
+      "before_blob": "5490404b304a68c1c46cd4b6ffeb1466f2e1977d",
+      "after_blob": "8797e326c15347624a38693aa141ff859f915685"
+    },
+    {
+      "path": "Application/fabriquer_installateur_windows.bat",
+      "status": "M",
+      "before_blob": "7309be5c7e1494ea2cbcece8bbf687ff11be76c1",
+      "after_blob": "37759cf70c134fd02f8886544535fa4ee20c1d7a"
+    },
+    {
+      "path": "Application/fabriquer_lanceur_entrainement.ps1",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6d8ccdf5639e134bdbaf5914dee5f5edcfdfe62d"
+    },
+    {
+      "path": "Application/forgely.py",
+      "status": "M",
+      "before_blob": "b780585aa6029772dc06609614283470894ba45e",
+      "after_blob": "0cb2928acd29e0f8e93205e5d55a3e18672424c7"
+    },
+    {
+      "path": "Application/forgely_atelier.py",
+      "status": "M",
+      "before_blob": "fbef9b8a8bf3661898800e9948cbd10cbc095623",
+      "after_blob": "960a19599bdaf542ddbe9d140290d8565a9e2d3a"
+    },
+    {
+      "path": "Application/forgely_audit_terrain.py",
+      "status": "M",
+      "before_blob": "eb2b1315f46c2d6d43713da5820d0af3a6468545",
+      "after_blob": "d662b63470257e0f91b8ee45dc777d7393674afe"
+    },
+    {
+      "path": "Application/forgely_connaissances.py",
+      "status": "M",
+      "before_blob": "96bc0c9a3f3481da151a2fa87c8227a9bcdd23e1",
+      "after_blob": "331603d883ccd4fae10ab2ec4cab0d6d659d4e90"
+    },
+    {
+      "path": "Application/forgely_context.py",
+      "status": "M",
+      "before_blob": "943d52cbf479509b6522dd8671e1e116fcff3f88",
+      "after_blob": "1cd891a66a32f2ca384f13a16a2769a067b8cd38"
+    },
+    {
+      "path": "Application/forgely_continuous_identity.py",
+      "status": "M",
+      "before_blob": "472221a03a4fc8eb2829049022dcbebbbe56418f",
+      "after_blob": "3c344fe2bd24172d817514bfd88009c9e0b62ea2"
+    },
+    {
+      "path": "Application/forgely_copilote.py",
+      "status": "M",
+      "before_blob": "1934488fe0d9e3528b19dc838a104c96518bb8a6",
+      "after_blob": "01b05c7c16dbb66635cb751882917efd88318154"
+    },
+    {
+      "path": "Application/forgely_cv/BENCHMARK.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "29153ece19a9d5f29558cde166dc2ca226364331"
+    },
+    {
+      "path": "Application/forgely_cv/NUMERIC_BENCHMARK.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b0010b50a1be525d7ede900f83ebebf02f1c427d"
+    },
+    {
+      "path": "Application/forgely_cv/NUMERIQUE.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "126523b272944847eb760b3db2f8daf729a450fd"
+    },
+    {
+      "path": "Application/forgely_cv/README.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "30b529df6447f2da0b3f8834d1e6f59083846655"
+    },
+    {
+      "path": "Application/forgely_cv/__init__.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1cb800df1362ce89f182a803c19191b240f9b59d"
+    },
+    {
+      "path": "Application/forgely_cv/__main__.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "eb1d9909e9d0c67f2dde07d125211d616701c3f2"
+    },
+    {
+      "path": "Application/forgely_cv/capture.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "727022afa4343920c7b5f7d9c0c23ea1e7ce4a78"
+    },
+    {
+      "path": "Application/forgely_cv/detection.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b7f4d5b0b5399758aa1e00bcf58ea3d7a355d4a0"
+    },
+    {
+      "path": "Application/forgely_cv/font_dofus/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "57c6ea21cc84ecf97bf64c9ae04d66cf0af10b74"
+    },
+    {
+      "path": "Application/forgely_cv/geometry.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "17882812bee8b9f3388059a520742c2bd463d530"
+    },
+    {
+      "path": "Application/forgely_cv/glyphs.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bc17901ef4517aaec33189cd884ba6fb6380f607"
+    },
+    {
+      "path": "Application/forgely_cv/lines.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "29b4497e8d77f5f2866a9aa5e1d7c293957fad64"
+    },
+    {
+      "path": "Application/forgely_cv/masking.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e5e0a5f63e5184fc193dfe0dd4a282fe7df7b8a1"
+    },
+    {
+      "path": "Application/forgely_cv/numbers.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b9506814b9bc32cb10732c999208975747e08900"
+    },
+    {
+      "path": "Application/forgely_cv/pipeline.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f2ae594124ea8fb16d85261f6bd7262d7a3ed3d7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide-annotations.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "77702cb779b3fbf94c8fb9558446a57b80ebb0b8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+002C-0020.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0d8656bb3f7896af22def0f6308b194b2483940b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1984dd7f540985bae4ce96d67393ec5ad4454942"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1984dd7f540985bae4ce96d67393ec5ad4454942"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c6241cc3b2406db4d2da0d9990496683416432bc"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0016.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1984dd7f540985bae4ce96d67393ec5ad4454942"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0018.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe997d201e1031a9ce680e0e36d4140d69cf514c"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0030-0019.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "72e155b77322588ae9709237972fc3c2ffe45d23"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0031-0011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c4cbb3492e87c612d8a4b2a1245c9c1f1e149573"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0031-0021.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6c5d0744375b13b88ac73357461fe0635ec0ed3e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0032-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2509bdde7d75cd4a7fd56dbf96b53b7f532d96b1"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0032-0014.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e10c33d51d41854d17f60a5e5c8843e2d0d51e7e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0033-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1e304344a0fb4f76e2661cbd113faf14e2f5da8e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0033-0007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6bc8c4ba919381952802c5391e4cbd10eea333a8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0034-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "47a2c7973c0899c4136428f4c8486265e1489cdb"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0034-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "47a2c7973c0899c4136428f4c8486265e1489cdb"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0034-0005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "47a2c7973c0899c4136428f4c8486265e1489cdb"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0035-0013.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f89e53f87ed1dbbb33325171ab7045d97e71493c"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0036-0008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c1d6a04b90fb4b8f66466c53bfff6e04affb57fc"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0036-0017.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6d4fe8b5525eec4377dd56498b51ffdab0d2776d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0037-0015.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "40b7fa69c7b8f38d9b0015531fe4260cbf251676"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0038-0009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fc9b19eb319d43060ee0183cf0e36891e81dbeb3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/U+0038-0010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fc9b19eb319d43060ee0183cf0e36891e81dbeb3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d79b5d949a495860ebb5de6927c78199fabd97e8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b296f1e58f62aa6b62cb4cce963033ea9d66bed0"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6b0a84e76fb5fc6831305307b84d9b938ef40f01"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7c6e2afd5ac92bcb40f9780021039c7837bbf1e0"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "732bc843548204ee7f63a5eb72cd6e69338730bf"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6c083c8fa9d37d9b7fe639b77ff42f803ab945a3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8d88d67ab4c61adc47c28ce3bcfa7c3f168e0eb2"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a0556a301247d2d66be5c77c6f4ae3a981552e39"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9344a66bc732e035c4f74841354f6ab1d34da971"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1c8dbb3da820eae429780069f1841e1082cbca86"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "73ea3754692af8f3e48f1fdd887da87f6dea6a68"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5223410178dfafc814c8a0f1f19ddb9ec4fad186"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/guard-011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "eca6e96f86216f1540151cf1987499367d1a52de"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3d220fa73e4c468d191a307c1840559d47d2eee1"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+002C-0019.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fa34c46ee876803348720aa15e5749e2a4c62379"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0030-0006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe240a0747d4d06560fb1656c76654ef3a57dfcb"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0030-0011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0bd5554420b8609a405f4a9c797bb85af17ffad0"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0030-0017.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bed188c3ce2270485794aaf2eb2b1bbb5661e172"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0031-0012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9a42c6f8a500dfbf7d7a8a1e101207c29887ac57"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0031-0013.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9a42c6f8a500dfbf7d7a8a1e101207c29887ac57"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0031-0018.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a2448dee92f8b5812964fb69f63cd690662bca31"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0032-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a65a712e23e281af0d8bce9e2b8cf4263cbf19fd"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0032-0015.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "83a4b7d858db91b7d2518558c55a3adb564b4793"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0032-0016.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "283ab3a39daac39335d686578e65ea356802dec5"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0033-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ffe38642dd3f1f4df356a0b05ad0b34c2ab587de"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0033-0007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9b80876dd73ba9d6fedbf749a3995ad0966f8be3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0034-0005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e15c92b38f2ab9459a7199a8e03d93ad834536a9"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0034-0014.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ec5108dbe3fe3af1e82fc33bb71056738f3d3f3f"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0037-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6372c88fae07ca5790f9ef473e77217d3cae7f64"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0037-0009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a7ee668798d9c906061e910bf2712eb92e0ae073"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0037-0010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a7ee668798d9c906061e910bf2712eb92e0ae073"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0038-0004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7d7cacbc5e7b249d620ed108f82e2198bcbc9a83"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0039-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6a2b91828bebd1bf6a583c49c342463d2afdca74"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0039-0008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c7be044c974c512251b9d9e1c4f3f97b47fbe607"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/U+0039-0020.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b769ccaca7e57bd98f3db5b0a8fbfe1d21b34c56"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "05b2536348553f6705f757655d5df7a2a8cc2f97"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d1040d48e55b981c188cd4de8aff10ccf8cac80e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "cfa7a9f790c11479be5f45ccad7f9f9fac888110"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4eb2c7da9950dc0ddd351cb66407dbc85dcc002b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5372bcbfdcab18316055078d66a81fa5c68e723d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "93173f496dc1e9f34a4ce08109bfffb0ebf9e945"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a498f7cdf371a3990ec07e1d2d9145da53fdc865"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e264f20cd6468ed205201c4854c7713e99cd00d4"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "db0ec2e41251f098b3afd168e3bd3f5cc09b3f85"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "91da1690dd33425b158c4b183237329790efd4be"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "932b131364e264e5dc60ca345c1e380d4bb2d47f"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "214a32a27a1064f131042d44b644b12e01fe137a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/guard-011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2967a20a01996ab0669a289f192944813afc9e94"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "43581f334400e6e5d867d5498eda41435e17b1d7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+002C-0019.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fa34c46ee876803348720aa15e5749e2a4c62379"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0030-0006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe240a0747d4d06560fb1656c76654ef3a57dfcb"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0030-0011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0bd5554420b8609a405f4a9c797bb85af17ffad0"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0030-0017.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bed188c3ce2270485794aaf2eb2b1bbb5661e172"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0031-0012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9a42c6f8a500dfbf7d7a8a1e101207c29887ac57"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0031-0013.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9a42c6f8a500dfbf7d7a8a1e101207c29887ac57"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0031-0023.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bbf143d22e3331dd628de1eba8487b4b1de45b97"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0032-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a65a712e23e281af0d8bce9e2b8cf4263cbf19fd"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0032-0015.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "83a4b7d858db91b7d2518558c55a3adb564b4793"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0032-0016.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "283ab3a39daac39335d686578e65ea356802dec5"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0032-0018.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "11c273f8f9394172bc349d08c54ec753845f788a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0032-0021.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c49c46dcc87856f55600e51942497dafb36ef13d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0033-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ffe38642dd3f1f4df356a0b05ad0b34c2ab587de"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0033-0007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9b80876dd73ba9d6fedbf749a3995ad0966f8be3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0034-0005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e15c92b38f2ab9459a7199a8e03d93ad834536a9"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0034-0014.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ec5108dbe3fe3af1e82fc33bb71056738f3d3f3f"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0035-0022.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e6ea2973c20acba50819ad7fc6462bb85db8c898"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0036-0024.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9ad421055b2bc7e0e46fe4093e04500a645494af"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0037-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6372c88fae07ca5790f9ef473e77217d3cae7f64"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0037-0009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a7ee668798d9c906061e910bf2712eb92e0ae073"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0037-0010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3cf54ec6653cba607be998f0028c596dfcee99b1"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0038-0004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7d7cacbc5e7b249d620ed108f82e2198bcbc9a83"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0039-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6a2b91828bebd1bf6a583c49c342463d2afdca74"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0039-0008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c7be044c974c512251b9d9e1c4f3f97b47fbe607"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/U+0039-0020.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b769ccaca7e57bd98f3db5b0a8fbfe1d21b34c56"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0b86f5bbabd4af7ae97b921a6be0314472700367"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d1040d48e55b981c188cd4de8aff10ccf8cac80e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "cfa7a9f790c11479be5f45ccad7f9f9fac888110"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4eb2c7da9950dc0ddd351cb66407dbc85dcc002b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5372bcbfdcab18316055078d66a81fa5c68e723d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "93173f496dc1e9f34a4ce08109bfffb0ebf9e945"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f33353dc024200bb7c28777300646c16e75a5aa7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e264f20cd6468ed205201c4854c7713e99cd00d4"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "db0ec2e41251f098b3afd168e3bd3f5cc09b3f85"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "91da1690dd33425b158c4b183237329790efd4be"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "932b131364e264e5dc60ca345c1e380d4bb2d47f"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "214a32a27a1064f131042d44b644b12e01fe137a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/guard-011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2967a20a01996ab0669a289f192944813afc9e94"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8ea9602e96def8de718f7eeb5b97b1d63a5d896d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano-annotations.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "814f9bafe03866525546764551fb1cc6ef17e321"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/U+0030-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "620325cacefd608aa55dab5828d107e469af2b29"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/U+0030-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "759f052987c33d7f3b76490746f21c891ce141d7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/U+0030-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2a2bb291b4568054da1bfbe465075cf1be22cb20"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/U+0031-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1855539ec443ed235e499e22ee511236cd76e2ce"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "04cdea9daa2309aa0d1cf997995db489d8edb2ef"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f4202ba214ce381cfd4e2281f6bf91b35c29e703"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dd3277f6b974615b8991c8e0466713691aa280f6"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e56019d46c6862d6c9218c08b21671c68bc40cdd"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bd581e27072f6a512546dc815867591bc307839b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/U+0030-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2fb86019593bff22a3ee9738d0c0b3e5f2e93dd7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/U+0030-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe997d201e1031a9ce680e0e36d4140d69cf514c"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/U+0030-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "72e155b77322588ae9709237972fc3c2ffe45d23"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/U+0031-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8fdc501eb9040e38be83233af722fd1cf0f40403"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "04cdea9daa2309aa0d1cf997995db489d8edb2ef"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1ad196da4a9cfe5d28f905de8e07d9fa4a810982"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c9a595d062339f00d880bcbddf5bcf2e5f4bfece"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "39e9ea9d4c4d452f9cec952ac5798edde8572f11"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8868f23f956f427a314fe92efb7b6abeb474f230"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1-annotations.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ebf51b47cff3aa728b74293f117a7644711c0dea"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+002D-0014.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4515a73e7c505680569283d24d68533f0c96bfae"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+002D-0016.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4e8c70db3ca0ef5652079c9600fa9df4c0cbfdbe"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0030-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1a65f9a762d696fc881f9886b24851292c7bf924"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0031-0005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "85d3ac7491114469940f29ff2a768534a47991b7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0031-0006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ca50a3b870cd434afb1e604d5eef04b3e40ef610"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0031-0012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "60b3e581267a3748882c4c0d9b9d535667406b24"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0031-0013.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e4781bb7718d0743056cb84738df78e8ad2474db"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0033-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8d74ea9a55df090159b9dd541d031dac51ffebee"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0033-0017.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b3f2383180ac812bb997948f6393a27a4f264879"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0034-0015.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f3de7501613bd39d2b9d7657ae8660df18eb4ff4"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0035-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "90a07bb337428723315ee49d696390f9d42e775d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0036-0004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f98ffb2b76ea9e3db3714217f15d6b441b8f84c8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0036-0007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0c206b76571042bca47ae6cf7221419a4b314d3b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0036-0008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3730c2b5e1a3852c329c8d86ff043a30c043f92f"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0037-0010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9ce7c2c587039d5d900f34b635e9f04a049883db"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0037-0011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fbe5034ee8f66f605ddfb6e9986f065415406f7d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0038-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "21dad69411f11186452992b1b4d812105b9f255a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/U+0038-0009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3a1aa45bf135b45beefcf72520092d166610f71a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e2b7994fa60844365f3e043e6814130fb702bfd3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9acb678883b014c3711f36f68a007ff954410000"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a5a962ed6386cb73a2e734f8bebed2d6c89ccc4b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "306be5a11c6aac38f0568f22350387024d786f54"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7fabea1c81113ab8b3d490e57fb5f3f24d3c42cc"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6ad90959e08343e5f1e648e1fef8bf879b309dba"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dd4be030c0eee1ee09efc43e25b7347a0d47cd1d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5dcc2963b48a70e816e67fcf801ca1581663cc27"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "26f619467dc44b3e3a8bff54f8774bc5d0e56436"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "73a5728aa6935f48907405fa995bbbfc00fd1876"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dc3e5819f36408cde3c72e252a1938128695ab61"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "919f44d910892fb61a141157face14dc1574e045"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8099f6d9203dd9df2a4f1afa9450cee2cf453ab6"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/guard-012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ddf03980bc45bead4e9f696436ca21b97b125b60"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e2860fd16b36419f61d5254fb8297d0c759ff16a"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1-annotations.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f155e9a56445fa98473ec693713346422b49f657"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0030-0004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "257f495463435590fafb93e7cf71601d67f5e865"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0030-0006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b660908912caabd9057770d2eba0942d35e28bc3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0031-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "489fa3edf9173d4a0644490f112f39fe352f2caf"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0031-0008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "60b3e581267a3748882c4c0d9b9d535667406b24"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0031-0009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "60b3e581267a3748882c4c0d9b9d535667406b24"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0033-0005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6a474885561540305aedc86b3c7b2959c49015b9"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0036-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8b849afd99f507008d91c23293c246b2747eee74"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0036-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "37d4bc970a177a6475ed74ffb2060e34e0d303db"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0036-0007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "87ddd41439479ae5759c615c3782f8c16666665b"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0036-0010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f98ffb2b76ea9e3db3714217f15d6b441b8f84c8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0036-0011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "021d33194b390c5a65cf7fb989e11ecfd646c105"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0037-0013.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fbe5034ee8f66f605ddfb6e9986f065415406f7d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0037-0014.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6769b80addbd9aa42d6b729b848d18dfe91e64c6"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0038-0012.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9730d7eaf6a4ea765d7f964e2018f88020440394"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/U+0039-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "796e4c3a56243f5b6bdf279daf2cd34ce85bc709"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "81f3f9daee87ce1ba8a1d4806e794cfee9725365"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "01cc3959452ad65681cd70568789393182f5af26"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0ba8bcf65c676a3454a16cf151c31eb2d0aa4fa6"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "00f72d84043e6533a7ef87a569d6302c6ac88b5e"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "16c21633da32da0dbe1bf1f3806ff0efca481bd3"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-004.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "eb664f3e26064c6bbf30401acaa6ed33c800173d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-005.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "510f23a025a0ca6251887acef662f912517649ad"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-006.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0961192ffa9424a42a626e5534e16d666df983a7"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-007.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "17db389fe6e85f02ac94a588a3613bea46f3d0b5"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-008.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f3f1f4f7745f2f1676ce2b9992577c6b1ca6bf31"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-009.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b32e61e529d976941933b89f37ad9e934ad4b376"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-010.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "46f7051b10af265cb4b1fafb0eeef8b087200b72"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/guard-011.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9815ac2d908b2f82b87756797c543d10c240a02d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8dea097ce7ee4026ed76e513fa0ce030b28dea48"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/U+002D-0000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "90deb3ae012a6eea9ea5cc98d45608063c32b5c8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/U+002D-0002.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "90deb3ae012a6eea9ea5cc98d45608063c32b5c8"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/U+0033-0003.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dc6888c063fa497d79471e02cab2f766ba94617d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/U+0034-0001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bf888d263c8650dfa6048370dba840fa826b7c73"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3ec596bce4ae0e253ceb2c05582c9cc9ad47918d"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/guard-000.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f439017940371baa59ef79b906b8509dda734949"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/guard-001.png",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "59177449281e38baa84b8945ea24f304bb09c063"
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/numbers.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a3a8f485466ab757ff9dfa46e709624bb0c0d271"
+    },
+    {
+      "path": "Application/forgely_dashboard.py",
+      "status": "M",
+      "before_blob": "227161c0daae7b5ddbcce74c5d334232e6e22ce9",
+      "after_blob": "264d7eda2ff190282af5dfb9f1f55e18300322eb"
+    },
+    {
+      "path": "Application/forgely_data.py",
+      "status": "M",
+      "before_blob": "575912735710bf424c8c0f63a2cba98cc80af88f",
+      "after_blob": "343c7ade426fb244e3aa90165a952559d32177b0"
+    },
+    {
+      "path": "Application/forgely_decision.py",
+      "status": "M",
+      "before_blob": "168166b530a1560c6dd75e02ef51e92b5e172da2",
+      "after_blob": "30a9995dbaee6bdda4afb69c29e55b9957b4a67d"
+    },
+    {
+      "path": "Application/forgely_dofocus.py",
+      "status": "M",
+      "before_blob": "fb379b1f082b3b22e43d16bcdb4c1de651c0e1a9",
+      "after_blob": "cb1f30842849704bf3b04ea70ddccbc1e1a1d7bf"
+    },
+    {
+      "path": "Application/forgely_dofocus_engine.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ecd55f0064ea866ca28239d115e21e24cb51a805"
+    },
+    {
+      "path": "Application/forgely_equipment_catalog.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3ab6b7edc079b5f1a0817b2a29ba4b86ace44aa9"
+    },
+    {
+      "path": "Application/forgely_equipment_picker.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ff8484004e45a24f4b00be9eb3afa9227a1114df"
+    },
+    {
+      "path": "Application/forgely_equipment_session.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e7130f7283773285bc1cbb6dd73a9216358d207a"
+    },
+    {
+      "path": "Application/forgely_expert.py",
+      "status": "M",
+      "before_blob": "c861c58212b4362265d9c74887370680be323985",
+      "after_blob": "bd31614564bd882d6e25984f62c3ad3e5a2508d9"
+    },
+    {
+      "path": "Application/forgely_fm_model.py",
+      "status": "M",
+      "before_blob": "4e4392bc9997197ee45a4298501433987878c8f3",
+      "after_blob": "b469ffe8d9f8bdbd0c0e2f945a4112a7787c588a"
+    },
+    {
+      "path": "Application/forgely_gallery.py",
+      "status": "M",
+      "before_blob": "845eba9c91c17b32ed77743f3fb05cb753f3af19",
+      "after_blob": "3ba95b26b379c1c55185cd2f1f23ef71b2beb99e"
+    },
+    {
+      "path": "Application/forgely_general_policy.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "52158ff2bbefa1ac0827da73857316dae52a6f3e"
+    },
+    {
+      "path": "Application/forgely_hybrid.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8f45279669764cf60f1117fd04202b7ce9524740"
+    },
+    {
+      "path": "Application/forgely_item_vision.py",
+      "status": "M",
+      "before_blob": "84de483c825242a1a9a87db8484ea27e0a4f175c",
+      "after_blob": "fdfa184735f91bb14ce4fb55c95e07ec30ba2a48"
+    },
+    {
+      "path": "Application/forgely_items.py",
+      "status": "M",
+      "before_blob": "2e1e9fbe7f261eb45fd7fc0097455bf02a5893d5",
+      "after_blob": "09c0a6044aac6fc14e70b174a38694e8f28ead8c"
+    },
+    {
+      "path": "Application/forgely_jet.py",
+      "status": "M",
+      "before_blob": "2d7b41888f7365cb472a82c865bc3c128d02cb39",
+      "after_blob": "d3a2fdd1ea35fe99193af6ccd15b0dcfe7edd821"
+    },
+    {
+      "path": "Application/forgely_labo_live.py",
+      "status": "M",
+      "before_blob": "40d18fac94ee31318569b7e956a41762ed61b5ac",
+      "after_blob": "80d69e27b702755681c6efd3d5ac27f7562527d7"
+    },
+    {
+      "path": "Application/forgely_learning.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e527ae13661b9c5d25d962cd78818d0c34a29224"
+    },
+    {
+      "path": "Application/forgely_live_targets.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0180a0c08d8723f4ba2f19ee15cb72e2e90b6800"
+    },
+    {
+      "path": "Application/forgely_measured_goals.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8cdd2ab9e90d957fab3db387f855b8412957e7cc"
+    },
+    {
+      "path": "Application/forgely_online_experience.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f87d792033d8667fbe98015186285f099d8fd424"
+    },
+    {
+      "path": "Application/forgely_overlay.py",
+      "status": "M",
+      "before_blob": "188b24577996b3a0a3b528cce5ec3eed11047a7a",
+      "after_blob": "9aefd72769c6d1b9b38e55e8d965f25f24c5b98c"
+    },
+    {
+      "path": "Application/forgely_perfect_goal.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "006cffc1c5d71e018780819e15aa27693ac77166"
+    },
+    {
+      "path": "Application/forgely_pipeline.py",
+      "status": "M",
+      "before_blob": "1f8e7dc542254a010674dfce2556b4b19e35dffd",
+      "after_blob": "4b3eba402b036ce9f84fd79918300e613c1f0407"
+    },
+    {
+      "path": "Application/forgely_plan.py",
+      "status": "M",
+      "before_blob": "bda20f0c84e2096007cd74d605d82945480e0a8a",
+      "after_blob": "7dc1d21635e5b2effb09841b805a5b42d4989d93"
+    },
+    {
+      "path": "Application/forgely_pool_ledger.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fde50a6b4df29f5c0aca83edd5825200d601bcc2"
+    },
+    {
+      "path": "Application/forgely_pool_observer.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f2bd83707067102e52afbd95809585a7fc31e393"
+    },
+    {
+      "path": "Application/forgely_predictive.py",
+      "status": "M",
+      "before_blob": "f1d487b530c1ee8caad1cf742c9619793a258677",
+      "after_blob": "7c858b31559e55250e3bdcb6e4a4f49e3e882696"
+    },
+    {
+      "path": "Application/forgely_pricing.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bc041056165db57ad48b4b7d5c7d6e66011c9300"
+    },
+    {
+      "path": "Application/forgely_probabilites.py",
+      "status": "M",
+      "before_blob": "006baed75bcb221c287a30ea2273712b082a8aff",
+      "after_blob": "34cd0e27c90eec2dd73c7ef18e94b015f0d912a1"
+    },
+    {
+      "path": "Application/forgely_reading_review.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c4e08b1e4d46d94a83372ee85a5b64e9097c7220"
+    },
+    {
+      "path": "Application/forgely_recherche_probabilites.py",
+      "status": "M",
+      "before_blob": "1bb91ff949530c0b2cc35d4fab69cd07eaa87e8d",
+      "after_blob": "0c04fd246013e54c7e2dad872a194fad683396b6"
+    },
+    {
+      "path": "Application/forgely_review_collection.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a7c65f7d0fdaf6030e3473022af30a7d29fe7939"
+    },
+    {
+      "path": "Application/forgely_review_panel.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1f6a2bcb7536b1bd2897300dbc4372256874c162"
+    },
+    {
+      "path": "Application/forgely_rl.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7676c336cbcb41ba4a832408b44337833dbac404"
+    },
+    {
+      "path": "Application/forgely_rules.py",
+      "status": "M",
+      "before_blob": "20cd5ca367e62caa733609299587352c38df4503",
+      "after_blob": "60b69287f30ff07e7eefdf6fdab782169e9ef9f6"
+    },
+    {
+      "path": "Application/forgely_sequence.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f5ca118b2f13d0748cfd80557202099989ee1aed"
+    },
+    {
+      "path": "Application/forgely_session_ui.py",
+      "status": "M",
+      "before_blob": "33a5b539fbd692fbb5faed26d235ff5fb8838ff4",
+      "after_blob": "387141756b103ab7064cd43e1a86b83fd576d750"
+    },
+    {
+      "path": "Application/forgely_simulateur.py",
+      "status": "M",
+      "before_blob": "b9ea101a3b89f7837f21e10ebec5210c46a1bddf",
+      "after_blob": "fbaeba00e6a1d90dcff5db668ff7312ab4cbdfda"
+    },
+    {
+      "path": "Application/forgely_simulation_journal.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "442187b239c87efbb32e661e039369039764b248"
+    },
+    {
+      "path": "Application/forgely_simulation_live.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "85dddd451cdd937f494213d2ca5c803d8e4284b1"
+    },
+    {
+      "path": "Application/forgely_simulation_ui.py",
+      "status": "M",
+      "before_blob": "fbcd84b4b3453d19a8983e0ad76d942a990c3ae5",
+      "after_blob": "ac18242902bdfee958fe361b486cdc853df684ca"
+    },
+    {
+      "path": "Application/forgely_sqlite.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c8264a532cd171133815effec33b0d6516299193"
+    },
+    {
+      "path": "Application/forgely_themes.py",
+      "status": "M",
+      "before_blob": "88731425edab29e15950bfb2806c7a07c2eebb10",
+      "after_blob": "42d1121f680e0344a57beb8b1e3920878c0d718f"
+    },
+    {
+      "path": "Application/forgely_tools.py",
+      "status": "M",
+      "before_blob": "0ab3d2a9ef6e64a0f4fa9b3975d2e3c1722657db",
+      "after_blob": "e1f748f9a9a77f9149e6564f69424552ef8cfc42"
+    },
+    {
+      "path": "Application/forgely_trained_policy.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9ce86c3fd70f16cebdff7527e9b58942f91f949b"
+    },
+    {
+      "path": "Application/forgely_training.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a753b44354c0a500d9bc5f1cb11dcf24847ecf70"
+    },
+    {
+      "path": "Application/forgely_virtual.py",
+      "status": "M",
+      "before_blob": "a4699fcad03955dca3fa9128424c2c32cffb5b6d",
+      "after_blob": "d74b63387e3d84ff40300963d1382c7ba6a9d943"
+    },
+    {
+      "path": "Application/forgely_vision.py",
+      "status": "M",
+      "before_blob": "e60c93371742219beeda459c451d656d0365971d",
+      "after_blob": "7a946b5f96e6225d2ef8b7c0648b96407f055eef"
+    },
+    {
+      "path": "Application/forgely_vision_guidance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e3b745fe3db8c438e69a1f06b897ca800c2846d6"
+    },
+    {
+      "path": "Application/forgely_windows.py",
+      "status": "M",
+      "before_blob": "fc724612867684336574bb86fcddaba4a3b5c2e4",
+      "after_blob": "26961535ccb072564ffa59ed359cb0a3b3b06729"
+    },
+    {
+      "path": "Application/forgely_workshop_layout.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bc10deea9d88e8ba971097e5e3145e0a8f8105f2"
+    },
+    {
+      "path": "Application/forgely_workshop_readings.py",
+      "status": "M",
+      "before_blob": "d07a2237a79c8af47964bc3395cc26ee585b7632",
+      "after_blob": "2f7f3fa97d4288d4ac80b15470dc9d41b1fe4d7b"
+    },
+    {
+      "path": "Application/reference_poids_fm.csv",
+      "status": "M",
+      "before_blob": "4387c018f103dbad5c8ca2b75efd867cf82f7ca2",
+      "after_blob": "4ad259d246ab5a75e93eb4687e7ff9a9e63a74eb"
+    },
+    {
+      "path": "Application/reference_sources_fm.csv",
+      "status": "M",
+      "before_blob": "8954e96adf11729bae952b3099ef74563372e2da",
+      "after_blob": "723bfa25bb97246b3079f7ab4aead95ad0004de8"
+    },
+    {
+      "path": "Application/requirements-vision.txt",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e0ccfd79bad6c7840893522e916ae2070fc4e42e"
+    },
+    {
+      "path": "Application/runeforge_observer.py",
+      "status": "M",
+      "before_blob": "74a30c583e274669522c545db112c5e7b9f259c3",
+      "after_blob": "ba5813436111f1ecbf1aa79f9aebc4197cd73c07"
+    },
+    {
+      "path": "Application/serveur/app.py",
+      "status": "M",
+      "before_blob": "a1d456fb9fb9866b539dea84ec968d55b85a7928",
+      "after_blob": "ee793512c41866252a658d0677abf7cb20b84ce9"
+    },
+    {
+      "path": "Application/tests/test_capture_2025.py",
+      "status": "M",
+      "before_blob": "57885f919c9bd4572658b78c2ecc980e771b4e1b",
+      "after_blob": "0e6031b7cf72575b37bd8ef8eb8b31cc8bf2f25d"
+    },
+    {
+      "path": "Application/tests/test_copilote_208.py",
+      "status": "M",
+      "before_blob": "311c1db6bc7194925325ea7655c7c497156c3949",
+      "after_blob": "ad7c01ba2918252c411d838060f6de7c31e37bff"
+    },
+    {
+      "path": "Application/tests/test_dashboard.py",
+      "status": "M",
+      "before_blob": "b66ade12e6abdd2d4ab8d988e834aa08ecd78db5",
+      "after_blob": "057039a045ebaa2614b16550a153841e71bdce76"
+    },
+    {
+      "path": "Application/tests/test_dashboard_tk.py",
+      "status": "M",
+      "before_blob": "942062f557402ed66e7ddec178a5190b2be3387a",
+      "after_blob": "aeacb8d584f69d10c142eb1e449f511e8451e817"
+    },
+    {
+      "path": "Application/tests/test_display_modes.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "801a4af0dd4cf02381f6c617144c197ac02f5d3f"
+    },
+    {
+      "path": "Application/tests/test_dofocus_store.py",
+      "status": "M",
+      "before_blob": "4c35de5b2eeb63af64f39140a050360ab8c246ab",
+      "after_blob": "e51706ce7a453fbb50091599a5aea4cd0ec8b03e"
+    },
+    {
+      "path": "Application/tests/test_equipment_picker_tk.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e0ad5e97f53affe6a9db8bb3a44c990bfafc901f"
+    },
+    {
+      "path": "Application/tests/test_expert_protocol.py",
+      "status": "M",
+      "before_blob": "cc42c1d4f4aaf2b4665422c8eaac9e5e9ffda2e3",
+      "after_blob": "c0d191433329de4c65cf81dc3f4f69bcad053d1d"
+    },
+    {
+      "path": "Application/tests/test_fm_app_integration.py",
+      "status": "M",
+      "before_blob": "9a500bc4c24f142e5193e60b7b9d016d3c53ff16",
+      "after_blob": "b7f7a88460bed5d3ad5f22cddfc21cf8dca405d8"
+    },
+    {
+      "path": "Application/tests/test_fm_budget_session.py",
+      "status": "M",
+      "before_blob": "c22adb201da142841c980b1290cc529a5ead81a9",
+      "after_blob": "4ed814e315cb0b56dfe141fa856b7522e3c7f892"
+    },
+    {
+      "path": "Application/tests/test_fm_objectives.py",
+      "status": "M",
+      "before_blob": "e93f892236b293c396e8832672566412d3f98fb8",
+      "after_blob": "62855b4753982eaba2932673fdfc0e1ac33efc0d"
+    },
+    {
+      "path": "Application/tests/test_labo_live.py",
+      "status": "M",
+      "before_blob": "0dfdb31f9e341862dfef8a5534fc01e9db00ba2e",
+      "after_blob": "aac6953cc5fccdd5ef3017a8d1513fd6f9e0cec1"
+    },
+    {
+      "path": "Application/tests/test_learning_transitions.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8f46330ff39c2f445e14cc7a67b9b2b1713b09f6"
+    },
+    {
+      "path": "Application/tests/test_packaging_assets.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "de43dcac0a6fafbdec85f79dfc87d553090848c0"
+    },
+    {
+      "path": "Application/tests/test_performance_global.py",
+      "status": "M",
+      "before_blob": "ae898d5cef037442e0cf593d58ce45e6c76f3c96",
+      "after_blob": "73172b4b274bc81516567d861e8ab3a83b191aff"
+    },
+    {
+      "path": "Application/tests/test_plan.py",
+      "status": "M",
+      "before_blob": "3a19147ceeca9b8e0d0518e7a6209a23f345e40d",
+      "after_blob": "087e6940d0c353fd6bff45664799f294f9d0e15e"
+    },
+    {
+      "path": "Application/tests/test_price_update.py",
+      "status": "M",
+      "before_blob": "24f1fe939925363d6f16fed3eed3228ce68879a7",
+      "after_blob": "1ab7d7b87cfd566f784e6bf5eafbeb14a9c406a2"
+    },
+    {
+      "path": "Application/tests/test_recherche_probabilites.py",
+      "status": "M",
+      "before_blob": "25601a29c36002c66c8fd2721b5fbcbb6154cf0c",
+      "after_blob": "4d251a14c1bb77ba27c887d96124324744917b85"
+    },
+    {
+      "path": "Application/tests/test_reliability_fixes.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "16558290501b94df7c27e024ef38c46ecb12b9dd"
+    },
+    {
+      "path": "Application/tests/test_session_review.py",
+      "status": "M",
+      "before_blob": "e219ac9a581618cbd7384aabf17fe79f1b5bcf84",
+      "after_blob": "9e2d2d61cc0a402247667ab19af38763c47c940d"
+    },
+    {
+      "path": "Application/tests/test_simulateur.py",
+      "status": "M",
+      "before_blob": "f8dbbc4fcf749ce35431a9cff268d68f95a93410",
+      "after_blob": "6caa567a26c975779de2e2cfee4361416025962c"
+    },
+    {
+      "path": "Application/tests/test_themes.py",
+      "status": "M",
+      "before_blob": "60fcf4b446ee45a5a9d3766a9c972fcd581449d9",
+      "after_blob": "c718740c312ed877b08cb0f2719ab040b7df8464"
+    },
+    {
+      "path": "Application/tests/test_tools.py",
+      "status": "M",
+      "before_blob": "a49ada903e4b3edbe2022af827db765aa64a8674",
+      "after_blob": "22b528490725e80bd156271659cea9ca6c440d2c"
+    },
+    {
+      "path": "Application/tests/test_tylezia_prices.py",
+      "status": "M",
+      "before_blob": "cf35e76e99c8521f5f78d1ce08e6917a7cc780cb",
+      "after_blob": "d72ae29bed1e4529d5e165feda1ff53e92372ead"
+    },
+    {
+      "path": "Application/tests/test_workshop_attention.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6b27177d8e9b26e8ced4c15bdc582326de1c7bf6"
+    },
+    {
+      "path": "Application/tests/test_workshop_layout.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c816073e4d737854dd03b99f5fd37b09e0a36267"
+    },
+    {
+      "path": "Application/videos_sources.csv",
+      "status": "M",
+      "before_blob": "cbe5a2f14d11cf72450893134fa8e519b2fa0e5e",
+      "after_blob": "4237aefd3f00d64b148fdfaef69edea053d3b5d5"
+    },
+    {
+      "path": "Application/walkyrip_sources.csv",
+      "status": "M",
+      "before_blob": "61bc91f95abdcaeaa4f35c5bb65cd62a73246ee9",
+      "after_blob": "6e693c78f6614233bc6c0954078be5b78da4cb56"
+    },
+    {
+      "path": "OUVRIR FORGELY.bat",
+      "status": "M",
+      "before_blob": "5e27efcdb5ce9aebdcfbf90bea4f3a2900fc2d29",
+      "after_blob": "df606db34aa2f67d4a653b3d5d7f96f7758af344"
+    },
+    {
+      "path": "OUVRIR_VERSION_COMPLETE.bat",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4b9da387f35564a77633e4ad00cd3fa48b205d2c"
+    },
+    {
+      "path": "README.md",
+      "status": "M",
+      "before_blob": "d315a4057b4837b752c4c3f1771a48fdf112c3bf",
+      "after_blob": "7f92636291a1bb96beac30528821d972cbf82b32"
+    },
+    {
+      "path": "Tests/fixtures/dofocus_engine_cases.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "359eb47f438658b9458d62e59c2a5d31cd4378e2"
+    },
+    {
+      "path": "Tests/fixtures/live_20261107/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2cdeb92f27d5ebbfb3f758193306e1c0c7f82cf1"
+    },
+    {
+      "path": "Tests/test_adaptive_workshop_real.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "038bdf34b3dcaf048648fa6f745b56b5233d878e"
+    },
+    {
+      "path": "Tests/test_advice_source_weights.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e2bfd9ffa5fa6103a2aa01c80115471a8b198c43"
+    },
+    {
+      "path": "Tests/test_automatic_equipment_card.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e08aa2fe7a6d62fe8fd196efea199e3c2946840f"
+    },
+    {
+      "path": "Tests/test_automatic_goals.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5cb5847405c20b48b233f926ad0dcfa260f6d5ae"
+    },
+    {
+      "path": "Tests/test_automatic_reading_workflow.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "13e6dd1ebac34382be471708453fea204342fd53"
+    },
+    {
+      "path": "Tests/test_automatic_visual_calibration.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "25013121a972486136a1b997898f8ffec2567984"
+    },
+    {
+      "path": "Tests/test_cv_adaptive_rows.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "abd45a24fce32192f099e0094c78137e06cef0ca"
+    },
+    {
+      "path": "Tests/test_cv_numbers.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ef9ac0d0a3097bf41c76773c5de6abe9a12e1b98"
+    },
+    {
+      "path": "Tests/test_cv_pipeline.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "01a8c3525dca114ec7154458924e0a8e14476e0d"
+    },
+    {
+      "path": "Tests/test_dofocus_local_engine.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c9534e7b1655f1edb5c89ef3dacd00c761f96ab3"
+    },
+    {
+      "path": "Tests/test_equipment_modes.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5d6bab12649c2d921a399585782b0bff31de3077"
+    },
+    {
+      "path": "Tests/test_equipment_percent_bounds.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e7f5729755e4c284b2fc8217ddb2e19aacd46ac3"
+    },
+    {
+      "path": "Tests/test_equipment_picker.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6f21a2bed4e468e3110d0ce5f54d182d4176507b"
+    },
+    {
+      "path": "Tests/test_experience_advice.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9d9033d05478171d9921f86abda05061be84e553"
+    },
+    {
+      "path": "Tests/test_fast_slot_association.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5ee64bbf3d21334df8d47a6dc5613a3c2a831855"
+    },
+    {
+      "path": "Tests/test_first_row_success_cache.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "24be9406efcd82d55a8078874c7ee0266c17fd58"
+    },
+    {
+      "path": "Tests/test_floating_goals.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3350d604abc4061d5bda2a1e9d3d55b99e3ac772"
+    },
+    {
+      "path": "Tests/test_fusion_integration.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7900589a6d3e03762002d7a3ee6f0d26cdc891ba"
+    },
+    {
+      "path": "Tests/test_general_policy.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8dfd9e05a62c79c5deda3128693418cfc7a027f2"
+    },
+    {
+      "path": "Tests/test_generic_numeric_lines.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7892193a28d43a65bc6cfdfc53acd8b0a75533da"
+    },
+    {
+      "path": "Tests/test_github_ocr_backend_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c96b7ae0712dde3d9df1a0b902e9f7492660c746"
+    },
+    {
+      "path": "Tests/test_github_ui_data_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "04d096a87c4eccad83effb8ade8b3039b78d1e66"
+    },
+    {
+      "path": "Tests/test_github_v2103_regressions.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f042bcc6d01ee43d6b6ab72e671319a614be86d2"
+    },
+    {
+      "path": "Tests/test_github_window_discovery_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "832a1f08e736f8d0092b40fdfb7b037ef2132d5c"
+    },
+    {
+      "path": "Tests/test_goal_first_learning.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a541d653a3d474f13c399b1a84350d3e1a47c167"
+    },
+    {
+      "path": "Tests/test_grouped_stats_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f36900336dcbe4b35d23c9a5a7590d75b8773d55"
+    },
+    {
+      "path": "Tests/test_hybrid_engine.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3df3582671b0683e3fb513c668875a8b735b3928"
+    },
+    {
+      "path": "Tests/test_hybrid_numeric_readings.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "555f0fbdbaaa8a9c3c28636de0d8cd84494d3062"
+    },
+    {
+      "path": "Tests/test_identity_latency.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "35209b726bdf596d4ddb269175bbc5b7860038f6"
+    },
+    {
+      "path": "Tests/test_incremental_learning.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5a5298c934b232ecb6347e7e330a8e96af7eeca2"
+    },
+    {
+      "path": "Tests/test_item_change_recovery.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "33297f00a288d4dd28d1ce63fdbc73b5b785c7ca"
+    },
+    {
+      "path": "Tests/test_learning_feedback.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4c6a9a0db010741549623aa956a4d197bdb08c7f"
+    },
+    {
+      "path": "Tests/test_learning_profile.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f133ed17a6abe862da755b74bd680677d11caddc"
+    },
+    {
+      "path": "Tests/test_live_learning_tk.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e1e3030d94d321f304fa7eeb3b661aaebb5c0b23"
+    },
+    {
+      "path": "Tests/test_local_simulator_advice.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0f98f54c55dfc1060407af8eef15b81082b521af"
+    },
+    {
+      "path": "Tests/test_manual_equipment_session.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3a728dcb1378db6e13677464232bbb40d9921d91"
+    },
+    {
+      "path": "Tests/test_manual_goal_advice_flow.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "108a598706e3ab90464590c035eb126579d620b6"
+    },
+    {
+      "path": "Tests/test_measured_goals.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "048b271ccca9dd4b746f1299ad0a90471a8b12d9"
+    },
+    {
+      "path": "Tests/test_no_currency.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3ae712d98571a031f17fb73dbe3383bec44d90f3"
+    },
+    {
+      "path": "Tests/test_no_currency_desktop.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d9537ae2e21aeadae13f1e97dfc2e8f145d5ebed"
+    },
+    {
+      "path": "Tests/test_ocr_backend_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c96b7ae0712dde3d9df1a0b902e9f7492660c746"
+    },
+    {
+      "path": "Tests/test_ocr_reacquisition.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dd3095798f19887815680c2eeae505a702444afc"
+    },
+    {
+      "path": "Tests/test_online_experience.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0e7e2e3a88909fd75e5d72651ef8677649957147"
+    },
+    {
+      "path": "Tests/test_paged_readings.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b5e2dd664e8415295d0540b213bd32e4bace5164"
+    },
+    {
+      "path": "Tests/test_perfect_goal.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "402b7abe0f279343eb3817a4292304497078e14f"
+    },
+    {
+      "path": "Tests/test_pool_ledger.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "420ad9dfed5f5903936b37d1dab39cc96fdedca2"
+    },
+    {
+      "path": "Tests/test_pool_observer.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "04f756d682c3408f99c5650243da361eb09ae235"
+    },
+    {
+      "path": "Tests/test_predictive_matrix.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f3ab33a2693496dff80b05e7d175723e9ef92d4d"
+    },
+    {
+      "path": "Tests/test_reading_review.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7c273130678afc3e00c9a6d70ddaad532130e074"
+    },
+    {
+      "path": "Tests/test_reading_review_ui.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "4f3b4562327ec6fdaaae4f03ed8b1c0788d88f00"
+    },
+    {
+      "path": "Tests/test_review_collection.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7ef8473218352ea54991102f957d665a3bd5405b"
+    },
+    {
+      "path": "Tests/test_rl_environment.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b3ef553e352a489eed8bab0c965e6ca9dcc3bc47"
+    },
+    {
+      "path": "Tests/test_rl_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "51522d984a541cbdee9a8514df541e9f12a99a12"
+    },
+    {
+      "path": "Tests/test_rune_pricing.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "650f398ba15ad067de8323f4edf7cd8e4c8bd840"
+    },
+    {
+      "path": "Tests/test_rune_text_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d6e25ef91522845a204ac419e40eab81ebaab43a"
+    },
+    {
+      "path": "Tests/test_sequence_planning.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d767278627de851a33435f21daea7f381ed07bcf"
+    },
+    {
+      "path": "Tests/test_simulation_journal.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c468433bcf0f6ae6df8eb46b2b0e6bd5986bca47"
+    },
+    {
+      "path": "Tests/test_simulation_live.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "32d5020b859640839e6deaa43308adc5ad2d6eb2"
+    },
+    {
+      "path": "Tests/test_simulation_ui_latency.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "92f47dc3cb0cf996e189666ac237a5ed0ce3a983"
+    },
+    {
+      "path": "Tests/test_simulator_app_tk.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fefa0498662e49429e2b17d3c7088853fd036c94"
+    },
+    {
+      "path": "Tests/test_simulator_player_evidence.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d18a68f40bda2904d95c254e79104100e6d708c0"
+    },
+    {
+      "path": "Tests/test_trained_policy_advice.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "30a3ac5f64f57c97cd1dab3998a3c6a4c1a2c50f"
+    },
+    {
+      "path": "Tests/test_training_desktop.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1ae9a649193a87952475d4f842ed899a3b589b2c"
+    },
+    {
+      "path": "Tests/test_training_regressions.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "627241f197edf9740da5ed1f02eee78dc3e1e1f7"
+    },
+    {
+      "path": "Tests/test_training_runner.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "81f009fa5c7986ed9440c41372701c8120fad074"
+    },
+    {
+      "path": "Tests/test_ui_data_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8c9d3bff7e07588d3be937e5f1677878d768e0e5"
+    },
+    {
+      "path": "Tests/test_v2103_regressions.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f042bcc6d01ee43d6b6ab72e671319a614be86d2"
+    },
+    {
+      "path": "Tests/test_vision_reference_guidance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe1a85111f26dc5278f06588e3fdc420677080a5"
+    },
+    {
+      "path": "Tests/test_visual_matching_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6fec886b240a7c335b251ed0c4c82b8b3cd0f763"
+    },
+    {
+      "path": "Tests/test_window_discovery_performance.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "832a1f08e736f8d0092b40fdfb7b037ef2132d5c"
+    },
+    {
+      "path": "Tests/test_workshop_parallel_ocr.py",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5b440e1ff677e5bbdb44c0d1368b251ade53d2da"
+    },
+    {
+      "path": "VERSION.txt",
+      "status": "M",
+      "before_blob": "313fd3e78f2326dc5c6d747f7964a94dd47d6c5a",
+      "after_blob": "cde82e2cc4579b933389568928f238ba38e416e2"
+    },
+    {
+      "path": "distribution/README.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "504286d8677bf4aad13cc3932bf1a60740dc3b31"
+    },
+    {
+      "path": "distribution/manifest.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "863c63196171fd33f077a3a2b12cb3749ac487d4"
+    },
+    {
+      "path": "distribution/parts/part-000.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fc37a6db6ebfb9bacd015160e55786b23175669d"
+    },
+    {
+      "path": "distribution/parts/part-001.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1462c9e7c736a2f5cde4615f839d92600ce85578"
+    },
+    {
+      "path": "distribution/parts/part-002.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0a6fbbd2d2c79d21aeb9316b165f41a3d9eb1413"
+    },
+    {
+      "path": "distribution/parts/part-003.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1c817549131516b8bd05744863f8873d11d83c0d"
+    },
+    {
+      "path": "distribution/parts/part-004.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2f436030baffb9ba36a4dff43b3be566d9a4b87e"
+    },
+    {
+      "path": "distribution/parts/part-005.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d93ec38cd4deba3cf3a433164694d4d61e268865"
+    },
+    {
+      "path": "distribution/parts/part-006.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f9fcbed8e6a6775c740cacfbe920dcbc57a00bc1"
+    },
+    {
+      "path": "distribution/parts/part-007.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2e99a9fffd9ff93763fd7e1e21a215018163377c"
+    },
+    {
+      "path": "distribution/parts/part-008.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a1fc5997611d3b0508c4f05e70392e1a19432699"
+    },
+    {
+      "path": "distribution/parts/part-009.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "edbca5bd7473acab3b068ac581b9be9efd39aa96"
+    },
+    {
+      "path": "distribution/parts/part-010.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "77183bf4d7ebab74c3cedd7e2e47fee576f841bb"
+    },
+    {
+      "path": "distribution/parts/part-011.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "cfd9fe5f0d4da3a99dc2c1e5eb6531d40c458c30"
+    },
+    {
+      "path": "distribution/parts/part-012.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7207629bcf821d938fdc7c32b00fb5d53d5ad0b0"
+    },
+    {
+      "path": "distribution/parts/part-013.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ca225ae2fbccc1eb8a69379c10a9745c9b8c6d56"
+    },
+    {
+      "path": "distribution/parts/part-014.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bb859165c003a4e77769ae85612556b09f7638a6"
+    },
+    {
+      "path": "distribution/parts/part-015.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e5f5fa8cb1e50df299333babd00ec68e23f9b29b"
+    },
+    {
+      "path": "distribution/parts/part-016.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "68654dd3493c8cc88b9a543bb57f7987043d2227"
+    },
+    {
+      "path": "distribution/parts/part-017.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c102356c82e57fc70beab22898efeddbe717f7e5"
+    },
+    {
+      "path": "distribution/parts/part-018.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a78a7f56a3668c96f2225d9eb2afefda1039a005"
+    },
+    {
+      "path": "distribution/parts/part-019.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "83a400e4132addaef63a25f068f96fe28042bba4"
+    },
+    {
+      "path": "distribution/parts/part-020.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f92f6df99d87d1a6cf98ea6b2be49d3e555be498"
+    },
+    {
+      "path": "distribution/parts/part-021.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ca12de1340c566957e34be703481bf4355ba6633"
+    },
+    {
+      "path": "distribution/parts/part-022.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "09761e25136e6baf6db0e9e9f9a71aa1fea100cd"
+    },
+    {
+      "path": "distribution/parts/part-023.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e9971df971a87b0c62376fb57288026eb778d577"
+    },
+    {
+      "path": "distribution/parts/part-024.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "81ffc42f092f9ee8fba5f9dd17af77efcc1cb372"
+    },
+    {
+      "path": "distribution/parts/part-025.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0a654df5914ad90ee6aca52576d919264e024118"
+    },
+    {
+      "path": "distribution/parts/part-026.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "aa8d8cc135be6d2fef1f894aceb116567e3758a9"
+    },
+    {
+      "path": "distribution/parts/part-027.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8985932d96261fe5b60e304a94e3bbc25101e831"
+    },
+    {
+      "path": "distribution/parts/part-028.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0b6f9d6f637b4b68dd3de96b1bdf33ae07753bb2"
+    },
+    {
+      "path": "distribution/parts/part-029.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ba8e0d6fb65c5ebf8de26695931e5ba2d93672c2"
+    },
+    {
+      "path": "distribution/parts/part-030.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ec3dda20e05caf4f840b6bb8fdc508022cbc222c"
+    },
+    {
+      "path": "distribution/parts/part-031.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "faea11ae11b47ecd9086028d5b142abc1acc9dc4"
+    },
+    {
+      "path": "distribution/parts/part-032.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b7f0b1ef1668fb861d393eff7bbd38af2a5b0149"
+    },
+    {
+      "path": "distribution/parts/part-033.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ddc7b617b0d957b2646f32f4a2e5e296f9d3ae75"
+    },
+    {
+      "path": "distribution/parts/part-034.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2f334095649db1e2afad223fe8a8792b9220cc28"
+    },
+    {
+      "path": "distribution/parts/part-035.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "06413ea129fb4c67ebd2cdb0b9ed02c3070029c3"
+    },
+    {
+      "path": "distribution/parts/part-036.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "db1dbedb7b790144ce6b0d7638d6bd9abfdce28a"
+    },
+    {
+      "path": "distribution/parts/part-037.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "19b84ddfc0e23092729e4bc012f2521fe8a4db8b"
+    },
+    {
+      "path": "distribution/parts/part-038.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3c6b90fdddacee5dee0b08fb3c93a0023963bae0"
+    },
+    {
+      "path": "distribution/parts/part-039.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6cf298283052cf0be6024696236d249d03db6678"
+    },
+    {
+      "path": "distribution/parts/part-040.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7e7c90f05301dd853b1370b38a0480408691acc7"
+    },
+    {
+      "path": "distribution/parts/part-041.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f5f2111c54e00c8529690d865045143c81140074"
+    },
+    {
+      "path": "distribution/parts/part-042.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ce574f42b63d52afbaae22a90b6dce2a198fcdef"
+    },
+    {
+      "path": "distribution/parts/part-043.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f36f9d033f5a8e9133ee8deb46ebde34ad385679"
+    },
+    {
+      "path": "distribution/parts/part-044.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bd38953c386b17e04ab8b3c262dc03f4fb0a5a75"
+    },
+    {
+      "path": "distribution/parts/part-045.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "7ddc4ac0a87fcfc3f6600ce1c4bd708c0417d79b"
+    },
+    {
+      "path": "distribution/parts/part-046.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "355d67098fe66b2e294e8207730ba6584e9448ec"
+    },
+    {
+      "path": "distribution/parts/part-047.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d5f9039d8093878f97e0e47b732e180a09afd26e"
+    },
+    {
+      "path": "distribution/parts/part-048.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0bfac0d3972938a6d02abcfbdee36e3c6cea978b"
+    },
+    {
+      "path": "distribution/parts/part-049.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e5e0aef3526198624bd31a70e7cc99f3b9b2d998"
+    },
+    {
+      "path": "distribution/parts/part-050.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "97da698d7f9f06058798432a2c2f250facfe1366"
+    },
+    {
+      "path": "distribution/parts/part-051.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bbf3423217c79bb71a1ae0aa80f8e7ebb50631ce"
+    },
+    {
+      "path": "distribution/parts/part-052.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "cb868c80cbeecc8c38cd792e8cfddb4c33fb6ab3"
+    },
+    {
+      "path": "distribution/parts/part-053.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "ce6f7dd2452b7c18dc775bc21552891ae8cc24ab"
+    },
+    {
+      "path": "distribution/parts/part-054.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "29a07712ce45640d8de74ec3ea17854129dc4024"
+    },
+    {
+      "path": "distribution/parts/part-055.bin",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "49bbfef2f9e2b6b0259c120ca04c2e6e9e17c749"
+    },
+    {
+      "path": "distribution/restaurer_version_complete.ps1",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "414ddfcf387eb2501f4fdde4be6c78127e42e391"
+    },
+    {
+      "path": "docs/AUDIT_CONFLITS_PROMPTS.md",
+      "status": "M",
+      "before_blob": "eca64a7a314b41b502d57740e0e7786c63490c75",
+      "after_blob": "7a9cf7d9b416849b682f5cefa2d2dca5ab072f17"
+    },
+    {
+      "path": "docs/Comparatif_Numerique_Tesseract_V1.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c8d5d4a8775e251768004d910528d10b0c48d47d"
+    },
+    {
+      "path": "docs/Comparatif_Tesseract_V1.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "81ccd5a177c026b6e1ab1e7d2331df6daabe5b77"
+    },
+    {
+      "path": "docs/ENVIRONNEMENT_IA.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5ade1533fdc9d7271cbfa21960225c2ad691afa0"
+    },
+    {
+      "path": "docs/FM_DOUBLE_OBJECTIF.md",
+      "status": "M",
+      "before_blob": "f32c7b8798145a8679ef83994526bc1422c7a833",
+      "after_blob": "60acc6e9e534a5e670816daa370f95fdb276092e"
+    },
+    {
+      "path": "docs/FUSION_CIBLEE_2026-11-08.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1b0b5c5986562281664df4e5bfb176639df6a636"
+    },
+    {
+      "path": "docs/FUSION_PC_GITHUB_2026-11-08.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d9098f5d136045246fe7be3ebdac9553d47e4b1a"
+    },
+    {
+      "path": "docs/IDENTIFICATION_RAPIDE.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "37f8ca73653da11e660acf0554955b667671dd0c"
+    },
+    {
+      "path": "docs/JET_CIBLE_PRIORITAIRE.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "df74a74ead43b2ee81f8f12177d13198e7609656"
+    },
+    {
+      "path": "docs/MOTEUR_HYBRIDE.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "e848587371ed5f9f9fc81de9bf8e7b367bfee1b4"
+    },
+    {
+      "path": "docs/Matrice_Predictive.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "592d1768434fd062932cfe7a5ad284ad1a41aef9"
+    },
+    {
+      "path": "docs/PRIX_RUNES_TYLEZIA.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bded26fc6117aab2689bfa24438417caa07fcdce"
+    },
+    {
+      "path": "docs/PROMPT_MOTEUR_HYBRIDE.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d049b8f2246e6f9d66639ac6f1429ccf5ebfcfb0"
+    },
+    {
+      "path": "docs/PUBLICATION_GITHUB_2026-11-08.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1d8f84d208c0b1038f4613c4159960636ec16829"
+    },
+    {
+      "path": "docs/RAPPORT_ENTRAINEMENT_2026-11-08.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "6b8ad794d8d147df6388b85c21c7288c62874fe4"
+    },
+    {
+      "path": "docs/RAPPORT_GENERALISATION_2026-11-08.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5eb92d41d8567025209fe0105822b8d116f7d4c2"
+    },
+    {
+      "path": "docs/REGLES_ACTIVES_FORGELY.md",
+      "status": "M",
+      "before_blob": "e0386866e8a66a5f3a6e9f178b3fdc81eb962e34",
+      "after_blob": "e57b33b97b12de2c1509c9cd6cb2bb7864d3b837"
+    },
+    {
+      "path": "docs/SELECTION_EQUIPEMENT.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "72ce4dd5ff39ec295f521ea15d5bf210368f0c33"
+    },
+    {
+      "path": "docs/Verification_Visuelle_Manuelle.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8a0f82a2d8a09697be01f431e4f7cc75daeaa22d"
+    },
+    {
+      "path": "docs/Vision_Atelier_Adaptatif.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b38949f297a20c57576796602ffb8715bff2288c"
+    },
+    {
+      "path": "docs/calibration_autonome_exports.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "8fcc24bce98ae0ede9ec24fe9af3fd778c10b990"
+    },
+    {
+      "path": "docs/comparatif_numerique_tesseract_cv.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "828b63352cb31f41e59217ce64673262ccf4d98c"
+    },
+    {
+      "path": "docs/comparatif_tesseract_cv_v1.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "bb3ca570c435060e3990c00d607ed811f4428da9"
+    },
+    {
+      "path": "docs/dofocus-algorithm-findings.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5bf425f8c4d70da4a96f8229b5d3e0603306f02b"
+    },
+    {
+      "path": "docs/dofocus-local-engine-plan.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "9107d0d4e07963b3890c5d4d3e0dfa3bda7c6b2e"
+    },
+    {
+      "path": "docs/general-policy-development-2026-11-08.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "81cf5e85a2f64b6b9586a3b44484b543ed119fa6"
+    },
+    {
+      "path": "docs/general-policy-final-audit-2026-11-08.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "cbc527d23a0eb3580efa12df9c4693dcc3916a0d"
+    },
+    {
+      "path": "docs/general-policy-reproduction-config.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "831dc05fcc37b166c5d630ce76ca78a52c899f5c"
+    },
+    {
+      "path": "docs/hybrid-engine-plan.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a66fcc20b8f3e3bef92c03c3ecc3589ba98e1e8e"
+    },
+    {
+      "path": "docs/live-learning-plan.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1fa092293ebc4e8e9d0db0230a6120944b5950d5"
+    },
+    {
+      "path": "docs/optimisation-reactivite-20261107.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "0dd08a2833020519a8ae021a41ebdb7f286797db"
+    },
+    {
+      "path": "docs/screen-analysis-choice.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "de8582802e16594d7d81ba9fe0386d78fe0d01fc"
+    },
+    {
+      "path": "docs/sequence-evaluation-2026-11-07.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "a9c6e56dfc50aff71090a6e872b7c425d208284e"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-adaptive-pages.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "716394b07102909b382dcf110f9ee9ba5bfd9e06"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-display-modes.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "62005ff281a0b1b1c63434bafd61f31931471603"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-human-vision-review.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "763f99fd5ef5edf5a378876759f83486173e9748"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-item-picker.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "c9a727755234967118d9fb3d7e2f68dbb2bdb832"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-jet-cible.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "fe2f4560267974b62fa7a2b2e7b0e05c28dbd87b"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-lecture-numerique.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2ef3b19d2641db9b5a05f1a5dba815ef541fbcae"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-obsidienne.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "09fc174eddbcd9c3ff2d5c0194b57dc9a00995e1"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-reliability-results.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "dec6fa53ef262299d1402ab8ffcb425ca571bd14"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-reliability.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5587acc8bf41d7824fc016d49f22a48e60453286"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-sans-prix.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "704334a19919ad64d50f6e186383f763f5552883"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-sequences.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "19bb68b917a7a62e69ba7782d65eac0283271330"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-vision-cv.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "3969fa6ab0fcfe957eb517c3a378ac0ad4fe7b8b"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-fusion-ciblee.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "74e84e488630a01aa04af9d85f55b3247e83aaa5"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-generalisation.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "1850786078b74277da190e027cd20b9134217610"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-predictive-matrix.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "b51eb6a898e8e1849fc9bda913f4acc37da07e05"
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-training.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f4e442b47e3eb96c3fcc9ca0fd6b0aadfe93477e"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-07-item-picker.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "d3d7bc026ba07c5c9ce887fc4fc081e62ade60dd"
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-07-obsidienne-design.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "617e379ce6e03449dde0c80f2338ff18b0a602ff"
+    },
+    {
+      "path": "docs/test_reel_cycloide_age.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "f892e652a683d152eca5d5eedcc0cebb9aed2d24"
+    },
+    {
+      "path": "docs/training-desktop-plan.md",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "68d575812c7a45bf561dc7ffdae479024b3b4a5d"
+    },
+    {
+      "path": "docs/training-fix-experiment-2026-11-08.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "5bdf8a1e8d098d41afc39dedd4967e3c3b6191c8"
+    },
+    {
+      "path": "docs/training-reproduction-config-2026-11-08.json",
+      "status": "A",
+      "before_blob": null,
+      "after_blob": "2b09f09159785c43c5079326ce1a3ac662392a31"
+    },
+    {
+      "path": "outils/mettre_a_jour_prix_tylezia.py",
+      "status": "M",
+      "before_blob": "4bce94bc1bc33c0b7a5ca9335dc9a0df00e02344",
+      "after_blob": "071c17450f78bba874e1935d4e10e08507f4e123"
+    },
+    {
+      "path": "pytest.ini",
+      "status": "M",
+      "before_blob": "6bfecfb14e19b2b806c7ef8f9d9b8ef0eec1fc43",
+      "after_blob": "3c778b54852167ecb92c0440377098dd8f18119d"
+    },
+    {
+      "path": "requirements-dev.txt",
+      "status": "M",
+      "before_blob": "300f944bfd49c86bcb084b8155d908130bfbe241",
+      "after_blob": "ddb1e9564bc8c60e65ee0e170e2d3496d8481756"
+    },
+    {
+      "path": "tests/test_ocr_backend_performance.py",
+      "status": "D",
+      "before_blob": "c96b7ae0712dde3d9df1a0b902e9f7492660c746",
+      "after_blob": null
+    },
+    {
+      "path": "tests/test_ui_data_performance.py",
+      "status": "D",
+      "before_blob": "04d096a87c4eccad83effb8ade8b3039b78d1e66",
+      "after_blob": null
+    },
+    {
+      "path": "tests/test_v2103_regressions.py",
+      "status": "D",
+      "before_blob": "863f4ccf75f4e5937fff9c24c4f10a9a2c6d2104",
+      "after_blob": null
+    },
+    {
+      "path": "tests/test_window_discovery_performance.py",
+      "status": "D",
+      "before_blob": "832a1f08e736f8d0092b40fdfb7b037ef2132d5c",
+      "after_blob": null
+    }
+  ],
+  "local_installation": [
+    {
+      "path": ".gitattributes",
+      "sha256": "999fc430f9631dc93da750fc326736742d9663e0520a165dac50df79ac4500d8",
+      "existed_before": false
+    },
+    {
+      "path": ".github/workflows/python-checks.yml",
+      "sha256": "12305c835652683e170e1682842fcc8c6be64fe19057a475d425ca91ad22e8a0",
+      "existed_before": false
+    },
+    {
+      "path": "Application/Documentation/DEPLOIEMENT_CHECKLIST.md",
+      "sha256": "c7465d232a2fb3c999f82917093ba3f2f8599777e70d7cc79984e57846faf5f4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/IDEES_FONCTIONNALITES.md",
+      "sha256": "7b33e0515a157ccfa210a033209fee46e3f2329b96bb45ebbb508a2aebf1706c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/INSTALLATION_AUTOMATIQUE.md",
+      "sha256": "03d5dfe40e77203f1c73d5ec33e4ed72174d2d5e827a29b84e097f0c7c8754fa",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/INSTALLATION_WINDOWS.md",
+      "sha256": "d96f4a9633c68630036c6c155286fbfe49388778292df318b78149f62ef5ce40",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/PERFORMANCE_20_51.md",
+      "sha256": "0258b246c149cc32b8ff6d75522345e002af2ed2991bdb908de4c7eb4f724b13",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/PERFORMANCE_20_52.md",
+      "sha256": "f5c1ba107fc00e1d9ed56593fa95387177f18f255d1045e59ec14c3c461673c4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README.md",
+      "sha256": "b5f22af57a1fe97be7ade41caf2ae8407dd833449091f71982ac73eaab63c350",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_19_8.md",
+      "sha256": "e94639d0d03aa24741918a0c430f1f21d6973643f284ef8bd9076a8ab4529ca0",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_20_39.md",
+      "sha256": "06ce9acf1a5052c9059395ea971a4b6b9f5dabbad7a014984a985b07221e23dc",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_BASE_PUBLIQUE_20_7.md",
+      "sha256": "031db472a71afb55c57be6b8faf1297a0187163aa5535238445c569262344e51",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_COLLECTE_20_5.md",
+      "sha256": "11cfe334d644cecfbd69404015cf0a80cc6bed8e701ef00361219be1bc5df6f2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_COPILOTE_20_8.md",
+      "sha256": "9ba8b0de40f2bcc7e67e58a4b570baf85248664a99e0be1cf88779abc5aaf576",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_18.md",
+      "sha256": "6e96359ddf476cdbfdbd6e6a50c16b29b67e4f0dbdf1a9b8cd08d6f1a5c78c17",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_19.md",
+      "sha256": "d68c90cacb70e95754766fb8a14a9b2fe83dbb66202ea112cecc5203000c5a21",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_20.md",
+      "sha256": "19986eb3e8764659896b8a3c67ac84cecd93fd421802d275eef4213f0926e844",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_21.md",
+      "sha256": "376419ee3927d6447b73b0e847d6a15b036664fc86054274fd49a1f650e08090",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_22.md",
+      "sha256": "16d8946121fd6cb24f878831a8f253d722cec6fb69d5f685128d6f3630aa6909",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_23.md",
+      "sha256": "3f01232fab38a429dcd0ea552b6dc0914872178ffe42117e225b1987051c4931",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_24.md",
+      "sha256": "daf83fe0bfa52d7e0284b651f61fdb9287c5cccdf7a0ca79106135f33b227fac",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_25.md",
+      "sha256": "d2ff4669df6ca4c2000316d7c78b00ceeef4d6a25a5d78cd13cdaa1c2db5fa27",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_31.md",
+      "sha256": "b1c7d2f3eb4605e89fe839938057dc8d7a5942601589aa0f77400ab6804466df",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_32.md",
+      "sha256": "ad21cc9d220bf41fa2de7ec71e869578e52573186bd969943f4691b98691c063",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_33.md",
+      "sha256": "9e4ed508d33f4952bb19dfc509e1e305166d052241b4cde47e6a3f6e08e94d61",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_34.md",
+      "sha256": "cd94a8674900af943b63f08463b743d40ab9f1aabfc3d9f8142991c03080db4e",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_35.md",
+      "sha256": "cdb1115322eb94f6249c79e2fe4cdef5453361e07e2d074338c7d9b82344beac",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_36.md",
+      "sha256": "36f0286dc6ee2d5eae6c6aa7c888a6afd5e136763cc766919221134c0e99b200",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_CORRECTION_20_37.md",
+      "sha256": "b3bfb3d329929af0cf2b7b8eb4334c635d593e8fc7435b27145d7f0a05b033d2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_DESIGN_20_11.md",
+      "sha256": "e23a1ce3e725d61bb7f124dab1f42c32706e9e5d2481c8f78267001d187d902c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_DESIGN_20_12.md",
+      "sha256": "d759c69bc5485fb62766dea0d218cd1cb75b2dbec5238a29b369d1bbbb2e8923",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_DESIGN_20_9.md",
+      "sha256": "ae46c4ca03f5f0b13b6fc2a68700d0ff76294823ab18d54427953909207bdccd",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_DIAGNOSTIC_20_14.md",
+      "sha256": "591d2baf1d4cbf5062b18aa6394130674eddc40f52e0ae528898e36a07985b84",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_ICONES.md",
+      "sha256": "9243a2f4dcf9a31483eba2efb3b19e8a43ede7ff3363e06242ef6c20d2607094",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_ICONES_FENETRE.md",
+      "sha256": "3a3b9d081ec0661135f080d439f3bfffdb73077265bf41b3852eabcf20a4c068",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_LABORATOIRE.md",
+      "sha256": "b0394d90dfbaf0377fa19a85d73029590678577376c0af3cfa30458c702db2b5",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_LABO_TEMPS_REEL.md",
+      "sha256": "aeadc2a7deddae03e4276021d7470c1a77fa8d9fe0e66852735e6427645ede3f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_MODE_OBSERVATION_20_16.md",
+      "sha256": "adf2bdc1fbd1313fd998c46f0141c82d4ce320f752c28b8ee9c766fc10a2f0eb",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_PROBABILITES_20.md",
+      "sha256": "c6e09b79f5eea0670a5731e5e6c1d75dc43c31cfcaa0bda1e1f84c366ff6594d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_RECHERCHE_FM.md",
+      "sha256": "436d41972f1f1b56958baaea3155fe198f2e6e06b2e0035ede8b2677029fee72",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_SIMPLIFIE.md",
+      "sha256": "f741ece24fc7c9592552e82a3a37214ebdc299faaf5ffb2abdd746bacfd07c34",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_SIMULATEUR.md",
+      "sha256": "2e19cfd80f147a561fd38e4fd857be511c882902976449b9a6a81666d48de022",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_SOURCES_PROBAS_20_1.md",
+      "sha256": "414e1b8707732116139c38ea0f36199e0ca67d0dba1e2ad860e84efa7ef85193",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_THEMES_20_13.md",
+      "sha256": "8bd044e4a7d8160d618bde6ea021eb35c35ef045375a55f0fc96f19d44b6b259",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_TYPOGRAPHIE_20_10.md",
+      "sha256": "ab6638a378319d72e3112387f8224dcb61f2ebb10f25ca8840284644c8380b0d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_VALIDATION_20_2.md",
+      "sha256": "3c198497cbf4b199c5704dff53e3e384c81fda76dba522ae4c0546c9c8400fbb",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_VIDEOS_20_4.md",
+      "sha256": "3d335163f22545eeb635b5e0f22ecc3e1a532c9281df9b20cbbb797edabaae52",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/README_WALKYRIP_20_6.md",
+      "sha256": "b6b57214c7a8f8103ed3e50d83eb06ae032932adb61afafa166f685bcc097ebd",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/TEST_TERRAIN_20_17.md",
+      "sha256": "6d61dd92188589cce20b16d7423a793916fcfb4ec3a8eed7d0afa588446b7fb1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/Documentation/VISION_COMMUNAUTAIRE.md",
+      "sha256": "7c5409b2067a029b2c89fe0bf4f9e9b0254b28b296fd932b77aab6b636422ecf",
+      "existed_before": true
+    },
+    {
+      "path": "Application/TESTER_CATALOGUE.bat",
+      "sha256": "5bc712921a29ac394893e0a01e41b2c429ce11c889b6d1b64f7e405b31583962",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/dofocus/reference.sqlite3",
+      "sha256": "ed969d108ed9bb559f0db8a38c4010132832ccf76da1996ca2bcdd98ff016f93",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/equipment_bounds.csv",
+      "sha256": "c5c70fce8fe93943da1cd8761ccd78f4e710e74ea9838076d3e8397d6ab357f1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/training/cycloid-exo-pa-clean-20261107/attempts.json",
+      "sha256": "190c568fee4a1649f5512f1be598930ac491e2c08a00790b4a6f950b0c29173d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/training/cycloid-exo-pa-clean-20261107/result.json",
+      "sha256": "3457aeb1d0450ce385aa9446b5152115789b5f8787a2cc69a5d2e0a162d2cda1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/metrics.json",
+      "sha256": "2ff760d82be96bd5fc91284c16b6613ff3690d72ad02bf55547370ec0cf4d85c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/assets/training/pilot-20261107/policy.json",
+      "sha256": "78eaf6a3de969f8c0f9a03528a8dc82927cac1ecbd93bd0f64add6a4224c2ee4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/auditer_politique.py",
+      "sha256": "97e9bbc16e47335f260e4b848c7c2c0af444fd330b123fb62147e305ab1d304e",
+      "existed_before": true
+    },
+    {
+      "path": "Application/catalogue_dofus3/index_captures_precedentes.json",
+      "sha256": "1e988483efcf6188f776e35497cf794d178b281902c52a516b2216cba4cd0924",
+      "existed_before": true
+    },
+    {
+      "path": "Application/catalogue_objets_icones.csv",
+      "sha256": "22fb792f486648a746cfa65af02823254f5d7dd6781c19bea13cf6c7d476b709",
+      "existed_before": true
+    },
+    {
+      "path": "Application/catalogue_objets_noms_fr.csv",
+      "sha256": "4377900b7c90028d0af0a10607ff14e8e87c7448e62cc652a14d63f259ed0326",
+      "existed_before": true
+    },
+    {
+      "path": "Application/catalogue_runes_officiel.csv",
+      "sha256": "e2fdbff99d5faba1e586b7ecdbcaacfd0a50958f85eb27056235af72fd92daea",
+      "existed_before": true
+    },
+    {
+      "path": "Application/comparaison_modele.csv",
+      "sha256": "e2e19002ea82d97c081dc23286fdf6142ef650ce6b67edb7d48c27b68ec0671d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/comparer_probabilites.py",
+      "sha256": "f48a7d172c98a6cf87a649e5f743b756d6e79e695aa112dbfe10602e6699ab52",
+      "existed_before": true
+    },
+    {
+      "path": "Application/entrainer_forgely.py",
+      "sha256": "8baa90275ff9d5415720cbf103f17a4a52c7eab0bf8ec02367b7925c5cb1dacc",
+      "existed_before": true
+    },
+    {
+      "path": "Application/evaluer_sequences.py",
+      "sha256": "1dd9731b84926d36c1a43f0c4b8fe9356abb4fbd9b6c3122d501e199d6f4ca53",
+      "existed_before": true
+    },
+    {
+      "path": "Application/extract_equipment_assets.py",
+      "sha256": "3419d2a1086127c7ffaa83571ff649520739cfc6cf5653f989c05db691feb2c8",
+      "existed_before": true
+    },
+    {
+      "path": "Application/fabriquer_entrainement.py",
+      "sha256": "045b8139c9ac95a10a1ca76b439ecaf77ef4079f8ac21691a829b0cdead717a9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely.py",
+      "sha256": "e4514a81bbf83223ef77e5085068ea4dfdca168a20333988ab9e3f2f933c5574",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_arrondi.py",
+      "sha256": "f504ff732eec2c9353e52591a384ae777ed320b92e7aa978a4bd478199fc84c9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_atelier.py",
+      "sha256": "50147e3cb6633476d6ab06fe50fa37cdc156ff69db6974dd6af7179277e8b09b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_audit_terrain.py",
+      "sha256": "9d5c8ae77032c87598c66e5fd68d1ede880341538e75ca726dfb06c2d67b52c1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_catalogue.py",
+      "sha256": "ac07d76283442b647ecff1986d2d67118620540f04ec08d77b4b349517a3a93b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_catalogue_officiel.py",
+      "sha256": "796ee3a61d3aaaaf1b7b381b82c1b04e5f943f75eebf116791d8583ded505120",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_connaissances.py",
+      "sha256": "f2ff65f77753e98a125a98cc7c2d521d25846b630054eb43679208e2269ac9ca",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_context.py",
+      "sha256": "2a0bba26c4694679b2a4f0415f326b071e90334b4ab4a5a5046fa914f6c85702",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_continuous_identity.py",
+      "sha256": "50de417bdb17e2d2196296c2e83f3e6dfc9b7bc5ff17a2759b26a1783bea42ba",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_copilote.py",
+      "sha256": "65646aa7e505a7b49144f5eaf89b8ed8afe91bac64667b8695f59b6ff9b25e48",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/NUMERIC_BENCHMARK.json",
+      "sha256": "43d3114626b6a90952e38334c48368f409758d69c111c9a2550c14b82859f953",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/README.md",
+      "sha256": "e337f716b71179ee0434a28526a613a1aad543d1a27fde214fa6f4a98b49ca4a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide-annotations.json",
+      "sha256": "63186cc7d5fbd8a961cb7f7171e4aaf8653123ffb3ae82be4db7663cf804f5c4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/font/manifest.json",
+      "sha256": "aeadc3f35718dec49c67dabee78a2b1f80194e4e88dbce17e5a6e1eeb4ea8fc4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide/numbers.json",
+      "sha256": "2f2ca220604e5ece82c3af6da964028f1d8639bdb8c97d930342b51600466579",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/font/manifest.json",
+      "sha256": "f7b7a34f38d818497ee292ec939e46c9ada3291888a416d06ffe12ccd76b93ea",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_after_v1/numbers.json",
+      "sha256": "05006653b160bc00a91a3ba8cdd27e9ab934247febd4a903cb796043ce676ac2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/font/manifest.json",
+      "sha256": "db1716fabc428380971d726dd2eadd42683cd2fffde1b5d6cf1687ff8f75ba22",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/cycloide_442x625_v1/numbers.json",
+      "sha256": "7f232ffdd396d3c356a05813016c814b28aea028c71b3daf7eb100e923b14cfc",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano-annotations.json",
+      "sha256": "5fad4b8b7ba879ec25a57307d9eeb1a273ba82b0b55fc4a5477bf7bd7e1ae1c8",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/font/manifest.json",
+      "sha256": "5b8cb862982aa8d82ea4cbca9f2262d13ad71563aa35179b52ca798c1ea8fe05",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano/numbers.json",
+      "sha256": "bf9263b438ef26ca0316d70c9f7e920d0ed1b8652b410ed06feb698525a26779",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/font/manifest.json",
+      "sha256": "5b8cb862982aa8d82ea4cbca9f2262d13ad71563aa35179b52ca798c1ea8fe05",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/gelano_442x625_v1/numbers.json",
+      "sha256": "240673a1dd1a0e74b862481058fe7049132967b7af52af4bc28ec194ffa588a4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1-annotations.json",
+      "sha256": "bbd37ce795d43b97bd48aa27f463e01692338c4c58b00b6f39f402bf5863838c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/font/manifest.json",
+      "sha256": "d15fb0f927d2f7cf9e070648f392c6e854df998272132970d11bc26c5e7f13ed",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_bottom_v1/numbers.json",
+      "sha256": "4b87f8d462a2b330b5cb29bbd6126252f483ee1d17cdd08f08783075b070e98f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1-annotations.json",
+      "sha256": "ee7576243c50ac7220f2707b38ce359dc9da396fee7501d17d1eb9480b61e858",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/font/manifest.json",
+      "sha256": "f4d6e8585a99ab5cf7c34bc8e18c45943bd95e0af9f0d80c2b7bd1e2e6f4adca",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_live_top_v1/numbers.json",
+      "sha256": "f41f1fd330a3761d12ad4027d6962d0c7663c9ca7c06e0bd697707bc7d518752",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/font/manifest.json",
+      "sha256": "faedf9aed836b4d4b3e384a15fb00a7a6d28ed9679cb400620119545cf7cecc3",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_cv/profiles/padgref_negative_v1/numbers.json",
+      "sha256": "0adad13b6c90ffd91268d17ec17401c94b84aa83c4a462a5e8a99184f0be7689",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_dashboard.py",
+      "sha256": "3316aca727db0b28ded0034c3d18f1e661a71e58647fc2d5034043cc94ff730a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_data.py",
+      "sha256": "faa7a2f67b0f211a0eda9612c96e5746ce29c249768cd0cced30146f2ce70425",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_decision.py",
+      "sha256": "e03b0ad7e677ce7c791402d20e32ca1319e0101b69cd47a2f3a786d71ab5d410",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_detection.py",
+      "sha256": "8102b44502bd2a306970141254d5322a85c55fdfcf1c7c1b3d0bfdecd122a70b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_dofocus.py",
+      "sha256": "90bb3e6650bca310e89093e306967a8f971e54f0256669eac56ae8c2e78adece",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_dofocus_engine.py",
+      "sha256": "0a9402588b9d0ed1a8e72e06819f636d1fbe0dce8dcadd2833ffa77ea464a1ab",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_dofocus_store.py",
+      "sha256": "1b78f4180ec603b87b043cc410cc66b5aeefcb19a98c73f7fb2f6ea78af4540d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_equipment_catalog.py",
+      "sha256": "a0c68da1db27e08ebea2b71127dd2f72b003dc75ca158e3a91c98971833bcb73",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_equipment_picker.py",
+      "sha256": "7845520348ebcb4d802204eb4cc719d812138396808ceb27e0e12fe28cc4cb5d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_equipment_session.py",
+      "sha256": "0d608bc53da7d20541b04b2650391d28b720359b77b1af4c76c1a2fa33119d97",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_events.py",
+      "sha256": "22ac13ee21ec9e9461c034a92c700353e9e1908e9172ec3ba93267aad175a22d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_expert.py",
+      "sha256": "f6bcd9966abb21794bb61efafa33fdbaae390d6425d4113ed5e72a3b5ad3adf2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_fast_preview.py",
+      "sha256": "f8b549fb58a3f9bf4f43e9e466ad6e511b05467b009aee973642431e861306c8",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_gallery.py",
+      "sha256": "f9e3abc6104ae3a691264df5ab45a0f8c39ca5f3e12fc24b97cf932a23cd8aee",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_general_policy.py",
+      "sha256": "e7d80d42c001e93f08b357111ce5ea110cc598be37a795d9e736b00a167f6c57",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_history_delta.py",
+      "sha256": "7ef9b7b167516c25b0cc8f0e4d6c4b44b51e8a0808c909e877ca2b0e40002897",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_history_identity.py",
+      "sha256": "3a2271128768b00c4b9c6489825489d9e7cd106877edcc48a6cdfd8e96d37a92",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_history_summary.py",
+      "sha256": "b84e30017bb2c58a1d9c86505e34339e6c785236a585a456795dddff58a033d4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_huzounet.py",
+      "sha256": "4694fd65dd2868e6678fadb7a305d6fb48a864b93a7e63bc1e47c9e48f07250b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_hybrid.py",
+      "sha256": "dc137196a889885f26c265e9af4eb78512e965761eeb041d5c8f0be4a52f674e",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_item_icons.py",
+      "sha256": "34f27e81b6e4d3bfd81e53f5969c42fdcf2937d5a6bea32661a992a71caae54b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_item_identity.py",
+      "sha256": "6bf795a8f764e123198361641c801f842bd79efec849ad53c7618dc778cf173f",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_item_references.py",
+      "sha256": "53b98394538dc79ba86d38e1ca33ed856be84de2acb59d4a7434bf5f386b8bb0",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_item_vision.py",
+      "sha256": "eb23eab0aaedf2860e0ba9dd42d676a79c20eda4038bd1564258d8c1a8029316",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_items.py",
+      "sha256": "2f2eb375b666ce823b2f3ff336de2dfdd594278b12a2153955e4a67547c67d38",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_jet.py",
+      "sha256": "ae9c5abb1ca68a313f7b3d0223c0cab6e35ce723a28dfbe9724b8d6d97db1ff7",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_labo_live.py",
+      "sha256": "c9d31c6166fa633247f9d3fa60d45ef5d49168107e694cd7885f852113cb5cbb",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_learning.py",
+      "sha256": "57cc997ff7e01001ea93a4a5d40f51cb8fabe8d425d7f205e9de0abe846c030d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_live_targets.py",
+      "sha256": "a239b482010fa1846f040b3abba2aa7afd41fd7cecbcf3e9f2e49def5f687d7d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_loss_bank.py",
+      "sha256": "e0860cf2b27f12acca7029425726a2cebfe0d0d4d141cb480ca854c570f2519d",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_measured_goals.py",
+      "sha256": "a09b5a3945443a0f5a65787fd0250a15e2cf71988c9cdf79d39e570562f7eedd",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_observation_mode.py",
+      "sha256": "89bd1b16ed6dab1e6283d59a20b13388a45845faf53036112a2e1cc4f369b064",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_ocr_backend.py",
+      "sha256": "e681f1dd710e53b6c4c907d64212706606261b8558078ef50b73025b0a8c00de",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_ocr_diagnostic.py",
+      "sha256": "b7cb15c07bd46b0e3847c56676eb598d5625164a2e194e7746f4a6c15306ee2d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_overlay.py",
+      "sha256": "6f6a1757f28b5e573cb7e3500ee1322e547600bf59aba8528b0084c4a2bb1673",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_performance.py",
+      "sha256": "d2f25e8c3cd9eed4443e3e33b88fe96bdda094fc152d8e7a3813ba96f48686e0",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_plan.py",
+      "sha256": "8db6f8be3b3b0995ea71bef19508c49f9b3e44f7c80e3bdc41778d28d87a263d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_pool_observer.py",
+      "sha256": "d0376502eb27821a3a3ad7e8ed55e36c7817156eb51e7bd3d236a724ec92a798",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_predictive.py",
+      "sha256": "8b449e3ad943ac0570a4f5532c338519b43407ee603ce9f8e7b811394004ad8d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_pricing.py",
+      "sha256": "854279040bc44048f100072ecebffc92da79403db1873f9f075afc6a94798cd3",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_probabilites.py",
+      "sha256": "7707e18b82214f4d4e7a6282264da9ac6fccedbcbebe6ae8a3206820b521d03f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_probabilites_conditionnelles.py",
+      "sha256": "a8518ff2fa1c3d851c6f94debead96ab4783a1999ce157d06305489fb5ddfd27",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_profile_guidance.py",
+      "sha256": "fc3a5f49fe7bdbd15ae2e0025fe82f7acd4d11d09cf6514d6582db8452076b70",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_reference_publique.py",
+      "sha256": "11e52a239366886d2102476ea779562c875801af5d606a1444fa9f30008cc3d2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_rl.py",
+      "sha256": "7211db14f5866a4e33e0336496b2dd1c73a19d99d421536519fe64d5349bb10f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_rules.py",
+      "sha256": "f8f492377e4d3f2aecdcdd8fb82ce59d619488c5529fa51ef00ab6a21cb19474",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_rune_icons.py",
+      "sha256": "a43f8cd01c0f9daee8bbec1b1b9d04474d5de8c56bceb3570f0200fc6cc29191",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_runtime_cache.py",
+      "sha256": "60d132f59b16570f62ab2a19a49c7d9efd9eae1b9be7dd9bc4ff6c982b46100f",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_sequence.py",
+      "sha256": "c7f8696d84b6f35ca88f5c74c88cd920dabaaa76826f56d66448d347e2568e77",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_session_review.py",
+      "sha256": "3c7ea8d4de36c2e4157c2a300405411591281594b947551c35515029fdc77a13",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_session_ui.py",
+      "sha256": "a128416f486630bbee1bc1035ccf1568cbae761fbc9e313fa0dd81a56d902c12",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_simulateur.py",
+      "sha256": "10bf023f6289d10d1db5e4c4d94a12e4fa499875bc9f3674c399da2c9473fdd8",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_simulation_job.py",
+      "sha256": "aaab3d175bad2fb0ecba20232ae0f16ed12d91300f32b61430d4f198eb9dc952",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_simulation_live.py",
+      "sha256": "482f2ee0722569e3d8c849fe8bd4c2de9d7d09b7fef72f7d9c6b086794259f5a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_simulation_ui.py",
+      "sha256": "d2da8f872046aa19b38dac4459033ff68b1afba7be4c2832368f490369d5d87c",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_strategy.py",
+      "sha256": "026c3bbfae5d7c5bb8b3d5b64b06a40f5eb2dc3ebba5a5cd89cb8d7139934815",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_themes.py",
+      "sha256": "ac94cdc43c5021c876f9345a26b95a34031402126d99e56707811f5694a3b877",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_tools.py",
+      "sha256": "6d656004526ab386193f8172aa80291f156bd0b324a1491e17dc65e2ffb23840",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_trained_policy.py",
+      "sha256": "068f6f35e5087eea41b255ec9a8339dcb17c826316a5da029882e0b4ad001b7c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_training.py",
+      "sha256": "f3efc127b1371cb30a0ba10df6d869e32fded6df4c392492a018115bbbf103c1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_typographie.py",
+      "sha256": "be7f4999e26a8c55a13f4cc59efd18c7b47812dc9accb108b6b8e289a0a75044",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_validation.py",
+      "sha256": "4e2d69e55eccb508c47b21427ba15126f12b480475e3e44839e64233ad9157a7",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_validation_predictive.py",
+      "sha256": "4bcdb043e2189e9351b7d45d7d01483a6a4d60a429b94f0086aa562833ade643",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_virtual.py",
+      "sha256": "0c4face57f0d27396acc0c76e94247dbcef63617e7e00feb0a6688b561b4b442",
+      "existed_before": false
+    },
+    {
+      "path": "Application/forgely_vision.py",
+      "sha256": "6b4ca92d60f9481c039f3e1bb99dd44cf9c09da810c43fcb30e5f8855a0ddc74",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_weights.py",
+      "sha256": "0336e87757b8419ebcbb68d6a93345c96d8b8211be93da403eabab99e853c56b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_workshop_layout.py",
+      "sha256": "0bcb23a7760c09fcc77dbe5071115806cd3d7071ad49cd75b934bd8ead81c447",
+      "existed_before": true
+    },
+    {
+      "path": "Application/forgely_zone_cache.py",
+      "sha256": "ed5a75fd8aac94e9742c98b09972a10182c712ce1c43bfc2e16874f3114ef90c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/installateur_forgely.iss",
+      "sha256": "24e641e20f6de27e6a0b5c7420be46f9ca61cda3ade7ffb80459f94cdaf9b865",
+      "existed_before": true
+    },
+    {
+      "path": "Application/installation/verifier_prerequis.ps1",
+      "sha256": "5a971a24f96072946ad1537b2409a2d3ec820e6bdf8fe5036a4cb3a428947e72",
+      "existed_before": false
+    },
+    {
+      "path": "Application/installer_windows.bat",
+      "sha256": "4fe5a767e7caece7b82c1e738eaed0f12788a4ee7cf804450f5b5fe0eeb1a2f2",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_fm.py",
+      "sha256": "8fe0eec05fa2f3e92bc58da1517a7f30cfe5a154ce1e26137cee0e113c6773b9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_observations.py",
+      "sha256": "c725bd998edbc98ad58b70f2aeefa339fed8972d0c0222879f11e5febc05508d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_probabilites.py",
+      "sha256": "0d61a74555d647af663ea287c4895e15be06f3e522c042cad7f14e71feb316c4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_validation_predictive.py",
+      "sha256": "9b9c1de1caa007b9db7ae34c63ae08d3563728b8de932e95551a6ee7d7179dc9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_videos.py",
+      "sha256": "47df431fe2822b87ca7ffdee6f19a119857f9efb68c4db7c7cf6fa9dc1f5384a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/laboratoire_walkyrip.py",
+      "sha256": "9aa41b58eceb20eac275ccc85fc3847e09734b8474166bd55c55d2d3aa934c96",
+      "existed_before": true
+    },
+    {
+      "path": "Application/mesurer_reference_dofocus.py",
+      "sha256": "643495603cd67ccd021ae674e2f4f9bacf5034f938f8ad11ba77d39cafe721ae",
+      "existed_before": true
+    },
+    {
+      "path": "Application/mesurer_vitesse_globale.py",
+      "sha256": "0f1bc622d4d621fb19ece9682e1f7c466a68951e006e1f33cfe63033dedce03a",
+      "existed_before": false
+    },
+    {
+      "path": "Application/preparer_collecte_dofocus.py",
+      "sha256": "8a7cede956ae5be2e082c41b1f9734bc444c25122b2ba52ef54734dfc38fe9a4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/preparer_reference_dofocus.py",
+      "sha256": "755819fec5c5abf1769c2f60bf0b459ec26bbdf4e5d0d329f94d3212647ab5de",
+      "existed_before": true
+    },
+    {
+      "path": "Application/prices/tylezia-2026-11-08.json",
+      "sha256": "69fe20a30b4c411693b005bb72d890da7660b72a3c9de140dfccbb3a093c6c25",
+      "existed_before": true
+    },
+    {
+      "path": "Application/reference_poids_fm.csv",
+      "sha256": "c1995623e0e4ae14bd0a507ba0e5fc249dbb3174b85bbf59ec200339ad941505",
+      "existed_before": true
+    },
+    {
+      "path": "Application/reference_sources_fm.csv",
+      "sha256": "dbf808f2c91984eadde7b5ffe576e3f06cd8ab43748cd9db0464fafb7c82243d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/references/dofocus/reference.json",
+      "sha256": "1921d94b39b212dc402c80e2c17dc1aaea693448896ea76264c6f3d9a0c85cb5",
+      "existed_before": true
+    },
+    {
+      "path": "Application/references/poids_runes_client_3_7_13_17.json",
+      "sha256": "5598a9482c6f2f26298cadd839bfc11dfcfe002ec134379858bbdcefdb3d03a4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/requirements.txt",
+      "sha256": "2c008a4994efefe601af251a9643fe3e2107d091d059245a94074da21d2314be",
+      "existed_before": true
+    },
+    {
+      "path": "Application/runeforge_observer.py",
+      "sha256": "413cc87284ed8cfb2f2aabb2751365130cde99e786ed75fd286d261018283616",
+      "existed_before": true
+    },
+    {
+      "path": "Application/serveur/.env.example",
+      "sha256": "998a761fe1d3f0dc1191ed0a4d63876fce4db0a284f10e21e9262713a2357e99",
+      "existed_before": false
+    },
+    {
+      "path": "Application/serveur/.gitignore",
+      "sha256": "c26663960f9813c4dd27a6c00b123df1f185b3854f335d693c5554802fb341f3",
+      "existed_before": false
+    },
+    {
+      "path": "Application/serveur/Dockerfile",
+      "sha256": "866fa78e20071614c5e7cbc8ecc968c630a3549acce2db0ed2a05b086c8f031f",
+      "existed_before": false
+    },
+    {
+      "path": "Application/serveur/README.md",
+      "sha256": "6d4e843babf291607999a5f717f1224e33bb2356908659730af93ff0a719f499",
+      "existed_before": true
+    },
+    {
+      "path": "Application/serveur/compose.yaml",
+      "sha256": "76912368719513f2f55bef92214eeb7f4715a72895c4bf345b2c1689cd6df0b1",
+      "existed_before": false
+    },
+    {
+      "path": "Application/serveur/example_event.json",
+      "sha256": "a1728f44fb704b6203a5f3ef8bcaea3eabce10007cd8cfaf8dce25a906805a16",
+      "existed_before": true
+    },
+    {
+      "path": "Application/serveur/tests/test_api.py",
+      "sha256": "8fc3e65f4c7308e82e8fdecbdc25790a6e4e2cd5d796898aee1d47bc6e120d88",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_atelier.py",
+      "sha256": "5afac0db4ec1e0e529ef6921ec01cfa68d76baf616613ff37236d8ef0def05d6",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_audit_terrain.py",
+      "sha256": "c1a389577e00056f9b92b267d1b6307d29f56e234a6f009f2d9ca933aecd570b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_auto_window_2020.py",
+      "sha256": "0f262c9dd4e21087419a72d3f2197dfc143b453c9d0c722f61cf42a6a90d36f9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_capture_2025.py",
+      "sha256": "bbb0236766536086cfbd8777244abfdda871ba0d370077ad161efe0dbc1f7e2d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_catalogue.py",
+      "sha256": "f3843affd3add8351ed5156704c98e739454cdc6561860c705d567429dbf926f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_comparaison.py",
+      "sha256": "cc03c6dc76b0beace882f0fb09cfdb24f002f9ef68cb0d2e104df76ab255fed7",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_connaissances.py",
+      "sha256": "59e564c376a85f007d18a9d721722c2bda8650fdcb083833c73fdc19b2cd5dc3",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_context.py",
+      "sha256": "aa4f74e583e1f2eff845ff4a72e596bbdf6d330d2cbd886a4271186af1af9e9b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_continuous_identity_2038.py",
+      "sha256": "c6e84923c008f5ea4f30e7165bf25b7a90f7940baa3e4518c2691a8060a164b9",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_copilote_208.py",
+      "sha256": "c50f81f415f3b269fac7ea3d449dd092fd24689b8b58c740372abe6d6f5945d4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_dashboard_tk.py",
+      "sha256": "ec138164d9a78b6be94fe8443e80ed345ca36ca7a745b9753df46bfa278ed141",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_decision.py",
+      "sha256": "3f0f209b6b03412f1b64561a3a9b35be3d56c0dd227e56e2a977a879a6e81116",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_detection.py",
+      "sha256": "c1b92d6589ef3b04797c2423938ce263b3687e4ef1ee6aaac06603634ea25649",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_detection_v11.py",
+      "sha256": "fec3fb9824a3dd19dfd81f453badf7494d70d2359f0a7d961b0eb205592bad85",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_diagnostic_20261107.py",
+      "sha256": "4a0d8b6df1e0e5bddfcd67a65de749fac0b68f3697c7a31e9b0f502ac2cd2638",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_display_modes.py",
+      "sha256": "bcae605d857d5efa39802239373dc0d38468cc4fbcf97d37eaf84c38ad8b4b5f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_dofocus.py",
+      "sha256": "f42959881c49ea9d6dceed2660ee850379b27b80faa80c5f96af3d993a2875ec",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_dofocus_collection.py",
+      "sha256": "c613ce849f9e894489f545519f0d3718d1e8c1808e585d95d3c973f35f104df7",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_dofocus_store.py",
+      "sha256": "0bca418f06625200d0d68ce8a42bf58299b903c888fe9a886cd2cafe4c553f42",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_dynamic_simulation.py",
+      "sha256": "2a58a1675dcd66e34cdaec92e9727c34a8f9ff1d38c7c6b7f1f865f13f6cf83f",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_edge_effects_2056.py",
+      "sha256": "03743bcb051abad54d77e441885a7e39a34b0cd3c35a77b4e1d8301d70f94f4f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_equipment_picker_tk.py",
+      "sha256": "2a2ac57770fea5a35bf553f1cdf01dbb5d3826f7d3945fe038206b2d9e4d2f6e",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_expert_protocol.py",
+      "sha256": "581fa74a99092fd0a05c5e5a6e59a935a94e6a92eacab9144951d2b5cdb135ff",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fast_rune_preview.py",
+      "sha256": "1a7a7e2284bbbe8d6de30003af6f3ddd93decaa08fa128174cdddb1ae21379de",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_field_v2104.py",
+      "sha256": "e2c1e288f9e8b1e7028509564e583e47c38cb4f19ec1a7cf3f49977780913c0c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_first_effect_2059.py",
+      "sha256": "917b39e2dcdae2a514acfd2649c1eb0b9fa73f2d35d1c1c3905004e39cd2b807",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fm_app_integration.py",
+      "sha256": "14e15808980f18e53457b88d14425206dcb7fa9c22f4deb5f05b12fb45a2c5b3",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fm_budget_session.py",
+      "sha256": "d30be41005e1cbdb3297c164bfca06763fd7f4cd7668e51e4a1056d72202abbd",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fm_context_values.py",
+      "sha256": "c24bf5295489f44a7dc738cf498837aa4d84f33fc358302e0f27bf161155e2e4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fm_model.py",
+      "sha256": "a7423a67e3941145e29f6048bed9adbd13ecbbe096d11e6d87c019a1207ca92f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_fm_objectives.py",
+      "sha256": "6c2efb7b2565433aed89a3ce20ebd9829d1610c4161e2777219f86431919344a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_forgely.py",
+      "sha256": "7977204f2ff1aebfc927d00d3dc245b20b0cbe2c05052f2cf4a35a4d22f20b99",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_gallery.py",
+      "sha256": "da3ab0d924beade16ab0a5b019be96cbf2d0f2a5cc411079c13ead0580b64240",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_history_identity_2036.py",
+      "sha256": "50e168cd7e1274baaeb28cee207dfc14225388dfe3e27ef20ce819497fe39ee1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_huzounet.py",
+      "sha256": "a443a71bebbfccda8192a8df33f5b9692115bbb51f6a7829d20119ebb10a1fe4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_identity_latency.py",
+      "sha256": "a243c41de516046b96e163026cb7e335248b1c8eb139e986800d4d519c284da1",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_item_icons_2032.py",
+      "sha256": "c5bd2c4aba7a4f7563995190cd23603e3531b82133db8379e6e3e09b51371a26",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_item_vision_2031.py",
+      "sha256": "50b76892f29a9e4cff3c66ec612bfaaec66926757f89aa379a76d61bcb13f2a8",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_item_vision_2034.py",
+      "sha256": "5f866c4b4f5de44a96064362ae2c25d80f4eb5f5ec9cb88267dcbd7a258765ff",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_item_vision_2035.py",
+      "sha256": "01fb64e91dbc32e4f3e9ee32edbb28816f82155f611ce908b177cb8a8f5ac088",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_items.py",
+      "sha256": "6199aac3de348214e233288d4917a6306fdc2c594abb6e20006b6286e32485af",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_jet_2044.py",
+      "sha256": "90b0223a79f57594c85233731cf05c8c6ba1ab462b7d1d2ac7a020490cd2d4da",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_jet_2054.py",
+      "sha256": "da872d6f58c13b1fa6bd0de7387e41ff58cdd265a5040c1ac8a78fab78e1d877",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_labo_live.py",
+      "sha256": "5fde7fa0398cc2e20b666db717043d4f4ec9348c1c32189d1f187113ca45e23c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_laboratoire_videos.py",
+      "sha256": "23d9ddda3db114a053da9d4f426c8fc0e91d263e02cd3ca063472427ac54c410",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_latest_frame_mailbox_2061.py",
+      "sha256": "c8fc92d59f097aa6e69e5a143e4fd5dffe28ce0affb680e0ad1d6be1f6b229d6",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_learning_transitions.py",
+      "sha256": "d7de6eb04df1f8d5973dc25f7d82fb50e8943e7aa818ce334b7e805894ea5187",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_observation_mode.py",
+      "sha256": "295872cf94ddb5e5ec641051ef99b118adda3dec834db8ba7a8098f02a8a3795",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_ocr_diagnostic.py",
+      "sha256": "4770e8e3db93158435794ac8478959f3d6ac5f2afe55138736ba97a864bc73b1",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_ocr_latency_regressions.py",
+      "sha256": "045a6e6263842d900112c39e9595d697b62163677aa9feab36aa96f19cf1786d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_performance_global.py",
+      "sha256": "d569c1b33a616fddeae7904c39c33e3c67e0edcf0b2a8c23262352096a7024ea",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_pipeline_performance.py",
+      "sha256": "d0294716a2c6b86123b7ec45f680bab432c25dacb481c65f656e52758472caf0",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_predictive_precision.py",
+      "sha256": "b61feb391433f186a8992bdc7f4b17a61f61705f83bfd5fb5b2046a7b4a13be0",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_predictive_video.py",
+      "sha256": "f00ca4164ce031fa5c0fe26b2bb38b204514342a242e88e8e86c3931aa0a4abe",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_price_update.py",
+      "sha256": "56d7603d51fa0faa5a40c79efda359d27b8d4dd5a67c88f62659f38c8a348f10",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_probabilites.py",
+      "sha256": "9dc8b982770886440d1e4104bc9ed136adbbae2d4dba78e41d4e7b0b9def28c6",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_probabilites_conditionnelles.py",
+      "sha256": "e2d106f856c23cd99278e562d5a8a29f9160a74a10c6e13c607e3deb95a65ed3",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_process_window_2021.py",
+      "sha256": "beb5da3d31800227b812f3716bd0eacdab9128146a7cc41ef0ccd96b3ea9d9d6",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_profile_guidance_2075.py",
+      "sha256": "13c7705052bebd64d343ec3da4480b497431e6be4b3e31819b9ede7e6a268aab",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_reference_publique.py",
+      "sha256": "d36db074362cad288c5e06298e568c3c9c004454750fda2e3693b5ec4ef5c92f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_rune_icons.py",
+      "sha256": "bced5bf14612da49972295bcac8ef687da779f16e72a70adf9101e9938ea5b7f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_rune_weights.py",
+      "sha256": "a3f8be2430eb75ba994fc489b73728b2c95d3dddb160fd77ea32db420a33cb5b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_session_review.py",
+      "sha256": "6e7c995ba9deb0d1ca3628bcff3573184eb732b5f95be2a482e8a5f99a59d068",
+      "existed_before": false
+    },
+    {
+      "path": "Application/tests/test_simulateur.py",
+      "sha256": "c295a5feb775745535df0f01ef334c967e6d8f45bbb0bd305c4d876375d2bdde",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_themes.py",
+      "sha256": "67122480dc17dca02cba8ede50469daed73ef55bb969b45c7eaa4f94cfbbe32b",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_title_fallback_2024.py",
+      "sha256": "b4a40642de27548eca6f3959ff7fe29f12b95b2d66f737a67fe9fa3d8b419de4",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_tools.py",
+      "sha256": "f9980ec56853dd45b9d048a371749b48dfcd8294076b8209a4e09405bf51f463",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_tylezia_prices.py",
+      "sha256": "712efab89565b51d652814a03d4db2219e0cec3697b3d8dbacadbd7d80b87f5d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_universal_jets.py",
+      "sha256": "54be9464760b365aa40c38735c525ffb9ddab421e0395e4a40bb7c48f6f6d940",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_v2081.py",
+      "sha256": "d23e241e0d24f62c5724088ce212e369f227c71990f0e59c31cd9d5e728c0491",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_v2083.py",
+      "sha256": "11a42a2a50f0d2b9774aba388994bb23bc305650277b89380772d24f1645e06c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_validation.py",
+      "sha256": "a1d6a87c6dbcfccbd8225cad88354afd248e7a645f3ed4221de25087f326e0d7",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_validation_predictive.py",
+      "sha256": "952c895012d2a6c1ec592c51f59d532185609f85181c8794ccc53b0bca8d301a",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_video_candidates_205.py",
+      "sha256": "8b509bfc417500b09708a3c1d7ed7427e0ddd2fccef05129f06e4b5c37cde7cb",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_vision.py",
+      "sha256": "1b59f6c5bcff3936a9088086fb671e64f8615ed8432e7bc23a20e560682ff21f",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_walkyrip_206.py",
+      "sha256": "994d1b81a275caa355ed2268d03588eae4663102f76f4f8933fa4e3797de51b6",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_window_selection_2019.py",
+      "sha256": "155e8fd7a30584ecc18b64efd4c9f04f3d493730b4c6bc7942d903f727449598",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_workshop_attention.py",
+      "sha256": "b6699dd36930a81bac4e625093f718b3ccef390fc7d0e37680262d0bc7831288",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_workshop_readings_2033.py",
+      "sha256": "a8ac6aa3ee1045641cf97621151461c6ac0420a7041269e37f4812d977023762",
+      "existed_before": true
+    },
+    {
+      "path": "Application/tests/test_zone_cache_2057.py",
+      "sha256": "470f61877117d78c37ea2454394abd416cfd7ddc9769d333218f1b88ee472a5c",
+      "existed_before": true
+    },
+    {
+      "path": "Application/videos_sources.csv",
+      "sha256": "8811eb47d5a2d2e6745729989ee9088ac967699c74aa7e4bfca543d1dbfc261d",
+      "existed_before": true
+    },
+    {
+      "path": "Application/walkyrip_sources.csv",
+      "sha256": "e29a9bba77745e50686bf325a9ef0c20033c2a00ae543a8beebfe1bd162301d9",
+      "existed_before": true
+    },
+    {
+      "path": "CORRECTION_VITALITE_v20.90.txt",
+      "sha256": "7f19fa819989ca02a7441abd8f931bcbe7207b650ab92c9ee6544f543ed83deb",
+      "existed_before": false
+    },
+    {
+      "path": "INSTALLER_MISE_A_JOUR_LOCALE.bat",
+      "sha256": "9ec05f5eca4824b399280f953c426c8586eafe28e8e831a8c01c9b35d76ac16e",
+      "existed_before": false
+    },
+    {
+      "path": "LANCER_FORGELY_MIS_A_JOUR.bat",
+      "sha256": "534a5fa77ca4a3d5f957619514719a48fa2a770e8c556678b1384604765b2fdf",
+      "existed_before": false
+    },
+    {
+      "path": "METTRE_A_JOUR_FORGELY.bat",
+      "sha256": "6a37b78d8630eeb676c468eabc176bdbd911a284e266c6a2b100efe584868670",
+      "existed_before": true
+    },
+    {
+      "path": "METTRE_A_JOUR_PRIX_TYLEZIA.bat",
+      "sha256": "c7750ea8fe1e609f2a3ce77c5027797677938f8e07a360dbfa516973705d8d6d",
+      "existed_before": true
+    },
+    {
+      "path": "NOUVEAUTES_v20.77.txt",
+      "sha256": "45f4424f86c54d1e1cc21259e5b34d3e14134289c84bb974ac7f38f66201978a",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.78.txt",
+      "sha256": "fb521601c0ac6a44968da62ad2fd2db01d4f58709a62449b72faf870173de1f3",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.81.txt",
+      "sha256": "42a2dea0ebdd9045877c5d24fc84a1fdfadf17b51aebb4603ab0323f717004f2",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.82.txt",
+      "sha256": "f0387fa54e6230ae643ac5f006cf83966bf6be971a55db0792417648cbf2f136",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.83.txt",
+      "sha256": "0ca424e99ab18e55ba2b66734b29c389f537ecb3f932e6070717d2da435a51f1",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.84.txt",
+      "sha256": "5c0d5987864f76d7562d4e9aee42fbb113f302cc899dd3f248f48c4f50685a1d",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.85.txt",
+      "sha256": "c1f37c6542c79bd6a9d4994d3c294d3c2cd6201fbd19fa4c04bf7024804fccea",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.86.txt",
+      "sha256": "e36f1aad804c395ef322293dc596930b6604f009f22e2ebb149b9aacafea7925",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.89.txt",
+      "sha256": "57c0818706db99be6d0012e192f67c96f71c54bd288ee8065683c36d5e8fec9c",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.91.txt",
+      "sha256": "3ebd3e439b6591a936c5ba252649d0caeabda386f594d4f02159f3c124dd51c3",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.93.txt",
+      "sha256": "aa6de3c4c1ee4b2ff2ef6092e567af4d1061f445dedebff39324911aec6b6b87",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.94.txt",
+      "sha256": "e29ba1a4b5c504f89c275a8e0b3170df6d9a93ada430acf43c175b9593e9dd22",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.95.txt",
+      "sha256": "dff2b745adc1cbd065abe652f996595a2c983ca347ba40c55933fff934c8de27",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.96.txt",
+      "sha256": "bfe0a66da6e1aa2500564e6a120e63ff754f8b83044ffa7f9e660cd6015f6c7d",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.97.txt",
+      "sha256": "5bd3004f4b617a47bf746697a95767bb0d9378a753af7bd1cdd608caf865cb09",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.98.txt",
+      "sha256": "13c2130e1874c7bf0a6eb5811dbf66baff73ccc1feb413e01598508fcad8f309",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v20.99.txt",
+      "sha256": "107cf27367bbe9a4dfafb24b21415143f8cddf5f5186b4f28d0edfb2ead16816",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v21.00.txt",
+      "sha256": "b96d0366cb820c977173ea9991e2fce83d8734728d606d72a3122ae78316c888",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v21.01.txt",
+      "sha256": "84d7eff1b4e1831a0b27f88db3381d8b55f523c7d3be7de9af3b06b46b2bbd08",
+      "existed_before": false
+    },
+    {
+      "path": "NOUVEAUTES_v21.02.txt",
+      "sha256": "fdb7f2c8449953763d5e726e6ad0f28004f8d8e9fa2817c1288309d33babfe84",
+      "existed_before": false
+    },
+    {
+      "path": "README.md",
+      "sha256": "dad13f7c166f1da4b05063119f8a20f609b4625d171fe1ab47c6d2b200ccec90",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/fixtures/dofocus_engine_cases.json",
+      "sha256": "68e847d0e44f99d0b9296098513341a446c5707c665170e3d3efe661d5250f60",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/fixtures/live_20261107/manifest.json",
+      "sha256": "85786930a87f6966a6b49955ef2ea1f6938745c04aa5d541f537e7dc0a9559b3",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_adaptive_workshop_real.py",
+      "sha256": "6364ebf6cf1f262874b4f1d4bff38040875cf89157d92983d9bfa21ccd869eb4",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_automatic_goals.py",
+      "sha256": "82de93649c4d4a5f5b29f6289a6d8c0883312b5f3336abe1be5ff74c3de381a5",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_automatic_reading_workflow.py",
+      "sha256": "c59bedb7651c8d783aef19de24eb05ed0cf372fab455704949570d5e79d013ae",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_automatic_visual_calibration.py",
+      "sha256": "b9a25bc863c028f6f52423de90ebbf72965965214fd0aadb95e67cbfc7266610",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_equipment_picker.py",
+      "sha256": "b331020f5dc5c4ed16953cbfc1ca7736c4894f6d8ba8e32d3b535d967c3b0522",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_experience_advice.py",
+      "sha256": "55163fdaf00e1faede153ade52618ca3ecd985ff3a05ceb2f194ee860fa68dad",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_fast_jet_v2053.py",
+      "sha256": "7e1c0b9bf788ea6aee2fa14904c765a9d2238773a11fe4b27413deee6f9ae165",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_fast_slot_association.py",
+      "sha256": "b1c4cfe7bf877cb0aa5d1dd706028aa899681ab20749b3bbef5a037430fb211b",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_fast_workshop_v2052.py",
+      "sha256": "0e5b7db31f6586b9d88e8c2e88ad31a867cd7e8ada7b9ff187902c6426323fdd",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_first_row_success_cache.py",
+      "sha256": "68040d40e84af5e3fd1440988f42510d486cd6b49eba844d00aaad66be6c4955",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_first_row_v2065.py",
+      "sha256": "965589edded21b94c5a8128d8161cb59fac9d2c41f0f29e0bc596bd93464512a",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_fusion_integration.py",
+      "sha256": "f8445b619aeec6e54c50ffa34e00b8591932bf69c12fcdf4a491018c087f07be",
+      "existed_before": false
+    },
+    {
+      "path": "Tests/test_general_policy.py",
+      "sha256": "b8434d434eb78e3f6f0c7d2f34c05361d639f5e6051e36f0c52c710e7e996a51",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_generic_numeric_lines.py",
+      "sha256": "2f4b3b578935ea3578b02210e0352015b53f4baa0c287fb5d42ca6101ccbd1d9",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_github_ocr_backend_performance.py",
+      "sha256": "c50262c91c224f86a4b048f205547b271e52eb0ac7c919e316a0a46edb42ead8",
+      "existed_before": false
+    },
+    {
+      "path": "Tests/test_github_ui_data_performance.py",
+      "sha256": "7cabe8cdc3cdb4bdd926f2eca7eed38e4218a537ddb9bf9607a34e2c24a4366c",
+      "existed_before": false
+    },
+    {
+      "path": "Tests/test_github_v2103_regressions.py",
+      "sha256": "4eb16433487414dea984de53d16d15c7ec20bf0cc986717f173e4dae9a2fad7a",
+      "existed_before": false
+    },
+    {
+      "path": "Tests/test_github_window_discovery_performance.py",
+      "sha256": "efc695e26a4e6942fc7bb59621a4834f5ef865d1005ef39f6184ca605a6fbaf7",
+      "existed_before": false
+    },
+    {
+      "path": "Tests/test_goal_first_learning.py",
+      "sha256": "1253469cdadda77109a1ee4a578dfcd2baec9fbb7ba9335ed1ef15ae8b9106b8",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_grouped_stats_performance.py",
+      "sha256": "ede3eb22c7ab450667901c10cb0a800d45d7ab88405532300380289064b48909",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_hybrid_engine.py",
+      "sha256": "3c1e4d24fc49a42a9c1878bc5b387c473dcbccd0db09720443d9affecc0411d1",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_identity_latency.py",
+      "sha256": "0b9250a1234aa6b21a42836555e2c808e7ca3869167b93c4833b6c58499ae803",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_item_change_recovery.py",
+      "sha256": "213fe8bae855a097d1bb6fb2bb9bc8a9b653fb4dfcf2005106ab33c98518671a",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_item_references_v2070.py",
+      "sha256": "29e3ddef36f19626c9386866c52bb2469b6ad5b9f84325c65b9308b4ce03f8b7",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_item_references_v2073.py",
+      "sha256": "1d57172a1eabe83350eb6b2e5c767a09516181b3fafac1a59d89f7fb25b33027",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_item_references_v2074.py",
+      "sha256": "4b422e98535d54b3b4acab93808f6fca44a46d7224c0cbf822a1c84ce4415a1c",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_manual_equipment_session.py",
+      "sha256": "5d8d10bb30473522d48274e889c31c462529e14f4f438b9c02319331391146a7",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_no_currency.py",
+      "sha256": "88eff595d4955f74f1992b9a9744749591edd3fa38ac84b1fb47048f647811b0",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_no_currency_desktop.py",
+      "sha256": "36120ebeef0584668bdfee52d2b6ac5a8d0af0fc5bce705f8952bb0037f09cef",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_ocr_reacquisition.py",
+      "sha256": "2bf0e5dbe788117778c1d7538601cca7917761c3465a0dcb0bb91308f002b81d",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_ocr_regions_performance.py",
+      "sha256": "4cce0bbc76c0da696d3aa3ba6c025f66c4b0329b72931aee6728e1c10ae2a87d",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_paged_readings.py",
+      "sha256": "1724e78b8506ad0bfa8dbe6b4a2a5f75add7927b34dcc2a35eb41f555ee6a70e",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_performance_v2051.py",
+      "sha256": "f2e71f13ca40a9d9621544b519c85c95c7a3137e3143fb384917cbed457803fe",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_reading_review.py",
+      "sha256": "ea5195bbccbae12293a464ae071e14e40dad0488a308c8516b872b8a6e90e5dc",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_reliquat.py",
+      "sha256": "4085a9034cd71387940e6de8604bc09d254d77994d78a0df941bd6c451cb1b2e",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_review_collection.py",
+      "sha256": "5545ea38af6495169ab0a66446798dac816bbbb94a92ffc04ebc1dbf23e512f9",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_rl_environment.py",
+      "sha256": "8925ff00ae10b966a9a2fb2ceb4eb025860fab5d204baba943f01e101f162487",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_rl_performance.py",
+      "sha256": "8b1ff19820bab9ad6a9b4db74ec0ffbfc4f7f14faed58dd2d9c0b9d713769c63",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_rune_pricing.py",
+      "sha256": "6a709a6ee853943e7fb4dd601f7d1f79085387dd85358984bd825f4bd9dd8856",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_sequence_planning.py",
+      "sha256": "adcd5ded6092478b12c6412ddb0a4cf29e998354b3351226df2305e000ee1bff",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_simulator_player_evidence.py",
+      "sha256": "20c5e8d6d47b90d88eb9aa5f13f1cdd7f45011553388c8f1cfe4dd03d12ab2b5",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_trained_policy_advice.py",
+      "sha256": "50f2e38f026607a034b87bc3e45aa81bea9edcc5681acb0c849f6d6f57edf7dc",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_training_desktop.py",
+      "sha256": "1c9b454f82c92415404ffb2a0019bc8c802474441b2ed05f15eb5c9982e1003f",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_training_regressions.py",
+      "sha256": "73f52ab60a7e3e65b53bf65a8f16bae1bf0fb218f8f32b50f0ad89c041d83bce",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_training_runner.py",
+      "sha256": "36f4449e923d99e744408bad5cca2f376fb60d33b410c5dce825853064803b35",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_ui_data_performance.py",
+      "sha256": "bc9814be6fb7d4d3fac84c77ccef99539feb7ea47c5de4b5e9bfd31e4f881196",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_v2067_regression.py",
+      "sha256": "c8061b9ff81dee953d2af765f18b8743f43e188c3cd624bfa1fef71959911f90",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_v2069_effects.py",
+      "sha256": "8054fc4314ae45570054ec7eaecff9ab2b0bd50505aeca576336c995009be535",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_v2079_partial.py",
+      "sha256": "0bb71c6a698f198521ab02a3e968b0c8158faeb4a3d8353ecef2ed340a385256",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_v2080_pool.py",
+      "sha256": "f6ca38647cb0155bb7dcdf3ce61b4a37784c58ddc2a84af868b7806f1d69b955",
+      "existed_before": true
+    },
+    {
+      "path": "Tests/test_visual_matching_performance.py",
+      "sha256": "c940ec23d52b33fb83eecf00d2b17ef6fd31113a4aaa003eda15b7d5362e8f22",
+      "existed_before": true
+    },
+    {
+      "path": "VERSION.txt",
+      "sha256": "88713e3043949076d670997618af02225bf44273284c3c0fd053529c8c7510b9",
+      "existed_before": true
+    },
+    {
+      "path": "distribution/README.md",
+      "sha256": "a1e7aa2d4ef9421b7469b2c8e2986ab4998c4b389ef9adc502fc887d14feba55",
+      "existed_before": true
+    },
+    {
+      "path": "distribution/manifest.json",
+      "sha256": "ac83112454aafe1c924bfd75cbbe8c5e13d6b8693b50ab4939759f677377ad4f",
+      "existed_before": true
+    },
+    {
+      "path": "distribution/restaurer_version_complete.ps1",
+      "sha256": "03a89b309d7843030e7eb5a67a2ce1fad9b569897ec3f88a346cb9da1edd1813",
+      "existed_before": true
+    },
+    {
+      "path": "docs/AUDIT_CONFLITS_PROMPTS.md",
+      "sha256": "9c3e2aa338bb9efae52532b9035e6973ae8f04114b08071257c984e0567c1306",
+      "existed_before": true
+    },
+    {
+      "path": "docs/BILAN_SESSIONS_APPRENTISSAGE.md",
+      "sha256": "5844e9cb9f09b681d33a27c37198b61880af08046f6056b80100f7b07972f4f1",
+      "existed_before": false
+    },
+    {
+      "path": "docs/COMPARAISON_MODELE_VIDEO.md",
+      "sha256": "9e60bab389409ee00d7306dfaa13180ec275123a6a2566931c0a156168345529",
+      "existed_before": false
+    },
+    {
+      "path": "docs/Comparatif_Numerique_Tesseract_V1.md",
+      "sha256": "c33f85e5ffd042878980d2ed28b83783a2534bc850020db3134912fc8c832d10",
+      "existed_before": true
+    },
+    {
+      "path": "docs/DIAGNOSTIC_V21_02.md",
+      "sha256": "3fa827648250d4640937bca18b9fd0cfb518b6cb13a646dd65c8265f1f0efc00",
+      "existed_before": false
+    },
+    {
+      "path": "docs/FM_DOUBLE_OBJECTIF.md",
+      "sha256": "c217221d3a345faa25db9490a6b79f608dfcd2a9ad128c5eb145722c69bda95c",
+      "existed_before": true
+    },
+    {
+      "path": "docs/FUSION_PC_GITHUB_2026-11-08.md",
+      "sha256": "911db33e6f35566f9c57d892fd1ec059ef96f9f1770d689e713bb485c95be939",
+      "existed_before": false
+    },
+    {
+      "path": "docs/IDENTIFICATION_RAPIDE.md",
+      "sha256": "6874599eaac9264ca84f81e5e72d5491286d3a684a0ab0391ebd9bb67f1a6c74",
+      "existed_before": true
+    },
+    {
+      "path": "docs/IDENTIFICATION_RAPIDE_V22_05.md",
+      "sha256": "dc0d3afb860a02a1c012747b523691972845d77bc052c5bb9830da775bd93913",
+      "existed_before": false
+    },
+    {
+      "path": "docs/IMPORT_OCR_V21_03.md",
+      "sha256": "4758ff4819a9332263bbbd029fd1217867b10c3effddbe51d455817f9d89ffb8",
+      "existed_before": false
+    },
+    {
+      "path": "docs/INTERFACE_V22.md",
+      "sha256": "46f8b7306b7893b78be375fdfe4ea11b1d48fbbbad785a4cd3cbee3e7f08947b",
+      "existed_before": false
+    },
+    {
+      "path": "docs/JET_CIBLE_PRIORITAIRE.md",
+      "sha256": "a8cb5d4a27bd46ba6fab445b4c1ace65a3d6bafce75f6ca21a3f57d7a4440a55",
+      "existed_before": true
+    },
+    {
+      "path": "docs/MODELE_VIDEO_CALIBRATION.md",
+      "sha256": "a0f8f7b012f29952a370f2b271a006c6f5e70f8da8422ae960e3c786d67b9944",
+      "existed_before": false
+    },
+    {
+      "path": "docs/MOTEUR_HYBRIDE.md",
+      "sha256": "f302396fd31606fdb2b3cdeb20c0747e4736dda07825ee745453ab14b6b25f2f",
+      "existed_before": true
+    },
+    {
+      "path": "docs/Matrice_Predictive.md",
+      "sha256": "ffcd121587203565cb9d96efa6b0a29c5903e491dbfea90e62cc63e721f3475e",
+      "existed_before": true
+    },
+    {
+      "path": "docs/OCR_DIAGNOSTIC_V22_04.md",
+      "sha256": "4b3802eae190f0b801e2f46130b8008f4b10d9a274002398825099a0decd6f07",
+      "existed_before": false
+    },
+    {
+      "path": "docs/OCR_V21_04.md",
+      "sha256": "1708c22d0938addb9290a6398c567b7503904202b5df38210b77953ee6889766",
+      "existed_before": false
+    },
+    {
+      "path": "docs/PERFORMANCES_GLOBALES_2026_11_08.md",
+      "sha256": "1d4ec259dd69a9a05f4514c5fa1d29e775b33513b98374f94136933f212fdd8f",
+      "existed_before": false
+    },
+    {
+      "path": "docs/PERFORMANCES_REFERENCE_V22_03.json",
+      "sha256": "0d29db84487c0a61beeeedb0610e87153948d225a19b543b55a1fbbd1be5d536",
+      "existed_before": false
+    },
+    {
+      "path": "docs/PERFORMANCES_REFERENCE_V22_03.md",
+      "sha256": "9d48b9108d666a6e87a5c03991e2f00a2a33af04914f030c0a2fb2212b438cb1",
+      "existed_before": false
+    },
+    {
+      "path": "docs/PERFORMANCE_OCR.md",
+      "sha256": "8a43e031ebe2af084f560b7d4b7391604325496106367afb873026feee2ea160",
+      "existed_before": false
+    },
+    {
+      "path": "docs/POIDS_RUNES.md",
+      "sha256": "066796fa0c55903d6fd609fb6c55c00ba63620a8f493cd967172ba564056d23d",
+      "existed_before": true
+    },
+    {
+      "path": "docs/PRIX_RUNES_TYLEZIA.md",
+      "sha256": "915b3eb4e3a547cd7883f3345152b61b885720190baac072ad448c7dd3b3c539",
+      "existed_before": true
+    },
+    {
+      "path": "docs/PRIX_TYLEZIA.md",
+      "sha256": "85cbac28083af705f22e5e539f94c220009a864dfd72ad3ce267c540dd616b6a",
+      "existed_before": true
+    },
+    {
+      "path": "docs/PROMPT_MOTEUR_HYBRIDE.md",
+      "sha256": "fb08fcda3726dc0e46f53371b4b3511890ff79c413d8a9dc925694c4af2710ce",
+      "existed_before": true
+    },
+    {
+      "path": "docs/PUBLICATION_GITHUB_2026-11-08.md",
+      "sha256": "b0a89d6687dd56d9ee9c2fca4c1e41bd73b8915f781658bf99fc1c19d7783885",
+      "existed_before": true
+    },
+    {
+      "path": "docs/RAPPORT_ENTRAINEMENT_2026-11-08.md",
+      "sha256": "59b8c4336c34ad6b8afc5d58d78a7c1080880f540eef50485fd0b11b184feca7",
+      "existed_before": true
+    },
+    {
+      "path": "docs/RAPPORT_GENERALISATION_2026-11-08.md",
+      "sha256": "26a9be2276c686e09bc0c0092ae363d81a611984d1098d462d8f3b69b8b91cf7",
+      "existed_before": true
+    },
+    {
+      "path": "docs/RECHERCHE_PERTES_FM.md",
+      "sha256": "9f9159ce0e89659d5ac9b5f1a4e75880063f4a4d7da6bf2311b54e9be1dca19b",
+      "existed_before": false
+    },
+    {
+      "path": "docs/REFERENCE_DOFOCUS.md",
+      "sha256": "dc4e956e4ccca8357326417ecaccd16226d31f3b657dad73316dea2f8ee6a4c9",
+      "existed_before": true
+    },
+    {
+      "path": "docs/REGLES_ACTIVES_FORGELY.md",
+      "sha256": "341a13809e49d2794cd3195f786fc42ad2d4f6598fed6a97b2ff8ee414a26578",
+      "existed_before": true
+    },
+    {
+      "path": "docs/SELECTION_EQUIPEMENT.md",
+      "sha256": "fa8557aa1271814df98c416086ee9f3e7c81b2f2216759bc45356a7f4d710b42",
+      "existed_before": true
+    },
+    {
+      "path": "docs/SIMULATEUR_DYNAMIQUE.md",
+      "sha256": "75c2afd2fe80b89f3a4068b40d2644a9b4e43af49dc31f3b60c8498075a83f78",
+      "existed_before": false
+    },
+    {
+      "path": "docs/Verification_Visuelle_Manuelle.md",
+      "sha256": "210e0345f385a662ef862ac0185e9292ada52ab33f6ac31583d13d512edb004e",
+      "existed_before": true
+    },
+    {
+      "path": "docs/calibration_autonome_exports.json",
+      "sha256": "75a4872e347ba264b49d4e1b481a8ed7efd898d3fc612ab9e3aca40107befa4a",
+      "existed_before": true
+    },
+    {
+      "path": "docs/comparatif_numerique_tesseract_cv.json",
+      "sha256": "0a265336aa542f865348d9d87cbb1fe9b2fbf51480ab69a3deabc099e126d0fe",
+      "existed_before": true
+    },
+    {
+      "path": "docs/comparatif_tesseract_cv_v1.json",
+      "sha256": "aebc1f80bde7a11b61a9767dd1bbdba0de025e6852ae90c5328116cee289c664",
+      "existed_before": true
+    },
+    {
+      "path": "docs/dofocus-collection-targets.json",
+      "sha256": "cd913b5017587017b0b07c98739f717bbe749ba39a3e4d3f10196f4b4401dcf1",
+      "existed_before": false
+    },
+    {
+      "path": "docs/general-policy-development-2026-11-08.json",
+      "sha256": "6d94bcb59c75c5b125d49e98b360daad1e4fbf1e0c7b04c352785ae1c69abe3d",
+      "existed_before": true
+    },
+    {
+      "path": "docs/general-policy-final-audit-2026-11-08.json",
+      "sha256": "cf157a1775162e092c433b7a69588f2c010e307f4c28f69e89022b029f0b0111",
+      "existed_before": true
+    },
+    {
+      "path": "docs/general-policy-reproduction-config.json",
+      "sha256": "244ba0f52d3e83171d348cab97e1b722224fd794dbdaf0530a92bf8f8dd18eaa",
+      "existed_before": true
+    },
+    {
+      "path": "docs/hybrid-engine-plan.md",
+      "sha256": "3ca87f9f663e3227370eee4bf6eb9ce6d716a5d56867d3a0744f55146a1de0bf",
+      "existed_before": true
+    },
+    {
+      "path": "docs/performance-globale-mesures.json",
+      "sha256": "d2349b6e849a023485a55789073e015177557f57bcce8cd7bf0465daae06d8f4",
+      "existed_before": false
+    },
+    {
+      "path": "docs/sequence-evaluation-2026-11-07.json",
+      "sha256": "70b03d5a29629c05c80ec35db946494d09b2c4aadabbb2bc810aa336d8e011be",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-dofocus-index.md",
+      "sha256": "6321ab964e5731459794c0aaea717c6346da111156a9d752c4a2fe87bf33ff83",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-dofocus.md",
+      "sha256": "dfb0c82fcac0f773da1aa5cf1c4e2c8447467cafecb4a891f311ef4375504de1",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-field-v2104.md",
+      "sha256": "c81e5252a534475150ace9519dae19e7bd95e9a570be6f53706ae35084ff185a",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-fm-double-objectif.md",
+      "sha256": "1e2f6886abbdd456dd87592ccc2a7f32f177b117aff6b75794366765bd82ccc8",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-import-ocr.md",
+      "sha256": "0c3fd3bc9653f500ce865e4ee3b6cfdb4a274abb61318a92d6c89448422e6531",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-item-picker.md",
+      "sha256": "e436b90287902325f651c9ae5d5bc85eb8559d5e0563d465dbe6e6a09b2051f7",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-lecture-numerique.md",
+      "sha256": "7fe084546f133617264363579c2f1d337f911cdb192ab84d846f2f64b4c11ced",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-obsidienne.md",
+      "sha256": "058ca9efa268a70844dcb25bf26a123d4a748cc2b1da305bc2a3d9e85ef7eafc",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-ocr-performance.md",
+      "sha256": "811adc94c9ea2e88203bf01829ba2b4f1121cd4f1cfc608f92e7c3dc61a55c0a",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-redesign.md",
+      "sha256": "a1cc8b09f529b13167d6ede5e2b74c7a2d5d8192c763e76604ba51eea3a56b0e",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-sequences.md",
+      "sha256": "a357bea68b5306558cd41101ba0c1c22d70f5024def6a9517de21be5148a0ec1",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-07-vision-cv.md",
+      "sha256": "f54b71644045ef90b854ae9f304463dad18e046d560f7c220d1f92cfe8e0053d",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-bilan-session.md",
+      "sha256": "1c579eeae66ae159324ca51f7d4caff0c28268b576b6a10556478d65dc3d0f67",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-generalisation.md",
+      "sha256": "c56121dc12b820bd82701f279b7bb04666c34c6c74f9ec07afad6c4e3da0ba05",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-performance-globale.md",
+      "sha256": "4a7a7a6ccaeafe7bbf40ffd71959ddf4d5b1812664a005db7f871b2e48b31a32",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-precision-locale.md",
+      "sha256": "4a423cbcd210559dde3bbc92084e72c0f14d169ac634acdbdf5852ed4c8ab760",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-predictive-matrix.md",
+      "sha256": "09c3a1a3801b915cf20b835bdbc5f7246ec48c865bdb7e1d18cb553f4ecff9b7",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-prix-tylezia.md",
+      "sha256": "36fdb9cc5ae9b2fca56b353b094eb8884f1ba0e710b16d8d56de4e1f69504765",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-protocole-expert.md",
+      "sha256": "833fab76deda4744a82da22e8f8cd8ab8172c8ffefeefcc71be3b7f41340099e",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-simulateur-dynamique.md",
+      "sha256": "ab9cb35345e177e8914f8e970f3059a52c55d646227684d94dcf0c045df6be00",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-training.md",
+      "sha256": "5838907e0e5546c58df6003511726a5bd5a927c0aefba8f2d4ee0477ad4659bc",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/plans/2026-11-08-video-model.md",
+      "sha256": "51ab2243b928e9ebda6c65ea875e8f96fd5b2d415e382a4936fd109545b22368",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-07-fm-double-objectif-design.md",
+      "sha256": "da64a21153be19ebc2fe98ce03c4c80a3a66e4d27e952eadcfb2012455ce208d",
+      "existed_before": false
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-07-item-picker.md",
+      "sha256": "09b4241ba6cea5d44a10c79bbcee880c8d6380bed6d14c5a6e76edd70df317dd",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-07-obsidienne-design.md",
+      "sha256": "516a417e7a498552a0469708ddfe391812c00f5347367988a69e165843e15edf",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-08-prix-tylezia-design.md",
+      "sha256": "0d8de4c15c9cbe8f3e5977d8d848bb364236fcc5e8cffddb550e489c0d8fa87d",
+      "existed_before": true
+    },
+    {
+      "path": "docs/superpowers/specs/2026-11-08-protocole-expert-design.md",
+      "sha256": "103e6f21ef8f7f40f40029e6d61bcb72f41e91eb947fc279c55ba19c22ba74e6",
+      "existed_before": true
+    },
+    {
+      "path": "docs/test_reel_cycloide_age.json",
+      "sha256": "6f1a71e3c28f1c3a1a7e17d9911f99b51537efe0922cba9b3619b4802935a928",
+      "existed_before": true
+    },
+    {
+      "path": "docs/training-fix-experiment-2026-11-08.json",
+      "sha256": "007878a3fc1012dd34f26f7bdb9412874a474c6c3ea06f3806d3214ac37d86cc",
+      "existed_before": true
+    },
+    {
+      "path": "docs/training-reproduction-config-2026-11-08.json",
+      "sha256": "5cf3e05d352db1a3e9d55d685e9a9541aff75549d21b24fbcb78de6089a36c62",
+      "existed_before": true
+    },
+    {
+      "path": "outils/installer_mise_a_jour_locale.ps1",
+      "sha256": "3cf45fa29c3d49e870941973701c7fffe51c2c8f2abece6a1e5f92ec4a8260d2",
+      "existed_before": false
+    },
+    {
+      "path": "outils/mettre_a_jour_prix_tylezia.py",
+      "sha256": "7a1f101eb5b96c4c5ed613cba8918d1eb001f5d9607573bd1fde21eeb531eccd",
+      "existed_before": true
+    },
+    {
+      "path": "pytest.ini",
+      "sha256": "c2fc387315136e089935dfd93d631bf9bbe2dad711f46f7374fd9c4c7160ddcc",
+      "existed_before": true
+    },
+    {
+      "path": "requirements-dev.txt",
+      "sha256": "3208d01fef2120d9786bbceab65bae30b1c29601f3d156f44691d2c83310161d",
+      "existed_before": true
+    }
+  ],
+  "local_deleted": [],
+  "note": "Inclut la normalisation des fins de ligne ; le manifeste lui-même est exclu de remote_changes."
+}

@@ -80,4 +80,3 @@ def chance_independent_chain(chances):
         if not 0<=x<=1:raise ValueError('Probabilite hors [0,1]')
         p*=x
     return p
-

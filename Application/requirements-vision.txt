@@ -1,0 +1,4 @@
+# Module autonome ; aucun Tesseract, EasyOCR, PaddleOCR ou VLM.
+mss>=9,<11
+numpy>=2,<3
+opencv-python-headless>=4.10,<5

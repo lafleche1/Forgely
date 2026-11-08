@@ -1,0 +1,247 @@
+{
+  "image_size": [
+    300,
+    420
+  ],
+  "scale_tag": "padgref-normalized-1902x1033-top",
+  "fields": [
+    {
+      "name": "PM",
+      "kind": "stat",
+      "box": {
+        "x": 21,
+        "y": 0,
+        "w": 6,
+        "h": 17
+      },
+      "guard_box": {
+        "x": 33,
+        "y": 0,
+        "w": 21,
+        "h": 17
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "box": {
+        "x": 23,
+        "y": 35,
+        "w": 16,
+        "h": 18
+      },
+      "guard_box": {
+        "x": 44,
+        "y": 35,
+        "w": 49,
+        "h": 18
+      },
+      "guard": "guard-001.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Intelligence",
+      "kind": "stat",
+      "box": {
+        "x": 21,
+        "y": 70,
+        "w": 16,
+        "h": 18
+      },
+      "guard_box": {
+        "x": 43,
+        "y": 70,
+        "w": 79,
+        "h": 18
+      },
+      "guard": "guard-002.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Sagesse",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 105,
+        "w": 16,
+        "h": 18
+      },
+      "guard_box": {
+        "x": 43,
+        "y": 105,
+        "w": 56,
+        "h": 18
+      },
+      "guard": "guard-003.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Coups Critiques",
+      "kind": "stat",
+      "box": {
+        "x": 3,
+        "y": 140,
+        "w": 5,
+        "h": 19
+      },
+      "guard_box": {
+        "x": 18,
+        "y": 140,
+        "w": 77,
+        "h": 19
+      },
+      "guard": "guard-004.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Portée",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 175,
+        "w": 6,
+        "h": 16
+      },
+      "guard_box": {
+        "x": 35,
+        "y": 175,
+        "w": 44,
+        "h": 16
+      },
+      "guard": "guard-005.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Invocation",
+      "kind": "stat",
+      "box": {
+        "x": 23,
+        "y": 210,
+        "w": 6,
+        "h": 17
+      },
+      "guard_box": {
+        "x": 35,
+        "y": 210,
+        "w": 72,
+        "h": 17
+      },
+      "guard": "guard-006.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Feu",
+      "kind": "stat",
+      "box": {
+        "x": 21,
+        "y": 245,
+        "w": 7,
+        "h": 18
+      },
+      "guard_box": {
+        "x": 34,
+        "y": 245,
+        "w": 103,
+        "h": 18
+      },
+      "guard": "guard-007.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Dommages Air",
+      "kind": "stat",
+      "box": {
+        "x": 23,
+        "y": 280,
+        "w": 7,
+        "h": 19
+      },
+      "guard_box": {
+        "x": 36,
+        "y": 280,
+        "w": 98,
+        "h": 19
+      },
+      "guard": "guard-008.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "% Résistance Eau",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 315,
+        "w": 7,
+        "h": 20
+      },
+      "guard_box": {
+        "x": 31,
+        "y": 315,
+        "w": 116,
+        "h": 20
+      },
+      "guard": "guard-009.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Résistance Terre",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 350,
+        "w": 7,
+        "h": 19
+      },
+      "guard_box": {
+        "x": 35,
+        "y": 350,
+        "w": 116,
+        "h": 19
+      },
+      "guard": "guard-010.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Résistance Air",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 385,
+        "w": 7,
+        "h": 19
+      },
+      "guard_box": {
+        "x": 35,
+        "y": 385,
+        "w": 100,
+        "h": 19
+      },
+      "guard": "guard-011.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0",
+    "1",
+    "3",
+    "6",
+    "7",
+    "8",
+    "9"
+  ]
+}

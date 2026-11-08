@@ -1,0 +1,209 @@
+{
+  "scale_tag": "capture-442x680-cycloide",
+  "fields": [
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "box": [
+        190,
+        147,
+        32,
+        20
+      ],
+      "guard_box": [
+        224,
+        147,
+        60,
+        20
+      ],
+      "text": "342"
+    },
+    {
+      "name": "Force",
+      "kind": "stat",
+      "box": [
+        188,
+        188,
+        22,
+        22
+      ],
+      "guard_box": [
+        214,
+        188,
+        45,
+        22
+      ],
+      "text": "40"
+    },
+    {
+      "name": "Intelligence",
+      "kind": "stat",
+      "box": [
+        188,
+        231,
+        22,
+        22
+      ],
+      "guard_box": [
+        214,
+        231,
+        95,
+        22
+      ],
+      "text": "40"
+    },
+    {
+      "name": "Agilité",
+      "kind": "stat",
+      "box": [
+        188,
+        273,
+        22,
+        22
+      ],
+      "guard_box": [
+        214,
+        273,
+        55,
+        22
+      ],
+      "text": "36"
+    },
+    {
+      "name": "Dommages Neutre",
+      "kind": "stat",
+      "box": [
+        188,
+        315,
+        12,
+        22
+      ],
+      "guard_box": [
+        202,
+        315,
+        150,
+        22
+      ],
+      "text": "8"
+    },
+    {
+      "name": "Dommages Terre",
+      "kind": "stat",
+      "box": [
+        188,
+        358,
+        12,
+        22
+      ],
+      "guard_box": [
+        202,
+        358,
+        150,
+        22
+      ],
+      "text": "8"
+    },
+    {
+      "name": "Dommages Feu",
+      "kind": "stat",
+      "box": [
+        188,
+        400,
+        22,
+        22
+      ],
+      "guard_box": [
+        210,
+        400,
+        140,
+        22
+      ],
+      "text": "10"
+    },
+    {
+      "name": "Dommages Air",
+      "kind": "stat",
+      "box": [
+        188,
+        443,
+        12,
+        22
+      ],
+      "guard_box": [
+        202,
+        443,
+        150,
+        22
+      ],
+      "text": "5"
+    },
+    {
+      "name": "Initiative",
+      "kind": "stat",
+      "box": [
+        188,
+        485,
+        31,
+        22
+      ],
+      "guard_box": [
+        222,
+        485,
+        85,
+        22
+      ],
+      "text": "270"
+    },
+    {
+      "name": "% Résistance Eau",
+      "kind": "stat",
+      "box": [
+        189,
+        527,
+        9,
+        22
+      ],
+      "guard_box": [
+        210,
+        527,
+        140,
+        22
+      ],
+      "text": "6"
+    },
+    {
+      "name": "Tacle",
+      "kind": "stat",
+      "box": [
+        188,
+        569,
+        12,
+        22
+      ],
+      "guard_box": [
+        202,
+        569,
+        55,
+        22
+      ],
+      "text": "0"
+    },
+    {
+      "name": "Puits",
+      "kind": "pool",
+      "box": [
+        138,
+        27,
+        23,
+        18
+      ],
+      "guard_box": [
+        90,
+        27,
+        48,
+        18
+      ],
+      "text": "0,1"
+    }
+  ]
+}

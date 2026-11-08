@@ -1,1 +1,1 @@
-Forgely v22.05 — identification indépendante et confirmations parallèles
+Forgely v22.16 - fusion PC et GitHub : vision, modèle vidéo, bilans et apprentissage
