@@ -4,9 +4,11 @@ Optional explicit network action imports public item images; observation remains
 from __future__ import annotations
 from time import perf_counter_ns as forgely_perf_ns
 from forgely_performance import PerformanceTracker
+from forgely_runtime_cache import configure_if_changed, capture_wait
 from forgely_zone_cache import ZoneCache
 from forgely_pipeline import FrameMessageSink,AcceptedRuneEvent,VerifiedItemContext,bind_event_item
 import io
+import json
 from pathlib import Path
 from datetime import datetime
 import queue
@@ -15,7 +17,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox, filedialog
 from PIL import Image, ImageTk
 from forgely_observation_mode import load_observation_mode, save_observation_mode
-from forgely_data import connect, insert_observation, insert_unassigned, unassigned_total, stats, recent, RUNES, DB_FILE, DATA_DIR
+from forgely_data import stats_by_rune, connect, insert_observation, insert_unassigned, unassigned_total, stats, recent, RUNES, DB_FILE, DATA_DIR
 from runeforge_observer import extract_text
 from forgely_detection import HistoryTransitionTracker, read_regions, crop_regions
 from forgely_windows import list_dofus_windows, auto_game_window, foreground_handle, is_own_foreground, list_selectable_windows, window_by_handle
@@ -600,9 +602,9 @@ class Forgely(tk.Tk):
             title=proposal.summary
             detail='Référence Dofocus · '+proposal.explanation[:170]+('… Voir le détail.' if len(proposal.explanation)>170 else '')
         if hasattr(self,'plan_item_lbl'):
-            self.plan_item_lbl.configure(text=self.item.get().strip() or (self.plan['item'] if self.plan else 'Objet à identifier'))
-            self.plan_action_lbl.configure(text=title)
-            self.plan_explain_lbl.configure(text=detail)
+            configure_if_changed(self.plan_item_lbl,text=self.item.get().strip() or (self.plan['item'] if self.plan else 'Objet à identifier'))
+            configure_if_changed(self.plan_action_lbl,text=title)
+            configure_if_changed(self.plan_explain_lbl,text=detail)
 
     def update_mode_button(self):
         if hasattr(self,'mode_button'):
@@ -616,6 +618,14 @@ class Forgely(tk.Tk):
         self.refresh_strategy()
 
     def strategy_current(self):
+        started=forgely_perf_ns()
+        try:return Forgely._strategy_current(self)
+        finally:
+            tracker=getattr(self,'advice_performance',None)
+            if not isinstance(tracker,PerformanceTracker):tracker=self.advice_performance=PerformanceTracker()
+            tracker.record('calcul_conseil',forgely_perf_ns()-started)
+
+    def _strategy_current(self):
         if self.observation_only:
             return None
         """Only stable post-fusion OCR, confirmed equipment and saved goal can drive advice."""
@@ -626,15 +636,26 @@ class Forgely(tk.Tk):
         pool=self.live_pool
         if self.live_after_fusion:
             return advise(jets,targets,pool=pool,after_fusion=True)
-        def records_for(rune):
-            _, counts=stats(item=self.item.get().strip(),rune=rune)
-            return counts
-        # No claim of EXO without a verified complete natural profile.
-        # A partial imported CSV is useful for known overmax lines only.
         cfg=read_settings()
-        cost=cost_since(self.budget_start_cursor,cfg['prices'])
+        from forgely_runtime_cache import AdviceCache, database_revision, file_revision
+        from forgely_tools import BOUNDS_PATH
+        from forgely_dofocus import STORE_PATH, REFERENCE_PATH
+        laboratory_revision=getattr(self.live_laboratory,'revision',0)
+        if type(laboratory_revision) is not int:laboratory_revision=0
+        cache=getattr(self,'_advice_cache',None)
+        if not isinstance(cache,AdviceCache):cache=self._advice_cache=AdviceCache()
+        key=(json.dumps([self.item.get().strip(),targets,jets,pool,self.plan.get('level'),cfg,
+                         self.budget_start_cursor,getattr(self,'last_transition_audit',None)],
+                        sort_keys=True,ensure_ascii=False),database_revision(DB_FILE),
+             file_revision(BOUNDS_PATH),file_revision(STORE_PATH),file_revision(REFERENCE_PATH),laboratory_revision)
+        cached=cache.get(key)
+        if cached is not None:return cached
+        all_counts=stats_by_rune(self.item.get().strip())
+        def records_for(rune):
+            return all_counts.get(rune,{'SC':0,'SN':0,'EC':0})
         remaining=None
         if cfg['budget_kamas']:
+            cost=cost_since(self.budget_start_cursor,cfg['prices'])
             achieved=bool(targets) and all(s in jets and jets[s]>=v for s,v in targets.items())
             if not cost['complete'] and not achieved:
                 return Proposal(None,'bloqué','Budget incomplet',
@@ -674,7 +695,7 @@ class Forgely(tk.Tk):
             verified=self.active_equipment_verified,after_fusion=self.live_after_fusion,
             last_transition=audit,level=self.plan.get('level'))
         from dataclasses import replace
-        return replace(proposal,estimates=dict(proposal.estimates or {},expert=board))
+        return cache.put(key,replace(proposal,estimates=dict(proposal.estimates or {},expert=board)))
 
     def expert_detail(self,proposal):
         board=(proposal.estimates or {}).get('expert')
@@ -703,27 +724,27 @@ class Forgely(tk.Tk):
             self.current_proposal=None
             review_tick(self)
             if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
-                self.strategy_headline.configure(text='Observation passive : aucun conseil')
+                configure_if_changed(self.strategy_headline,text='Observation passive : aucun conseil')
             if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
-                self.strategy_explanation.configure(text='Les tentatives continuent à être collectées localement.')
+                configure_if_changed(self.strategy_explanation,text='Les tentatives continuent à être collectées localement.')
             if hasattr(self,'advice_heading'):
-                self.advice_heading.configure(text='OBSERVATION PASSIVE  /  COLLECTE UNIQUEMENT')
-                self.home_advice_label.configure(text='Observation sans conseils',fg=GOLD)
-                self.home_advice_detail.configure(text='Détection des tentatives et statistiques locales actives. Aucune rune recommandée.')
-                self.player_risk_label.configure(text='Mode collecte : recommandations désactivées')
+                configure_if_changed(self.advice_heading,text='OBSERVATION PASSIVE  /  COLLECTE UNIQUEMENT')
+                configure_if_changed(self.home_advice_label,text='Observation sans conseils',fg=GOLD)
+                configure_if_changed(self.home_advice_detail,text='Détection des tentatives et statistiques locales actives. Aucune rune recommandée.')
+                configure_if_changed(self.player_risk_label,text='Mode collecte : recommandations désactivées')
                 self._update_main_rune_icon('')
             if hasattr(self,'overlay'):
                 self.overlay.show_advice(self.waiting_for_item_label() or 'Observation', 'collecte')
             return
         if hasattr(self,'advice_heading'):
-            self.advice_heading.configure(text='CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE')
+            configure_if_changed(self.advice_heading,text='CONSEIL DE FORGEMAGIE  /  PROCHAINE RUNE')
         proposal=self.strategy_current()
         self.current_proposal=proposal
         review_tick(self,proposal)
         if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
-            self.strategy_headline.configure(text=proposal.summary)
+            configure_if_changed(self.strategy_headline,text=proposal.summary)
         if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
-            self.strategy_explanation.configure(text=self.expert_detail(proposal))
+            configure_if_changed(self.strategy_explanation,text=self.expert_detail(proposal))
         targets={k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None}
         signal=player_signal(proposal,self.live_jet,targets,self.live_pool,
             self.active_equipment_verified,self.live_after_fusion,self.goal_mode.get())
@@ -740,11 +761,13 @@ class Forgely(tk.Tk):
                     classification = ' · Jet : ' + ', '.join(f'{k} {v}' for k,v in counts.items())
                 else:
                     classification = ' · Naturel/exo : fiche non vérifiée'
-            self.player_risk_label.configure(text=f'Risque indicatif : {signal.risk} · {self.goal_mode.get()}{classification}')
+            configure_if_changed(self.player_risk_label,text=f'Risque indicatif : {signal.risk} · {self.goal_mode.get()}{classification}')
         if hasattr(self,'home_advice_label'):
-            self.home_advice_label.configure(text=signal.title,fg=GOLD if signal.stop else GREEN if proposal.rune else GOLD)
+            configure_if_changed(self.home_advice_label,text=signal.title,fg=GOLD if signal.stop else GREEN if proposal.rune else GOLD)
 
-            self.home_advice_detail.configure(text=signal.detail + '  ' + proposal.explanation)
+            detail=signal.detail+'  '+proposal.explanation
+            detail=detail[:207].rstrip()+'…' if len(detail)>210 else detail
+            configure_if_changed(self.home_advice_detail,text=detail)
             self._update_main_rune_icon(proposal.rune if not signal.stop else '')
         if hasattr(self,'overlay'):
             self.overlay.show_advice(self.waiting_for_item_label() or ('STOP' if signal.stop else signal.title), signal.risk)
@@ -756,6 +779,9 @@ class Forgely(tk.Tk):
         if not hasattr(self, 'main_rune_icon'):
             return
         path = rune_icon_path(rune or '')
+        from forgely_runtime_cache import file_revision
+        key=(id(self.main_rune_icon),rune,file_revision(path) if path is not None else None)
+        if getattr(self,'_last_main_rune_icon_key',None)==key:return
         if path is not None:
             try:
                 with Image.open(path) as source:
@@ -763,11 +789,13 @@ class Forgely(tk.Tk):
                     picture.thumbnail((58, 58), Image.Resampling.LANCZOS)
                     self.main_rune_photo = ImageTk.PhotoImage(picture)
                 self.main_rune_icon.configure(image=self.main_rune_photo, text='', width=64, height=64)
+                self._last_main_rune_icon_key=key
                 return
             except (OSError, ValueError, tk.TclError):
                 pass
         self.main_rune_photo = None
         self.main_rune_icon.configure(image='', text='FM', width=5, height=3)
+        self._last_main_rune_icon_key=key
 
     def show_copilot_rules(self):
         popup=tk.Toplevel(self);popup.title('Forgely — Règles et poids des runes')
@@ -1279,6 +1307,8 @@ class Forgely(tk.Tk):
                    'LECTURE RAPIDE (PROVISOIRE) : '+getattr(self, 'fast_preview_reason', 'Non démarrée'),
                    'DÉTAILS LECTURE RAPIDE : '+repr(getattr(self, 'fast_preview_details', {})),
                    'PERFORMANCES LECTURE RAPIDE (ms) : '+repr(self.fast_preview_performance.snapshot() if hasattr(self, 'fast_preview_performance') else {}),
+                   'PERFORMANCES CONSEILS (ms) : '+repr(self.advice_performance.snapshot() if isinstance(getattr(self,'advice_performance',None),PerformanceTracker) else {}),
+                   'CACHE CONSEILS : '+repr({'hits':getattr(getattr(self,'_advice_cache',None),'hits',0),'misses':getattr(getattr(self,'_advice_cache',None),'misses',0)}),
                    'LECTURES : '+str(self.scan_count),
                    'RETARD DERNIÈRE OBSERVATION : '+(f'{self.last_observation_delay_ms:.0f} ms' if self.last_observation_delay_ms is not None else 'Non mesuré'),
                    'RETARD IDENTIFICATION OBJET : '+str(getattr(self,'last_identity_delay_ms',None))+' ms',
@@ -1618,7 +1648,8 @@ class Forgely(tk.Tk):
                     last_invalid_generation=generation
             # The latest-frame mailbox prevents backlog. Faster lightweight
             # capture reduces the age of the frame available after OCR ends.
-            stop_event.wait(self._capture_interval)
+            elapsed=max(0.,(forgely_perf_ns()-started)/1_000_000_000)
+            stop_event.wait(capture_wait(self._capture_interval,elapsed))
         capture.close()
 
     def item_identity_worker(self):
@@ -2490,7 +2521,7 @@ class Forgely(tk.Tk):
             self.pending=None;self.detect_label.configure(text='Tentative enregistrée ✓')
             self.detect_help.configure(text='Enregistrée localement et confirmée')
             self.overlay.state_color('active' if self.running else 'paused')
-            self.refresh_stats();popup.destroy()
+            self.refresh_stats_now();popup.destroy()
         def reject():
             self.pending=None;self.detect_label.configure(text='Détection ignorée');popup.destroy()
         self.button(row,'Ignorer',reject).pack(side='left')
@@ -2503,7 +2534,7 @@ class Forgely(tk.Tk):
         try:insert_observation(self.item.get(),self.rune.get(),outcome,'manual')
         except Exception as e:messagebox.showerror('Erreur',str(e));return
         self.status.set(f'Enregistré localement : {self.rune.get()} · {outcome}')
-        self.refresh_stats()
+        self.refresh_stats_now()
 
     def refresh_stats(self):
         self.refresh_stats_now()

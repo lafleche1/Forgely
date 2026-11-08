@@ -153,37 +153,42 @@ def recognize_item_header(image, ocr, registered):
     return None, candidate, combined
 
 
+@lru_cache(maxsize=4)
+def _registered_index(names):
+    exact={};lengths={};width=0
+    for index,name in enumerate(names):
+        normalized=key_for(name)
+        if len(normalized)>=4:
+            exact.setdefault(normalized,[]).append(index)
+            width=max(width,len(normalized.split()))
+        if len(normalized)>=6:lengths.setdefault(len(normalized),[]).append((normalized,name))
+    return exact,lengths,width
+
+
 def identify_known(text, registered):
-    """Find exactly one registered name; refuse ambiguity or partial guesses."""
-    hay = key_for(text)
-    if not hay:
-        return None
-    exact = [name for _, name in registered if len(key_for(name)) >= 4 and
-             re.search(r'(?<!\w)' + re.escape(key_for(name)) + r'(?!\w)', hay)]
-    if len(exact) == 1:
-        return exact[0]
-    if exact:
-        return None
-    # OCR often replaces one glyph. Only compare complete OCR lines, not random
-    # substrings of the screen, and require an unambiguous large margin.
-    candidates = []
+    """Indexed exact and length-filtered fuzzy search, with unchanged ambiguity guards."""
+    hay=key_for(text)
+    if not hay:return None
+    names=tuple(name for _,name in registered)
+    exact,lengths,width=_registered_index(names)
+    words=hay.split();matches=set()
+    for start in range(len(words)):
+        for end in range(start+1,min(len(words),start+width)+1):
+            matches.update(exact.get(' '.join(words[start:end]),()))
+    if len(matches)==1:return names[next(iter(matches))]
+    if matches:return None
+    candidates=[]
     for line in (text or '').splitlines():
-        line_key = key_for(line)
-        if not 6 <= len(line_key) <= 70:
-            continue
-        for _, name in registered:
-            target = key_for(name)
-            if len(target) < 6 or abs(len(line_key)-len(target)) > 2:
-                continue
-            ratio = SequenceMatcher(None, line_key, target).ratio()
-            if ratio >= .91:
-                candidates.append((ratio, name))
-    if not candidates:
-        return None
+        line_key=key_for(line)
+        if not 6<=len(line_key)<=70:continue
+        for length in range(len(line_key)-2,len(line_key)+3):
+            for target,name in lengths.get(length,()):
+                ratio=SequenceMatcher(None,line_key,target).ratio()
+                if ratio>=.91:candidates.append((ratio,name))
+    if not candidates:return None
     candidates.sort(reverse=True)
-    best_score, best_name = candidates[0]
-    if any(name != best_name and best_score - score < .08 for score, name in candidates[1:]):
-        return None
+    best_score,best_name=candidates[0]
+    if any(name!=best_name and best_score-score<.08 for score,name in candidates[1:]):return None
     return best_name
 
 
@@ -200,3 +205,4 @@ def possible_unknown(text):
                 and not any(x in folded.replace(' ','') for x in ('reliquat','joaillomagie','fusionner')):
             lines.append(line)
     return lines[:2]
+

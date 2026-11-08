@@ -10,6 +10,7 @@ from pathlib import Path
 from forgely_data import DB_FILE
 from forgely_probabilites import wilson
 from forgely_rules import finite_number
+from forgely_runtime_cache import database_revision
 
 
 def pool_bucket(value):
@@ -70,6 +71,7 @@ class LiveLaboratory:
         self._stop=threading.Event();self._wake=threading.Event()
         self._lock=threading.Lock();self._snapshot={'groups':{},'observations':0,'rejected':0}
         self.last_error=None;self._thread=None
+        self._revision=0;self._requests=0;self._last_request=-1;self._last_database_revision=None
 
     def start(self):
         if self._thread is None or not self._thread.is_alive():
@@ -77,14 +79,28 @@ class LiveLaboratory:
             self._thread.start()
 
     def notify_observation(self):
+        with self._lock:self._requests+=1
         self._wake.set()
+
+    @property
+    def revision(self):
+        with self._lock:return self._revision
+
+    def refresh_if_changed(self):
+        signature=database_revision(self.db_file)
+        with self._lock:
+            request=self._requests
+            if signature==self._last_database_revision and request==self._last_request:return False
+        snapshot=compute_snapshot(self.db_file,minimum=self.minimum)
+        with self._lock:
+            self._snapshot=snapshot;self.last_error=None;self._revision+=1
+            self._last_database_revision=signature;self._last_request=request
+        return True
 
     def _run(self):
         while not self._stop.is_set():
             try:
-                snapshot=compute_snapshot(self.db_file,minimum=self.minimum)
-                with self._lock:
-                    self._snapshot=snapshot;self.last_error=None
+                self.refresh_if_changed()
             except (sqlite3.Error,OSError,ValueError) as exc:
                 with self._lock: self.last_error=str(exc)
             self._wake.wait(self.interval);self._wake.clear()

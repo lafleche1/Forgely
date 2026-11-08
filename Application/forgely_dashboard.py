@@ -2,6 +2,7 @@
 import tkinter as tk
 from tkinter import ttk
 from forgely_session_ui import show_review
+from forgely_runtime_cache import configure_if_changed
 
 
 def stat_rows(observed, targets, *, verified=False):
@@ -216,7 +217,7 @@ class AtelierDashboard:
     def _resize_advice(self, event):
         for name in ('advice_heading', 'home_advice_label', 'home_advice_detail',
                      'plan_action_lbl', 'plan_explain_lbl', 'player_risk_label'):
-            getattr(self.app, name).configure(wraplength=max(190, event.width-38))
+            configure_if_changed(getattr(self.app,name),wraplength=max(190,event.width-38))
         if event.height < 350:
             self.app.main_rune_icon.pack_forget()
         elif not self.app.main_rune_icon.winfo_manager():
@@ -269,14 +270,14 @@ class AtelierDashboard:
             for stat, value, target, state, tag in rows:
                 self.table.insert('', 'end', values=(stat, value, target, state), tags=(tag,))
         if rows:
-            self.empty_label.place_forget()
+            if self.empty_label.winfo_manager():self.empty_label.place_forget()
         else:
             self.empty_label.place(relx=.5, rely=.52, anchor='center')
         caption = 'Lecture confirmée de l’équipement' if verified else 'Lecture provisoire · à confirmer' if observed else 'Aucune lecture disponible'
-        self.reading_label.configure(text=caption)
+        configure_if_changed(self.reading_label,text=caption)
         pool = app.live_pool if verified else app.workshop_readings.partial_pool
         if not app.workshop_active:
             pool = None
         amount = '—' if pool is None else f'{pool:g}'.replace('.', ',')
-        self.pool_label.configure(text='Puits ' + amount + ('  ·  confirmé' if verified and pool is not None else '  ·  provisoire' if pool is not None else '  ·  en attente de lecture'))
+        configure_if_changed(self.pool_label,text='Puits ' + amount + ('  ·  confirmé' if verified and pool is not None else '  ·  provisoire' if pool is not None else '  ·  en attente de lecture'))
 

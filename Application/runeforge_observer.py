@@ -6,6 +6,7 @@ DOFUS's actual UI until screen captures have been evaluated.
 """
 from __future__ import annotations
 import re
+from functools import lru_cache
 import unicodedata
 from dataclasses import dataclass
 
@@ -28,22 +29,18 @@ def find_outcome(ocr_text: str):
     return next(iter(hits)) if len(hits) == 1 else None
 
 
-def find_rune(ocr_text: str, rune_names):
-    """Require explicit 'rune' prefix to avoid confusing item stats for uses.
+@lru_cache(maxsize=8)
+def _rune_patterns(rune_names):
+    return tuple((rune,re.compile(r'\brune\s+(?:de\s+)?'+
+        r'\s+'.join(re.escape(part) for part in normalized(rune).split())+r'\b'))
+        for rune in sorted(rune_names,key=len,reverse=True))
 
-    Conflicting rune mentions are rejected; do not guess from selection UI.
-    """
-    s = normalized(ocr_text)
-    names = sorted(rune_names, key=len, reverse=True)
-    matched = []
-    for rune in names:
-        name = normalized(rune)
-        # Allow multiple spaces, but never match 'Vi' inside 'Ra Vi'.
-        body = r'\s+'.join(re.escape(part) for part in name.split())
-        pat = rf'\brune\s+(?:de\s+)?{body}\b'
-        if re.search(pat, s):
-            matched.append(rune)
-    return matched[0] if len(matched) == 1 else None
+
+def find_rune(ocr_text: str,rune_names):
+    """Require the explicit rune prefix; retain every ambiguity check."""
+    text=normalized(ocr_text)
+    matched=[rune for rune,pattern in _rune_patterns(tuple(rune_names)) if pattern.search(text)]
+    return matched[0] if len(matched)==1 else None
 
 
 @dataclass(frozen=True)
@@ -81,3 +78,4 @@ def extract_text(image, tesseract_cmd=''):
     # One shared cache also coalesces simultaneous preview/observer requests.
     from forgely_ocr_backend import extract_text as recognize
     return recognize(image, tesseract_cmd)
+

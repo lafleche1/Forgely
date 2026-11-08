@@ -47,6 +47,7 @@ def connect(db_file=DB_FILE):
             evidence TEXT NOT NULL DEFAULT '')""")
         conn.execute('INSERT INTO observations SELECT * FROM observations_old')
         conn.execute('DROP TABLE observations_old')
+    conn.execute('CREATE INDEX IF NOT EXISTS obs_item_rune_outcome ON observations(item,rune,outcome)')
     conn.commit()
     return conn
 
@@ -68,6 +69,16 @@ def stats(item='', rune='', db_file=DB_FILE):
     counts={'SC':0,'SN':0,'EC':0}
     counts.update(dict(rows))
     return sum(counts.values()),counts
+
+def stats_by_rune(item,db_file=DB_FILE):
+    """One covering-index query instead of one connection per candidate rune."""
+    with connect(db_file) as db:
+        rows=db.execute('SELECT rune,outcome,count(*) FROM observations WHERE item=? GROUP BY rune,outcome',
+                        (item.strip(),)).fetchall()
+    result={}
+    for rune,outcome,count in rows:result.setdefault(rune,{'SC':0,'SN':0,'EC':0})[outcome]=count
+    return result
+
 
 def recent(limit=8, db_file=DB_FILE):
     with connect(db_file) as db:

@@ -39,6 +39,8 @@ class SessionRecorder:
                 observation_id INTEGER PRIMARY KEY,session TEXT NOT NULL,forecast_id INTEGER,
                 matched INTEGER NOT NULL DEFAULT 0,qualified INTEGER NOT NULL DEFAULT 0,
                 reason TEXT NOT NULL DEFAULT 'transition_absente',before_state TEXT,after_state TEXT,event_frame INTEGER,in_scope INTEGER NOT NULL DEFAULT 1);''')
+            db.execute('CREATE INDEX IF NOT EXISTS eval_forecast_session_unused ON evaluation_forecasts(session,used,id)')
+            db.execute('CREATE INDEX IF NOT EXISTS eval_trials_session ON evaluation_trials(session,observation_id)')
             columns={r[1] for r in db.execute('PRAGMA table_info(evaluation_trials)')}
             for name,kind in (('before_state','TEXT'),('after_state','TEXT'),('event_frame','INTEGER'),('in_scope','INTEGER NOT NULL DEFAULT 1')):
                 if name not in columns:db.execute(f'ALTER TABLE evaluation_trials ADD COLUMN {name} {kind}')

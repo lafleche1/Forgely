@@ -1,6 +1,7 @@
 """Conservative OCR parser for DOFUS workshop effect values."""
 from __future__ import annotations
 import re
+from functools import lru_cache
 import unicodedata
 import threading
 from time import monotonic
@@ -23,7 +24,18 @@ STATS=BASE_STATS+ELEMENTAL_STATS+tuple(f'{element} Résistance' for element in E
 # Longest names first prevents reading 'Dommages' from 'Dommages Feu'.
 SORTED_STATS=sorted(STATS,key=lambda s:len(norm(s)),reverse=True)
 
+@lru_cache(maxsize=2)
+def _stat_patterns(stats):
+    return tuple((stat,re.compile(r'(?<![\w])([+-]?\s*\d{1,5})\s*%?\s*'+
+        re.escape(norm(stat)).replace(r'\ ',r'\s+')+r'(?![\w])')) for stat in stats)
+
+
 def parse_jet(text):
+    return dict(_parse_jet_cached(text,tuple(SORTED_STATS)))
+
+
+@lru_cache(maxsize=128)
+def _parse_jet_cached(text,stats):
     """Only accept explicit numeric effect lines; never infer missing characteristics."""
     found={}
     for raw in text.splitlines():
@@ -35,13 +47,11 @@ def parse_jet(text):
         # Icons can touch the value, and OCR can insert punctuation.
         line=re.sub(r'(?<=\d)[|:]\s*(?=[a-z])', ' ', line)
         # OCR may place the percent sign before or after the number.
-        for stat in SORTED_STATS:
-            label=norm(stat)
+        for stat,pattern in _stat_patterns(stats):
             # Avoid matching generic names within longer labels.
             # A leading icon often becomes an OCR glyph directly before the number.
             # Require a number immediately before the stat, not the Min/Max columns.
-            pattern=r'(?<![\w])([+-]?\s*\d{1,5})\s*%?\s*'+re.escape(label).replace(r'\ ',r'\s+')+r'(?![\w])'
-            m=re.search(pattern,line)
+            m=pattern.search(line)
             if not m:continue
             end=line[m.end():].lstrip()
             if stat=='Dommages' and end and end[0].isalpha():
@@ -59,7 +69,7 @@ def parse_jet(text):
             if key in found and found[key]!=value:found[key]=None
             else:found[key]=value
             break
-    return {k:v for k,v in found.items() if v is not None}
+    return tuple((k,v) for k,v in found.items() if v is not None)
 
 def read_jet(image,extract_text):
     w,h=image.size
@@ -354,4 +364,5 @@ def read_effects_ocr(patch, ocr):
         except Exception:
             pass
     return text
+
 

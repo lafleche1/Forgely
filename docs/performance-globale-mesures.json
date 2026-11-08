@@ -1,0 +1,54 @@
+{
+  "before": {
+    "note": "Linux/Python offline; données fictives. Ne mesure pas la capture Windows ni la latence OCR réelle en jeu.",
+    "registered_names": 2001,
+    "observations": 30000,
+    "name_lookup": {
+      "p50_ms": 81.3398,
+      "p95_ms": 88.2026,
+      "calls": 15
+    },
+    "natural_bounds": {
+      "p50_ms": 70.1674,
+      "p95_ms": 73.7121,
+      "calls": 15
+    },
+    "stable_advice": {
+      "p50_ms": 27.203,
+      "p95_ms": 31.6098,
+      "calls": 30
+    },
+    "changed_state_advice": {
+      "p50_ms": 26.7475,
+      "p95_ms": 28.5827,
+      "calls": 30
+    },
+    "selected_rune": "Fo"
+  },
+  "after": {
+    "note": "Linux/Python offline; données fictives. Ne mesure pas la capture Windows ni la latence OCR réelle en jeu.",
+    "registered_names": 2001,
+    "observations": 30000,
+    "name_lookup": {
+      "p50_ms": 0.0632,
+      "p95_ms": 0.0888,
+      "calls": 15
+    },
+    "natural_bounds": {
+      "p50_ms": 0.014,
+      "p95_ms": 0.0226,
+      "calls": 15
+    },
+    "stable_advice": {
+      "p50_ms": 0.1346,
+      "p95_ms": 0.2205,
+      "calls": 30
+    },
+    "changed_state_advice": {
+      "p50_ms": 4.3276,
+      "p95_ms": 5.3237,
+      "calls": 30
+    },
+    "selected_rune": "Fo"
+  }
+}

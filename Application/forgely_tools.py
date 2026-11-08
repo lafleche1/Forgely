@@ -127,14 +127,24 @@ def import_bounds_csv(source,target=BOUNDS_PATH):
     target.with_suffix('.tmp').replace(target)
     return len(entries)
 
-def natural_bounds(item,path=BOUNDS_PATH):
-    result={}
-    try:
-        with open(path,newline='',encoding='utf8') as f:
-            for row in csv.DictReader(f):
-                if key_for(row['equipement'])==key_for(item):result[row['statistique']]=(int(row['min']),int(row['max']))
-    except (OSError,ValueError,KeyError):return {}
+@lru_cache(maxsize=4)
+def _bounds_index(path,revision):
+    result={};invalid=set()
+    with open(path,newline='',encoding='utf8') as f:
+        for row in csv.DictReader(f):
+            name=key_for(row['equipement'])
+            try:
+                result.setdefault(name,{})[row['statistique']]=(int(row['min']),int(row['max']))
+            except (ValueError,KeyError):invalid.add(name)
+    for name in invalid:result.pop(name,None)
     return result
+
+
+def natural_bounds(item,path=BOUNDS_PATH):
+    from forgely_runtime_cache import file_revision
+    path=Path(path).absolute()
+    try:return dict(_bounds_index(path,file_revision(path)).get(key_for(item),{}))
+    except (OSError,ValueError,KeyError):return {}
 
 def export_observations_csv(target,db_file=DB_FILE,only_item=None):
     """CSV export of real observations, not simulated scenarios."""
