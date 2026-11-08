@@ -1,5 +1,10 @@
 # Forgely
 
+Le copilote dispose d’un [protocole expert corrigé et de ses règles actives](docs/REGLES_ACTIVES_FORGELY.md),
+d’un [audit des conflits avec les deux prompts](docs/AUDIT_CONFLITS_PROMPTS.md)
+et d’un [référentiel des 105 runes et de leur provenance](docs/POIDS_RUNES.md).
+Les règles et les poids sont aussi consultables dans **Outils → Règles du copilote et poids des runes**.
+
 Application Windows d'assistance à l'observation de la forgemagie DOFUS.
 
 Deux objectifs sont proposés dans le conseil : **Chances maximales** et **Budget
@@ -46,5 +51,6 @@ Tests : `python -m pip install -r requirements-dev.txt`, puis `python -m pytest 
 ## Confidentialité
 
 Ne pas publier de captures contenant des informations personnelles, des identifiants, des journaux privés ou des secrets.
+
 
 

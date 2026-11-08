@@ -35,7 +35,7 @@ def apply_update(root, payload):
         current = digest(target) if target.exists() else None
         if current == row['after']:
             continue
-        if current != row['before']:
+        if current not in [row['before'], *row.get('before_versions', [])]:
             raise ValueError(f'Version locale différente : {relative}. Aucun fichier remplacé. '
                              'Utilise la dernière version GitHub ou fais adapter la mise à jour à tes sources.')
         pending.append((relative, target, source))
@@ -67,14 +67,15 @@ def apply_update(root, payload):
 def main():
     root = Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).resolve().parents[1]
     try:
-        backup = apply_update(root, root / 'mise_a_jour_prix_tylezia')
+        payload = root / (sys.argv[2] if len(sys.argv) > 2 else 'mise_a_jour_prix_tylezia')
+        backup = apply_update(root, payload)
     except (OSError, ValueError, KeyError) as exc:
         print('Mise à jour non appliquée :', exc)
         return 1
     print('Fichiers mis à jour.' if backup else 'Cette mise à jour est déjà installée.')
     if backup:
         print('Sauvegarde :', backup)
-    print('Relance OUVRIR FORGELY.bat : les prix Tylezia seront activés au démarrage.')
+    print('Relance OUVRIR FORGELY.bat pour charger les nouvelles règles et références.')
     return 0
 
 

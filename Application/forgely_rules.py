@@ -1,7 +1,8 @@
-"""Dofocus weights and conservative Forgely constraints, checked 2026-11-07.
+"""Client-derived weights and conservative Forgely constraints, checked 2026-11-08.
 
 Not the proprietary success algorithm. A partial profile never proves absence.
-Reference: https://dofocus.fr/forgemagie/
+Weights: versioned client extraction in forgely_weights; not publisher verified.
+Simulator display contexts: https://dofocus.fr/forgemagie/
 The retained 101 line/exotic guards are Forgely policy, not a reconstructed
 Dofocus formula. Historical background remains in docs/FM_DOUBLE_OBJECTIF.md.
 """
@@ -78,3 +79,4 @@ def objective_mode(value):
     if value in (*MODES, 'Prudent', 'Rapide', 'Jet parfait'):
         return MODES[0]
     raise ValueError('Mode de recommandation inconnu')
+

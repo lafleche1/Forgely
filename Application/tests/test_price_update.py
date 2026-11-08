@@ -52,3 +52,13 @@ def test_corrupted_payload_is_rejected_before_writing(tmp_path):
     with pytest.raises(ValueError):
         updater().apply_update(root, payload)
     assert (root / 'Application/forgely.py').read_text() == 'original\n'
+
+
+def test_update_accepts_an_explicitly_supported_prior_release(tmp_path):
+    root, payload = fixture(tmp_path)
+    (root / 'Application/forgely.py').write_text('prior release\n')
+    manifest=json.loads((payload/'manifest.json').read_text())
+    manifest['files'][0]['before_versions']=[hashlib.sha256(b'prior release\n').hexdigest()]
+    (payload/'manifest.json').write_text(json.dumps(manifest))
+    updater().apply_update(root,payload)
+    assert (root / 'Application/forgely.py').read_text()=='updated\n'

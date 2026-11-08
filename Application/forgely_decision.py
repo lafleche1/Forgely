@@ -130,6 +130,10 @@ def candidates(jets, targets, natural_max=None, pool=None, counts_for=None, *,
                 score = utility - .04 * ref.weight / 100 - finish_penalty
             available.append((score, rune, stat, kind, ref, base, obs,
                               extra_mass(modified, natural_max), current, goal))
+    # Restore an available targeted natural line before risking a final over/exo.
+    # This priority is independent of the rune prices, unlike the soft score.
+    if pending_natural and any(row[3] == 'fm_classique' for row in available):
+        available = [row for row in available if row[3] not in ('exo', 'over')]
     return sorted(available, key=lambda x: (-x[0], x[1]))
 
 
@@ -211,7 +215,7 @@ def advise(jets, targets, natural_max=None, pool=None, counts_for=None, after_fu
     explanation+='Choix de rune indicatif selon l’objectif, sans garantie de réussite.'
     alternatives = [{'rune': row[1], 'stat': row[2], 'score': round(row[0], 6),
                      'price': (prices or {}).get(row[1])} for row in options[:5]]
-    return Proposal(rune, kind, f'À envisager : {rune}', explanation, 'Dofocus · référence de base ; classement Forgely',
+    return Proposal(rune, kind, f'À envisager : {rune}', explanation, 'Densités du client · relevés Dofocus séparés ; classement Forgely',
                     {'observed': obs, 'benchmark': base,'dofocus':sampled,
                      'objective': {'mode': mode, 'remaining_budget': remaining_budget,
                                    'exposed_weight': exposure, 'alternatives': alternatives,

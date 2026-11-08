@@ -18,6 +18,7 @@ SOURCES = {
  'dofocus_about': 'https://www.dofocus.fr/about/',
  'dofusdb': 'https://beta.dofusdb.fr/en/database/objects',
  'portals': 'https://dofus-portals.fr/forgemagie/',
+ 'client_extraction': 'https://github.com/ledouxm/dofus-sqlite/releases/tag/v6.0_3.7.13.17',
 }
 
 @dataclass(frozen=True)
@@ -29,6 +30,7 @@ class Fact:
     scope: str = 'fm'
 
 FACTS = (
+ Fact('runtime_weights', 'Les densités actives proviennent d’une extraction tierce du client 3.7.13.17, datée et vérifiée par empreintes des fichiers ; elles ne sont pas certifiées par une publication officielle Ankama. La Signature reste hors combat.', ('client_extraction',), 'donnees_client_extraites_non_certifiees_editeur'),
  Fact('outcomes', 'SC ajoute sans perte ; SN ajoute avec pertes possibles ; EC ne donne pas le bonus et peut dégrader le jet.', ('fashionista','jeuxonline'), 'communautaire_concordant'),
  Fact('weight', 'Poids de la rune = quantité ajoutée × poids unitaire de la caractéristique.', ('jeuxonline','dofuspourlesnoobs'), 'communautaire_concordant'),
  Fact('pool', 'Le reliquat résulte des pertes de poids excédentaires et peut absorber des pertes futures ; ne pas le confondre avec les manques au jet parfait.', ('jeuxonline','fashionista'), 'communautaire_concordant'),
@@ -49,7 +51,7 @@ FACTS = (
 
 # Divergences identifiées dans les guides : aucune correction silencieuse.
 CONFLICTS = {
- 'rune_vi': {'issue': 'Un tableau récent affiche une entrée Vi incohérente avec les tableaux classiques (+5 vita, poids 1).', 'sources': ('dofuspourlesnoobs','jeuxonline'), 'policy':'conserver les valeurs catalogue déjà testées ; exiger confirmation en jeu avant modification'},
+ 'rune_vi': {'issue': 'Un tableau récent affiche une entrée Vi incohérente avec les tableaux classiques (+5 vita, poids 1).', 'sources': ('dofuspourlesnoobs','jeuxonline','client_extraction'), 'policy':'utiliser le référentiel client versionné (+5, poids 1), préserver la provenance non certifiée éditeur ; ne pas importer la valeur ambiguë du guide'},
  'resistances_fixes': {'issue': 'Certains guides attribuent 2 par point de résistance fixe, un autre tableau emploie 6 ; vérifier le type exact de résistance.', 'sources': ('wiki','portals'), 'policy':'ne jamais remplacer la table de poids sans vérification de l’intitulé et du jeu'},
  'puit_estime': {'issue': 'Le manque au jet parfait ne constitue pas en soi le reliquat réel disponible.', 'sources': ('fashionista','jeuxonline'), 'policy':'reliquat non lu = inconnu, jamais déduit du jet'},
  'wax': {'issue': 'Un wiki de serveur alternatif utilise des règles propres au serveur.', 'sources': (), 'policy':'exclure des paramètres de DOFUS officiel'},
@@ -72,4 +74,5 @@ def sources_for(key):
     for fact in FACTS:
         if fact.key==key:return tuple(SOURCES[k] for k in fact.sources)
     raise KeyError(key)
+
 

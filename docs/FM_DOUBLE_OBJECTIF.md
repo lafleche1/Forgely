@@ -1,5 +1,12 @@
 # Deux modes de recommandation
 
+Actualisation du 8 novembre 2026 : les densités sont partagées à partir de
+l’extraction versionnée du client 3.7.13.17, pas des taux du simulateur Dofocus.
+Voir [les poids et leur provenance](POIDS_RUNES.md). Une remontée naturelle ciblée
+disponible est prioritaire sur une finition over/exo dans les deux modes.
+Les [règles actives détaillées](REGLES_ACTIVES_FORGELY.md) et
+l’[audit des prompts](AUDIT_CONFLITS_PROMPTS.md) décrivent les limites du protocole.
+
 Dans « Détail de la recommandation », sélectionner **Chances maximales** ou
 **Budget optimisé**. Le choix est conservé. Les deux modes utilisent les mêmes
 lectures confirmées, objectifs et contraintes de forgemagie.
@@ -69,3 +76,4 @@ incluant les remontages. Éviter de valider le moteur sur ses propres simulation
 
 Tests : `python -m pytest -q`. Les tests graphiques nécessitent un affichage et
 `FORGELY_GUI_TESTS=1` ; l'OCR et la capture Windows doivent être vérifiés en jeu.
+

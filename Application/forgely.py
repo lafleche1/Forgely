@@ -51,6 +51,7 @@ from forgely_tools import (read_settings,save_settings,STRATEGIES,session_cost,o
     export_observations_csv,export_item_summary,backup_local,import_bounds_csv,
     natural_bounds,illustrative_scenario,advisory_status)
 from forgely_tools import activate_tylezia_reference, price_reference_label
+from forgely_expert import build_dashboard, render_dashboard, audit_transition, rules_text
 from forgely_gallery import verify_goal,save_success,list_successes,export_gallery_json
 
 BG='#211F1B'; PANEL='#302C26'; PANEL2='#423B30'; ACCENT='#778F35'; GOLD='#E0C28C'
@@ -483,6 +484,7 @@ class Forgely(tk.Tk):
         self.live_after_fusion=True
         self.pre_fusion_sample=None
         self.pending_transition=None
+        self.last_transition_audit=None
         self.context_saved=0
         self.context_rejected=0
         self.current_proposal=None
@@ -554,6 +556,7 @@ class Forgely(tk.Tk):
             ('🌐 Actualiser les jets théoriques DOFUS 3',self.update_public_references),
             ('Réussites, kamas et sauvegarde',self.open_workbench),
             ('Prix des runes et budget',self.open_budget),
+            ('Règles du copilote et poids des runes',self.show_copilot_rules),
             ('Calibrer la reconnaissance des runes',self.learn_icon),
             ('Diagnostic OCR',self.show_ocr_diagnostic),
             ('Exporter les zones de lecture',self.request_debug_capture),
@@ -655,7 +658,25 @@ class Forgely(tk.Tk):
                         "Échantillon OCR non vérifié : indicatif seulement, pas une probabilité calibrée.")
                     proposal=replace(proposal,explanation=proposal.explanation+context_text,
                         evidence='Dofocus · référence ; observations OCR exploratoires séparées')
-        return proposal
+        previous=getattr(self,'last_transition_audit',None)
+        audit=(previous['audit'] if previous and previous['item']==self.item.get().strip()
+               and previous['after']=={'jet':jets,'pool':pool} else None)
+        board=build_dashboard(proposal,jets,targets,pool,
+            natural_max={s:v[1] for s,v in bounds.items()} if bounds else None,
+            item=self.item.get().strip(),profile_complete=False,
+            mode=cfg['strategy'],prices=cfg['prices'],remaining_budget=remaining,
+            verified=self.active_equipment_verified,after_fusion=self.live_after_fusion,
+            last_transition=audit)
+        from dataclasses import replace
+        return replace(proposal,estimates=dict(proposal.estimates or {},expert=board))
+
+    def expert_detail(self,proposal):
+        board=(proposal.estimates or {}).get('expert')
+        if board is None:
+            targets={k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None}
+            board=build_dashboard(proposal,self.live_jet or {},targets,self.live_pool,
+                verified=self.active_equipment_verified,after_fusion=self.live_after_fusion)
+        return render_dashboard(board)+'\n\nDétail du classement :\n'+proposal.explanation
 
     def waiting_for_item_label(self):
         """Small overlay message while the workshop is readable but item is not."""
@@ -694,7 +715,7 @@ class Forgely(tk.Tk):
         if getattr(self,'strategy_headline',None) is not None and self.strategy_headline.winfo_exists():
             self.strategy_headline.configure(text=proposal.summary)
         if getattr(self,'strategy_explanation',None) is not None and self.strategy_explanation.winfo_exists():
-            self.strategy_explanation.configure(text=proposal.explanation)
+            self.strategy_explanation.configure(text=self.expert_detail(proposal))
         targets={k:v['target'] for k,v in (self.plan or {}).get('stats',{}).items() if v.get('target') is not None}
         signal=player_signal(proposal,self.live_jet,targets,self.live_pool,
             self.active_equipment_verified,self.live_after_fusion,self.goal_mode.get())
@@ -739,6 +760,16 @@ class Forgely(tk.Tk):
                 pass
         self.main_rune_photo = None
         self.main_rune_icon.configure(image='', text='FM', width=5, height=3)
+
+    def show_copilot_rules(self):
+        popup=tk.Toplevel(self);popup.title('Forgely — Règles et poids des runes')
+        popup.configure(bg=BG);popup.geometry('780x650')
+        scroll=ttk.Scrollbar(popup);scroll.pack(side='right',fill='y')
+        text=tk.Text(popup,wrap='word',bg=PANEL,fg=FG,font=(self.ui_fonts['body'],10),
+                     padx=16,pady=16,yscrollcommand=scroll.set)
+        text.pack(fill='both',expand=True);scroll.configure(command=text.yview)
+        text.insert('1.0',rules_text(read_settings()));text.configure(state='disabled')
+        return popup
 
     def open_budget(self):
         """Manual cost planner; never pretends OCR knows the market price."""
@@ -810,7 +841,7 @@ class Forgely(tk.Tk):
         proposal=self.strategy_current()
         self.strategy_headline=self.label(contents,proposal.summary,20,bold=True,color=GREEN,wraplength=620,justify='left')
         self.strategy_headline.pack(anchor='w',padx=22,pady=(0,12))
-        self.strategy_explanation=self.label(contents,proposal.explanation,10,color=FG,wraplength=620,justify='left')
+        self.strategy_explanation=self.label(contents,self.expert_detail(proposal),10,color=FG,wraplength=620,justify='left')
         self.strategy_explanation.pack(anchor='w',padx=22,pady=(0,14))
         self.label(contents,'Les fréquences constatées ne prouvent pas le taux du prochain essai. Aucun clic dans DOFUS.',9,color=MUTED,wraplength=620,justify='left').pack(anchor='w',padx=22,pady=(0,12))
         self.button(contents,'Actualiser le conseil',self.refresh_strategy,primary=True).pack(anchor='w',padx=22)
@@ -1466,6 +1497,7 @@ class Forgely(tk.Tk):
         self.first_item_name_seen=False;self.before_identity_reading=None;self.item_initial_reading=None
         self.history_has_attempts=False
         self.live_jet=None;self.live_pool=None;self.live_after_fusion=True;self.pre_fusion_sample=None
+        self.last_transition_audit=None
         # Never carry a previous session's verified item into a new capture.
         self.active_equipment_verified=False
         self.item_selection_source='none'
@@ -2221,6 +2253,10 @@ class Forgely(tk.Tk):
                                 try:
                                     save_transition(pending['item'],pending['rune'],pending['outcome'],
                                         pending['before'],{'jet':dict(jet),'pool':puits})
+                                    after={'jet':dict(jet),'pool':puits}
+                                    self.last_transition_audit={'item':pending['item'],'after':after,
+                                        'audit':audit_transition(pending['rune'],pending['outcome'],
+                                            pending['before'],after,complete=False)}
                                     self.context_saved += 1
                                     self.live_laboratory.notify_observation()
                                     self.status.set(f'Contexte avant/après sauvegardé : {self.context_saved}')
@@ -2301,6 +2337,7 @@ class Forgely(tk.Tk):
                         self.detect_help.configure(text='Lecture rapide provisoire · analyse complète en cours')
                     self.overlay.state_color('candidate')
                 elif kind=='auto_event':
+                    self.last_transition_audit=None
                     # Save last stable pre-fusion state BEFORE invalidating it.
                     before=(dict(self.live_jet),self.live_pool) if self.live_jet is not None else None
                     self.pre_fusion_sample=(tuple(sorted(before[0].items())),before[1]) if before else None

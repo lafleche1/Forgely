@@ -1,5 +1,11 @@
 # Dofocus, référence des conseils Forgely v22.03
 
+**Actualisation du 8 novembre 2026 :** ce document conserve l’historique des
+relevés de simulation. Les densités actives utilisent maintenant le référentiel
+client versionné commun ([provenance et poids](POIDS_RUNES.md)). Les contextes
+Dofocus restent séparés des observations réelles et ne certifient pas les taux
+du jeu. Le protocole corrigé est décrit dans [les règles actives](REGLES_ACTIVES_FORGELY.md).
+
 À la demande de l'utilisateur, les conseils actifs utilisent désormais Dofocus comme référence de base. Consultation du 7 novembre 2026. Le moteur principal, le résumé du plan et l'ancien point d'entrée de conseil partagent la même décision.
 
 ## Sources et périmètre
@@ -76,3 +82,4 @@ Le constructeur `python Application/preparer_reference_dofocus.py` valide le JSO
 `python Application/preparer_collecte_dofocus.py --limit 64 --output collecte.json` prépare uniquement des entrées à vérifier dans le simulateur. La liste versionnée `docs/dofocus-collection-targets.json` privilégie les familles peu couvertes, répartit les questions entre familles et exclut les cas déjà relevés. Ces cibles ne sont ni des conseils de pose dans DOFUS ni de nouvelles données de réussite. Aucune collecte massive n'est lancée automatiquement.
 
 Mesures et protocole : `docs/PERFORMANCES_REFERENCE_V22_03.md`.
+

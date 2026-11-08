@@ -23,32 +23,20 @@ def key(text):
                             if not unicodedata.combining(c)).split())
 
 
-# Gains/weights: simulator (Vi +5 weighs 1) takes precedence over the
-# brisage guide's ambiguous Vi wording. No success percentages in this table.
-FAMILIES = {
-    'Vitalité': ('Vi',5,.2,(1,3,10)),
-    'Force': ('Fo',1,1,(1,3,10)), 'Intelligence': ('Ine',1,1,(1,3,10)),
-    'Chance': ('Cha',1,1,(1,3,10)), 'Agilité': ('Age',1,1,(1,3,10)),
-    'Sagesse': ('Sa',1,3,(1,3,10)), 'Puissance': ('Pui',1,2,(1,3,10)),
-    'Initiative': ('Ini',10,.1,(1,3,10)), 'Prospection': ('Prospe',1,3,(1,3)),
-    'Pods': ('Pod',10,.25,(1,3,10)), 'PA': ('Ga Pa',1,100,(1,)),
-    'PM': ('Ga Pme',1,90,(1,)), 'Portée': ('Po',1,51,(1,)),
-    'Invocations': ('Invo',1,30,(1,)), 'Coups Critiques': ('Cri',1,10,(1,)),
-    'Soins': ('So',1,10,(1,3)), 'Tacle': ('Tac',1,4,(1,3)),
-    'Fuite': ('Fui',1,4,(1,3)), 'Dommages': ('Do',1,20,(1,)),
-    'Dommages Critiques': ('Do Cri',1,5,(1,3)),
-    'Dommages Poussée': ('Do Pou',1,5,(1,3)),
-    'Dommages Pièges': ('Do Pi',1,5,(1,3)),
-    'Puissance Pièges': ('Per Pi',1,2,(1,3,10)),
-    'Résistance Critique': ('Ré Cri',1,2,(1,3,10)),
-    'Résistance Poussée': ('Ré Pou',1,2,(1,3,10)),
-    'Esquive PA': ('Ré Pa',1,7,(1,3)), 'Esquive PM': ('Ré Pme',1,7,(1,3)),
-    'Retrait PA': ('Ret Pa',1,7,(1,3)), 'Retrait PM': ('Ret Pme',1,7,(1,3)),
-}
-for element in ('Neutre','Terre','Feu','Eau','Air'):
-    FAMILIES[f'Dommages {element}']=(f'Do {element}',1,5,(1,3))
-    FAMILIES[f'Résistance {element}']=(f'Ré {element}',1,2,(1,3,10))
-    FAMILIES[f'% Résistance {element}']=(f'Ré Per {element}',1,6,(1,))
+# Densities come from the versioned client extraction, not simulator percentages.
+# Ordinary stats and tiers are built from actual rune gains, never assumed.
+from forgely_weights import load_weights
+_WEIGHT_DATA = load_weights()
+_GROUPS = {}
+for _row in _WEIGHT_DATA['runes']:
+    if _row['kind'] == 'ordinaire':
+        _GROUPS.setdefault(_row['stat'], []).append(_row)
+FAMILIES = {}
+for _stat, _rows in _GROUPS.items():
+    _rows.sort(key=lambda row: row['gain'])
+    _base = _rows[0]
+    FAMILIES[_stat] = (_base['rune'], _base['gain'], _base['unit_weight'],
+                      tuple(row['gain'] / _base['gain'] for row in _rows))
 
 ALIASES = {key(s):s for s in FAMILIES}
 ALIASES.update({key("Points d'action (PA)"):'PA',key('Points de mouvement (PM)'):'PM',
@@ -91,16 +79,10 @@ class RuneReference:
     weight: float | None
 
 
-RUNE_CHOICES = {}
-RUNE_REFERENCES = {}
-WEIGHT_PER_POINT = {}
-for _stat,(_name,_gain,_unit,_tiers) in FAMILIES.items():
-    WEIGHT_PER_POINT[_stat]=_unit
-    RUNE_CHOICES[_stat]=[]
-    for _prefix,_mult in zip(('', 'Pa ', 'Ra '),_tiers):
-        _rune=_prefix+_name
-        RUNE_CHOICES[_stat].append(_rune)
-        RUNE_REFERENCES[_rune]=RuneReference(_rune,_gain*_mult,_gain*_mult*_unit)
+RUNE_CHOICES = {stat: [row['rune'] for row in rows] for stat, rows in _GROUPS.items()}
+RUNE_REFERENCES = {row['rune']: RuneReference(row['rune'], row['gain'], row['weight'])
+                   for row in _WEIGHT_DATA['runes']}
+WEIGHT_PER_POINT = {stat: rows[0]['unit_weight'] for stat, rows in _GROUPS.items()}
 
 
 def reference(rune):
@@ -223,3 +205,4 @@ def risk_notes(current, proposed, weight, pool, natural_max=None):
     else:
         notes.append('Reliquat au moins égal au poids nominal ; cela ne garantit pas le passage.')
     return notes
+
