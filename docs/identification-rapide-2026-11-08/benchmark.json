@@ -1,0 +1,2828 @@
+{
+  "python": "3.13.17",
+  "platform": "Windows-11-10.0.26300-SP0",
+  "scope": "Oracle category and natural bounds; original artwork + brightness 1.05. No screen crop/OCR timing.",
+  "index_build_ms": 5176.2051,
+  "indexed_items": 2854,
+  "unreadable_item_count": 7,
+  "query_count": 400,
+  "query_latency": {
+    "p50_ms": 0.9096500000000001,
+    "p95_ms": 1.4771249999999991,
+    "p99_ms": 1.7342359999999994,
+    "max_ms": 1.9959
+  },
+  "warm_cache_repeats": 500,
+  "warm_cache_latency": {
+    "p50_ms": 0.3036,
+    "p95_ms": 0.5873499999999996,
+    "p99_ms": 0.7451129999999999,
+    "max_ms": 0.8641
+  },
+  "outcomes": {
+    "correct": 312,
+    "abstained": 88
+  },
+  "trials": [
+    {
+      "item_id": 2423,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2423,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2429,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2429,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19264,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19264,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6920,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6920,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27548,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27548,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9150,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9150,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10980,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10980,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10631,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10631,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19255,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19255,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14065,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14065,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1474,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1474,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19241,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19241,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15195,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15195,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15203,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15203,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14086,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14086,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1484,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1484,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7251,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7251,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11395,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11395,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9131,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9131,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32234,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32234,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11717,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11717,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10976,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10976,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6961,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6961,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8004,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8004,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6928,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6928,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6463,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6463,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 24032,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 24032,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 25215,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 25215,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8719,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8719,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15358,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15358,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14806,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14806,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7194,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7194,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 332,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 332,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 8005,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8005,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7164,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7164,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 250,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 250,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32220,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32220,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1136,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1136,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 334,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 334,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8088,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8088,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7110,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7110,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9135,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9135,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 941,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 941,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11749,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11749,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6782,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 4
+    },
+    {
+      "item_id": 6782,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 4
+    },
+    {
+      "item_id": 8837,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8837,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 194,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 194,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9122,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9122,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9159,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9159,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12849,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12849,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 863,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 3
+    },
+    {
+      "item_id": 863,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 3
+    },
+    {
+      "item_id": 14002,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14002,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 299,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 299,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10848,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10848,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15435,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15435,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10978,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10978,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17588,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17588,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15017,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15017,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6807,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6807,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15196,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15196,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8456,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8456,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8666,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8666,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15500,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15500,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9928,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9928,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 33573,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 33573,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2422,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2422,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6805,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6805,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9177,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9177,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7037,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7037,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8639,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8639,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 26313,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 26313,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32207,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32207,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18005,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18005,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17598,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17598,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17580,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17580,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8007,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8007,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8366,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8366,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19082,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 19082,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7232,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7232,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8642,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8642,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13657,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13657,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 956,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 956,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7231,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 7231,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 13327,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13327,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 33568,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 33568,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 21712,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 3
+    },
+    {
+      "item_id": 21712,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 3
+    },
+    {
+      "item_id": 15742,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15742,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31749,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31749,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18019,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18019,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 16143,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 16143,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23271,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23271,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1700,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1700,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10624,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10624,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10799,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10799,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 156,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 156,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15743,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15743,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17734,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 17734,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18774,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18774,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2803,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2803,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8241,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8241,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 203,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 203,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14580,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14580,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9144,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9144,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8870,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8870,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13017,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13017,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2097,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2097,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8846,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8846,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8247,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8247,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11604,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11604,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15015,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15015,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18591,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18591,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12385,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12385,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15778,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15778,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7886,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7886,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8009,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8009,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 16172,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 16172,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 31789,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31789,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8453,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8453,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2544,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2544,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15186,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15186,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23272,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23272,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 21224,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 21224,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1372,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1372,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8444,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8444,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6983,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6983,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20360,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20360,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1904,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1904,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8701,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8701,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 26010,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 26010,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8993,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8993,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 22429,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 22429,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 24034,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 24034,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32227,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32227,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20355,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20355,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10558,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10558,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7245,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 7245,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 13893,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13893,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11471,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11471,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 712,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 712,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18429,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18429,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1376,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1376,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18780,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18780,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 708,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 708,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15240,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15240,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23627,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23627,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2104,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2104,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6732,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6732,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6761,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6761,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1487,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1487,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10180,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 10180,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27265,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27265,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7012,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7012,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8262,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8262,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 954,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 954,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 25235,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 25235,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7108,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7108,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 271,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 271,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11748,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 11748,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 12858,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12858,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31799,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31799,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13631,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13631,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14886,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 14886,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7157,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7157,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6503,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6503,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 1403,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 1403,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 23625,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 23625,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11601,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11601,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8842,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8842,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31760,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 31760,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12393,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12393,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18590,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18590,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6500,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6500,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32230,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32230,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15191,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15191,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8962,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 12
+    },
+    {
+      "item_id": 8962,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 12
+    },
+    {
+      "item_id": 241,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 241,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9468,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 9468,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6527,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6527,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15996,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 15996,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6990,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6990,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11378,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11378,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18006,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 18006,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7182,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7182,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 202,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 202,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 13659,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13659,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6501,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6501,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 13262,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 13262,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 8226,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 2
+    },
+    {
+      "item_id": 8226,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7513,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 7513,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12391,
+      "variant": "reference",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12391,
+      "variant": "brightness_1.05",
+      "outcome": "abstained",
+      "method": "ambiguous",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8134,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8134,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6949,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 6949,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2070,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2070,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12463,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 12463,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20935,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 20935,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11608,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 11608,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27543,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 27543,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2603,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 2603,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32210,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 32210,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8863,
+      "variant": "reference",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    },
+    {
+      "item_id": 8863,
+      "variant": "brightness_1.05",
+      "outcome": "correct",
+      "method": "icon_bounds",
+      "candidate_count": 1
+    }
+  ]
+}

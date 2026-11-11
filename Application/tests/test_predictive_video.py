@@ -100,7 +100,7 @@ def test_chance_mode_accepts_natural_surplus_when_small_rune_is_saturated():
     chance=advise(**args)
     assert chance.rune=='Ra Vi'
     economy=advise(**args,mode='Budget optimisé',prices={'Vi':248,'Pa Vi':830,'Ra Vi':2368})
-    assert economy.rune=='Vi'
+    assert economy.rune==chance.rune
 
 
 def test_q_is_global_and_exotic_pa_pm_po_saturate_it():

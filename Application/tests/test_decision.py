@@ -28,7 +28,7 @@ class TestDecision(unittest.TestCase):
         a=advise({'PA':0},{'PA':1},natural_max={'Force':100},pool=0)
         self.assertEqual(a.rune,'Ga Pa')
         self.assertIsNone(a.estimates['benchmark']['SC'])
-        self.assertIn('Dofocus',a.evidence)
+        self.assertIn('Modèle FM partagé',a.evidence)
         b=advise({'Force':50},{'Force':60},pool=10)
         self.assertIsNone(b.estimates['benchmark']['SC'])
 

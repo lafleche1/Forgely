@@ -1,3 +1,4 @@
+from forgely_sqlite import database_connection
 import json
 import sqlite3
 import tempfile
@@ -39,7 +40,7 @@ class DofocusStoreTests(unittest.TestCase):
         from forgely_dofocus import REFERENCE_PATH,STORE_PATH,canonical_stat
         from forgely_dofocus_store import ReferenceStore
         store=ReferenceStore(STORE_PATH)
-        with sqlite3.connect(STORE_PATH) as conn:
+        with database_connection(STORE_PATH) as conn:
             metadata=json.loads(conn.execute('SELECT payload FROM metadata').fetchone()[0])
         self.assertEqual(metadata['source_sha256'],sha256(REFERENCE_PATH.read_bytes()).hexdigest())
         for sample in self.data['snapshots']:
@@ -82,7 +83,7 @@ class DofocusStoreTests(unittest.TestCase):
         self.db.write_bytes(b'broken')
         self.assertIsNone(ReferenceStore(self.db).profile('Gelano'))
         self.db.unlink();self.build()
-        with sqlite3.connect(self.db) as conn:conn.execute('PRAGMA user_version=999')
+        with database_connection(self.db) as conn:conn.execute('PRAGMA user_version=999')
         self.assertIsNone(ReferenceStore(self.db).context('Gelano',{'PA':0},0))
 
     def test_advice_does_not_read_authoring_json(self):
@@ -93,7 +94,7 @@ class DofocusStoreTests(unittest.TestCase):
 
     def test_renamed_or_changed_context_payload_is_rejected(self):
         store=self.build()
-        with sqlite3.connect(self.db) as conn:
+        with database_connection(self.db) as conn:
             row=conn.execute('SELECT item_key,state_key,payload FROM contexts LIMIT 1').fetchone()
             payload=json.loads(row[2]);payload['item']='Autre objet'
             conn.execute('UPDATE contexts SET payload=? WHERE item_key=? AND state_key=?',(json.dumps(payload),row[0],row[1]))

@@ -1,0 +1,13 @@
+* text=auto
+*.py text eol=lf
+*.json text eol=lf
+*.csv text eol=lf
+*.md text eol=lf
+*.ini text eol=lf
+*.txt text eol=lf
+*.yml text eol=lf
+*.bat text eol=crlf
+*.ps1 text eol=crlf
+*.sqlite3 -text
+*.png -text
+distribution/parts/* -text

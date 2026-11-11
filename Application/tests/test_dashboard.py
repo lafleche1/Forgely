@@ -13,7 +13,7 @@ class DashboardRowsTests(unittest.TestCase):
 
     def test_provisional_values_never_claim_target_achieved(self):
         self.assertEqual(stat_rows({'Force': 40}, {'Force': 40}, verified=False),
-                         [('Force', '40', '40', 'À confirmer', 'pending')])
+                         [('Force', '40', '40', 'Stabilisation automatique', 'pending')])
 
     def test_confirmed_values_compare_to_target(self):
         rows = stat_rows({'Force': 40, 'Agilité': 29}, {'Force': 40, 'Agilité': 40}, verified=True)

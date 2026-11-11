@@ -25,6 +25,7 @@ class FieldRegressions(unittest.TestCase):
              patch.object(fast, 'current_icon', return_value=self.icon):
             initial = reader.read(self.image, 'DOFUS', lambda _: OLD)
             self.assertEqual(initial.changes, ())
+            self.image.putpixel((300, 350), (255, 0, 0))
             first = reader.read(self.image, 'DOFUS', lambda _: NEW)
             self.assertEqual(first.changes, (('Force', -7),))
             self.assertFalse(first.changes_stable)
@@ -44,7 +45,7 @@ class FieldRegressions(unittest.TestCase):
              patch.object(fast, 'current_icon', return_value=self.icon):
             reader.read(self.image, 'DOFUS', ocr)
             reader.read(self.image, 'DOFUS', ocr)
-        self.assertEqual(zones, ['history', 'history'])
+        self.assertEqual(zones, ['history'])
 
     def test_health_does_not_treat_numbers_as_a_recognized_rune(self):
         report = evaluate(RAW, running=True, item_verified=True, jet_verified=True)

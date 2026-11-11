@@ -20,7 +20,8 @@ def test_step_preserves_sc_and_accounts_losses_on_any_line():
 def test_dynamic_session_recomputes_quality_and_never_writes_real_observations(tmp_path):
     r=simulator.simulate_item({'Force':0},{'Force':20},{'Force':100},100,
         prices={'Fo':36,'Pa Fo':132,'Ra Fo':382},trials=1,max_attempts=20,seed=7,trace_limit=20)
-    assert r['model_version'].startswith('video-')
+    from forgely_fm_model import VERSION
+    assert r['model_version']==VERSION
     assert r['source']=='simulation_modele_dynamique'
     assert r['real_observations_written']==0
     steps=r['trace']

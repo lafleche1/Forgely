@@ -1,0 +1,27 @@
+{
+  "date": "2026-11-07",
+  "capture": {
+    "backend": "mss",
+    "scope": "Capture reelle d'une ROI 320x180, sans sauvegarde des pixels",
+    "samples": 55,
+    "warmup_frames": 5,
+    "p50_ms": 6.9009,
+    "p95_ms": 7.60412,
+    "p99_ms": 8.00317
+  },
+  "processing": {
+    "scope": "Image synthetique 800x480, suivi local du template, HSV, sans lecture de glyphes",
+    "samples": 200,
+    "p50_ms": 0.267,
+    "p95_ms": 0.39776,
+    "p99_ms": 0.507296
+  },
+  "target_total_ms": 5,
+  "target_achieved": false,
+  "limitations": [
+    "Deux mesures separees : ne pas additionner les percentiles comme une mesure de bout en bout.",
+    "Pas de benchmark de reconnaissance sur la police reelle de DOFUS.",
+    "Pas de mesure de l'impact sur les FPS du jeu.",
+    "La recherche globale, les grandes captures et la lecture des glyphes peuvent couter davantage."
+  ]
+}

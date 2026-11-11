@@ -10,6 +10,38 @@ from forgely_data import DB_FILE
 from forgely_simulation_job import simulate_context
 
 
+def confirmed_context(app):
+    from forgely_measured_goals import MeasuredGoals,current_snapshot
+    from forgely_learning import complete_learning_profile
+    measured=getattr(app,'measured_goals',None)
+    snapshot=current_snapshot(app) if isinstance(measured,MeasuredGoals) and measured.targets else None
+    plan=getattr(app,'plan',None) or {}
+    if not app.active_equipment_verified or not app.item.get().strip():
+        raise ValueError('Confirme un équipement avant de simuler.')
+    if isinstance(measured,MeasuredGoals) and measured.targets:
+        if snapshot is None:raise ValueError('Attends la relecture confirmée du jet et du puits.')
+        jets,pool=snapshot;targets=dict(measured.targets)
+    else:
+        if app.live_after_fusion or app.live_jet is None or app.live_pool is None or plan.get('item')!=app.item.get():
+            raise ValueError('Confirme le jet, le puits et les objectifs avant de simuler.')
+        jets,pool=app.live_jet,app.live_pool
+        targets={s:v['target'] for s,v in plan.get('stats',{}).items() if v.get('target') is not None}
+    if not targets:raise ValueError('Définis le jet souhaité avant de simuler.')
+    item=app.item.get().strip()
+    profile=natural_profile(item) or complete_learning_profile(item)
+    complete=profile is not None
+    if profile is None:profile={s:v[1] for s,v in natural_bounds(item).items()}
+    if not profile:raise ValueError('Maxima naturels manquants pour cet objet.')
+    cfg=read_settings();budget=None
+    if cfg.get('budget_kamas'):
+        cost=cost_since(app.budget_start_cursor,cfg['prices'])
+        if not cost['complete']:raise ValueError('Dépenses incomplètes : complète les prix avant de simuler sous budget.')
+        budget=max(0,cfg['budget_kamas']-cost['known_cost'])
+    return deepcopy(dict(item=item,jets=jets,targets=targets,natural_max=profile,
+        profile_complete=complete,pool=pool,prices=cfg['prices'],mode=cfg.get('strategy','Chances maximales'),
+        level=plan.get('level') if plan.get('item')==item else None,budget=budget))
+
+
 def mount_simulator(app,parent,window):
     label=app.label(parent,'SIMULATEUR — modèle dynamique du copilote',12,bold=True)
     label.pack(anchor='w',padx=17,pady=(18,5))
@@ -30,28 +62,9 @@ def mount_simulator(app,parent,window):
     def start():
         if running[0]:return
         try:
-            if (not app.active_equipment_verified or app.live_after_fusion or app.live_jet is None
-                    or app.live_pool is None or not app.plan or app.plan.get('item')!=app.item.get()):
-                raise ValueError('Confirme un objet, son jet, le puits et les objectifs avant de simuler.')
             n=int(sessions.get())
             if not 1<=n<=2000:raise ValueError('Entre 1 et 2000 sessions par lancement.')
-            item=app.item.get().strip()
-            profile=natural_profile(item)
-            complete=profile is not None
-            if profile is None:profile={s:v[1] for s,v in natural_bounds(item).items()}
-            if not profile:raise ValueError('Maxima naturels manquants pour cet objet.')
-            cfg=read_settings()
-            budget=None
-            if cfg.get('budget_kamas'):
-                cost=cost_since(app.budget_start_cursor,cfg['prices'])
-                if not cost['complete']:
-                    raise ValueError('Dépenses de session incomplètes : complète les prix avant de simuler sous budget.')
-                budget=max(0,cfg['budget_kamas']-cost['known_cost'])
-            context=deepcopy({'item':item,'jets':app.live_jet,
-                'targets':{s:v['target'] for s,v in app.plan['stats'].items() if v.get('target') is not None},
-                'natural_max':profile,'profile_complete':complete,'pool':app.live_pool,
-                'prices':cfg['prices'],'mode':cfg['strategy'],'level':app.plan.get('level'),
-                'budget':budget})
+            context=confirmed_context(app)
             loss_mode='uniform' if approximate.get() else 'stop'
         except (ValueError,TypeError) as exc:
             messagebox.showerror('Simulation',str(exc),parent=window);return

@@ -1,0 +1,259 @@
+--- before/Application/forgely_decision.py
++++ Application/forgely_decision.py
+@@ -280,8 +280,7 @@
+             reserve_over=bool(profile_complete and natural_max and stat in natural_max
+                 and stat in ('Vitalité','Force','Intelligence','Chance','Agilité','Sagesse')
+                 and rune.startswith(('Pa ','Ra ')) and (ref.weight<=pool or uncovered_pa)
+-                and current<goal==natural_max[stat]<proposed
+-                and any(s!=stat for s in repair_deficits))
++                and current<goal==natural_max[stat]<proposed)
+             # A known natural maximum can require explicit over intent.
+             # The desired minimum itself never caps an authorized over/exo.
+             if (natural_max is not None and stat in natural_max
+--- before/Application/forgely_predictive.py
++++ Application/forgely_predictive.py
+@@ -67,19 +67,29 @@
+         winner=min(group,key=lambda r:(paths[r[1]]['cost'],-r[0],r[1]))
+         dominated.update(r[1] for r in group if paths[r[1]]['cost']>paths[winner[1]]['cost']+1e-9)
+     repair_rows=[r for r in rows if r[1] not in dominated]
++    def finish_efficiency(row):
++        # Capped target progress per nominal attempt. SC preserves pool;
++        # uncovered non-SC mass is exposure, not an invented mean loss.
++        prediction=row[5].get('prediction') or {}
++        success=_shared_success(row)
++        if success<0:return -1.
++        exposure=max(0.,row[4].weight-pool)/max(1.,row[4].weight)
++        return min(row[4].gain,row[9]-row[8])*success/(1+exposure*(1-prediction['SC']/100))
+     reserves=[r for r in rows if r[5].get('decision_trace',{}).get('reserve_over')
+-              and r[4].weight<=pool]
++              and r[4].weight<=pool
++              and finish_efficiency(r)>max((finish_efficiency(other) for other in rows
++                  if other[2]==r[2] and not other[5].get('decision_trace',{}).get('reserve_over')),default=-1.)]
+     heavy_covered=any(r[3]=='fm_classique' and r[4].weight<=pool
+                       and r[2] not in LIGHT for r in rows)
+     if reserves and not heavy_covered:
+-        # Prefer the least surplus mass: retain a modest reserve rather than
+-        # consuming the entire pool on an unnecessarily large over.
++        # Compare useful weighted progression first; nominal weight only breaks
++        # ties. A covered Pa is never preferred without a better estimate.
+         from forgely_rules import WEIGHTS
+-        reserve=min(reserves,key=lambda r:((r[8]+r[4].gain-natural[r[2]])*WEIGHTS[r[2]],
++        reserve=min(reserves,key=lambda r:(-finish_efficiency(r)*WEIGHTS[r[2]],
+                                           r[4].weight,-r[0],r[1]))
+         rows.sort(key=lambda r:(r[1]!=reserve[1],original_order[r[1]]))
+         return rows,dict(phase=phase,saturation=sat,profile_complete=profile_complete,
+-            reason='Over de réserve couvert par le puits ; surplus sacrifiable, jamais compté comme reliquat acquis.',
++            reason='Finition de réserve couverte : progression plafonnée × taux SC/SN comparés ; surplus sacrifiable, jamais compté comme reliquat acquis.',
+             fallback=False,preferred=[reserve[1]],excluded=[],reserve_over_preferred=True)
+     # Near a natural cap, a Pa may be more plausible than repeatedly trying
+     # a saturated simple rune, even without enough pool. Keep the exposure
+--- before/Application/forgely_rl.py
++++ Application/forgely_rl.py
+@@ -100,8 +100,13 @@
+                 smallest=min(self._spec(r)['gain'] for r in RUNE_CHOICES.get(stat,()))
+                 minimal_finish=(maximum is not None and current<target<=maximum
+                                 and target-current<smallest and spec['gain']==smallest)
++                finish_over=(maximum is not None and current<target==maximum<current+spec['gain']
++                             and stat in ('Vitalité','Force','Intelligence','Chance','Agilité','Sagesse')
++                             and (spec['weight']<=self.pool or rune.startswith('Pa ')
++                                  and stat in ('Force','Intelligence','Chance','Agilité')
++                                  and current>=max(20,.9*maximum)))
+                 if (maximum is not None and target<=maximum<current+spec['gain']
+-                        and not minimal_finish):
++                        and not (minimal_finish or finish_over)):
+                     continue
+                 if self.stock is not None and self.stock.get(rune,0)<=0:continue
+                 if not odds(self.lines,spec,level=self.level).get('blocked'):actions.append(rune)
+--- before/Application/forgely_training.py
++++ Application/forgely_training.py
+@@ -23,7 +23,7 @@
+ from forgely_rules import constraints, finite_number
+ from forgely_probabilites import wilson
+ 
+-POLICY_VERSION = 'exact-state-no-currency-6'
++POLICY_VERSION = 'exact-state-minimum-finish-7'
+ MAX_STATES = 50000
+ from forgely_general_policy import CANDIDATES,make_policy,valid_policy,score_actions,state_scores
+ 
+@@ -181,7 +181,7 @@
+             'reason':'demonstrated_gain' if eligible else 'no_demonstrated_gain'}
+ 
+ 
+-COPILOT_SELECTOR_VERSION='copilot-pool-reserve-over-7'
++COPILOT_SELECTOR_VERSION='copilot-calculated-finish-8'
+ 
+ 
+ def selector_code_digest():
+--- before/Tests/test_minimum_targets.py
++++ Tests/test_minimum_targets.py
+@@ -53,7 +53,7 @@
+     env = ForgemagingEnv([dict(stat='Vitalité', value=299, min=250, max=300, weight=.2)],
+                         10, {'Vitalité': 300})
+     assert 'Vi' in env.get_valid_actions()
+-    assert 'Pa Vi' not in env.get_valid_actions()
++    assert 'Pa Vi' in env.get_valid_actions()  # legal covered finish, compared by the trainer
+ 
+ 
+ def test_nominal_finish_paths_accept_natural_overshoot():
+--- before/Tests/test_cycloide_recommendation.py
++++ Tests/test_cycloide_recommendation.py
+@@ -26,7 +26,7 @@
+     rows=candidates(jets,targets,targets,pool)
+     ordered,meta=rank_options(rows,jets,targets,pool)
+     if pool>=3:
+-        assert ordered[0][1]=='Pa Vi'
++        assert ordered[0][1]=='Pa Age'  # higher capped progression with shared rates
+         assert meta['reserve_over_preferred'] is True
+     else:
+         assert ordered[0][1]=='Pa Age'
+@@ -53,7 +53,7 @@
+ def test_visible_four_targets_compare_pa_reserves_even_without_pool(pool):
+     targets={s:MAX[s] for s in ('Vitalité','Force','Intelligence','Agilité')}
+     p=advise(JET,targets,MAX,pool,predictive_policy=True,level=200)
+-    assert p.rune==('Pa Vi' if pool>=3 else 'Pa Age')
++    assert p.rune=='Pa Age'
+     assert 'réserve' in p.explanation
+     assert 'inconnue' in p.explanation
+     assert p.estimates['tier_comparison']['Vitalité'][1]['eligible'] is (pool>=3)
+--- before/Tests/test_rl_environment.py
++++ Tests/test_rl_environment.py
+@@ -21,7 +21,7 @@
+ def test_actions_exclude_unrequested_pm_over_but_ignore_old_prices():
+     e=env(prices={'Fo':4},budget=3)
+     assert 'Ga Pme' not in e.get_valid_actions()
+-    assert e.get_valid_actions()==['Fo','stop']
++    assert e.get_valid_actions()==['Fo','Pa Fo','stop']
+ 
+ 
+ def test_step_is_seeded_and_invalid_action_cannot_change_state():
+@@ -53,7 +53,7 @@
+ 
+ def test_step_horizon_reset_without_monetary_state():
+     e=env(prices={'Fo':2},budget=3,max_steps=1)
+-    assert e.get_valid_actions()==['Fo','stop']
++    assert e.get_valid_actions()==['Fo','Pa Fo','stop']
+     state,_,done,truncated,info=e.step('Fo')
+     assert 'budget' not in state and 'cost' not in info
+     assert done or truncated
+--- before/Tests/test_sequence_planning.py
++++ Tests/test_sequence_planning.py
+@@ -15,7 +15,7 @@
+     first=plan_sequences(lines,5,{'Force':40},level=200,seed=10,trials=16,horizon=4)
+     assert lines==saved
+     assert first==plan_sequences(lines,5,{'Force':40},level=200,seed=10,trials=16,horizon=4)
+-    assert set(first)=={'Fo'}
++    assert set(first)=={'Fo','Pa Fo'}
+     evidence=first['Fo']
+     assert evidence['kind']=='sequence_rollouts'
+     assert evidence['real_observations']==0
+--- before/Tests/test_reserve_over.py
++++ Tests/test_reserve_over.py
+@@ -2,15 +2,15 @@
+ from forgely_decision import advise, candidates
+ 
+ 
+-def test_cycloide_pool_can_finish_vitality_with_pa_reserve():
++def test_cycloide_compares_reserve_progression_instead_of_forcing_vitality():
+     jet = {'Vitalité': 289, 'Force': 39, 'Intelligence': 39,
+            'Dommages Neutre': 8, 'Dommages Terre': 9}
+     maximum = {'Vitalité': 300, 'Force': 40, 'Intelligence': 40,
+                'Dommages Neutre': 10, 'Dommages Terre': 10}
+     p = advise(jet, maximum, maximum, 3.1, level=200, predictive_policy=True)
+-    assert p.rune == 'Pa Vi'
++    assert p.rune == 'Pa Fo'
+     assert p.kind == 'over'
+-    assert p.estimates['matrix']['optimal']['proposed'] == 304
++    assert p.estimates['matrix']['optimal']['proposed'] == 42
+     assert 'réserve' in p.explanation
+ 
+ 
+--- before/Application/tests/test_fm_objectives.py
++++ Application/tests/test_fm_objectives.py
+@@ -51,12 +51,12 @@
+     assert p.rune != 'Ga Pa'
+ 
+ 
+-def test_small_gap_can_cross_target_with_only_minimal_over_at_natural_cap():
++def test_small_gap_compares_covered_legal_finishing_tiers():
+     p = advise({'Vitalité': 299}, {'Vitalité': 300}, natural_max={'Vitalité': 350}, pool=5)
+     # A bigger rune stays natural and has better predicted success near this target.
+     assert p.rune == 'Ra Vi'
+     finishing=candidates({'Vitalité': 299}, {'Vitalité': 300}, {'Vitalité': 300}, 5)
+-    assert [row[1] for row in finishing]==['Vi']
++    assert {row[1] for row in finishing}=={'Vi','Pa Vi'}
+     assert finishing[0][3]=='over'
+ 
+ 
+--- /dev/null
++++ Tests\test_finish_tier_comparison.py
+@@ -0,0 +1,70 @@
++import pytest
++from forgely_decision import advise, candidates
++from forgely_rl import ForgemagingEnv
++
++@pytest.mark.parametrize('stat,current,small,pa', [
++    ('Sagesse',38,'Sa','Pa Sa'), ('Intelligence',39,'Ine','Pa Ine'),
++    ('Force',39,'Fo','Pa Fo'), ('Chance',39,'Cha','Pa Cha'),
++    ('Agilité',39,'Age','Pa Age')])
++def test_finish_compares_tiers_instead_of_exact_gap(stat,current,small,pa):
++    # Natural room exists: no game over is involved, only minimum overshoot.
++    p=advise({stat:current},{stat:40},{stat:60},61,predictive_policy=True)
++    assert p.rune == pa
++
++
++def test_single_intelligence_finish_allows_legal_natural_over():
++    p=advise({'Intelligence':39},{'Intelligence':40},{'Intelligence':40},61,predictive_policy=True)
++    # Here the shared model slightly favors Ine (17% versus 16.77%).
++    assert p.rune == 'Ine'
++    assert p.estimates['tier_comparison']['Intelligence'][1]['eligible']
++
++
++def test_kido_density_guard_beats_available_pool():
++    p=advise({'Sagesse':38},{'Sagesse':40},{'Sagesse':40},61,predictive_policy=True)
++    rows=p.estimates['tier_comparison']['Sagesse']
++    assert [(r['gain'],r['weight']) for r in rows]==[(1,3),(3,9),(10,30)]
++    assert [r['eligible'] for r in rows]==[True,False,False]
++    assert all('Plafond' in r['exclusion_reason'] for r in rows[1:])
++
++
++def test_verified_empirical_rates_can_keep_small_rune():
++    def context(rune):
++        return {'verified':True,'counts':{'SC':100000 if rune=='Ine' else 0,
++                'SN':0,'EC':0 if rune=='Ine' else 100000}}
++    p=advise({'Intelligence':39},{'Intelligence':40},{'Intelligence':60},61,
++             predictive_policy=True,context_for=context)
++    assert p.rune=='Ine'
++
++
++def test_training_explores_legal_finish_over():
++    env=ForgemagingEnv([dict(stat='Intelligence',value=39,min=21,max=40,weight=1)],61,{'Intelligence':40})
++    assert 'Pa Ine' in env.get_valid_actions()
++    assert 'Ra Ine' in env.get_valid_actions()
++
++def test_verified_rates_can_reject_covered_reserve_over():
++    def context(rune):
++        return {'verified':True,'counts':{'SC':100000 if rune=='Ine' else 0,
++                'SN':0,'EC':0 if rune=='Ine' else 100000}}
++    p=advise({'Intelligence':39,'Force':10},{'Intelligence':40,'Force':11},
++             {'Intelligence':40,'Force':40},61,predictive_policy=True,context_for=context)
++    assert p.rune != 'Pa Ine'
++
++@pytest.mark.parametrize('winner', ['Ine','Pa Ine','Ra Ine'])
++def test_finish_tier_is_selected_by_verified_rates(winner):
++    def context(rune):
++        return {'verified':True,'counts':{'SC':100000 if rune==winner else 0,
++                'SN':0,'EC':0 if rune==winner else 100000}}
++    p=advise({'Intelligence':39},{'Intelligence':40},{'Intelligence':40},61,
++             predictive_policy=True,context_for=context)
++    assert p.rune==winner
++
++
++def test_training_cannot_bypass_kido_density_guard():
++    env=ForgemagingEnv([dict(stat='Sagesse',value=38,min=31,max=40,weight=3)],61,{'Sagesse':40})
++    assert env.get_valid_actions()==['Sa','stop']
++
++
++def test_heavy_natural_objective_remains_prioritized():
++    p=advise({'Intelligence':39,'PA':0},{'Intelligence':40,'PA':1},
++             {'Intelligence':40,'PA':1},100,predictive_policy=True)
++    assert p.rune=='Ga Pa'

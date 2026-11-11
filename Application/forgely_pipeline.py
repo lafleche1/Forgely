@@ -2,6 +2,16 @@
 from dataclasses import dataclass
 
 
+def history_scope(mailbox,generation,title,bound_item,icon):
+    """Use independently verified identity, not volatile icon pixels, as scope.
+
+    Callers supply bind_event_item's result. Unidentified artwork retains its
+    exact-pixel boundary and cannot borrow a named learning context.
+    """
+    return (mailbox,generation,title,bound_item,
+            None if bound_item else (icon.size,icon.tobytes()) if icon is not None else None)
+
+
 @dataclass(frozen=True)
 class VerifiedItemContext:
     mailbox: object
@@ -17,6 +27,18 @@ class VerifiedItemContext:
 class AcceptedRuneEvent:
     frame_id: int
     event: object
+    item: str | None
+    mailbox: object
+    generation: int
+    title: str
+    transition: dict | None = None
+
+
+@dataclass(frozen=True)
+class AcceptedAttemptGroups:
+    frame_id: int
+    session_key: str
+    groups: tuple
     item: str | None
     mailbox: object
     generation: int
@@ -50,7 +72,7 @@ class FrameMessageSink:
             if self.stop_event.is_set():
                 return
             kind,data=message
-            if kind=='accepted_event':
+            if kind in ('accepted_event','accepted_attempt_groups'):
                 self.queue.put(message)
             else:
                 self.queue.put(('worker_message',(self.mailbox,self.generation,self.title,kind,data)))

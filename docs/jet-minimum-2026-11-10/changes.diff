@@ -1,0 +1,441 @@
+--- before/Application/entrainer_forgely.py
++++ Application/entrainer_forgely.py
+@@ -92,7 +92,7 @@
+         parameter_canvas.bind('<Configure>', lambda e: parameter_canvas.itemconfigure(parameter_window, width=e.width))
+         middle.add(goals, weight=3)
+         middle.add(parameter_panel, weight=2)
+-        ttk.Label(goals, text='Cibles préremplies au maximum naturel.\nModifie-les pour définir ton « jet propre ». Vide = non ciblé.').pack(anchor='w', pady=(0, 8))
++        ttk.Label(goals, text='Minimums préremplis au maximum naturel.\nToute valeur supérieure satisfait la cible. Vide = non ciblé.').pack(anchor='w', pady=(0, 8))
+         target_outer = ttk.Frame(goals)
+         target_outer.pack(fill='both', expand=True)
+         self.canvas = tk.Canvas(target_outer, highlightthickness=0, background='#f3f3f3', width=420)
+--- before/Application/forgely_dashboard.py
++++ Application/forgely_dashboard.py
+@@ -203,7 +203,7 @@
+                                   show='headings', height=8, style='Forgely.Treeview', selectmode='browse')
+         for key, text, width, anchor in (
+                 ('stat', 'Caractéristique', 160, 'w'), ('value', 'Actuel', 60, 'center'),
+-                ('target', 'Cible', 60, 'center'), ('state', 'Lecture', 105, 'w')):
++                ('target', 'Min. voulu', 70, 'center'), ('state', 'Lecture', 105, 'w')):
+             self.table.heading(key, text=text, anchor=anchor)
+             self.table.column(key, width=width, minwidth=50, stretch=key in ('stat', 'state'), anchor=anchor)
+         scroll = ttk.Scrollbar(table_area, orient='vertical', command=self.table.yview, style='Forgely.Vertical.TScrollbar')
+--- before/Application/forgely_decision.py
++++ Application/forgely_decision.py
+@@ -211,7 +211,7 @@
+             reason = None
+             if rune not in eligible:
+                 reason = (legal['reason'] if legal['valid'] is False else
+-                    'Dépasse la cible / le maximum naturel : over non demandé' if proposed > goal else
++                    'Dépasse le maximum naturel : over non demandé' if natural_max is not None and stat in natural_max and proposed > natural_max[stat] else
+                     'Exclue par les contraintes ou les sources disponibles')
+             rows.append(dict(rune=rune, gain=ref.gain, weight=ref.weight,
+                 resulting_value=proposed, eligible=rune in eligible, exclusion_reason=reason,
+@@ -282,8 +282,11 @@
+                 and rune.startswith(('Pa ','Ra ')) and (ref.weight<=pool or uncovered_pa)
+                 and current<goal==natural_max[stat]<proposed
+                 and any(s!=stat for s in repair_deficits))
+-            if proposed > goal and not (minimal_finish or reserve_over or (natural_max is not None and stat in natural_max
+-                                         and proposed <= natural_max[stat])):
++            # A known natural maximum can require explicit over intent.
++            # The desired minimum itself never caps an authorized over/exo.
++            if (natural_max is not None and stat in natural_max
++                    and goal <= natural_max[stat] < proposed
++                    and not (minimal_finish or reserve_over)):
+                 continue
+             modified = dict(jets)
+             modified[stat] = proposed
+@@ -328,7 +331,6 @@
+             exposed = max(0., ref.weight - pool)
+             exposure = exposed / max(ref.weight, 1.)
+             video_rank=prediction is not None and sampled is None
+-            overshoot = max(0., proposed - goal) / max(1.,ref.gain if video_rank else remaining)
+             # Community tier heuristic: soft penalty, never an impossibility threshold.
+             tier_pressure = 0. if video_rank else min(4., max(0., current / (20 * ref.gain) - 1.))
+             finish_penalty = .8 if pending_natural and kind in ('exo', 'over') else 0.
+@@ -342,7 +344,9 @@
+                 progress = min(ref.gain * WEIGHT_PER_POINT[stat], repair_deficits[stat]) / repair_scale
+                 balance = .15 * repair_deficits[stat] / repair_scale
+             non_sc=(100-prediction['SC'])/100 if video_rank else 1.
+-            utility = (progress + balance) / (1 + .7 * exposure*non_sc + .5 * tier_pressure + overshoot)
++            # A desired value is a minimum: surplus earns no extra progress,
++            # but carries no target penalty. Physical exposure still matters.
++            utility = (progress + balance) / (1 + .7 * exposure*non_sc + .5 * tier_pressure)
+             utility /= 1 + finish_penalty
+             heuristic_score=utility-.04*ref.weight/100-finish_penalty
+             record=contextual_for(rune) if contextual_for else None
+--- before/Application/forgely_equipment_picker.py
++++ Application/forgely_equipment_picker.py
+@@ -156,7 +156,7 @@
+         self.clear();self.stage='goals';self.fields={}
+         self.heading.configure(text='Quel jet souhaites-tu obtenir ?')
+         self.label(self.body,self.selected.name+'  ·  '+self.selected.category,15,bold=True,color=self.p['GOLD']).pack(anchor='w',pady=(0,5))
+-        self.label(self.body,'Renseigne les valeurs visées. Laisse une case vide pour ignorer cette caractéristique.',10,
++        self.label(self.body,'Chaque valeur est un minimum : toute valeur supérieure est acceptée. Laisse une case vide pour ignorer cette caractéristique.',10,
+                    color=self.p['MUTED'],wraplength=850,justify='left').pack(anchor='w',pady=(0,8))
+         self.bounds=equipment_bounds(self.selected)
+         self.bounds.update(natural_bounds(self.selected.identity_name))
+@@ -173,7 +173,7 @@
+                            command=lambda:self.fill_maximum() if self.perfect.get() else None,
+                            bg=self.p['BG'],fg=self.p['FG'],selectcolor=self.p['PANEL']).pack(side='right')
+         header=tk.Frame(self.body,bg=self.p['PANEL2']);header.pack(fill='x')
+-        for col,title in enumerate(('Caractéristique','Min naturel','Max naturel','Jet souhaité')):
++        for col,title in enumerate(('Caractéristique','Min naturel','Max naturel','Minimum souhaité')):
+             header.columnconfigure(col,weight=3 if col==0 else 2,uniform='goals')
+             self.label(header,title,10,bold=True,width=1,anchor='w').grid(row=0,column=col,sticky='ew',padx=7,pady=9)
+         holder=tk.Frame(self.body,bg=self.p['PANEL']);holder.pack(fill='both',expand=True)
+--- before/Application/forgely_finish_paths.py
++++ Application/forgely_finish_paths.py
+@@ -28,7 +28,7 @@
+             for rune in RUNE_CHOICES[stat]:
+                 ref = reference(rune)
+                 end = value + ref.gain
+-                if end > goal:
++                if end > natural[stat]:
+                     continue
+                 state = {**jets, stat: value}
+                 if constraints({**state, stat: end}, natural)['valid'] is not True:
+@@ -48,7 +48,7 @@
+ 
+         @lru_cache(None)
+         def best(value, reserve):
+-            if value == goal:
++            if value >= goal:
+                 return 0., ()
+             paths = []
+             for rune, end, remaining, cost in choices(value, reserve):
+--- before/Application/forgely_general_policy.py
++++ Application/forgely_general_policy.py
+@@ -31,7 +31,8 @@
+ def score_actions(lines,pool,targets,level,actions,policy):
+     """Positive ranking utilities; never success probabilities or Q rewards."""
+     if not valid_policy(policy):return {}
+-    a,b,risk,surplus=policy['parameters']
++    # Retain the fourth legacy parameter for saved-policy compatibility only.
++    a,b,risk,_surplus=policy['parameters']
+     values={x['stat']:x['value'] for x in lines}
+     output={}
+     for rune in actions:
+@@ -44,8 +45,7 @@
+         unit=spec['weight']/spec['gain']
+         progress=min(spec['gain'],remaining)*unit
+         output[rune]=((rates['sc']+rates['sn'])/100*progress**a/(remaining*unit)**b
+-            /(1+risk*max(0,spec['weight']-pool)/spec['weight'])
+-            /(1+surplus*max(0,spec['gain']-remaining)/remaining))
++            /(1+risk*max(0,spec['weight']-pool)/spec['weight']))
+     return output
+ 
+ 
+--- before/Application/forgely_live_targets.py
++++ Application/forgely_live_targets.py
+@@ -9,7 +9,7 @@
+         super().__init__(parent,bg=palette['PANEL'])
+         self.fields={};self.jet=normalise_jet(jet) or {}
+         self.columnconfigure(0,weight=1);self.rowconfigure(2,weight=1)
+-        tk.Label(self,text='Quel jet souhaites-tu atteindre ?',bg=palette['PANEL'],
++        tk.Label(self,text='Jet souhaité : minimums (valeurs supérieures acceptées)',bg=palette['PANEL'],
+                  fg=palette['FG'],font=('Segoe UI',12,'bold')).grid(row=0,column=0,sticky='w',pady=(0,8))
+         if on_perfect:
+             tk.Checkbutton(self,text='Jet parfait',variable=parent.root.perfect_goal_checked,
+--- before/Application/forgely_overlay.py
++++ Application/forgely_overlay.py
+@@ -62,7 +62,7 @@
+         from tkinter import ttk
+         self.stats_table=ttk.Treeview(self,columns=('stat','value','target','state'),show='headings',
+                                     height=5,style='Forgely.Treeview',selectmode='none')
+-        for key,title,width in (('stat','Caractéristique',135),('value','Actuel',50),('target','Cible',50),('state','Lecture',90)):
++        for key,title,width in (('stat','Caractéristique',135),('value','Actuel',50),('target','Min.',50),('state','Lecture',90)):
+             self.stats_table.heading(key,text=title)
+             self.stats_table.column(key,width=width,minwidth=35,stretch=True,anchor='w' if key in ('stat','state') else 'center')
+         self.stats_table.place(x=18,y=213,width=316,height=160)
+--- before/Application/forgely_pool_repair.py
++++ Application/forgely_pool_repair.py
+@@ -1,11 +1,12 @@
+ """Nominal useful rune budgets, recalculated after every observed result."""
+-from decimal import Decimal, ROUND_FLOOR
++from decimal import Decimal, ROUND_FLOOR, ROUND_CEILING
+ from functools import lru_cache
+ from math import gcd
+ 
+ 
+ def pool_repair_plan(rows,pool,natural=None):
+-    repairs=tuple((r[1],r[2],r[4].gain,r[4].weight,min(r[9],(natural or {}).get(r[2],r[9]))-r[8])
++    repairs=tuple((r[1],r[2],r[4].gain,r[4].weight,min(r[9],(natural or {}).get(r[2],r[9]))-r[8],
++                   (natural or {}).get(r[2],r[9])-r[8])
+                   for r in rows if r[3]=='fm_classique' and r[9]>r[8]
+                   and r[4].weight>0 and r[4].gain>0 and r[4].weight<=pool
+                   and r[8]<min(r[9],(natural or {}).get(r[2],r[9])))
+@@ -23,28 +24,36 @@
+     for w in weights.values():quantum=gcd(quantum,w)
+     budget=int((Decimal(pool)*1000/quantum).to_integral_value(rounding=ROUND_FLOOR))
+     groups={}
+-    for rune,stat,gain,weight,missing in repairs:
+-        groups.setdefault(stat,[]).append((rune,Decimal(str(gain)),weights[rune]//quantum,Decimal(str(missing))))
+-    states={0:()}
++    for rune,stat,gain,weight,missing,capacity in repairs:
++        groups.setdefault(stat,[]).append((rune,Decimal(str(gain)),weights[rune]//quantum,
++                                          Decimal(str(missing)),Decimal(str(capacity))))
++    states={0:(Decimal(0),())}
+     for group in groups.values():
+-        # Build attainable gains for this line, never crossing its target.
++        # Stop once the minimum is reached; only the natural maximum is a cap.
+         local={(Decimal(0),0):()}
+-        for rune,gain,weight,missing in group:
++        for rune,gain,weight,missing,capacity in group:
+             additions=dict(local)
+             for (value,cost),path in local.items():
+-                count=min(int((missing-value)//gain),(budget-cost)//weight)
++                count=min(max(0,int(((missing-value)/gain).to_integral_value(rounding=ROUND_CEILING))),
++                          int((capacity-value)//gain),(budget-cost)//weight)
+                 for n in range(1,count+1):
+                     key=(value+n*gain,cost+n*weight)
+                     candidate=path+(rune,)*n
+                     if key not in additions or preference(candidate)<preference(additions[key]):additions[key]=candidate
+             local=additions
+         next_states={}
+-        for cost,path in states.items():
+-            for (_,extra),suffix in local.items():
++        for cost,(progress,path) in states.items():
++            for (value,extra),suffix in local.items():
+                 total=cost+extra
+                 if total>budget:continue
+                 candidate=path+suffix
+-                if total not in next_states or preference(candidate)<preference(next_states[total]):next_states[total]=candidate
++                # Useful weighted deficit only: crossing the minimum is valid,
++                # but surplus cannot masquerade as extra repaired target mass.
++                _,gain,weight,missing,_=group[0]
++                useful=progress+min(value,missing)*weight/gain
++                previous=next_states.get(total)
++                if previous is None or (-useful,preference(candidate))<(-previous[0],preference(previous[1])):
++                    next_states[total]=(useful,candidate)
+         states=next_states
+-    spent=max(states)
+-    return tuple(sorted(states[spent],key=priority.get)),float(Decimal(spent*quantum)/1000)
++    spent=min(states,key=lambda cost:(-states[cost][0],preference(states[cost][1]),cost))
++    return tuple(sorted(states[spent][1],key=priority.get)),float(Decimal(spent*quantum)/1000)
+--- before/Application/forgely_rl.py
++++ Application/forgely_rl.py
+@@ -97,7 +97,11 @@
+                 # Targets are minima, as in copilote candidates(). A natural
+                 # surplus is legal; over/exo still needs an explicit target.
+                 maximum=maxima.get(stat)
+-                if current+spec['gain']>target and (maximum is None or current+spec['gain']>maximum):
++                smallest=min(self._spec(r)['gain'] for r in RUNE_CHOICES.get(stat,()))
++                minimal_finish=(maximum is not None and current<target<=maximum
++                                and target-current<smallest and spec['gain']==smallest)
++                if (maximum is not None and target<=maximum<current+spec['gain']
++                        and not minimal_finish):
+                     continue
+                 if self.stock is not None and self.stock.get(rune,0)<=0:continue
+                 if not odds(self.lines,spec,level=self.level).get('blocked'):actions.append(rune)
+--- before/Application/forgely_simulateur.py
++++ Application/forgely_simulateur.py
+@@ -41,7 +41,7 @@
+         raise ValueError('Gain ou poids de cette rune non documenté')
+     if not all(isinstance(x,(int,float)) and not isinstance(x,bool) for x in (current,target,pool,sc,sn,ec)):
+         raise ValueError('Paramètres numériques requis')
+-    if current<0 or target<=current or pool<0:
++    if current<0 or target<0 or pool<0:
+         raise ValueError('Jet, cible ou puits invalides')
+     if min(sc,sn,ec)<0 or max(sc,sn,ec)>1 or abs(sc+sn+ec-1)>1e-8:
+         raise ValueError('SC + SN + EC doivent totaliser 100 %')
+--- before/Application/forgely_training.py
++++ Application/forgely_training.py
+@@ -99,8 +99,6 @@
+         value=0 if hi is None else (lo if config.initial_preset in ('min','minimum') else
+             hi if config.initial_preset in ('max','maximum') else floor((lo+hi)/2+.5))
+         lines.append(dict(stat=stat,value=value,min=lo,max=hi,weight=WEIGHT_PER_POINT[stat]))
+-    if all(next(x['value'] for x in lines if x['stat']==s)>=v for s,v in targets.items()):
+-        raise ValueError('Le jet initial atteint déjà toutes les cibles')
+     spec=asdict(config);spec.update(targets=targets)
+     spec.pop('prices',None);spec.pop('budget',None)
+     if not config.allow_preparatory:spec.pop('allow_preparatory',None)
+@@ -193,7 +191,7 @@
+                'forgely_pricing.py','forgely_rules.py','forgely_weights.py',
+                'forgely_dofocus.py','forgely_dofocus_engine.py','forgely_rl.py','forgely_general_policy.py',
+                'forgely_fm_model.py','forgely_empirical_model.py','forgely_fm_classification.py','forgely_probabilites.py','forgely_measured_goals.py',
+-               'forgely_equipment_catalog.py','forgely_reasoning.py',
++               'forgely_equipment_catalog.py','forgely_reasoning.py','forgely_finish_paths.py','forgely_pool_repair.py',
+                'references/poids_runes_client_3_7_13_17.json')
+     root=Path(__file__).resolve().parent
+     digest=sha256()
+--- before/Tests/test_audit_corrections.py
++++ Tests/test_audit_corrections.py
+@@ -44,7 +44,8 @@
+     p=advise({'Force':40,'PA':1},{'Force':40},natural_max={'Force':40,'PA':1},pool=100,predictive_policy=True)
+     assert p.rune is None and p.kind=='atteint'
+     p=advise({'Force':40},{'Force':41},natural_max={'Force':40},pool=100,predictive_policy=True)
+-    assert p.rune=='Fo' and p.kind=='over'
++    # Over is explicitly requested at minimum 41; a legal result above 41 is accepted.
++    assert p.rune in ('Fo','Pa Fo','Ra Fo') and p.kind=='over'
+ 
+ 
+ def test_measured_goals_uses_learning_to_change_final_rune(monkeypatch):
+--- before/Tests/test_pa_finish_sequences.py
++++ Tests/test_pa_finish_sequences.py
+@@ -20,8 +20,9 @@
+     assert p.rune=='Vi'
+ 
+ 
+-def test_target_one_point_away_keeps_simple_rune():
+-    assert advise({'Force':34},{'Force':35},{'Force':40},1.3,level=200,predictive_policy=True).rune=='Fo'
++def test_target_one_point_away_accepts_better_natural_finishing_path():
++    # Pa Fo finishes at 37: crossing the desired 35 is accepted below max 40.
++    assert advise({'Force':34},{'Force':35},{'Force':40},1.3,level=200,predictive_policy=True).rune=='Pa Fo'
+ 
+ 
+ def test_comparable_evidence_can_favor_simple_rune():
+--- before/Tests/test_sequence_planning.py
++++ Tests/test_sequence_planning.py
+@@ -131,6 +131,7 @@
+     from forgely_sequence import options
+     lines=[{'stat':'Force','value':60,'min':20,'max':40,'weight':1},
+            {'stat':'Intelligence','value':80,'min':20,'max':40,'weight':1}]
+-    assert {row[1] for row in options(lines,0,{'Intelligence':85})}=={'Ine','Pa Ine'}
++    # Explicit over minimum 85 also accepts Ra Ine reaching 90, below cap 101.
++    assert {row[1] for row in options(lines,0,{'Intelligence':85})}=={'Ine','Pa Ine','Ra Ine'}
+     lines[1]['value']=101
+     assert options(lines,0,{'Intelligence':102})==[]
+--- before/Tests/test_training_regressions.py
++++ Tests/test_training_regressions.py
+@@ -87,8 +87,8 @@
+     assert 'Ra Vi' not in env.get_valid_actions()
+ 
+ 
+-def test_minimum_target_never_authorizes_unrequested_over_or_exo():
++def test_minimum_target_allows_only_indivisible_minimal_finish_at_natural_cap():
+     env=ForgemagingEnv([
+         {'stat':'Vitalité','value':299,'min':250,'max':300,'weight':.2},
+     ],0,{'Vitalité':300})
+-    assert env.get_valid_actions()==['stop']
++    assert env.get_valid_actions()==['Vi','stop']
+--- /dev/null
++++ Tests/test_minimum_targets.py
+@@ -0,0 +1,127 @@
++import pytest
++
++from forgely_decision import advise, candidates
++from forgely_dashboard import stat_rows
++from forgely_general_policy import make_policy, score_actions
++from forgely_rl import ForgemagingEnv
++from forgely_sequence import target_value
++from forgely_simulateur import simulate_target
++
++
++@pytest.mark.parametrize('current', [39, 40, 45])
++def test_minimum_completion_and_display(current):
++    proposal = advise({'Force': current}, {'Force': 40}, {'Force': 60}, 0)
++    row = stat_rows({'Force': current}, {'Force': 40}, verified=True)[0]
++    if current >= 40:
++        assert proposal.kind == 'atteint'
++        assert proposal.rune is None
++        assert row[3:] == ('Atteint', 'success')
++        assert target_value({'Force': current}, {'Force': 40}) == 1
++    else:
++        assert proposal.kind != 'atteint'
++        assert row[3:] == ('À compléter', 'pending')
++        assert target_value({'Force': current}, {'Force': 40}) < 1
++
++
++def test_ranking_has_no_penalty_for_crossing_minimum():
++    # Both goals take the same one-point rune to finish; its physical risk is identical.
++    scores = []
++    for goal in (39.5, 40):
++        rows = candidates({'Force': 39}, {'Force': goal}, {'Force': 60}, 100)
++        scores.append(next(r[5]['decision_trace']['heuristic_score'] for r in rows if r[1] == 'Fo'))
++    # Balance depends on missing mass, but the surplus must not halve utility.
++    assert scores[0] >= scores[1] * .99
++
++
++def test_legacy_learned_surplus_parameter_cannot_penalize_crossing_target():
++    lines = [dict(stat='Force', value=39, min=1, max=60, weight=1)]
++    plain = make_policy((1, 0, 1, 0), episodes=1)
++    legacy = make_policy((1, 0, 1, 4), episodes=1)
++    assert score_actions(lines, 10, {'Force': 40}, 200, ['Pa Fo'], plain) == score_actions(
++        lines, 10, {'Force': 40}, 200, ['Pa Fo'], legacy)
++
++
++@pytest.mark.parametrize('current', [40, 45])
++def test_single_line_simulator_accepts_already_satisfied_target(current):
++    result = simulate_target('Fo', current, 40, 0, None, 1, 0, 0, trials=3)
++    assert result.completed == 3
++    assert result.mean_attempts == 0
++    assert (result.sc, result.sn, result.ec, result.truncated) == (0, 0, 0, 0)
++
++
++def test_trainer_can_finish_with_indivisible_minimal_rune():
++    env = ForgemagingEnv([dict(stat='Vitalité', value=299, min=250, max=300, weight=.2)],
++                        10, {'Vitalité': 300})
++    assert 'Vi' in env.get_valid_actions()
++    assert 'Pa Vi' not in env.get_valid_actions()
++
++
++def test_nominal_finish_paths_accept_natural_overshoot():
++    from forgely_finish_paths import compare_finish_paths
++    rows = candidates({'Force': 34}, {'Force': 35}, {'Force': 40}, 10)
++    paths = compare_finish_paths(rows, {'Force': 34}, {'Force': 35}, {'Force': 40}, 10)
++    assert paths['Pa Fo']['path'] == ['Pa Fo']
++
++
++def test_pool_plan_can_finish_above_minimum_within_natural_bounds():
++    from forgely_pool_repair import pool_repair_plan
++    rows = candidates({'Force': 34}, {'Force': 35}, {'Force': 40}, 3)
++    plan, spent = pool_repair_plan([r for r in rows if r[1] == 'Pa Fo'], 3, {'Force': 40})
++    assert plan == ('Pa Fo',)
++    assert spent == 3
++
++
++def test_pool_plan_does_not_count_surplus_as_additional_target_progress():
++    from forgely_pool_repair import pool_repair_plan
++    rows = candidates({'Force': 0}, {'Force': 10}, {'Force': 100}, 30)
++    plan, spent = pool_repair_plan(rows, 30, {'Force': 100})
++    assert plan == ('Ra Fo',)
++    assert spent == 10
++
++
++def test_satisfied_line_is_not_repaired_while_other_line_is_missing():
++    rows = candidates({'Force': 45, 'Intelligence': 20}, {'Force': 40, 'Intelligence': 30},
++                      {'Force': 60, 'Intelligence': 60}, 10)
++    assert rows and all(r[2] == 'Intelligence' for r in rows)
++
++
++def test_training_reward_ignores_surplus_loss_above_minimum():
++    env = ForgemagingEnv([dict(stat='Force', value=45, min=1, max=60, weight=1)], 0, {'Force': 40})
++    before = env.get_state()
++    env.lines[0]['value'] = 41
++    after = env.get_state()
++    assert env.reward(before, after, cost=0) == 0
++    assert env.get_valid_actions() == ['stop']
++
++
++def test_explicit_over_minimum_does_not_cap_legal_rune_gain():
++    rows = candidates({'Force': 44}, {'Force': 45}, {'Force': 40}, 10)
++    assert 'Pa Fo' in {r[1] for r in rows}
++    env = ForgemagingEnv([dict(stat='Force', value=44, min=1, max=40, weight=1)], 10, {'Force': 45})
++    assert 'Pa Fo' in env.get_valid_actions()
++
++
++def test_minimum_does_not_bypass_game_density_limit():
++    rows = candidates({'Force': 100}, {'Force': 101}, {'Force': 40}, 100)
++    assert {r[1] for r in rows} == {'Fo'}
++    env = ForgemagingEnv([dict(stat='Force', value=100, min=1, max=40, weight=1)], 100, {'Force': 101})
++    assert env.get_valid_actions() == ['Fo', 'stop']
++
++
++@pytest.mark.parametrize('current, expected', [(39, 1), (40, 0), (45, 0)])
++def test_progress_deficit_is_nonnegative_and_clamped_at_minimum(current, expected):
++    from forgely_simulation_live import SimulationWorker
++    assert SimulationWorker._deficit({'Force': current}, (('Force', 40),)) == expected
++
++
++def test_signed_minimum_accepts_less_negative_current():
++    assert advise({'Force': -5}, {'Force': -10}, {'Force': -1}, 0).kind == 'atteint'
++    assert target_value({'Force': -5}, {'Force': -10}) == 1
++
++
++def test_training_accepts_already_satisfied_initial_jet(tmp_path):
++    from forgely_training import TrainingConfig, run_training
++    result = run_training(TrainingConfig(14092, {'Force': 35}, initial_preset='maximum',
++                          episodes=1, evaluation_episodes=1, max_steps=2), tmp_path)
++    assert result['evaluation']['learned']['successes'] == 1
++    assert result['evaluation']['baseline']['successes'] == 1

@@ -1,18 +1,48 @@
 """Native desktop presentation. This module never reads the game or stores attempts."""
 import tkinter as tk
 from tkinter import ttk
+from functools import lru_cache
 from forgely_session_ui import show_review
 from forgely_runtime_cache import configure_if_changed
 
 
-def stat_rows(observed, targets, *, verified=False):
+@lru_cache(maxsize=1)
+def _card_catalog():
+    from forgely_equipment_catalog import EquipmentCatalog
+    return EquipmentCatalog()
+
+
+def equipment_card(mode,verified,name,*,manual=None,plan=None):
+    """Current identity and matching targets, independently from a saved plan."""
+    from forgely_items import key_for
+    if mode=='automatic' and not verified:
+        return dict(title='Identification en cours',equipment=None,editable=False,targets={})
+    equipment=manual
+    current=(manual.identity_name if manual is not None else name.strip())
+    if mode=='automatic' and current:
+        choices=[e for e in _card_catalog().items if key_for(e.identity_name)==key_for(current)]
+        equipment=choices[0] if len(choices)==1 else None
+    title=equipment.name if equipment is not None else current or 'Choisir un équipement'
+    targets={k:v['target'] for k,v in (plan or {}).get('stats',{}).items()
+             if v.get('target') is not None} if current and key_for(current)==key_for((plan or {}).get('item','')) else {}
+    return dict(title=title,equipment=equipment,editable=equipment is not None,targets=targets)
+
+
+def stat_rows(observed, targets, *, verified=False, states=None):
     rows = []
     for stat in dict.fromkeys((*observed, *targets)):
         value, target = observed.get(stat), targets.get(stat)
         if value is None:
             state, tag = 'À lire', 'unknown'
+        elif (states or {}).get(stat) == 'stale':
+            value = None
+            state, tag = 'À revérifier', 'pending'
+        elif (states or {}).get(stat) == 'offscreen':
+            state, tag = 'Lu · hors écran', 'normal'
+        elif not verified and (states or {}).get(stat) == 'confirmed':
+            state, tag = 'Lu · jet partiel', 'normal'
         elif not verified:
-            state, tag = 'À confirmer', 'pending'
+            state, tag = 'Stabilisation automatique', 'pending'
         elif target is None:
             state, tag = 'Lu', 'normal'
         elif value >= target:
@@ -22,6 +52,22 @@ def stat_rows(observed, targets, *, verified=False):
         rows.append((stat, '—' if value is None else str(value),
                      '—' if target is None else str(target), state, tag))
     return rows
+
+
+def current_card(app):
+    card=equipment_card(app.equipment_mode.get(),app.active_equipment_verified,app.item.get(),
+                        manual=getattr(getattr(app,'manual_equipment',None),'equipment',None),plan=app.plan)
+    from forgely_measured_goals import current_snapshot,bound_session,goal_editor_jet
+    snapshot=current_snapshot(app)
+    editor_ready=goal_editor_jet(app) is not None
+    if snapshot is not None or bound_session(app) or editor_ready:
+        card={**card,'editable':card['editable'] or snapshot is not None or editor_ready,
+              'targets':dict(app.measured_goals.targets) or card['targets']}
+        if not app.active_equipment_verified:card['title']='Objet de l’atelier'
+        equipment=getattr(app.measured_goals,'equipment',None)
+        if equipment is not None and not app.active_equipment_verified:
+            card={**card,'title':equipment.name,'equipment':equipment}
+    return card
 
 
 def advice_window_size(screen_width,screen_height):
@@ -52,6 +98,8 @@ class AtelierDashboard:
         self.app = app
         self.palette = palette
         self._table_key = None
+        self._item_icon_key = None
+        self._item_photo = None
         self.activity = []
         self.style = ttk.Style(app)
         self.style.theme_use('clam')
@@ -62,11 +110,11 @@ class AtelierDashboard:
 
         shell = tk.Frame(app, bg=bg)
         shell.pack(fill='both', expand=True)
-        sidebar = tk.Frame(shell, bg=panel, width=190)
+        sidebar = tk.Frame(shell, bg=panel, width=174)
         sidebar.pack(side='left', fill='y')
         sidebar.pack_propagate(False)
         app.label(sidebar, 'FORGELY', 22, bold=True, color=palette['FG']).pack(anchor='w', padx=23, pady=(31, 0))
-        app.label(sidebar, 'VOTRE ATELIER, EN CLAIR.', 8, color=muted).pack(anchor='w', padx=24, pady=(4, 34))
+        app.label(sidebar, 'OBSIDIENNE', 8, color=muted).pack(anchor='w', padx=24, pady=(4, 34))
         app.label(sidebar, 'ESPACE DE TRAVAIL', 8, bold=True, color=muted).pack(anchor='w', padx=24, pady=(0, 12))
         self.navigation = []
         for title, action in (
@@ -86,35 +134,43 @@ class AtelierDashboard:
             self.navigation.append(button)
         support = tk.Frame(sidebar, bg=panel)
         support.pack(side='bottom', fill='x', padx=16, pady=23)
-        for text, command in (('Apparence', app.show_appearance), ('Diagnostic OCR', app.show_ocr_diagnostic), ('Paramètres', app.show_settings)):
+        for text, command in (('Diagnostic OCR', app.show_ocr_diagnostic), ('Paramètres', app.show_settings)):
             app.button(support, text, command).pack(fill='x', pady=4)
         app.label(support, 'LOCAL · DONNÉES SUR VOTRE PC', 7, color=muted).pack(anchor='w', pady=(16, 0))
 
         main = tk.Frame(shell, bg=bg)
-        main.pack(side='left', fill='both', expand=True, padx=25, pady=23)
+        main.pack(side='left', fill='both', expand=True, padx=25, pady=16)
         main.columnconfigure(0, weight=1)
         main.rowconfigure(2, weight=1)
         heading = tk.Frame(main, bg=bg)
-        heading.grid(row=0, column=0, sticky='ew', pady=(0, 17))
+        heading.grid(row=0, column=0, sticky='ew', pady=(0, 12))
         title = tk.Frame(heading, bg=bg)
         title.pack(side='left')
         app.label(title, 'L’atelier', 27, bold=True).pack(anchor='w')
-        app.label(title, 'Votre équipement. Vos objectifs. La prochaine décision.', 10, color=muted).pack(anchor='w', pady=(4, 0))
-        app.button(heading, 'Mode discret', app.minimize_to_badge).pack(side='right', padx=(8, 0))
+        app.button(heading, 'Copilote compact', app.minimize_to_badge).pack(side='right', padx=(8, 0))
         app.mode_button = app.button(heading, '', app.toggle_observation_mode)
         app.mode_button.pack(side='right')
         app.update_mode_button()
 
         connection = app.card(main)
-        connection.grid(row=1, column=0, sticky='ew', pady=(0, 17))
+        connection.grid(row=1, column=0, sticky='ew', pady=(0, 12))
         connection_row = tk.Frame(connection, bg=panel)
         connection_row.pack(fill='x', padx=17, pady=(12, 3))
         app.game_state_label = app.label(connection_row, '● Atelier en attente', 11, bold=True, color=palette['GOLD'])
         app.game_state_label.pack(side='left')
-        app.observe_button = app.button(connection_row, 'Démarrer l’observation', app.toggle_observer, primary=True)
+        app.observe_button = app.button(connection_row, 'Préparer ma session', app.toggle_observer, primary=True)
         app.observe_button.pack(side='right')
         app.game_title_label = app.label(connection, 'Ouvrez l’atelier dans DOFUS, puis démarrez la lecture.', 9, color=muted, wraplength=780, justify='left')
         app.game_title_label.pack(anchor='w', padx=17, pady=(0, 5))
+        identification=tk.Frame(connection,bg=panel)
+        identification.pack(fill='x',padx=17,pady=(0,9))
+        app.label(identification,'Identification :',9,color=muted).pack(side='left',padx=(0,8))
+        for text,value in (('Détection automatique','automatic'),('Sélection manuelle','manual')):
+            tk.Radiobutton(identification,text=text,variable=app.equipment_mode,value=value,
+                command=lambda mode=value:app.set_equipment_mode(mode),
+                bg=panel,fg=palette['FG'],activebackground=panel,
+                selectcolor=palette['PANEL2'],highlightthickness=0,
+                font=(app.ui_fonts['body'],9)).pack(side='left',padx=(0,12))
         tk.Checkbutton(support, text='Mode flottant automatique',
             variable=app.auto_floating, command=app.save_floating_preference,
             bg=panel, fg=muted, activebackground=panel, activeforeground=palette['FG'],
@@ -131,18 +187,23 @@ class AtelierDashboard:
         app.label(equipment, 'ÉQUIPEMENT ACTUEL', 8, bold=True, color=muted).pack(anchor='w', padx=18, pady=(16, 6))
         item_heading = tk.Frame(equipment, bg=panel)
         item_heading.pack(fill='x', padx=18, pady=(0, 5))
-        app.button(item_heading, 'Identifier', app.open_equipment_quick).pack(side='right', padx=(8, 0))
-        app.plan_item_lbl = app.label(item_heading, 'Objet à identifier', 15, bold=True, wraplength=300, justify='left', anchor='w')
+        self.item_icon = tk.Label(item_heading, bg=panel, width=1, height=1)
+        self.item_icon.pack(side='left', padx=(0, 12))
+        self.item_icon.pack_forget()
+        app.button(item_heading, 'Changer d’objet', app.open_equipment_quick).pack(side='right', padx=(8, 0))
+        app.plan_item_lbl = app.label(item_heading, 'Choisir un équipement', 15, bold=True, wraplength=300, justify='left', anchor='w')
         app.plan_item_lbl.pack(side='left', fill='x', expand=True)
         self.reading_label = app.label(equipment, 'Aucune lecture disponible', 9, color=muted)
         self.reading_label.pack(anchor='w', padx=18, pady=(0, 12))
+        app.edit_current_goals=app.button(equipment,'Modifier le jet souhaité',app.open_plan_editor)
+        app.edit_current_goals.pack(anchor='w',padx=18,pady=(0,10))
         table_area = tk.Frame(equipment, bg=panel)
         table_area.pack(fill='both', expand=True, padx=12)
         self.table = ttk.Treeview(table_area, columns=('stat', 'value', 'target', 'state'),
                                   show='headings', height=8, style='Forgely.Treeview', selectmode='browse')
         for key, text, width, anchor in (
                 ('stat', 'Caractéristique', 160, 'w'), ('value', 'Actuel', 60, 'center'),
-                ('target', 'Cible', 60, 'center'), ('state', 'Lecture', 105, 'w')):
+                ('target', 'Min. voulu', 70, 'center'), ('state', 'Lecture', 105, 'w')):
             self.table.heading(key, text=text, anchor=anchor)
             self.table.column(key, width=width, minwidth=50, stretch=key in ('stat', 'state'), anchor=anchor)
         scroll = ttk.Scrollbar(table_area, orient='vertical', command=self.table.yview, style='Forgely.Vertical.TScrollbar')
@@ -169,10 +230,10 @@ class AtelierDashboard:
         app.plan_explain_lbl = app.label(advice, '', 9, color=muted, wraplength=280, justify='left')
         app.player_risk_label = app.label(advice, 'Risque : inconnu', 9, color=muted, wraplength=280, justify='left')
         app.player_risk_label.pack(anchor='w', padx=18, pady=(0, 10))
-        modes = ttk.Combobox(advice, textvariable=app.goal_mode,
-                            values=__import__('forgely_copilote').MODES, state='readonly', width=18)
-        modes.pack(anchor='w', padx=18, pady=(0, 15))
-        modes.bind('<<ComboboxSelected>>', lambda _: app.refresh_strategy())
+        perfect = tk.Checkbutton(advice,text='Jet parfait',variable=app.perfect_goal_checked,
+                                 command=app.toggle_perfect_goal,bg=panel,fg=palette['FG'],
+                                 selectcolor=panel,activebackground=panel,activeforeground=palette['FG'])
+        perfect.pack(anchor='w',padx=18,pady=(0,15))
         app.button(advice, 'Voir le détail', app.open_strategy).pack(anchor='w', padx=18, pady=(0, 12))
         advice.bind('<Configure>', self._resize_advice)
 
@@ -194,9 +255,11 @@ class AtelierDashboard:
         self.activity_label.pack(anchor='w', padx=17, pady=(7, 12))
         counts = app.card(bottom)
         counts.grid(row=0, column=1, sticky='nsew')
-        app.label(counts, 'OBSERVATIONS LOCALES', 8, bold=True, color=muted).pack(anchor='w', padx=17, pady=(13, 7))
+        app.label(counts, 'OBSERVATIONS LOCALES · TOUS OBJETS', 8, bold=True, color=muted).pack(anchor='w', padx=17, pady=(13, 7))
         app.total_lbl = app.label(counts, '0 tentative', 20, bold=True)
         app.total_lbl.pack(anchor='w', padx=17)
+        tk.Label(counts,textvariable=app.simulation_totals,bg=panel,fg=muted,
+            font=(app.ui_fonts['body'],8),anchor='w',wraplength=300).pack(anchor='w',padx=17,pady=(4,0))
         rates = tk.Frame(counts, bg=panel)
         rates.pack(fill='x', padx=17, pady=(8, 12))
         app.stats_labels = {}
@@ -212,16 +275,23 @@ class AtelierDashboard:
             setattr(app, name, app.label(hidden, '', 9))
         tk.Label(main, textvariable=app.status, bg=bg, fg=muted,
             font=(app.ui_fonts['body'], 8), anchor='w', justify='left', wraplength=840).grid(row=4, column=0, sticky='ew', pady=(13, 0))
+        tk.Label(hidden,textvariable=app.learning_summary,bg=bg,fg=palette['GREEN'],
+            font=(app.ui_fonts['body'],8),anchor='w',justify='left',wraplength=840)
         self.apply_palette(palette)
 
     def _resize_advice(self, event):
         for name in ('advice_heading', 'home_advice_label', 'home_advice_detail',
                      'plan_action_lbl', 'plan_explain_lbl', 'player_risk_label'):
-            configure_if_changed(getattr(self.app,name),wraplength=max(190,event.width-38))
-        if event.height < 350:
+            getattr(self.app, name).configure(wraplength=max(190, event.width-38))
+        # Use the stable window height: toggling the icon changes the card
+        # request height and must not trigger a show/hide geometry feedback loop.
+        if self.app.winfo_height() < 740:
             self.app.main_rune_icon.pack_forget()
+            self.app.edit_current_goals.pack_forget()
         elif not self.app.main_rune_icon.winfo_manager():
             self.app.main_rune_icon.pack(anchor='w', padx=18, pady=(0, 13), before=self.app.home_advice_label)
+        if self.app.winfo_height() >= 740 and not self.app.edit_current_goals.winfo_manager():
+            self.app.edit_current_goals.pack(anchor='w',padx=18,pady=(0,10),before=self.table.master)
 
     def fit_advice(self):
         text = self.app.home_advice_detail.cget('text')
@@ -231,7 +301,7 @@ class AtelierDashboard:
     def add_activity(self, text):
         self.activity.insert(0, text)
         del self.activity[8:]
-        previous = self.activity[1:2]
+        previous = self.activity[1:4]
         self.activity_label.configure(text=previous[0][:75] if previous else 'Lecture de la session en cours.')
 
     def apply_palette(self, palette):
@@ -240,7 +310,7 @@ class AtelierDashboard:
         self.style.configure('Forgely.Treeview', background=palette['PANEL'],
             fieldbackground=palette['PANEL'], foreground=palette['FG'], borderwidth=0,
             bordercolor=palette['PANEL'], lightcolor=palette['PANEL'], darkcolor=palette['PANEL'],
-            font=(font['body'], 10), rowheight=30, relief='flat')
+            font=(font['body'], 10), rowheight=34, relief='flat')
         self.style.configure('Forgely.Treeview.Heading', background=palette['PANEL2'],
             foreground=palette['MUTED'], font=(font['display'], 9, 'bold'), borderwidth=0, relief='flat')
         self.style.map('Forgely.Treeview', background=[('selected', palette['PANEL2'])], foreground=[('selected', palette['FG'])])
@@ -252,17 +322,60 @@ class AtelierDashboard:
             for tag, color in (('success', palette['GREEN']), ('pending', palette['GOLD']), ('unknown', palette['MUTED']), ('normal', palette['FG'])):
                 self.table.tag_configure(tag, foreground=color)
 
+    def sync_item_icon(self):
+        equipment = getattr(getattr(self.app, 'manual_equipment', None), 'equipment', None)
+        card=equipment_card(self.app.equipment_mode.get(),self.app.active_equipment_verified,
+                            self.app.item.get(),manual=equipment,plan=self.app.plan)
+        equipment=card['equipment']
+        key = (getattr(equipment, 'item_id', None), self.app.item.get())
+        if key == self._item_icon_key:
+            return
+        self._item_icon_key = key
+        self._item_photo = None
+        self.item_icon.pack_forget()
+        if equipment is None:
+            return
+        from pathlib import Path
+        path = Path(__file__).parent/'assets'/'equipment_icons'/f'{equipment.icon_id}.png'
+        try:
+            from PIL import Image, ImageTk
+            with Image.open(path) as image:
+                image = image.convert('RGBA')
+                image.thumbnail((56, 56), Image.Resampling.LANCZOS)
+                self._item_photo = ImageTk.PhotoImage(image, master=self.app)
+            self.item_icon.configure(image=self._item_photo, width=60, height=60)
+            self.item_icon.pack(side='left', padx=(0, 12), before=self.app.plan_item_lbl)
+        except (OSError, ValueError, tk.TclError):
+            self.item_icon.configure(image='')
+
     def sync(self):
         app = self.app
+        self.sync_item_icon()
         verified = bool(app.active_equipment_verified and app.live_jet is not None and not app.live_after_fusion)
-        observed = app.live_jet if verified else (app.workshop_readings.partial_jet or app.workshop_readings.jet or {})
+        observed = app.live_jet if verified else app.workshop_readings.display_jet
+        states = app.workshop_readings.line_states or None
+        if app.workshop_readings.context is not None:
+            observed = {**dict.fromkeys(app.workshop_readings.expected), **app.workshop_readings.values}
+            states = app.workshop_readings.line_states
         if not app.workshop_active:
             observed = {}
-        targets = {k: v['target'] for k, v in (app.plan or {}).get('stats', {}).items()
-                   if v.get('target') is not None}
-        if app.plan and app.active_equipment_verified and app.item.get() != app.plan.get('item'):
-            targets = {}
-        rows = stat_rows(observed, targets, verified=verified)
+        card=current_card(app)
+        from forgely_measured_goals import current_snapshot
+        snapshot=current_snapshot(app)
+        if snapshot is not None:
+            observed=snapshot[0]
+            states={k:'confirmed' for k in observed}
+            verified=bool(app.measured_goals.targets)
+        pending_rune = getattr(app, '_copilot_masked', False) is True
+        if pending_rune:
+            # A fast rune result can precede the numeric tracker invalidation.
+            # Keep its pre-rune snapshot for learning, never label it current.
+            states = {k:'stale' for k in observed}
+            verified = False
+        targets=card['targets']
+        app.plan_item_lbl.configure(text=card['title'])
+        app.edit_current_goals.configure(state='normal' if card['editable'] else 'disabled')
+        rows = stat_rows(observed, targets, verified=verified, states=states)
         key = tuple(rows)
         if key != self._table_key:
             self._table_key = key
@@ -273,11 +386,17 @@ class AtelierDashboard:
             if self.empty_label.winfo_manager():self.empty_label.place_forget()
         else:
             self.empty_label.place(relx=.5, rely=.52, anchor='center')
-        caption = 'Lecture confirmée de l’équipement' if verified else 'Lecture provisoire · à confirmer' if observed else 'Aucune lecture disponible'
-        configure_if_changed(self.reading_label,text=caption)
-        pool = app.live_pool if verified else app.workshop_readings.partial_pool
-        if not app.workshop_active:
+        caption = 'Lecture confirmée de l’équipement' if verified else 'Stabilisation automatique du jet' if observed else 'Aucune lecture disponible'
+        if states is not None and not verified and app.workshop_active and app.workshop_readings.context is not None:
+            fresh = sum(v in ('confirmed', 'offscreen') for v in states.values())
+            caption = f'Jet partiel · {fresh}/{len(states)} lignes confirmées · fais défiler l’atelier'
+        if app.workshop_readings.partial_jet and not app.active_equipment_verified and app.workshop_active:
+            caption = 'Valeurs stabilisées · identification de l’équipement en cours'
+        self.reading_label.configure(text=caption)
+        pool = snapshot[1] if snapshot is not None else app.live_pool if verified else app.workshop_readings.partial_pool
+        if not app.workshop_active or pending_rune:
             pool = None
         amount = '—' if pool is None else f'{pool:g}'.replace('.', ',')
-        configure_if_changed(self.pool_label,text='Puits ' + amount + ('  ·  confirmé' if verified and pool is not None else '  ·  provisoire' if pool is not None else '  ·  en attente de lecture'))
-
+        if hasattr(app, 'overlay'):
+            app.overlay.sync_equipment(card['title'], rows, amount, self.activity)
+        self.pool_label.configure(text='Puits ' + amount + ('  ·  confirmé' if verified and pool is not None else '  ·  provisoire' if pool is not None else '  ·  en attente de lecture'))

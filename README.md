@@ -1,15 +1,57 @@
 # Forgely
 
-Le copilote dispose d’un [protocole expert corrigé et de ses règles actives](docs/REGLES_ACTIVES_FORGELY.md),
-d’un [audit des conflits avec les deux prompts](docs/AUDIT_CONFLITS_PROMPTS.md)
-et d’un [référentiel des 105 runes et de leur provenance](docs/POIDS_RUNES.md).
-Les règles et les poids sont aussi consultables dans **Outils → Règles du copilote et poids des runes**.
+**Sources 22.16 — fusion PC et GitHub du 8 novembre 2026.** Vision et apprentissage
+du PC conservés ; identification indépendante, modèle vidéo estimé, calibration,
+simulateur dynamique et bilans de session intégrés. Budget atteint : alerte par
+défaut, suspension facultative. Voir [le détail de la fusion et ses limites](docs/FUSION_PC_GITHUB_2026-11-08.md).
+L'archive complète et l'exécutable de l'entraîneur restent ceux de la distribution
+précédente ; les nouvelles fonctions du copilote utilisent les sources Python.
+
+Les sections versionnées plus anciennes ci-dessous décrivent l'historique ; le
+rapport de fusion précise le comportement actuel et les conflits résolus.
+
+Le contrat de conseil issu de l'analyse d'Inkybot est consultable dans les règles du copilote :
+[texte de référence](Application/PROMPT_CONSEILLER_FM.md). Les prix sont exclus du conseil ;
+les anciens modes économiques migrent vers Chances maximales. Les séquences comparables
+vers le jet complet priment sur la phase de puits et la réussite de la prochaine rune.
+Le moteur reste local en Python, sans appel à une IA conversationnelle.
+
+
+Version source 22.15 : matrice de décision par phase de puits, estimations théoriques
+explicitement identifiées, deux scénarios et suivi exact du puits sous continuité vérifiée.
+Le profil sélectionné manuellement est associé dès la première
+lecture, sans recommencer la stabilisation après confirmation de l’icône.
+Objet et cibles conservés après une rune, affichage
+« Actualisation du jet » et captures rapprochées pour reprendre les conseils.
+Validation toujours visible dans l’éditeur flottant,
+ouverture à droite et retour du focus à DOFUS après enregistrement.
+Case à cocher « Jet parfait », qui applique toutes les
+valeurs maximales théoriques de l’objet identifié ou sélectionné.
+Jet souhaité directement dans le copilote dès la lecture stabilisée,
+conseils sans attendre le nom de l’objet, association accélérée et calibration automatique
+contrôlée, lignes de vérification complètes et guidage par le référentiel
+théorique. La V1 complète les lectures OCR manquantes et refuse les contradictions.
+Voir [le fonctionnement et les limites](docs/Verification_Visuelle_Manuelle.md).
+
+Apprentissage du jet cible : le jet complet est prioritaire. Les politiques
+annulées, insuffisamment évaluées ou sans gain démontré sur le témoin restent
+sauvegardées mais inactives dans les conseils. Les anciennes politiques sont
+conservées et incompatibles avec la nouvelle récompense. Voir
+[le fonctionnement et ses limites](docs/JET_CIBLE_PRIORITAIRE.md).
+Correction locale du 8 novembre : entraînement ciblé sur les échecs courts, conservation
+de la meilleure archive, 200 évaluations par défaut et audit indépendant reproductible.
+Voir [le rapport mesuré](docs/RAPPORT_ENTRAINEMENT_2026-11-08.md).
+Une politique compacte peut maintenant apprendre un classement qui généralise aux
+situations inédites ; voir [la seconde campagne](docs/RAPPORT_GENERALISATION_2026-11-08.md).
+Cette option expérimentale reste désactivée par défaut après un audit sans gain.
+Son gain direct et son autorisation dans le copilote sont évalués séparément.
 
 Application Windows d'assistance à l'observation de la forgemagie DOFUS.
 
-Deux objectifs sont proposés dans le conseil : **Chances maximales** et **Budget
-optimisé**, avec prix locaux et budget de session. Le classement est explicable,
-sans taux de réussite inventé. Voir [le fonctionnement et ses limites](docs/FM_DOUBLE_OBJECTIF.md).
+Le conseil poursuit un seul objectif : **atteindre le jet souhaité**. Les prix,
+budgets et coûts en kamas sont retirés de l'interface et du calcul, y compris
+dans l'entraînement. Les anciens paramètres économiques sont ignorés.
+Le classement reste explicable, sans taux de réussite inventé.
 
 Capture et OCR optimisés : requêtes identiques mutualisées, récupération des lignes
 réutilisée sur pixels inchangés, affichage plus réactif et isolation renforcée des
@@ -54,3 +96,22 @@ Ne pas publier de captures contenant des informations personnelles, des identifi
 
 
 
+## Sélection de l'équipement et du jet souhaité (v22.05)
+
+Choisir « Sélection manuelle », puis la catégorie (Coiffe, Cape, Anneau,
+Amulette, Ceintures, Bottes ou Arme), l'objet et ses valeurs cibles.
+Le formulaire présente les bornes naturelles disponibles, propose « Jet naturel
+maximum » et permet d'ajouter une caractéristique, notamment pour un exo.
+Une case vide signifie que cette caractéristique n'est pas un objectif.
+
+Le catalogue contient 2 861 équipements et 2 695 icônes distinctes, extraites
+localement de l'installation DOFUS 3. Les sept catégories ont toutes leurs
+images. Aucun téléchargement n'est requis pour utiliser le sélecteur.
+
+En sélection manuelle, le nom choisi remplace l'identification OCR du nom.
+Le jet actuel et le puits continuent à être lus et stabilisés dans DOFUS.
+Un changement d'objet détecté ou un profil naturel incompatible suspend
+l'association. Les noms choisis manuellement ne deviennent pas des références
+de reconnaissance automatique.
+
+Voir docs/SELECTION_EQUIPEMENT.md pour les données et la validation.

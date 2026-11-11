@@ -1,0 +1,155 @@
+{
+  "workspace": "C:\\Users\\genef\\Documents\\ChatGPT\\Forgely",
+  "git_checkout": false,
+  "declared_version": "Forgely v22.16 - fusion PC et GitHub : vision, modèle vidéo, bilans et apprentissage",
+  "model_version": "forgely-unified-fm-2026-11-08-v1",
+  "selector_version": "copilot-pool-fallback-learning-4",
+  "selector_code_sha256": "65dd609771edaf0b938fbb51623d870a388afc72ed2ef499e69b45d53e99097e",
+  "source_matches_final_audit": true,
+  "actual_windows_preferences_match_audit": true,
+  "final_audit_file": "selector-user-runtime-audit.json",
+  "files": [
+    {
+      "path": "Application/auditer_politique.py",
+      "sha256": "cf5d8442f90a1bd0343fbb15499f4a66910f03307416adc059aadc8b646ad9f2",
+      "git_blob_sha1": "b9a0e2b578bcdcb0d015702573fcb503126425e4",
+      "before_sha256": "d1ef7891efb740807c42ea96ef34a8230d64c10603974874da176110e45abb05"
+    },
+    {
+      "path": "Application/forgely.py",
+      "sha256": "c018b01e297e0fb1d2d2b052c2af00194d5abfdd6bbb43cdf0017f85e953d8fd",
+      "git_blob_sha1": "fde6a0ae33a1f8886799cd67f0e16ec5dc658367",
+      "before_sha256": "e4514a81bbf83223ef77e5085068ea4dfdca168a20333988ab9e3f2f933c5574"
+    },
+    {
+      "path": "Application/forgely_advice_history.py",
+      "sha256": "00ac791abbb8ba03736ac2eb15a6ac711247ff68aae14618a5c994d2166a0956",
+      "git_blob_sha1": "642eb61844dd05ec28fa8f431b6854d5b2b50c28",
+      "before_sha256": null
+    },
+    {
+      "path": "Application/forgely_decision.py",
+      "sha256": "b43c22253da749757ba5fd84afbc87151ec38c2135b52f90d2302a3bf1844195",
+      "git_blob_sha1": "ac15fb4c997cb959415b4caefcfbabf5be422a03",
+      "before_sha256": "5ad3a60e714674a59ceab6f1991bc495b17215091c5c7e767cef45c8392eae34"
+    },
+    {
+      "path": "Application/forgely_empirical_model.py",
+      "sha256": "cca5f74426a623ade58d2a8bf79aa855adf8d9214d224e8e80ffdfb65ab6ac2a",
+      "git_blob_sha1": "27bcb96518bc2879e8cff97392614d01a45b4226",
+      "before_sha256": null
+    },
+    {
+      "path": "Application/forgely_fm_classification.py",
+      "sha256": "a5fd082a3268242dd214f1b6b522a9bf02a4cb7be52b0e652bf27fa37d92484f",
+      "git_blob_sha1": "b469ffe8d9f8bdbd0c0e2f945a4112a7787c588a",
+      "before_sha256": null
+    },
+    {
+      "path": "Application/forgely_fm_model.py",
+      "sha256": "86c0e79d8439e3f2cca10a896c94bf10fe28eb4a4458649b34944eb48b02e789",
+      "git_blob_sha1": "34c6c3292925d25075af8c5e13edce9f6c674c0c",
+      "before_sha256": "9de18b56db6bbd47c6d313df049fcc88d3e1793cd48f898431400c4f8e585bf0"
+    },
+    {
+      "path": "Application/forgely_measured_goals.py",
+      "sha256": "cd2d0e645de576cfd572176ad33d35aa011e5e54deb01f787f266f8eb2f6515e",
+      "git_blob_sha1": "d79c26227bd657fd0ac210502571491eef2365f6",
+      "before_sha256": "a09b5a3945443a0f5a65787fd0250a15e2cf71988c9cdf79d39e570562f7eedd"
+    },
+    {
+      "path": "Application/forgely_predictive.py",
+      "sha256": "e2029dca0fa3bd56408eaa2bbfe038d4dcb28a0fe2786669c7452ddd0ffb6372",
+      "git_blob_sha1": "14173a9bc660e24a24d7d2ac6ae25a9013b5f6ff",
+      "before_sha256": "8b449e3ad943ac0570a4f5532c338519b43407ee603ce9f8e7b811394004ad8d"
+    },
+    {
+      "path": "Application/forgely_session_review.py",
+      "sha256": "3bd504c0cfff902c1a386bf467936012eca8cfbd7c353d3adb398807a99632c6",
+      "git_blob_sha1": "51cb36846755a4abee5efc375dc236e091370475",
+      "before_sha256": "3c7ea8d4de36c2e4157c2a300405411591281594b947551c35515029fdc77a13"
+    },
+    {
+      "path": "Application/forgely_simulation_journal.py",
+      "sha256": "09b784eb23f2871afa3b75a815ae8c44bf50de850e0c69e573edef214b91a9c3",
+      "git_blob_sha1": "609ce7823efc27938e3e20c7d55f974d7dcd57da",
+      "before_sha256": "56c99d7c991eb6e6e518cb12bb3304d7dab22c5200ecc41f3e7a1fa657971d4b"
+    },
+    {
+      "path": "Application/forgely_simulation_live.py",
+      "sha256": "2e7a68b245faf55e2b9ca4dc0f187037f1be1dd94e1ce92dfa4bb8693667f767",
+      "git_blob_sha1": "a9191f1d902e11fdf84513f0098e17adcf5dbb8b",
+      "before_sha256": "482f2ee0722569e3d8c849fe8bd4c2de9d7d09b7fef72f7d9c6b086794259f5a"
+    },
+    {
+      "path": "Application/forgely_trained_policy.py",
+      "sha256": "d9ab4e8a082988d476a55591205b5333755b0a8d8997ca8c4a382a4249318fa3",
+      "git_blob_sha1": "222a15a66f6b79944934f917cd4b47859a8c6ddd",
+      "before_sha256": "4b0e630be0f0da628b9dc5c5ac12a301b89e0faa601d3276beb53300963616a6"
+    },
+    {
+      "path": "Application/forgely_training.py",
+      "sha256": "f5d8e4e92a1b8fcf5eb87cc309cf09bd18fdf3dba295b29eddbf40c57a064ef9",
+      "git_blob_sha1": "688ba4e2c977c7ba8ac1802827f74e2d0a17f33c",
+      "before_sha256": "5c8e344e58033df93988fcaaf4ea6e13b7340fae1d83f51086892da47a2d1bd4"
+    },
+    {
+      "path": "LANCER_ENTRAINEMENT_MIS_A_JOUR.bat",
+      "sha256": "1964c51dbeb19170c9ab07d573d81db1b9478850ac8b65433951df9a0f165a9f",
+      "git_blob_sha1": "18f0ab2a39e30ca857e4b259340225fbeae5f9ca",
+      "before_sha256": null
+    },
+    {
+      "path": "Tests/selector_audit_fixture.py",
+      "sha256": "5be58456e1e8a94e97a4207c67bc53c7f374ed41e91a8f03a114d93f74fb912a",
+      "git_blob_sha1": "3455d002f1099706f919630e9d406c88a08aee38",
+      "before_sha256": null
+    },
+    {
+      "path": "Tests/test_advice_history_removal.py",
+      "sha256": "f379fbb7108f60ad022f8b802bcdadd7166bf71eac84fa24fd215f3d551af220",
+      "git_blob_sha1": "0ba12a759ebf4e67f958aee8af062768d275be24",
+      "before_sha256": null
+    },
+    {
+      "path": "Tests/test_audit_corrections.py",
+      "sha256": "ff3f8ed17b864fa0ffc414619faf737f5a410fa84410d8f1e33aad175ff15874",
+      "git_blob_sha1": "b95a5472534a218ff44fe143ed0809f42f4cc182",
+      "before_sha256": null
+    },
+    {
+      "path": "Tests/test_general_policy.py",
+      "sha256": "5ab056839ce49f7bbcd5a1422b6fc49c521dec521e53811abe6854dc3d5049b7",
+      "git_blob_sha1": "b8e3650ed753d3989035d682630ed6393eb9ef16",
+      "before_sha256": "b8434d434eb78e3f6f0c7d2f34c05361d639f5e6051e36f0c52c710e7e996a51"
+    },
+    {
+      "path": "Tests/test_predictive_matrix.py",
+      "sha256": "fec302fddd750b1f67b1f4cccc144bb06b34625d003321ba4e81fe1832632715",
+      "git_blob_sha1": "7c2a4928169a4dbb7eaf55626bdd5df7abaf7e46",
+      "before_sha256": "5b8c1e1cebe7dd1252a2ecbd555b712840a33442ffbc6ab20c2b14b1bcad8d5a"
+    },
+    {
+      "path": "Tests/test_trained_policy_advice.py",
+      "sha256": "ef1e0c1adc632b87942b4dd687424a3c87e5356f0a1f303be19528c3b04297da",
+      "git_blob_sha1": "64d090fb62c5098586b4b72f4f5f6c3b3a0b6f8a",
+      "before_sha256": "50f2e38f026607a034b87bc3e45aa81bea9edcc5681acb0c849f6d6f57edf7dc"
+    },
+    {
+      "path": "outils/effacer_historique_conseils.py",
+      "sha256": "d12b7af907c0adbfc20b2c81fcaab34096cd425de5041877cc5dc52653d2ba3e",
+      "git_blob_sha1": "8ed7dbeb59e0d0e089775424967a57d2f989e325",
+      "before_sha256": null
+    },
+    {
+      "path": "Tests/test_simulator_player_evidence.py",
+      "sha256": "385de07e559ff7f4e993cc0be25aeb7188bf9e3c633a9130ca82d016e4d78e3c",
+      "before_sha256": "2b24a25a7ed35cc880f050fdf3c56f43d870617fd701cb6f57f3f37517dcefe0"
+    }
+  ],
+  "github_published": false,
+  "standalone_executables_rebuilt": false,
+  "verification": "1730 passed, 26 skipped, 42 subtests passed in 73.86s (0:01:13)",
+  "review": "No blocking issues remaining after independent integration and history-removal reviews",
+  "trainer_source_self_test": "passed"
+}

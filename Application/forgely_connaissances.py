@@ -40,13 +40,12 @@ FACTS = (
  Fact('tier20', 'Le repère 20 fois le gain de la rune guide le choix simple/Pa/Ra ; ce n’est ni une probabilité ni une interdiction de pose.', ('gamosaurus',), 'heuristique_communautaire'),
  Fact('balance', 'Remonter progressivement les lignes et éviter de finaliser trop tôt une ligne peut faciliter le travail sur les autres ; pas d’ordre universel de runes.', ('huzounet',), 'heuristique_communautaire'),
  Fact('finish', 'Les overs et exos sont fragiles lors des poses suivantes ; tenir compte des lignes restant à restaurer avant une finition.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
- Fact('malus', 'Les lignes négatives exigent des règles propres et des bornes signées ; le moteur positif doit suspendre leur traitement plutôt que les convertir en bonus ordinaires.', ('huzounet',), 'limite_du_modele'),
+ Fact('malus', 'Les guides décrivent un coût de pose réduit sur les malus avec une exception au passage de -1 à 0. Le conseiller conserve les valeurs signées et un classement nominal ; les pertes et probabilités non vérifiées ne sont pas extrapolées.', ('gamosaurus',), 'communautaire_et_limite_du_modele'),
  Fact('transcendence', 'La transcendance est une finition qui empêche la FM ultérieure ; vérifier ses conditions spécifiques, distinctes des runes ordinaires.', ('huzounet','gamosaurus'), 'communautaire_concordant'),
  Fact('probabilities', 'Les probabilités de SC/SN/EC dépendent du contexte ; ne pas extrapoler un taux fixe à toutes les runes.', ('fashionista','jeuxonline'), 'prudence_methodologique'),
  Fact('session_pool', 'La persistance du reliquat entre changements de session ou manipulations d’objet doit être vérifiée sur DOFUS 3.', ('fashionista','jeuxonline'), 'incertain'),
  Fact('focus', 'Le focus et le coefficient serveur concernent le BRISAGE, pas la probabilité SC/SN/EC de pose de rune.', ('dofocus',), 'source_explicite', 'brisage'),
  Fact('catalogue', 'Les données d’objets et de runes peuvent être croisées avec DofusDB ; dater et versionner chaque extraction.', ('dofocus_about','dofusdb'), 'source_explicite', 'donnees'),
- Fact('prices', 'Prix de runes et coefficients communautaires sont datés et spécifiques au serveur ; ne pas les considérer comme des constantes.', ('dofocus_about',), 'source_explicite', 'economie'),
 )
 
 # Divergences identifiées dans les guides : aucune correction silencieuse.
@@ -74,5 +73,3 @@ def sources_for(key):
     for fact in FACTS:
         if fact.key==key:return tuple(SOURCES[k] for k in fact.sources)
     raise KeyError(key)
-
-

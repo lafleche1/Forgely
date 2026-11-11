@@ -1,0 +1,6 @@
+{
+  "source": "Tests/fixtures/kido_zero_pa_212821.png",
+  "sha256": "0e2f5b61e0044a87ea8ead638b82328b81b176ce21fdb88a58c80da6fa99fa2c",
+  "annotation": "0 PA visually visible in user screenshot; exact native normalized digit and complete label",
+  "validation": "Calibration replay, not independent accuracy evidence; no OCR O-to-zero conversion"
+}

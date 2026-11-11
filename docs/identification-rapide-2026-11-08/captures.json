@@ -1,0 +1,331 @@
+{
+  "scope": "Three existing unlabeled captures, default fixed geometry; category unknown. Real OCR backend, existing OCR cache retained. No precision/recall claim.",
+  "records": [
+    {
+      "file": "frame_001.png",
+      "repeat": 0,
+      "elapsed_ms": 1909.2979,
+      "name_ocr_passes_requested": 2,
+      "ocr_calls": [
+        {
+          "size": [
+            353,
+            545
+          ],
+          "elapsed_ms": 736.75
+        },
+        {
+          "size": [
+            153,
+            26
+          ],
+          "elapsed_ms": 594.7466
+        },
+        {
+          "size": [
+            423,
+            78
+          ],
+          "elapsed_ms": 563.8687
+        }
+      ],
+      "known": null,
+      "candidate": null,
+      "signature": [],
+      "status": "read"
+    },
+    {
+      "file": "frame_001.png",
+      "repeat": 1,
+      "elapsed_ms": 14.7199,
+      "name_ocr_passes_requested": 2,
+      "ocr_calls": [
+        {
+          "size": [
+            153,
+            26
+          ],
+          "elapsed_ms": 0.2623
+        },
+        {
+          "size": [
+            423,
+            78
+          ],
+          "elapsed_ms": 0.2263
+        }
+      ],
+      "known": null,
+      "candidate": null,
+      "signature": [],
+      "status": "read"
+    },
+    {
+      "file": "frame_014.png",
+      "repeat": 0,
+      "elapsed_ms": 2021.0061,
+      "name_ocr_passes_requested": 2,
+      "ocr_calls": [
+        {
+          "size": [
+            353,
+            545
+          ],
+          "elapsed_ms": 1164.767
+        },
+        {
+          "size": [
+            153,
+            26
+          ],
+          "elapsed_ms": 419.0274
+        },
+        {
+          "size": [
+            423,
+            78
+          ],
+          "elapsed_ms": 409.5813
+        }
+      ],
+      "known": null,
+      "candidate": null,
+      "signature": [
+        [
+          "% resistance eau",
+          6,
+          8
+        ],
+        [
+          "agilite",
+          41,
+          60
+        ],
+        [
+          "dommages air",
+          5,
+          7
+        ],
+        [
+          "dommages feu",
+          5,
+          7
+        ],
+        [
+          "intelligence",
+          41,
+          60
+        ],
+        [
+          "portee",
+          1,
+          1
+        ],
+        [
+          "resistance terre",
+          7,
+          10
+        ],
+        [
+          "vitalite",
+          71,
+          100
+        ]
+      ],
+      "status": "read"
+    },
+    {
+      "file": "frame_014.png",
+      "repeat": 1,
+      "elapsed_ms": 15.3954,
+      "name_ocr_passes_requested": 0,
+      "ocr_calls": [],
+      "known": null,
+      "candidate": null,
+      "signature": [
+        [
+          "% resistance eau",
+          6,
+          8
+        ],
+        [
+          "agilite",
+          41,
+          60
+        ],
+        [
+          "dommages air",
+          5,
+          7
+        ],
+        [
+          "dommages feu",
+          5,
+          7
+        ],
+        [
+          "intelligence",
+          41,
+          60
+        ],
+        [
+          "portee",
+          1,
+          1
+        ],
+        [
+          "resistance terre",
+          7,
+          10
+        ],
+        [
+          "vitalite",
+          71,
+          100
+        ]
+      ],
+      "status": "read"
+    },
+    {
+      "file": "frame_027.png",
+      "repeat": 0,
+      "elapsed_ms": 2824.5953,
+      "name_ocr_passes_requested": 2,
+      "ocr_calls": [
+        {
+          "size": [
+            353,
+            545
+          ],
+          "elapsed_ms": 1698.7382
+        },
+        {
+          "size": [
+            153,
+            26
+          ],
+          "elapsed_ms": 543.4334
+        },
+        {
+          "size": [
+            423,
+            78
+          ],
+          "elapsed_ms": 559.9747
+        }
+      ],
+      "known": null,
+      "candidate": null,
+      "signature": [
+        [
+          "% resistance eau",
+          6,
+          8
+        ],
+        [
+          "agilite",
+          41,
+          60
+        ],
+        [
+          "dommages air",
+          5,
+          7
+        ],
+        [
+          "dommages feu",
+          5,
+          7
+        ],
+        [
+          "intelligence",
+          41,
+          60
+        ],
+        [
+          "portee",
+          1,
+          1
+        ],
+        [
+          "resistance terre",
+          7,
+          10
+        ],
+        [
+          "vitalite",
+          71,
+          100
+        ]
+      ],
+      "status": "read"
+    },
+    {
+      "file": "frame_027.png",
+      "repeat": 1,
+      "elapsed_ms": 19.6999,
+      "name_ocr_passes_requested": 2,
+      "ocr_calls": [
+        {
+          "size": [
+            153,
+            26
+          ],
+          "elapsed_ms": 0.3073
+        },
+        {
+          "size": [
+            423,
+            78
+          ],
+          "elapsed_ms": 0.2103
+        }
+      ],
+      "known": null,
+      "candidate": null,
+      "signature": [
+        [
+          "% resistance eau",
+          6,
+          8
+        ],
+        [
+          "agilite",
+          41,
+          60
+        ],
+        [
+          "dommages air",
+          5,
+          7
+        ],
+        [
+          "dommages feu",
+          5,
+          7
+        ],
+        [
+          "intelligence",
+          41,
+          60
+        ],
+        [
+          "portee",
+          1,
+          1
+        ],
+        [
+          "resistance terre",
+          7,
+          10
+        ],
+        [
+          "vitalite",
+          71,
+          100
+        ]
+      ],
+      "status": "read"
+    }
+  ]
+}

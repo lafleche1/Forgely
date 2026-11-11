@@ -1,0 +1,106 @@
+﻿rune;stat;gain;unit_weight;weight;kind
+Fo;Force;1;1.0;1.0;ordinaire
+Sa;Sagesse;1;3.0;3.0;ordinaire
+Ine;Intelligence;1;1.0;1.0;ordinaire
+Vi;Vitalité;5;0.2;1.0;ordinaire
+Age;Agilité;1;1.0;1.0;ordinaire
+Cha;Chance;1;1.0;1.0;ordinaire
+Pa Fo;Force;3;1.0;3.0;ordinaire
+Pa Sa;Sagesse;3;3.0;9.0;ordinaire
+Pa Ine;Intelligence;3;1.0;3.0;ordinaire
+Pa Vi;Vitalité;15;0.2;3.0;ordinaire
+Pa Age;Agilité;3;1.0;3.0;ordinaire
+Pa Cha;Chance;3;1.0;3.0;ordinaire
+Ra Fo;Force;10;1.0;10.0;ordinaire
+Ra Sa;Sagesse;10;3.0;30.0;ordinaire
+Ra Ine;Intelligence;10;1.0;10.0;ordinaire
+Ra Vi;Vitalité;50;0.2;10.0;ordinaire
+Ra Age;Agilité;10;1.0;10.0;ordinaire
+Ra Cha;Chance;10;1.0;10.0;ordinaire
+Ga Pa;PA;1;100.0;100.0;ordinaire
+Ga Pme;PM;1;90.0;90.0;ordinaire
+Cri;Coups Critiques;1;10.0;10.0;ordinaire
+So;Soins;1;10.0;10.0;ordinaire
+Do;Dommages;1;20.0;20.0;ordinaire
+Pui;Puissance;1;2.0;2.0;ordinaire
+Do Ren;Dommages Renvoyés;1;5.0;5.0;ordinaire
+Po;Portée;1;51.0;51.0;ordinaire
+Invo;Invocations;1;30.0;30.0;ordinaire
+Pod;Pods;10;0.25;2.5;ordinaire
+Pa Pod;Pods;30;0.25;7.5;ordinaire
+Ra Pod;Pods;100;0.25;25.0;ordinaire
+Do Pi;Dommages Pièges;1;5.0;5.0;ordinaire
+Per Pi;Puissance Pièges;1;2.0;2.0;ordinaire
+Ini;Initiative;10;0.1;1.0;ordinaire
+Pa Ini;Initiative;30;0.1;3.0;ordinaire
+Ra Ini;Initiative;100;0.1;10.0;ordinaire
+Prospe;Prospection;1;3.0;3.0;ordinaire
+Ré Feu;Résistance Feu;1;2.0;2.0;ordinaire
+Ré Air;Résistance Air;1;2.0;2.0;ordinaire
+Ré Eau;Résistance Eau;1;2.0;2.0;ordinaire
+Ré Terre;Résistance Terre;1;2.0;2.0;ordinaire
+Ré Neutre;Résistance Neutre;1;2.0;2.0;ordinaire
+Ré Per Feu;% Résistance Feu;1;6.0;6.0;ordinaire
+Ré Per Air;% Résistance Air;1;6.0;6.0;ordinaire
+Ré Per Terre;% Résistance Terre;1;6.0;6.0;ordinaire
+Ré Per Neutre;% Résistance Neutre;1;6.0;6.0;ordinaire
+de Signature;;;;;signature_non_combat
+Ré Per Eau;% Résistance Eau;1;6.0;6.0;ordinaire
+de chasse;;1;5.0;5.0;propriete_speciale
+Pa Do Pi;Dommages Pièges;3;5.0;15.0;ordinaire
+Pa Per Pi;Puissance Pièges;3;2.0;6.0;ordinaire
+Ra Per Pi;Puissance Pièges;10;2.0;20.0;ordinaire
+Pa Pui;Puissance;3;2.0;6.0;ordinaire
+Ra Pui;Puissance;10;2.0;20.0;ordinaire
+Pa Prospe;Prospection;3;3.0;9.0;ordinaire
+Fui;Fuite;1;4.0;4.0;ordinaire
+Pa Fui;Fuite;3;4.0;12.0;ordinaire
+Tac;Tacle;1;4.0;4.0;ordinaire
+Pa Tac;Tacle;3;4.0;12.0;ordinaire
+Ré Pa;Esquive PA;1;7.0;7.0;ordinaire
+Pa Ré Pa;Esquive PA;3;7.0;21.0;ordinaire
+Ré Pme;Esquive PM;1;7.0;7.0;ordinaire
+Pa Ré Pme;Esquive PM;3;7.0;21.0;ordinaire
+Ret Pa;Retrait PA;1;7.0;7.0;ordinaire
+Pa Ret Pa;Retrait PA;3;7.0;21.0;ordinaire
+Ret Pme;Retrait PM;1;7.0;7.0;ordinaire
+Pa Ret Pme;Retrait PM;3;7.0;21.0;ordinaire
+Do Pou;Dommages Poussée;1;5.0;5.0;ordinaire
+Pa Do Pou;Dommages Poussée;3;5.0;15.0;ordinaire
+Ré Pou;Résistance Poussée;1;2.0;2.0;ordinaire
+Pa Ré Pou;Résistance Poussée;3;2.0;6.0;ordinaire
+Do Cri;Dommages Critiques;1;5.0;5.0;ordinaire
+Pa Do Cri;Dommages Critiques;3;5.0;15.0;ordinaire
+Ré Cri;Résistance Critique;1;2.0;2.0;ordinaire
+Pa Ré Cri;Résistance Critique;3;2.0;6.0;ordinaire
+Do Terre;Dommages Terre;1;5.0;5.0;ordinaire
+Pa Do Terre;Dommages Terre;3;5.0;15.0;ordinaire
+Do Feu;Dommages Feu;1;5.0;5.0;ordinaire
+Pa Do Feu;Dommages Feu;3;5.0;15.0;ordinaire
+Do Eau;Dommages Eau;1;5.0;5.0;ordinaire
+Pa Do Eau;Dommages Eau;3;5.0;15.0;ordinaire
+Do Air;Dommages Air;1;5.0;5.0;ordinaire
+Pa Do Air;Dommages Air;3;5.0;15.0;ordinaire
+Do Neutre;Dommages Neutre;1;5.0;5.0;ordinaire
+Pa Do Neutre;Dommages Neutre;3;5.0;15.0;ordinaire
+Do Per Mé;% Dommages Mêlée;1;15.0;15.0;ordinaire
+Do Per Di;% Dommages Distance;1;15.0;15.0;ordinaire
+Do Per Ar;% Dommages Armes;1;15.0;15.0;ordinaire
+Do Per So;% Dommages Sorts;1;15.0;15.0;ordinaire
+Ré Per Mé;% Résistance Mêlée;1;10.0;10.0;ordinaire
+Ré Per Di;% Résistance Distance;1;10.0;10.0;ordinaire
+Pa So;Soins;3;10.0;30.0;ordinaire
+Pa Ré Air;Résistance Air;3;2.0;6.0;ordinaire
+Pa Ré Eau;Résistance Eau;3;2.0;6.0;ordinaire
+Pa Ré Feu;Résistance Feu;3;2.0;6.0;ordinaire
+Pa Ré Neutre;Résistance Neutre;3;2.0;6.0;ordinaire
+Pa Ré Terre;Résistance Terre;3;2.0;6.0;ordinaire
+Ra Ré Pou;Résistance Poussée;10;2.0;20.0;ordinaire
+Ra Do Pou;Dommages Poussée;10;5.0;50.0;ordinaire
+Ra Ré Terre;Résistance Terre;10;2.0;20.0;ordinaire
+Ra Ré Neutre;Résistance Neutre;10;2.0;20.0;ordinaire
+Ra Ré Feu;Résistance Feu;10;2.0;20.0;ordinaire
+Ra Ré Eau;Résistance Eau;10;2.0;20.0;ordinaire
+Ra Ré Cri;Résistance Critique;10;2.0;20.0;ordinaire
+Ra Ré Air;Résistance Air;10;2.0;20.0;ordinaire
+Pa Do Ren;Dommages Renvoyés;3;5.0;15.0;ordinaire

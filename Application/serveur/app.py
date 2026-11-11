@@ -10,9 +10,17 @@ TOKEN = os.environ.get('FORGELY_INGEST_TOKEN', '')
 MAX_BODY = 16_384
 LOCK = threading.Lock()
 
+
+class ClosingConnection(sqlite3.Connection):
+    def __exit__(self, *exc):
+        try:
+            return super().__exit__(*exc)
+        finally:
+            self.close()
+
 def connect():
     DB.parent.mkdir(parents=True,exist_ok=True)
-    c=sqlite3.connect(str(DB), timeout=20)
+    c=sqlite3.connect(str(DB), timeout=20, factory=ClosingConnection)
     c.execute('PRAGMA journal_mode=WAL')
     c.execute("""CREATE TABLE IF NOT EXISTS attempts (
         event_id TEXT PRIMARY KEY, received_at TEXT NOT NULL, rune TEXT NOT NULL,

@@ -1,0 +1,50 @@
+{
+  "source": "simulation",
+  "real_observations": 0,
+  "checkpoint_sha256": "584d4b0de6551c6e7dc47c2653d00bb8bdf2a9d9769c1697aca78e59ef7c4f59",
+  "policy_payload_sha256": "65f0f82e496c7223939bed81a491e422c09ccdfa8c1cef93fee0e2af648d4296",
+  "selector_version": "copilot-pool-fallback-learning-4",
+  "selector_code_sha256": "9fb9f4e1e21d41645cb10a85c98c01a96e582a816aa76904589c0f4555988c2e",
+  "selector_runtime_sha256": "cac305592ee0314ef0ce01f7a7f432520bf6eaa2d7257c7a697d969582fafdab",
+  "mode": "Chances maximales",
+  "seed": 2026110820,
+  "seed_domain": "independent_selector_audit",
+  "training": false,
+  "promotion": false,
+  "policy_frozen": true,
+  "evaluation": {
+    "learned": {
+      "episodes": 50,
+      "successes": 41,
+      "success_rate": 0.82,
+      "mean_attempts": 4.38
+    },
+    "baseline": {
+      "episodes": 50,
+      "successes": 41,
+      "success_rate": 0.82,
+      "mean_attempts": 4.38
+    }
+  },
+  "selector_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "no_demonstrated_gain",
+    "intervals": {
+      "learned": [
+        0.6920368054529739,
+        0.902299172675462
+      ],
+      "baseline": [
+        0.6920368054529739,
+        0.902299172675462
+      ]
+    }
+  },
+  "advice_calls": 438,
+  "learned_adjustment_calls": 0,
+  "choice_differences": 0,
+  "blocked_calls": 0,
+  "limitation": "Sélecteur final simulé, sans données réelles ; aucune promotion ni amélioration en jeu démontrée."
+}

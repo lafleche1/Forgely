@@ -1,0 +1,66 @@
+[
+  {
+    "path": "Application/forgely_decision.py",
+    "sha256": "b8f77eb3c1ce7c542dae177c9c61621db0d48f8446ed97951246036208fee999"
+  },
+  {
+    "path": "Application/forgely_predictive.py",
+    "sha256": "dfe5088640e90e83fc281d7e4ef909c2293cff1bcf71d80f5fa6cac1776ec5ea"
+  },
+  {
+    "path": "Application/forgely_copilot_continuity.py",
+    "sha256": "2c100aad79c6364a6afddd1055a505248e8117b1934c37807df46b4069f9c077"
+  },
+  {
+    "path": "Application/forgely_copilote.py",
+    "sha256": "7b48fa96b7bf4e67c872defbca137efeab2056eda3ef4a095018aeb7c5179f66"
+  },
+  {
+    "path": "Application/forgely.py",
+    "sha256": "128f53e9aa36ee0ad64321854ffc3333ee4f9e56341b249598b2974637d960d9"
+  },
+  {
+    "path": "Application/forgely_dashboard.py",
+    "sha256": "abd5dff55762100c05628b502b2b68a5f6d57b6ff7b26c5c56be12cad6c6fb32"
+  },
+  {
+    "path": "Application/forgely_pipeline.py",
+    "sha256": "2ea8a6c1c0810e8fec834d1b666114750f9dc022440e4f55848d1ccea5af74f3"
+  },
+  {
+    "path": "Application/forgely_attempt_groups.py",
+    "sha256": "1a987adb8992a5d959d15b11eb11f380e0bdccdb5992773f5bfcfb756f1746bd"
+  },
+  {
+    "path": "Application/forgely_attempt_activity.py",
+    "sha256": "1b947f05c88ca4c88a8747ec86ead6edec05595fe154f24427974d001a3236df"
+  },
+  {
+    "path": "Tests/test_attempt_groups.py",
+    "sha256": "77eeee03626be1183a5b1a221531e5ba8a9407e6424d2ed20ae09a41299337ae"
+  },
+  {
+    "path": "Tests/test_attempt_activity_storage.py",
+    "sha256": "5fa9d3b63d9974709b7b1a442b689fde107d08538adc27b1117cedcffbf4ba10"
+  },
+  {
+    "path": "Tests/test_attempt_receipts.py",
+    "sha256": "b55a785883b24d7411609bba141b5be542900d65c455b9ff5ce499597f05b382"
+  },
+  {
+    "path": "Tests/test_advice_freshness.py",
+    "sha256": "0523440a067fa9495610d900f8337e4b70010c911f6032cbe8d2e8b9beed2b7a"
+  },
+  {
+    "path": "Tests/test_weighted_repair_priority.py",
+    "sha256": "8c01729977c00c0605fc87e6b08db96aa87533e154f2b453c7dffa56e4641ab8"
+  },
+  {
+    "path": "Tests/test_copilot_occlusion.py",
+    "sha256": "80854abf8ccadcb580b8921475b810dd3ae4fefb61b885c3b44292b03f8d6937"
+  },
+  {
+    "path": "Tests/fixtures/attempt_groups/history_215556.png",
+    "sha256": "ea91f86e32ec6a9f76abe492bfa25fef3ca12d389d1b9dd777356c56ae99db66"
+  }
+]

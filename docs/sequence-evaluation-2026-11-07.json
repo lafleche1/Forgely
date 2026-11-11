@@ -1,0 +1,137 @@
+{
+  "item": "Anneau du Cyclo\u00efde",
+  "cases": [
+    {
+      "initial": {
+        "Force": 36,
+        "Intelligence": 39,
+        "pool": 5
+      },
+      "source": "simulation",
+      "real_observations": 0,
+      "horizon": 8,
+      "planning_seed": 20261107,
+      "validation_seed": 1000020261107,
+      "evaluation_seed": 2000020261107,
+      "validation": {
+        "selected": "Fo",
+        "baseline": "Pa Fo",
+        "accepted": true,
+        "reason": "no_observed_regression",
+        "statistical_superiority": false
+      },
+      "baseline": {
+        "first_rune": "Pa Fo",
+        "sessions": 64,
+        "complete_targets": 7,
+        "complete_target_ci95": [
+          0.054000447526830544,
+          0.20898863291938535
+        ],
+        "mean_runes": 7.828125,
+        "mean_target_value": 0.1094195052858383
+      },
+      "sequence": {
+        "first_rune": "Fo",
+        "sessions": 64,
+        "complete_targets": 12,
+        "complete_target_ci95": [
+          0.11064534880922099,
+          0.2997459155477517
+        ],
+        "mean_runes": 7.65625,
+        "mean_target_value": 0.18753988695901538
+      },
+      "scope": "First choice fixed before evaluation; following choices adapt using the original heuristic.",
+      "limitations": "Short simulated sessions; does not establish superiority in DOFUS."
+    },
+    {
+      "initial": {
+        "Force": 39,
+        "Intelligence": 36,
+        "pool": 0
+      },
+      "source": "simulation",
+      "real_observations": 0,
+      "horizon": 8,
+      "planning_seed": 20261107,
+      "validation_seed": 1000020261107,
+      "evaluation_seed": 2000020261107,
+      "validation": {
+        "selected": "Ine",
+        "baseline": "Fo",
+        "accepted": true,
+        "reason": "no_observed_regression",
+        "statistical_superiority": false
+      },
+      "baseline": {
+        "first_rune": "Fo",
+        "sessions": 64,
+        "complete_targets": 6,
+        "complete_target_ci95": [
+          0.04367765783128784,
+          0.1898309858327767
+        ],
+        "mean_runes": 7.890625,
+        "mean_target_value": 0.09379344936882779
+      },
+      "sequence": {
+        "first_rune": "Ine",
+        "sessions": 64,
+        "complete_targets": 9,
+        "complete_target_ci95": [
+          0.07578487006414436,
+          0.24616508394637426
+        ],
+        "mean_runes": 7.765625,
+        "mean_target_value": 0.1406713325533516
+      },
+      "scope": "First choice fixed before evaluation; following choices adapt using the original heuristic.",
+      "limitations": "Short simulated sessions; does not establish superiority in DOFUS."
+    },
+    {
+      "initial": {
+        "Force": 38,
+        "Intelligence": 38,
+        "pool": 10
+      },
+      "source": "simulation",
+      "real_observations": 0,
+      "horizon": 8,
+      "planning_seed": 20261107,
+      "validation_seed": 1000020261107,
+      "evaluation_seed": 2000020261107,
+      "validation": {
+        "selected": "Fo",
+        "baseline": "Fo",
+        "accepted": true,
+        "reason": "no_observed_regression",
+        "statistical_superiority": false
+      },
+      "baseline": {
+        "first_rune": "Fo",
+        "sessions": 64,
+        "complete_targets": 0,
+        "complete_target_ci95": [
+          0.0,
+          0.056626022971156334
+        ],
+        "mean_runes": 8.0,
+        "mean_target_value": 3.9957682291666664e-05
+      },
+      "sequence": {
+        "first_rune": "Fo",
+        "sessions": 64,
+        "complete_targets": 0,
+        "complete_target_ci95": [
+          0.0,
+          0.056626022971156334
+        ],
+        "mean_runes": 8.0,
+        "mean_target_value": 3.9957682291666664e-05
+      },
+      "scope": "First choice fixed before evaluation; following choices adapt using the original heuristic.",
+      "limitations": "Short simulated sessions; does not establish superiority in DOFUS."
+    }
+  ]
+}

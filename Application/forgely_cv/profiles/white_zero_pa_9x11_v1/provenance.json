@@ -1,0 +1,7 @@
+{
+  "source": "Capture d'écran 2026-11-08 211914.png",
+  "sha256": "242d4f145a608a7f621613e203323a499f451d2e06f5329c05a0422ae792bfca",
+  "annotation": "PA = 0, visually labelled from the supplied screenshot",
+  "scope": "Exact native 9x11 zero glyph and complete PA label only; no equipment identity or item values inferred",
+  "validation": "Calibration image reread is not independent accuracy validation; altered digit/label negative checks are separate"
+}

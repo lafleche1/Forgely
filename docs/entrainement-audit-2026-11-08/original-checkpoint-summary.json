@@ -1,0 +1,54 @@
+{
+  "path": "C:\\Users\\genef\\Documents\\ChatGPT\\Forgely\\Entrainements\\20261108-183845-750339-14092-2873cb\\policy.json",
+  "sha256": "28baaa8d3a4c3ebb6baaa2dc096152cece81af3a2d7e3450938ce2f1c6de8715",
+  "configuration": {
+    "item_id": 14092,
+    "targets": {
+      "Vitalité": 300.0,
+      "Force": 40.0,
+      "Intelligence": 40.0,
+      "Agilité": 40.0,
+      "Initiative": 300.0,
+      "Dommages Neutre": 10.0,
+      "Dommages Terre": 10.0,
+      "Dommages Feu": 0.0,
+      "Dommages Air": 0.0,
+      "% Résistance Eau": 0.0,
+      "Tacle": 0.0
+    },
+    "episodes": 100,
+    "max_steps": 200,
+    "evaluation_episodes": 200,
+    "policy_search_episodes": 0,
+    "initial_preset": "moyen",
+    "initial_pool": 0.0,
+    "seed": 20261107,
+    "resume": true,
+    "use_real_observations": true,
+    "empirical_revision": null
+  },
+  "evaluation": {
+    "learned": {
+      "episodes": 200,
+      "successes": 1,
+      "success_rate": 0.005,
+      "mean_attempts": 124.615,
+      "mean_reward": 0.002441896024464846,
+      "stops": 133,
+      "truncated": 66,
+      "unseen_states": 23962
+    },
+    "baseline": {
+      "episodes": 200,
+      "successes": 3,
+      "success_rate": 0.015,
+      "mean_attempts": 128.035,
+      "mean_reward": 0.013441896024464819,
+      "stops": 123,
+      "truncated": 74,
+      "unseen_states": 0
+    }
+  },
+  "policy_version": "generalized-no-currency-5",
+  "model_version": "forgely-unified-fm-2026-11-08-v1"
+}

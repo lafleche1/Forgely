@@ -21,10 +21,26 @@ def audit_transition(rune, outcome, before, after, *, complete=False):
                   changes={s: round(end[s] - v, 4) for s, v in start.items() if end[s] != v},
                   status='partiel')
     ref = reference(rune)
+    if outcome!='SC' and any(v<0 for v in (*start.values(),*end.values())):
+        from forgely_pool_ledger import _jet, _decimal, signed_transfer
+        stat = next((s for s, choices in RUNE_CHOICES.items() if rune in choices), None)
+        if not complete:
+            return result
+        try:
+            charge,lost=signed_transfer(_jet(start),_jet(end),stat,
+                _decimal(ref.gain),_decimal(ref.weight),outcome)
+        except (ValueError,TypeError,ArithmeticError):
+            result.update(status='non_modélisé',formula='Cas signé non vérifié : reliquat lu requis.')
+            return result
+        expected=float(max(_decimal(0),_decimal(pools[0])+lost-charge))
+        result.update(status='cohérent' if abs(expected-pools[1])<1e-4 else 'contradictoire',
+            calculated_pool=expected,lost_weight=float(lost),attempted_weight=float(charge),
+            formula=f'max(0 ; {pools[0]:g} + {lost} − {charge}) = {expected:g}')
+        return result
     stat = next((s for s, choices in RUNE_CHOICES.items() if rune in choices), None)
     if not complete or stat not in start or ref.weight is None:
         return result
-    if any(s not in WEIGHT_PER_POINT or v < 0 or end[s] < 0 for s, v in start.items()):
+    if any(s not in WEIGHT_PER_POINT for s in start):
         return result
     # Account for losses on the targeted line too: nominal gain minus net change.
     losses = {s: v + (ref.gain if s == stat and outcome != 'EC' else 0) - end[s]
@@ -45,7 +61,7 @@ def audit_transition(rune, outcome, before, after, *, complete=False):
 def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
                     profile_complete=True, item=None, mode='Chances maximales',
                     prices=None, remaining_budget=None, verified=True,
-                    after_fusion=False, last_transition=None, level=None):
+                    after_fusion=False, last_transition=None,level=None):
     clean, goals = normalise_jet(jets), normalise_jet(targets)
     documented = natural_profile(item) if item else None
     if documented is not None:
@@ -56,16 +72,15 @@ def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
                  and goals is not None and finite_number(pool, nonnegative=True))
     action = proposal.rune if confirmed else None
     ref = reference(action)
-    prediction=(proposal.estimates or {}).get('prediction') if confirmed else None
     result = {'pool': {'value': pool if confirmed else None,
                        'status': 'confirmé' if confirmed else 'inconnu ou à confirmer'},
-              'prediction':prediction,
               'action': {'rune': action, 'weight': ref.weight, 'gain': ref.gain},
               'phase': 'Lecture ou objectif à confirmer', 'branches': {},
               'risk': 'Inconnu', 'goal_probability': None, 'confidence_percent': None,
-              'confidence': ('Modèle vidéo estimé et calibration réelle si disponible ; probabilité finale non estimée.' if prediction else 'Classement heuristique ; probabilité finale non estimée.'),
+              'confidence': 'Classement heuristique ; probabilité finale non estimée.',
               'stop': confirmed and proposal.kind == 'atteint',
-              'status': proposal.summary, 'transition': last_transition if confirmed else None}
+              'status': proposal.summary, 'transition': last_transition if confirmed else None,
+              'prediction':(proposal.estimates or {}).get('prediction') if confirmed else None,'level':level}
     if not confirmed or not action or ref.gain is None or ref.weight is None:
         if result['stop']:
             result['phase'] = 'Objectif atteint — arrêt'
@@ -84,10 +99,7 @@ def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
         return result
     post = dict(clean)
     post[stat] += ref.gain
-    price = (prices or {}).get(action)
-    left = remaining_budget
-    if left is not None:
-        left = max(0, left - price) if finite_number(price, nonnegative=True) else None
+    left = None  # Currency budgets do not participate in target advice.
     from forgely_decision import advise
     next_proposal = advise(post, goals, natural_max=natural_max, pool=pool,
                            mode=mode, prices=prices, remaining_budget=left,
@@ -100,6 +112,10 @@ def build_dashboard(proposal, jets, targets, pool, *, natural_max=None,
             'status': 'Relire le jet et les pertes avant de recalculer',
             'formula': f'max(0 ; {pool:g} + poids perdu observé − {ref.weight:g})',
             'condition': 'Pertes inconnues : aucune prochaine rune prédéfinie.'}
+    if (proposal.estimates or {}).get('signed_profile'):
+        result['risk']='Non quantifié (malus)'
+        for outcome in ('SN','EC'):
+            result['branches'][outcome]['formula']='Malus : relire le reliquat, comptabilité des pertes signées non validée.'
     return result
 
 
@@ -113,15 +129,13 @@ def render_dashboard(board):
         if audit['status'] == 'contradictoire':
             lines.append('Contradiction détectée : vérifier les lectures ; aucune correction automatique du puits.')
     action = board['action']
-    lines.append('[ACTION SUIVANTE] ' + (f"{action['rune']} · poids {action['weight']:g}" if action['rune'] else board['status']))
     prediction=board.get('prediction')
     if prediction:
+        lines.append('[PROBABILITÉS ESTIMÉES] '+ ' · '.join(f'{k} {prediction[k]:.2f} %' for k in ('SC','SN','EC'))
+                     +' · modèle vidéo, hypothèses affichées ; aucun taux officiel.')
         if prediction.get('difficulty') is not None:
-            terms=prediction['terms']
-            parts=' ; '.join(f'{label} {terms[key]:+g}' for key,label in
-                [('base','base'),('threshold','80 %'),('over','over'),('tier','×14'),('level','niveau'),('quality','qualité')])
-            lines.append(f"[DIFFICULTÉ] D={prediction['difficulty']:.4f} ; Q={prediction['quality']:.4f} ; {parts}.")
-        lines.append(f"[PROBABILITÉS ESTIMÉES] SC {prediction['SC']:.2f} % · SN {prediction['SN']:.2f} % · EC {prediction['EC']:.2f} % ; {prediction['calibration_n']} essais comparables.")
+            lines.append(f"[DIFFICULTÉ] {prediction['difficulty']:.2f} · niveau {board.get('level') or 'inconnu'} · "+'; '.join(prediction.get('assumptions',[])))
+    lines.append('[ACTION SUIVANTE] ' + (f"{action['rune']} · poids {action['weight']:g}" if action['rune'] else board['status']))
     lines.append('[PLAN À MOYEN TERME] ' + board['phase'])
     for outcome, branch in board['branches'].items():
         if outcome == 'SC':
@@ -130,7 +144,7 @@ def render_dashboard(board):
             lines.append(f"{outcome} → {branch['formula']} ; relire puis recalculer.")
     lines.extend(('[RISQUE] ' + board['risk'] + ' · exposition indicative, pas un taux de perte.',
                   '[FIABILITÉ] ' + board['confidence'],
-                  '[APPRENTISSAGE] Modèle prioritaire ; calibration après 30 essais comparables avec prior de 200 essais. OCR partiels et simulations exclus.'))
+                  '[APPRENTISSAGE] Fréquences descriptives séparées ; aucun coefficient serveur déduit d’un échec.'))
     return '\n'.join(lines)
 
 
@@ -138,6 +152,7 @@ def rules_text(price_settings=None):
     from forgely_weights import load_weights
     data=load_weights()
     rules = [
+        'Modèle vidéo estimé : calibration sur transitions réelles qualifiées, prior de 200 essais ; simulations et observations séparées.',
         'RÈGLES ACTIVES DU COPILOTE — 8 novembre 2026',
         '1. Atteindre tous les minima du jet demandé. Ne pas remplacer ces cibles par un jet parfait ou une valeur de revente.',
         '2. Conseiller uniquement sur un objet et un jet confirmés, avec toutes les lignes ciblées présentes et un puits confirmé. Après une pose, attendre la nouvelle lecture.',
@@ -147,19 +162,18 @@ def rules_text(price_settings=None):
         '6. Bornes naturelles documentées : dépassement = over ; absence = exo uniquement si le profil naturel est complet. Un CSV partiel ne prouve pas une absence.',
         '7. Gardes conservatrices : densité totale d’une ligne over ≤101, sauf maximum naturel supérieur ; densité cumulée des lignes exotiques ≤101. Ce sont des gardes de Forgely, pas une formule officielle reconstituée.',
         '8. Exo possible sans puits. Aucun sacrifice automatique et aucun ordre universel de quatre phases. Remonter une ligne naturelle ciblée disponible avant une finition over/exo.',
-        '9. Minima atteints : arrêt. Budget restant nul : arrêt. Aucun seuil automatique à 98 % du jet parfait et aucun seuil de risque fictif à 60 %.',
-        '10. Modèle vidéo prioritaire : seuil 80 %, pression dès ×14, over et qualité globale. Chances maximales : progression pondérée par SC+SN estimés. Budget optimisé : prix et exposition de réparation approximative. Aucun coût final minimal garanti.',
-        '11. Prix absents : runes exclues du mode économique et des conseils sous budget. Budget 0 dans les préférences = sans limite ; dépenses inconnues = conseil sous budget suspendu.',
-        '12. Scénario SC : gain nominal, puits conservé, prix déduit du budget, puis nouveau conseil hypothétique. SN/EC : relire les pertes avant de choisir la prochaine rune.',
+        '9. Minima atteints : arrêt. Aucun budget dur ne bloque les conseils. Aucun seuil automatique à 98 % du jet parfait et aucun seuil de risque fictif à 60 %.',
+        '10. Jet cible prioritaire : prix et anciens modes economiques exclus du conseil.',
+        '11. Sequences comparables du jet complet prioritaires sur la phase de puits et le taux de la prochaine rune.',
+        '12. Scenario SC : gain nominal et puits conserve ; SN/EC : relire les pertes avant le prochain conseil.',
         '13. Risque qualitatif : Faible si rune couverte ; Moyen si poids non couvert ; Critique pour finition ou over/exo déjà présent et identifié. Ce ne sont pas des probabilités. Un profil partiel peut laisser une fragilité inconnue.',
         '14. Aucun pourcentage de confiance ou de réussite finale inventé. Aucun coefficient de difficulté serveur déduit d’une série d’échecs.',
-        '15. Formule finale vidéo pour SC ; Q = moyenne des ratios actuels/maxima naturels par ligne, bornée à [0,1] selon la définition utilisateur. Exo PA/PM/PO existant : Q=1 sans second +60. SN reconstruit par morceaux ; ces hypothèses sont affichées. Niveau optionnel 1–200 dans les objectifs ; inconnu : aucun bonus. Les relevés Dofocus exacts restent séparés et servent de repli si le modèle manque.',
-        '16. Calibration : après 30 essais réels comparables, moyenne avec un prior de 200 essais du modèle. Même objet, rune, jet exact et puits exact ; toutes les lignes naturelles documentées présentes et comptabilité cohérente. Les anciens OCR partiels et simulations ne calibrent jamais. Les fréquences agrégées restent descriptives.',
-        '17. Simulateur dynamique : même modèle après chaque clic, minima/prix/budget respectés ; pertes réelles comparables ou transition inconnue, approximation explicite facultative. Les essais virtuels restent séparés des observations. Aucun RL, MCTS, A* ou mélange 40/60 implicite.',
+        '15. Relevés Dofocus : réutilisation seulement pour le même objet, jet complet et puits exacts. Leur SC+SN affiché peut pondérer le classement ; cela ne valide pas ces chiffres comme probabilités du jeu.',
+        '16. Observations comparables : calibration explicite du modele ; aucune seconde application des memes essais.',
+        '17. Simulations et observations restent séparées. Les politiques apprises restent inactives sans validation indépendante. Le mélange 60 % réel / 40 % simulations exige les validations et le contexte requis.',
         '18. Malus non traités par les règles positives ; transcendances, chasse et Signature ne sont pas proposées comme runes ordinaires. Mode observation : aucun conseil. Aucun clic automatique dans DOFUS.',
-        '19. Bilans de sessions : objectifs/coûts locaux, prévisions antérieures au résultat comparées uniquement sur contexte identique et transition cohérente. Les bilans ne créent aucune observation supplémentaire. Les nouvelles transitions qualifiées enrichissent la calibration ; amélioration progressive, non garantie à chaque session.',
         '',
-        'PRIX : ' + (f"{price_settings.get('price_server','serveur non renseigné')} ; référence reçue le {price_settings.get('price_reference_date','date inconnue')} ; valeurs modifiables, non actualisées automatiquement." if price_settings else 'Référence locale par serveur, datée et modifiable.'),
+        'PRIX : exclus du conseil de rune ; anciens parametres ignores.',
         '',
         'PROVENANCE DES POIDS : ' + data['provenance']['notice'],
         'Client ' + data['provenance']['game_version'] + ' ; extraction : ' + data['provenance']['release_url'],
@@ -170,4 +184,6 @@ def rules_text(price_settings=None):
             rules.append(row['rune']+' : hors combat ; aucune densité attribuée.')
         else:
             rules.append(f"{row['rune']} : gain +{row['gain']:g} ; poids {row['weight']:g}" + (' ; propriété spéciale, non proposée.' if row['kind']!='ordinaire' else ''))
-    return '\n'.join(rules)
+    from pathlib import Path
+    contract = Path(__file__).with_name('PROMPT_CONSEILLER_FM.md').read_text(encoding='utf-8')
+    return contract + '\n\n--- REFERENTIEL TECHNIQUE ---\n' + '\n'.join(rules)

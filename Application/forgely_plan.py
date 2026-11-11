@@ -9,7 +9,7 @@ from forgely_rules import RUNE_CHOICES
 STATS = {stat:tuple(runes) for stat,runes in RUNE_CHOICES.items()}
 
 
-def save_plan(item, values, path=PLAN_PATH, *, level=None):
+def save_plan(item, values, path=PLAN_PATH, *, item_id=None, level=None):
     item = item.strip()
     if not item or len(item)>100:
         raise ValueError('Indique le nom de l’équipement (100 caractères maximum).')
@@ -26,6 +26,9 @@ def save_plan(item, values, path=PLAN_PATH, *, level=None):
     if not clean: raise ValueError('Renseigne au moins une caractéristique cible.')
     data={'item':item,'stats':clean}
     if level is not None:data['level']=level
+    if item_id is not None:
+        if type(item_id) is not int or item_id<=0:raise ValueError('Identifiant d’objet invalide')
+        data['item_id']=item_id
     path=Path(path); path.parent.mkdir(parents=True,exist_ok=True)
     path.write_text(json.dumps(data,ensure_ascii=False,indent=2),encoding='utf-8')
     return data
@@ -46,4 +49,3 @@ def next_action(plan, pool=None):
     proposal=advise({s:v['current'] for s,v in plan['stats'].items()},
                     {s:v['target'] for s,v in plan['stats'].items()},pool=pool,item=plan.get('item'),level=plan.get('level'))
     return proposal.summary,proposal.explanation
-

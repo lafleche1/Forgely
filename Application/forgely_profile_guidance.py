@@ -39,6 +39,11 @@ def profiles(path=BOUNDS_PATH):
 def compare(item,observed,path=BOUNDS_PATH):
     """Returns hints and gaps, without filling observed values from the catalogue."""
     expected=profiles(path).get(_key(item),{})
+    if Path(path)==Path(BOUNDS_PATH):
+        # Diagnostics and live completeness checks must use the same profile.
+        # An older partial CSV must not label a catalogue line as an exo.
+        from forgely_vision_guidance import reference_for
+        expected=reference_for(item) or expected
     if not expected:return {"available":False,"expected":{},"missing":[],"extra":[],"outside":[]}
     actual={_key(k):(k,v) for k,v in (observed or {}).items()}
     missing=[stat for stat in expected if _key(stat) not in actual]

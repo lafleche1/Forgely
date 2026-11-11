@@ -1,0 +1,46 @@
+[
+  {
+    "path": "Application/forgely_equipment_identity.py",
+    "sha256": "df6b4d13e964d54a03ead0875f95106ae719b76f316f695ae1a5379f17e933ca"
+  },
+  {
+    "path": "Application/forgely_item_identity.py",
+    "sha256": "aee313d6740422f06fb96ce450947443c30c32bb1e848a1a06d095b8ded98bdb"
+  },
+  {
+    "path": "Application/forgely.py",
+    "sha256": "275020827a42b9a929aa2ead1396decf3a85b53ea50d066b0532e3ba2521f58d"
+  },
+  {
+    "path": "Application/forgely_jet.py",
+    "sha256": "1069b324eb363070eb498f9f2e6e6af485411980079fba96fc1808eb6b1b1b1d"
+  },
+  {
+    "path": "Tests/test_slot_catalogue_identity.py",
+    "sha256": "65c273f0d176cb92e866afd047bc9b2cb0c0598168eaf73874404c542b4356b5"
+  },
+  {
+    "path": "Tests/test_zero_damage_capture.py",
+    "sha256": "4db26fc18cb300e90b0adac13e1553094b82c56d0a8b32b7dc39057540f75b62"
+  },
+  {
+    "path": "Application/tests/test_identity_latency.py",
+    "sha256": "b2f2a38413103007110476dca32b5a3795dee40c39b8a61e8143bbdbc440ecd9"
+  },
+  {
+    "path": "Application/tests/test_equipment_identity_fast.py",
+    "sha256": "966bf831bb1e798cee6e2dd1cad337fc2d0e0ea66515c75e9a92b0edbc41aa07"
+  },
+  {
+    "path": "Tests/fixtures/slot_rat_brakmarien_20261108.png",
+    "sha256": "04db605b4b1291591dadaa36ef9a824b5c36de4e8899403f18c60a0ca1ea2fb9"
+  },
+  {
+    "path": "Tests/fixtures/slot_cycloide_20261108.png",
+    "sha256": "59ad26f0ef6dabeea387817d83eb3e97969d4bf04f3ba80c1185cb6504d8502b"
+  },
+  {
+    "path": "Tests/fixtures/effects_zero_damage_20261108.png",
+    "sha256": "0b78e674e21941b67ed87011b6a4c1a65a7f5e950a36ad6b6cf1cfa7d6bc2b84"
+  }
+]

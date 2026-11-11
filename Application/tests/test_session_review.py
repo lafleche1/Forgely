@@ -109,15 +109,18 @@ def test_ui_hooks_record_prospective_trial_and_calibration_progress(tmp_path):
         active_equipment_verified=True,live_after_fusion=False,live_jet={'Force':0},live_pool=5,
         item=SimpleNamespace(get=lambda:'Test'),frame_mailbox=mailbox,latest_observation_id=10)
     p=advise({'Force':0},{'Force':2},natural_max={'Force':100},pool=5,prices={'Fo':36})
-    # Fo is forced by a one-rune priced budget so the played rune matches.
+    # Legacy prices do not select the rune; record the actual advised action.
     p=advise({'Force':0},{'Force':2},natural_max={'Force':100},pool=5,
-             prices={'Fo':36},remaining_budget=100)
+             prices={'Fo':36,'Pa Fo':1000,'Ra Fo':10000},remaining_budget=100,mode='Budget optimisé')
     with patch('forgely_tools.read_settings',return_value={'prices':{'Fo':36}}):
         review_tick(app,p)
-    obs=insert_observation('Test','Fo','SC','ocr_auto',db_file=rec.db_file)
-    review_event(app,obs,'Test','Fo','SC',11,capture_scope(app))
-    review_transition(app,obs,{'jet':{'Force':0},'pool':5},{'jet':{'Force':1},'pool':5},True)
-    result=rec.finish(jets={'Force':1},pool=5,confirmed=True)
+    from forgely_dofocus import reference
+    rune=p.rune
+    gain=reference(rune).gain
+    obs=insert_observation('Test',rune,'SC','ocr_auto',db_file=rec.db_file)
+    review_event(app,obs,'Test',rune,'SC',11,capture_scope(app))
+    review_transition(app,obs,{'jet':{'Force':0},'pool':5},{'jet':{'Force':gain},'pool':5},True)
+    result=rec.finish(jets={'Force':gain},pool=5,confirmed=True)
     assert result['prediction_evaluation']['n']==1
     assert result['learning']['qualified_transitions']==1
 

@@ -2,6 +2,20 @@ import unittest
 from PIL import Image
 from forgely_atelier import crop_zone, is_workshop_title, parse_reliquat, read_atelier
 
+
+def table_ocr(image, titles):
+    # Dispatch by actual region, independent of parallel worker scheduling.
+    title_values = iter(titles)
+    effects = crop_zone(image, 'effects')
+    values = {crop_zone(image, 'history').size: 'Échec',
+              effects.size: '251 300 4 Vitalité',
+              (effects.width-round(effects.width*.32), effects.height): '4 Vitalité',
+              crop_zone(image, 'runes').size: '2303',
+              crop_zone(image, 'reliquat').size: 'reliquat : 0,2'}
+    def read(patch):
+        return values[patch.size] if patch.size in values else next(title_values, '')
+    return read
+
 class AtelierTests(unittest.TestCase):
     def test_titles(self):
         self.assertTrue(is_workshop_title('Joaillomager'))
@@ -22,15 +36,13 @@ class AtelierTests(unittest.TestCase):
         self.assertFalse(r.history)
     def test_fallback_title_crop(self):
         im=Image.new('RGB',(1648,928))
-        calls=iter(['', '', 'Joaillomager', 'Échec', '4 Vitalité', 'Rune Pa', 'reliquat : 0'])
-        result=read_atelier(im,lambda image:next(calls))
+        result=read_atelier(im,table_ocr(im, ['', '', 'Joaillomager']))
         self.assertTrue(result.active)
         self.assertEqual(result.title,'Joaillomager')
 
     def test_atelier(self):
         im=Image.new('RGB',(1648,928))
-        texts=iter(['Joaillomager','Échec','4 Vitalité','2303','reliquat : 0,2'])
-        r=read_atelier(im,lambda im:next(texts))
+        r=read_atelier(im,table_ocr(im, ['Joaillomager']))
         self.assertTrue(r.active)
         self.assertEqual(r.history,'Échec')
 

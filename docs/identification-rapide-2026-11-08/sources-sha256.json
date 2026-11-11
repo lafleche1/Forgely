@@ -1,0 +1,38 @@
+[
+  {
+    "path": "Application/forgely_equipment_identity.py",
+    "sha256": "7df5726395a45f132f0dda76c316f16e46d8a4410cef6a2d4583136c67248e84"
+  },
+  {
+    "path": "Application/forgely_icon_audit.py",
+    "sha256": "c5de5cada63748a3fbccb584493d2b62c0aace47799895c86fe5b0c76e487e26"
+  },
+  {
+    "path": "Application/benchmark_equipment_identity.py",
+    "sha256": "6969d3021a12b144eea17d62ab7db57186fef17fa073ca0a12b186c587e9648a"
+  },
+  {
+    "path": "Application/forgely_item_identity.py",
+    "sha256": "9ff8009f0ae992ad2258e90b8766cc396e29de61efed2c12ca59bb9358710285"
+  },
+  {
+    "path": "Application/forgely_continuous_identity.py",
+    "sha256": "29c6fc492a52a6e255bdc7256e218860b6a1b64bc02bbf450583e46a49de93b0"
+  },
+  {
+    "path": "Application/forgely.py",
+    "sha256": "7f06064d5c202ae886d67565cfbd6c9b87b3f16a4c841f9c9d0cf0f096ed9ed2"
+  },
+  {
+    "path": "Application/tests/test_equipment_identity_fast.py",
+    "sha256": "04b4ffa99a1981f7c474dcaa8afdaffa83284209159169235c28f4858a2f4fee"
+  },
+  {
+    "path": "Application/tests/test_equipment_icon_audit.py",
+    "sha256": "1e4c3b517d07e7f996b90b6fb0e8e8af943108ca34232b21ff85bd704a149da2"
+  },
+  {
+    "path": "outils/benchmark_identification_captures.py",
+    "sha256": "e6ae62a1b29eadc131c6a8886ebec199d2f007dafc8f31ac6656de286dd01cb0"
+  }
+]

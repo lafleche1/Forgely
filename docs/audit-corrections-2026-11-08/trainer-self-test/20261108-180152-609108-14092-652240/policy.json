@@ -1,0 +1,211 @@
+{
+  "signature": "f03bbad7531145879435aa2fff86a491f58ab3cf941c74a630cc3e727ba8cfb4",
+  "policy_version": "generalized-no-currency-5",
+  "model_version": "forgely-unified-fm-2026-11-08-v1",
+  "reward_version": "complete-target-first-2",
+  "source": "simulation",
+  "real_observations": 0,
+  "eligible_for_advice": false,
+  "simulation_contribution_only": true,
+  "evaluation": {
+    "learned": {
+      "episodes": 2,
+      "successes": 0,
+      "success_rate": 0.0,
+      "mean_attempts": 5.0,
+      "mean_reward": -0.02,
+      "stops": 0,
+      "truncated": 2,
+      "unseen_states": 8
+    },
+    "baseline": {
+      "episodes": 2,
+      "successes": 0,
+      "success_rate": 0.0,
+      "mean_attempts": 5.0,
+      "mean_reward": -0.02,
+      "stops": 0,
+      "truncated": 2,
+      "unseen_states": 0
+    }
+  },
+  "evaluation_protocol": {
+    "version": 1,
+    "seed": 20261107,
+    "seed_domain": "evaluation",
+    "seed_derivation": "sha256(seed:domain:index)",
+    "paired_seeds": true,
+    "training_replay": false,
+    "policy_frozen": true,
+    "selection_benchmark": true
+  },
+  "advice_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "insufficient_evaluation"
+  },
+  "direct_policy_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "insufficient_evaluation"
+  },
+  "cancelled": false,
+  "item_id": 14092,
+  "configuration": {
+    "item_id": 14092,
+    "targets": {
+      "Force": 40
+    },
+    "episodes": 2,
+    "max_steps": 5,
+    "evaluation_episodes": 2,
+    "policy_search_episodes": 0,
+    "initial_preset": "moyen",
+    "initial_pool": 0.0,
+    "seed": 20261107,
+    "resume": true
+  },
+  "profile_lines": [
+    {
+      "stat": "% Résistance Eau",
+      "value": 7,
+      "min": 6,
+      "max": 8,
+      "weight": 6.0
+    },
+    {
+      "stat": "Agilité",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1.0
+    },
+    {
+      "stat": "Dommages Air",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5.0
+    },
+    {
+      "stat": "Dommages Feu",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5.0
+    },
+    {
+      "stat": "Dommages Neutre",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5.0
+    },
+    {
+      "stat": "Dommages Terre",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5.0
+    },
+    {
+      "stat": "Force",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1.0
+    },
+    {
+      "stat": "Initiative",
+      "value": 251,
+      "min": 201,
+      "max": 300,
+      "weight": 0.1
+    },
+    {
+      "stat": "Intelligence",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1.0
+    },
+    {
+      "stat": "Tacle",
+      "value": 5,
+      "min": 4,
+      "max": 6,
+      "weight": 4.0
+    },
+    {
+      "stat": "Vitalité",
+      "value": 276,
+      "min": 251,
+      "max": 300,
+      "weight": 0.2
+    }
+  ],
+  "general_policy": null,
+  "episodes_total": 2,
+  "training_seed_end": 2,
+  "q": {
+    "14,14,14,14,14,14,14,13,14,13,14,0,15": {
+      "Fo": 0.0,
+      "Pa Fo": 0.030000000000000002
+    },
+    "14,14,14,14,14,14,15,12,14,13,14,0,12": {
+      "Fo": 0.0
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,2,9": {
+      "Fo": 0.0
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,1,6": {
+      "Fo": 0.0
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,1,3": {
+      "Fo": -0.05000000000000002
+    },
+    "14,14,14,14,14,14,15,13,14,10,14,0,12": {
+      "Fo": 0.0
+    },
+    "14,14,14,14,14,14,15,13,14,10,14,0,9": {
+      "Fo": 0.0
+    },
+    "14,14,14,14,14,12,15,12,14,10,14,2,6": {
+      "Fo": 0.0
+    },
+    "14,14,14,14,14,12,15,12,14,10,14,1,3": {
+      "Fo": 1.05
+    }
+  },
+  "visits": {
+    "14,14,14,14,14,14,14,13,14,13,14,0,15": {
+      "Pa Fo": 2
+    },
+    "14,14,14,14,14,14,15,12,14,13,14,0,12": {
+      "Fo": 1
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,2,9": {
+      "Fo": 1
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,1,6": {
+      "Fo": 1
+    },
+    "14,14,14,12,14,14,15,12,14,13,14,1,3": {
+      "Fo": 1
+    },
+    "14,14,14,14,14,14,15,13,14,10,14,0,12": {
+      "Fo": 1
+    },
+    "14,14,14,14,14,14,15,13,14,10,14,0,9": {
+      "Fo": 1
+    },
+    "14,14,14,14,14,12,15,12,14,10,14,2,6": {
+      "Fo": 1
+    },
+    "14,14,14,14,14,12,15,12,14,10,14,1,3": {
+      "Fo": 1
+    }
+  }
+}

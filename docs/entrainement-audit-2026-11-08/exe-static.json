@@ -1,0 +1,23 @@
+{
+  "path": "C:\\Users\\genef\\Documents\\ChatGPT\\Forgely\\Entrainement_Forgely.exe",
+  "size": 161792,
+  "sha256": "3e712c8aedcf42d5e2137fc2bc8a805bb964f6a1b534595c05a4cf3ec442c20c",
+  "mz": "MZ",
+  "pe_signature": "50450000",
+  "machine": "0x14c",
+  "interesting_strings": [
+    "Entrainement_Forgely.exe",
+    "ForgelyTrainingLauncher",
+    "Entrainement_Forgely",
+    "  <assemblyIdentity version=\"1.0.0.0\" name=\"MyApplication.app\"/>",
+    "pythonw.exe",
+    "Application",
+    "entrainer_forgely.py",
+    "Entrainement_Forgely.exe",
+    "Entrainement_Forgely.exe"
+  ],
+  "executed": false,
+  "signature_status": "NotSigned",
+  "uploaded_mnt_file_available": false,
+  "limitation": "Local EXE inspected only. Identity with the unavailable /mnt/data attachment is unproven; strings do not establish safety or source equivalence."
+}

@@ -1,0 +1,71 @@
+{
+  "image_size": [
+    438,
+    651
+  ],
+  "scale_tag": "capture-438x651-gelano",
+  "fields": [
+    {
+      "name": "Vitalité",
+      "kind": "stat",
+      "box": {
+        "x": 176,
+        "y": 137,
+        "w": 22,
+        "h": 20
+      },
+      "guard_box": {
+        "x": 200,
+        "y": 137,
+        "w": 57,
+        "h": 20
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "PA",
+      "kind": "stat",
+      "box": {
+        "x": 175,
+        "y": 181,
+        "w": 16,
+        "h": 20
+      },
+      "guard_box": {
+        "x": 192,
+        "y": 181,
+        "w": 21,
+        "h": 20
+      },
+      "guard": "guard-001.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    },
+    {
+      "name": "Puits",
+      "kind": "pool",
+      "box": {
+        "x": 128,
+        "y": 15,
+        "w": 13,
+        "h": 17
+      },
+      "guard_box": {
+        "x": 76,
+        "y": 14,
+        "w": 52,
+        "h": 18
+      },
+      "guard": "guard-002.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0",
+    "1"
+  ]
+}

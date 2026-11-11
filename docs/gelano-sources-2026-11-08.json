@@ -1,0 +1,70 @@
+[
+  {
+    "path": "Application/forgely_equipment_identity.py",
+    "sha256": "561ad993809ec2b37195376676ebd1deb1e1434edf5dfdd3b05572643d51fedc"
+  },
+  {
+    "path": "Application/forgely_item_identity.py",
+    "sha256": "c4bfdcd55b9129908776d98efb843bf00969f1ef65e0d3e3553891dd1607f377"
+  },
+  {
+    "path": "Application/forgely.py",
+    "sha256": "addd7f2295b25046fcd80d0c4c3e84572b5b1d8265c793f8bc38eb9957c510bd"
+  },
+  {
+    "path": "Application/forgely_atelier.py",
+    "sha256": "18a90faaf15e892fa049de425142bca8cae202dc957ad4d5ed3647eba8e40862"
+  },
+  {
+    "path": "Application/forgely_jet.py",
+    "sha256": "84bd6404af02556b70c47e0022317b3558ff1735e9c02d8ca3f89f38a2c68511"
+  },
+  {
+    "path": "Application/forgely_measured_goals.py",
+    "sha256": "d66b1d1d126ae933371932723b704ab5e312dd2d8d1debd0e64c4ea80d9d5f2e"
+  },
+  {
+    "path": "Application/forgely_review_collection.py",
+    "sha256": "b237aacbbeedc71c531f96752fd8a42e5b197a389eaca2aca2fe2fd062150c02"
+  },
+  {
+    "path": "Tests/test_sparse_slot_change.py",
+    "sha256": "5c842a803ed82e12ecc92c392608d5959b62d7b9b4bc690ea8c58fdf42f2ee01"
+  },
+  {
+    "path": "Tests/test_slot_catalogue_identity.py",
+    "sha256": "5d298ead5e9fd287c8e5ef89c39d1fcbfbb100ed846267552a1992324764c3b9"
+  },
+  {
+    "path": "Tests/fixtures/slot_gelano_20261108.png",
+    "sha256": "5750e5dad0e071b2b15ad607886eaf54155468ac7072a8c2cd1385e30fd2b28d"
+  },
+  {
+    "path": "Tests/fixtures/effects_gelano_20261108.png",
+    "sha256": "13ba898da3fcbf14728029d60972d5e2928fdda0d550246e64f0f0b8719efec8"
+  },
+  {
+    "path": "Tests/fixtures/workshop_gelano_sparse_20261108.png",
+    "sha256": "c9c5f2134914f2141230abfcc33fd22588e2cbaa9befb8fe0ac8ffc5d9e0c96b"
+  },
+  {
+    "path": "Application/forgely_cv/profiles/white_zero_pa_9x11_v1/guard-000.png",
+    "sha256": "ec09fabfec3c991f850a4eee5e2a76f7af0a715cccbde195feecf7798b6e641d"
+  },
+  {
+    "path": "Application/forgely_cv/profiles/white_zero_pa_9x11_v1/numbers.json",
+    "sha256": "c4639e30e7fbd9c09c3dd760bdea8e464ee76231c0de3dbabd8b34a2a9ad3517"
+  },
+  {
+    "path": "Application/forgely_cv/profiles/white_zero_pa_9x11_v1/provenance.json",
+    "sha256": "40070b35a743a573dcc93807d630d76888e6c15424ca1de0bf201470d5f60417"
+  },
+  {
+    "path": "Application/forgely_cv/profiles/white_zero_pa_9x11_v1/font/manifest.json",
+    "sha256": "325d3a829ab5a4660825e65a15df0d41832c6c91c2dedbb8ee599e1715ee07b9"
+  },
+  {
+    "path": "Application/forgely_cv/profiles/white_zero_pa_9x11_v1/font/U+0030-0000.png",
+    "sha256": "253798923b620fe8af3e96fc757314f90f1d0255ddafa65eedcabadf533f39f1"
+  }
+]

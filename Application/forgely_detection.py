@@ -89,6 +89,9 @@ class Observation:
     evidence: str
     confidence: str
     reason: str = ''
+    changes: dict | None = None
+    pool_direction: int | None = None
+    visual: bool = False
 
 
 class HistoryTransitionTracker:

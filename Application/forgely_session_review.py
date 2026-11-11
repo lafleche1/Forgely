@@ -26,6 +26,7 @@ class SessionRecorder:
         self.db_file=Path(db_file)
         self.report_dir=Path(report_dir) if report_dir else self.db_file.parent/'bilans_sessions'
         self.active=None;self.last_report=None;self.last_forecast_key=None
+        self._pending_forecast=None;self._trial_forecasts={}
         observation_cursor(self.db_file)
         with self._db() as db:
             db.executescript('''CREATE TABLE IF NOT EXISTS evaluation_sessions (
@@ -44,6 +45,8 @@ class SessionRecorder:
             columns={r[1] for r in db.execute('PRAGMA table_info(evaluation_trials)')}
             for name,kind in (('before_state','TEXT'),('after_state','TEXT'),('event_frame','INTEGER'),('in_scope','INTEGER NOT NULL DEFAULT 1')):
                 if name not in columns:db.execute(f'ALTER TABLE evaluation_trials ADD COLUMN {name} {kind}')
+        from forgely_advice_history import purge_history
+        purge_history(self.db_file,self.db_file.parent/'simulations.sqlite3',self.report_dir)
 
     @contextmanager
     def _db(self):
@@ -70,6 +73,7 @@ class SessionRecorder:
                                             (sid,dump(meta),dump(cursor)))
             self.active={'id':sid,'identity':identity,'meta':meta,'cursor':cursor}
             self.last_forecast_key=None
+            self._pending_forecast=None;self._trial_forecasts={}
         self.active['snapshot']={'jet':dict(jets),'pool':pool}
         return self.active['id']
 
@@ -81,9 +85,8 @@ class SessionRecorder:
         state=self.active['snapshot']
         key=dump([rune,prediction,state,scope])
         if key==self.last_forecast_key:return
-        with self._db() as db:
-            db.execute('INSERT INTO evaluation_forecasts(session,rune,prediction,state,frame,scope) VALUES(?,?,?,?,?,?)',
-                       (self.active['id'],rune,dump(prediction),dump(state),frame,scope))
+        self._pending_forecast=dict(rune=rune,prediction=json.loads(dump(prediction)),
+            state=json.loads(dump(state)),frame=frame,scope=scope)
         self.last_forecast_key=key
 
     def event(self,observation_id,item,rune,outcome,*,frame,scope):
@@ -96,14 +99,15 @@ class SessionRecorder:
                 db.execute('INSERT INTO evaluation_trials(observation_id,session,in_scope,reason,event_frame) VALUES(?,?,0,?,?)',
                            (observation_id,self.active['id'],'capture_étrangère',frame if type(frame) is int else None))
                 return
-            row=db.execute('SELECT id,rune,frame,scope FROM evaluation_forecasts WHERE session=? AND used=0 ORDER BY id DESC LIMIT 1',
-                           (self.active['id'],)).fetchone()
+            pending=self._pending_forecast
+            row=(None,pending['rune'],pending['frame'],pending['scope']) if pending else None
             matched=bool(row and row[1]==rune and type(frame) is int and row[2]<frame and row[3]==scope)
             db.execute('INSERT INTO evaluation_trials(observation_id,session,forecast_id,matched,reason,event_frame) VALUES(?,?,?,?,?,?)',
                        (observation_id,self.active['id'],row[0] if row else None,int(matched),
                         'transition_en_attente' if matched else 'prévision_absente_ou_non_comparable',frame if type(frame) is int else None))
-            if row and type(frame) is int and row[2]<frame:
-                db.execute('UPDATE evaluation_forecasts SET used=1 WHERE id=?',(row[0],))
+            if pending:
+                self._trial_forecasts[observation_id]=pending
+                if type(frame) is int and pending['frame']<frame:self._pending_forecast=None
         self.last_forecast_key=None
 
     def transition(self,observation_id,before,after,*,qualified):
@@ -115,7 +119,8 @@ class SessionRecorder:
             if row is None:return
             audit=audit_transition(row[3],row[4],before,after,complete=qualified is True)
             coherent=qualified is True and audit['status']=='cohérent'
-            comparable=bool(row[1] and coherent and row[2] and json.loads(row[2])==before)
+            forecast=self._trial_forecasts.get(observation_id)
+            comparable=bool(row[1] and coherent and forecast and forecast['state']==before)
             reason='comparable' if comparable else ('contexte_non_comparable' if coherent else 'lecture_partielle_ou_contradictoire')
             db.execute('UPDATE evaluation_trials SET matched=?,qualified=?,reason=?,before_state=?,after_state=? WHERE observation_id=?',
                        (int(comparable),int(coherent),reason,dump(before),dump(after),observation_id))
@@ -150,10 +155,11 @@ class SessionRecorder:
         scores=[];expected={k:0. for k in counts};observed={k:0 for k in counts};diagnostics={}
         prediction_log=[]
         for outcome,matched,qualified,detail,prediction,obs_id,rune,before,after,forecast_state,frame,event_frame in trials:
+            forecast=self._trial_forecasts.get(obs_id)
+            prediction=dump(forecast['prediction']) if forecast else None
             prediction_log.append({'observation_id':obs_id,'rune':rune,'outcome':outcome,
                 'comparable':bool(matched and qualified),'qualified':bool(qualified),'diagnostic':detail,
-                'forecast':json.loads(prediction) if prediction else None,
-                'forecast_state':json.loads(forecast_state) if forecast_state else None,'forecast_frame':frame,'event_frame':event_frame,
+                'event_frame':event_frame,
                 'before':json.loads(before) if before else None,'after':json.loads(after) if after else None})
             diagnostics[detail]=diagnostics.get(detail,0)+1
             if not matched or not qualified or not prediction:continue
@@ -186,6 +192,7 @@ class SessionRecorder:
         self._atomic(stem.with_suffix('.html'),render_report(result))
         with self._db() as db:db.execute('UPDATE evaluation_sessions SET closed=1,report=? WHERE id=?',(dump(result),current['id']))
         self.active=None;self.last_report=result;self.last_forecast_key=None
+        self._pending_forecast=None;self._trial_forecasts={}
         return result
 
     @staticmethod

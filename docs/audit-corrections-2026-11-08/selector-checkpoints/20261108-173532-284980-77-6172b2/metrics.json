@@ -1,0 +1,132 @@
+{
+  "run_id": "20261108-173532-284980-77-6172b2",
+  "signature": "275f3ef62dc9af021cf754fc9d8450453bd9354447b36ae8a52955a9944b2b7e",
+  "item_id": 77,
+  "item_name": "Amulette de l'Ours",
+  "empirical_observations": 0,
+  "empirical_revision": null,
+  "source": "simulation",
+  "real_observations": 0,
+  "automatically_enabled_in_live_advice": false,
+  "eligible_for_advice": false,
+  "advice_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "no_demonstrated_gain",
+    "intervals": {
+      "learned": [
+        0.562493877226366,
+        0.8089661091039063
+      ],
+      "baseline": [
+        0.6696262789551477,
+        0.8875637005402612
+      ]
+    }
+  },
+  "direct_policy_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "no_demonstrated_gain",
+    "intervals": {
+      "learned": [
+        0.562493877226366,
+        0.8089661091039063
+      ],
+      "baseline": [
+        0.6696262789551477,
+        0.8875637005402612
+      ]
+    }
+  },
+  "simulation_contribution_only": true,
+  "model_version": "forgely-unified-fm-2026-11-08-v1",
+  "policy_version": "generalized-no-currency-5",
+  "reward_version": "complete-target-first-2",
+  "episodes_completed": 50,
+  "prior_episodes": 0,
+  "episodes_total": 50,
+  "training_seed_start": 0,
+  "training_seed_end": 50,
+  "resumed_from": null,
+  "cancelled": false,
+  "training_successes": 32,
+  "training_runes": {
+    "Fo": 223,
+    "Pa Fo": 16
+  },
+  "configuration": {
+    "item_id": 77,
+    "targets": {
+      "Force": 13
+    },
+    "episodes": 50,
+    "max_steps": 8,
+    "evaluation_episodes": 50,
+    "policy_search_episodes": 0,
+    "initial_preset": "moyen",
+    "initial_pool": 0.0,
+    "seed": 2026110819,
+    "resume": false
+  },
+  "evaluation": {
+    "learned": {
+      "episodes": 50,
+      "successes": 35,
+      "success_rate": 0.7,
+      "mean_attempts": 4.16,
+      "mean_reward": 0.7200000000000003,
+      "stops": 0,
+      "truncated": 15,
+      "unseen_states": 1
+    },
+    "baseline": {
+      "episodes": 50,
+      "successes": 40,
+      "success_rate": 0.8,
+      "mean_attempts": 3.92,
+      "mean_reward": 0.8300000000000003,
+      "stops": 0,
+      "truncated": 10,
+      "unseen_states": 0
+    }
+  },
+  "policy_search": {
+    "episodes": 0,
+    "training_only": true
+  },
+  "evaluation_protocol": {
+    "version": 1,
+    "seed": 2026110819,
+    "seed_domain": "evaluation",
+    "seed_derivation": "sha256(seed:domain:index)",
+    "paired_seeds": true,
+    "training_replay": false,
+    "policy_frozen": true,
+    "selection_benchmark": true
+  },
+  "curriculum": {
+    "replayed_episodes": 11,
+    "buffered_failures": 18,
+    "capacity": 64,
+    "evaluation_replay": false,
+    "source": "simulation",
+    "sampling": "reservoir_per_failed_episode",
+    "preserves_horizon": true
+  },
+  "elapsed_seconds": 0.42610869999043643,
+  "states": 21,
+  "limitations": [
+    "Résultats synthétiques du modèle local, pas des taux officiels du jeu.",
+    "État discrétisé : politique approximative, à comparer au témoin.",
+    "Banc fixe utilisé pour sélectionner la meilleure archive ; un audit avec une autre graine reste nécessaire pour établir la généralisation."
+  ],
+  "selection": {
+    "selected_run": "20261108-173532-284980-77-6172b2",
+    "candidate_selected": true,
+    "criterion": "validation_then_wilson95_lower_bound",
+    "archives_preserved": true
+  }
+}

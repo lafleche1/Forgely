@@ -1,0 +1,20 @@
+{
+  "data_directory": "C:\\Users\\genef\\AppData\\Local\\Forgely",
+  "removed": {
+    "forecasts_removed": 0,
+    "virtual_advice_removed": 221,
+    "reports_cleaned": 0
+  },
+  "preserved_measurements": {
+    "observations": {
+      "rows": 5,
+      "sha256": "f5425132cf3850ab0295fb72dd8b1d12fe7e2f23a20dd70d3e4d4e1091ca1d59"
+    },
+    "virtual_runs": {
+      "rows": 111,
+      "sha256": "ad38a56800b1cdafccc748d8eaf4540eb442cb1f69c6d18b6779a9ff80d49011"
+    }
+  },
+  "measurements_unchanged": true,
+  "archived_recommendations_enabled": false
+}

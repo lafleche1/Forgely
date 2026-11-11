@@ -15,7 +15,7 @@ class IdentityLatencyTests(unittest.TestCase):
         with patch('forgely_item_identity.workshop_visual_fallback',return_value=True), \
              patch('forgely_item_identity.current_icon',return_value=icon), \
              patch('forgely_item_identity.recognize_item_header',return_value=('Anneau',None,'ANNEAU')) as header:
-            reader=ItemIdentityReader()
+            reader=ItemIdentityReader(allow_name_ocr=True)
             a=reader.read(image,ocr,[(1,'Anneau')])
             b=reader.read(image.copy(),ocr,[(1,'Anneau')])
         self.assertEqual(a.known,'Anneau')
@@ -31,7 +31,7 @@ class IdentityLatencyTests(unittest.TestCase):
         with patch('forgely_item_identity.workshop_visual_fallback',return_value=True), \
              patch('forgely_item_identity.current_icon',return_value=icon), \
              patch('forgely_item_identity.recognize_item_header',return_value=('Anneau',None,'ANNEAU')) as header:
-            reader=ItemIdentityReader();reader.read(image,lambda p:'31 40 33 Force',[])
+            reader=ItemIdentityReader(allow_name_ocr=True);reader.read(image,lambda p:'31 40 33 Force',[])
             image.putpixel((300,260),(250,250,250))
             reader.read(image,lambda p:'31 40 33 Force',[])
             self.assertEqual(header.call_count,2)
@@ -113,7 +113,7 @@ class IdentityLatencyTests(unittest.TestCase):
              patch('forgely_item_identity.current_icon',return_value=icon), \
              patch('forgely_item_identity.monotonic',side_effect=[0,.5,1.1]), \
              patch('forgely_item_identity.recognize_item_header',side_effect=[(None,None,''),('Anneau',None,'ANNEAU')]) as header:
-            reader=ItemIdentityReader()
+            reader=ItemIdentityReader(allow_name_ocr=True)
             self.assertIsNone(reader.read(image,lambda p:'31 40 33 Force',[]).known)
             self.assertIsNone(reader.read(image,lambda p:'31 40 33 Force',[]).known)
             self.assertEqual(reader.read(image,lambda p:'31 40 33 Force',[]).known,'Anneau')

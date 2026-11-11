@@ -21,7 +21,7 @@ class WorkshopFastPath(unittest.TestCase):
             count=len(self.calls)
             second=a.read_atelier(self.im,self.ocr,title_cache=self.cache)
         self.assertTrue(first.active and second.active)
-        self.assertEqual(len(self.calls)-count,4)
+        self.assertEqual(len(self.calls)-count,5)
         self.assertEqual(first.title,second.title)
 
     def test_disappearing_workshop_invalidates_cache(self):
@@ -38,6 +38,6 @@ class WorkshopFastPath(unittest.TestCase):
             self.cache['checked_at']-=21
             self.calls.clear()
             a.read_atelier(self.im,self.ocr,title_cache=self.cache)
-        self.assertEqual(len(self.calls),4)  # visual anchors confirm without title OCR
+        self.assertEqual(len(self.calls),5)  # four regions plus independent current-column OCR; no title OCR
 
 if __name__=='__main__':unittest.main()

@@ -1,0 +1,133 @@
+--- a/Application/forgely_training.py
++++ b/Application/forgely_training.py
+@@ -23,7 +23,7 @@
+ from forgely_rules import constraints, finite_number
+ from forgely_probabilites import wilson
+ 
+-POLICY_VERSION = 'generalized-no-currency-5'
++POLICY_VERSION = 'exact-state-no-currency-6'
+ MAX_STATES = 50000
+ from forgely_general_policy import CANDIDATES,make_policy,valid_policy,score_actions,state_scores
+ 
+@@ -117,20 +117,20 @@
+ 
+ 
+ def state_key(state, *, initial_budget=None):
+-    """All lines plus pool and horizon; discretization is approximate."""
+-    parts=[]
+-    for stat,line in sorted(state['stats'].items()):
+-        value=line['value']
+-        scale=max(1,abs(line.get('max') or 0),abs(line.get('target') or 0))
+-        parts.append(int(value) if WEIGHT_PER_POINT[stat]>=20 else floor(16*value/scale))
++    """Keep decision boundaries exact; never alias stock, pool or horizon.
++
++    Configuration compatibility is checked separately. Numeric normalization
++    lets equivalent integer/float readings reuse the same checkpoint entry.
++    The existing MAX_STATES cap bounds table growth; unseen states fall back
++    to the heuristic rather than borrowing a different state's Q values.
++    """
+     remaining=dict(zip(state['features'],state['vector']))['steps_remaining']
+-    parts.extend((floor(state['pool']/2),min(15,floor(16*remaining))))
+-    if state.get('preparatory'):
+-        # Do not merge a completed line at max and the same line with +1 over.
+-        parts.append('prep1')
+-        parts.extend(f'{s}:{line["value"]}' for s,line in sorted(state['stats'].items())
+-                     if line.get('max') is not None and line['value']>=line['max'])
+-    return ','.join(map(str,parts))
++    stock=state.get('stock')
++    payload=[[(stat,float(line['value'])) for stat,line in sorted(state['stats'].items())],
++             float(state['pool']),float(remaining),
++             None if stock is None else sorted((r,n) for r,n in stock.items() if n),
++             bool(state.get('preparatory'))]
++    return json.dumps(payload,ensure_ascii=False,separators=(',',':'),allow_nan=False)
+ 
+ 
+ def action_values(policy,state):
+@@ -474,7 +474,7 @@
+                     'sampling':'reservoir_per_failed_episode','preserves_horizon':True},
+         elapsed_seconds=perf_counter()-started,states=len(q),
+         limitations=['Résultats synthétiques du modèle local, pas des taux officiels du jeu.',
+-                     'État discrétisé : politique approximative, à comparer au témoin.',
++                     'Table d’états exacts à couverture limitée : politique approximative, à comparer au témoin.',
+                      'Banc fixe utilisé pour sélectionner la meilleure archive ; un audit avec une autre graine reste nécessaire pour établir la généralisation.'])
+     _write(directory/'policy.json',dict(signature=signature,policy_version=POLICY_VERSION,
+         model_version=MODEL_VERSION,reward_version=REWARD_VERSION,source='simulation',
+--- a/Application/auditer_politique.py
++++ b/Application/auditer_politique.py
+@@ -116,7 +116,7 @@
+         raise ValueError('Sessions hors limites')
+     raw=Path(path).read_bytes()
+     policy=json.loads(raw)
+-    if (policy.get('policy_version') not in (POLICY_VERSION,'tabular-no-currency-4') or policy.get('model_version')!=MODEL_VERSION
++    if (policy.get('policy_version')!=POLICY_VERSION or policy.get('model_version')!=MODEL_VERSION
+             or policy.get('reward_version')!=REWARD_VERSION):
+         raise ValueError('Politique incompatible : nouvel entraînement nécessaire')
+     if policy.get('general_policy') is not None and not valid_policy(policy['general_policy']):
+@@ -130,12 +130,6 @@
+         revision=empirical.digest if empirical.sample_count else None
+         if revision!=config.empirical_revision:raise ValueError('Instantané réel incompatible avec la politique')
+         transition=empirical.transition(item.item_id) if empirical.sample_count else None
+-    if policy['policy_version']=='tabular-no-currency-4':
+-        legacy={k:v for k,v in policy['configuration'].items()
+-                if k not in ('episodes','evaluation_episodes','resume')}
+-        legacy.update(model=MODEL_VERSION,policy=policy['policy_version'],reward=REWARD_VERSION,
+-                      bounds={canonical_stat(k):v for k,v in equipment_bounds(item).items()})
+-        signature=sha256(json.dumps(legacy,sort_keys=True,ensure_ascii=False).encode()).hexdigest()
+     if policy.get('signature')!=signature:
+         raise ValueError('Signature incompatible')
+     evaluation={}
+--- /dev/null
++++ b/Tests/test_training_state_precision.py
+@@ -0,0 +1,52 @@
++from forgely_rl import ForgemagingEnv
++from forgely_training import state_key
++
++
++def environment(value=290, pool=0, stock=None):
++    return ForgemagingEnv([dict(stat='Vitalité', value=value, min=250, max=300, weight=.2)],
++                          pool, {'Vitalité':300}, max_steps=100, stock=stock)
++
++
++def test_key_distinguishes_rune_legality_at_natural_cap():
++    a, b = environment(285), environment(286)
++    assert a.get_valid_actions() != b.get_valid_actions()
++    assert state_key(a.get_state()) != state_key(b.get_state())
++
++
++def test_key_distinguishes_pool_covering_small_rune():
++    assert state_key(environment(pool=0).get_state()) != state_key(environment(pool=1).get_state())
++
++
++def test_key_distinguishes_remaining_attempts():
++    a = environment()
++    before = state_key(a.get_state())
++    a.steps = 1
++    assert state_key(a.get_state()) != before
++
++
++def test_key_distinguishes_available_stock():
++    assert state_key(environment(stock={'Vi':1}).get_state()) != state_key(environment(stock={'Vi':0}).get_state())
++
++
++
++def test_equivalent_numeric_readings_reuse_key():
++    a,b=environment(285),environment(285.0)
++    assert state_key(a.get_state()) == state_key(b.get_state())
++
++
++def test_old_discretized_policy_is_not_applied_or_audited(tmp_path):
++    import json
++    import pytest
++    from forgely_training import action_values
++    from auditer_politique import audit_policy
++    from forgely_dofocus_engine import MODEL_VERSION
++    from forgely_rl import REWARD_VERSION
++    state=environment().get_state()
++    for version in ('generalized-no-currency-5','tabular-no-currency-4'):
++        policy=dict(policy_version=version,model_version=MODEL_VERSION,
++                    reward_version=REWARD_VERSION,q={state_key(state):{'Vi':999}})
++        assert action_values(policy,state)=={}
++        path=tmp_path/'legacy.json'
++        path.write_text(json.dumps(policy),encoding='utf-8')
++        with pytest.raises(ValueError,match='incompatible'):
++            audit_policy(path,episodes=1)

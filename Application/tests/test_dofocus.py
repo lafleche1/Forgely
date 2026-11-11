@@ -32,7 +32,8 @@ class DofocusTests(unittest.TestCase):
         self.assertEqual(p.rune,'Ga Pme')
         self.assertEqual(p.estimates['dofocus']['display']['SC'],'1,5')
         self.assertIsNone(p.estimates['benchmark']['SC'])
-        self.assertIn('Dofocus',p.evidence)
+        self.assertIn('Modèle FM partagé',p.evidence)
+        self.assertEqual(p.estimates['prediction']['SC'],1)
         self.assertEqual(p.sample,0)
         unknown=advise({'PA':0},{'PA':1},natural_max={'Force':100},pool=0)
         self.assertIsNone(unknown.estimates['benchmark']['SC'])
@@ -45,7 +46,7 @@ class DofocusTests(unittest.TestCase):
         p=advise({'Dommages Feu':4},{'Dommages Feu':7},pool=15)
         self.assertEqual(p.rune,'Pa Do Feu')
         self.assertIn('15',p.explanation)
-        self.assertIn('Dofocus',p.evidence)
+        self.assertIn('Modèle FM partagé',p.evidence)
 
     def test_approximate_zero_is_preserved(self):
         from forgely_dofocus import lookup

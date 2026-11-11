@@ -1,0 +1,430 @@
+{
+  "scope": "Local model and source audit; no game/server experiments",
+  "checks": [
+    {
+      "name": "rune_weights",
+      "verified": true,
+      "details": {
+        "Ra Ine": [
+          10,
+          10
+        ],
+        "Do": [
+          1,
+          20
+        ],
+        "Do Feu": [
+          1,
+          5
+        ],
+        "Cri": [
+          1,
+          10
+        ],
+        "Ga Pa": [
+          1,
+          100
+        ],
+        "Ga Pme": [
+          1,
+          90
+        ],
+        "Po": [
+          1,
+          51
+        ],
+        "Ra Vi": [
+          50,
+          10
+        ]
+      }
+    },
+    {
+      "name": "insufficient_pool_SC",
+      "verified": true,
+      "details": {
+        "pool": 2,
+        "values": {
+          "Intelligence": 30,
+          "Force": 40
+        }
+      }
+    },
+    {
+      "name": "insufficient_pool_SN",
+      "verified": true,
+      "details": {
+        "pool": 0.0,
+        "values": {
+          "Intelligence": 30,
+          "Force": 32
+        }
+      }
+    },
+    {
+      "name": "insufficient_pool_EC",
+      "verified": true,
+      "details": {
+        "pool": 0.0,
+        "values": {
+          "Intelligence": 20,
+          "Force": 32
+        }
+      }
+    },
+    {
+      "name": "unknown_losses_are_not_free",
+      "verified": true,
+      "details": "Dynamic simulator censors insufficient-pool transitions without losses."
+    },
+    {
+      "name": "released_PA_minus_rune",
+      "verified": true,
+      "details": "99.0"
+    },
+    {
+      "name": "SC_keeps_pool",
+      "verified": true,
+      "details": "SC: pool remains 2."
+    },
+    {
+      "name": "line_over_cap",
+      "verified": true,
+      "details": "101 is the resulting line density guard, not +101 over the maximum."
+    },
+    {
+      "name": "natural_repass_is_not_exo",
+      "verified": true,
+      "details": "Missing natural PA restored before final over; no universal last-PA rule."
+    },
+    {
+      "name": "stop_at_goal",
+      "verified": true,
+      "details": "No automatic exo or max+1 once goal is reached."
+    },
+    {
+      "name": "no_credited_future_pool",
+      "verified": true,
+      "details": "Temporary surplus is experimental, never already acquired pool."
+    },
+    {
+      "name": "phase_filter_block_51",
+      "verified": true,
+      "details": {
+        "pool": 51,
+        "normal": "Ra Fo",
+        "matrix": "Aucune rune compatible avec la phase de puits"
+      }
+    },
+    {
+      "name": "phase_filter_block_2",
+      "verified": true,
+      "details": {
+        "pool": 2,
+        "normal": "Do",
+        "matrix": "Aucune rune compatible avec la phase de puits"
+      }
+    },
+    {
+      "name": "trainer_still_acts_when_matrix_blocks",
+      "verified": true,
+      "details": {
+        "action": "Ra Fo",
+        "pool": 51
+      }
+    },
+    {
+      "name": "exo_probability_disagreement",
+      "verified": true,
+      "details": {
+        "dofocus_SC": 1.5,
+        "video_SC": 1.0,
+        "official_verified": false
+      }
+    },
+    {
+      "name": "pool_cap_disagreement",
+      "verified": true,
+      "details": {
+        "dofocus": 100.0,
+        "accounting": 149
+      }
+    },
+    {
+      "name": "application_sources_preserved",
+      "verified": true,
+      "details": {
+        "python_files": 215,
+        "changed": []
+      }
+    }
+  ],
+  "github_ref": "f3d94809126a6d452c028e8ac72d63b312dca3e4",
+  "comparison": [
+    {
+      "path": "VERSION.txt",
+      "github_blob_sha": "313fd3e78f2326dc5c6d747f7964a94dd47d6c5a",
+      "local_sha256": "88713e3043949076d670997618af02225bf44273284c3c0fd053529c8c7510b9",
+      "same_text": false
+    },
+    {
+      "path": "Application/forgely_strategy.py",
+      "github_blob_sha": "4c6a827c558eb6be2291bbdc20c048a4a8c89be6",
+      "local_sha256": "026c3bbfae5d7c5bb8b3d5b64b06a40f5eb2dc3ebba5a5cd89cb8d7139934815",
+      "same_text": true
+    },
+    {
+      "path": "Application/forgely_decision.py",
+      "github_blob_sha": "168166b530a1560c6dd75e02ef51e92b5e172da2",
+      "local_sha256": "5ad3a60e714674a59ceab6f1991bc495b17215091c5c7e767cef45c8392eae34",
+      "same_text": false
+    },
+    {
+      "path": "Application/forgely_virtual.py",
+      "github_blob_sha": "a4699fcad03955dca3fa9128424c2c32cffb5b6d",
+      "local_sha256": "0c4face57f0d27396acc0c76e94247dbcef63617e7e00feb0a6688b561b4b442",
+      "same_text": false
+    },
+    {
+      "path": "Application/forgely_predictive.py",
+      "github_blob_sha": "f1d487b530c1ee8caad1cf742c9619793a258677",
+      "local_sha256": "8b449e3ad943ac0570a4f5532c338519b43407ee603ce9f8e7b811394004ad8d",
+      "same_text": false
+    },
+    {
+      "path": "Application/forgely_rules.py",
+      "github_blob_sha": "20cd5ca367e62caa733609299587352c38df4503",
+      "local_sha256": "f8f492377e4d3f2aecdcdd8fb82ce59d619488c5529fa51ef00ab6a21cb19474",
+      "same_text": false
+    },
+    {
+      "path": "Application/forgely_weights.py",
+      "github_blob_sha": "306aadc6f140e9557d6125c920934167c23b3773",
+      "local_sha256": "0336e87757b8419ebcbb68d6a93345c96d8b8211be93da403eabab99e853c56b",
+      "same_text": true
+    },
+    {
+      "path": "Application/forgely_dofocus.py",
+      "github_blob_sha": "fb379b1f082b3b22e43d16bcdb4c1de651c0e1a9",
+      "local_sha256": "90bb3e6650bca310e89093e306967a8f971e54f0256669eac56ae8c2e78adece",
+      "same_text": false
+    }
+  ],
+  "application_sha256": {
+    "Application/assets/training/pilot-20261107/reproduce.py": "7ac32986477ecbd36b8cbe7976426e54f5c9e89d57a2529260fd7acf23bfe740",
+    "Application/auditer_politique.py": "d1ef7891efb740807c42ea96ef34a8230d64c10603974874da176110e45abb05",
+    "Application/benchmark_numeric_ocr.py": "2b4b7ebadb809cb55f5d6b007d05a8ec79405d54e8aebfb37a9ac4930809f5fb",
+    "Application/benchmark_ocr_vs_cv.py": "784bb3664ee614b1c228e7125f9ba1c47bd2391ebdde86eabdd109033c2673f9",
+    "Application/comparer_probabilites.py": "f48a7d172c98a6cf87a649e5f743b756d6e79e695aa112dbfe10602e6699ab52",
+    "Application/entrainer_forgely.py": "228682196e9772b128c0bedf7df0f5f6cd102e332cb71d925f94465326fd504d",
+    "Application/evaluer_sequences.py": "1dd9731b84926d36c1a43f0c4b8fe9356abb4fbd9b6c3122d501e199d6f4ca53",
+    "Application/extract_equipment_assets.py": "3419d2a1086127c7ffaa83571ff649520739cfc6cf5653f989c05db691feb2c8",
+    "Application/fabriquer_entrainement.py": "045b8139c9ac95a10a1ca76b439ecaf77ef4079f8ac21691a829b0cdead717a9",
+    "Application/forgely.py": "e4514a81bbf83223ef77e5085068ea4dfdca168a20333988ab9e3f2f933c5574",
+    "Application/forgely_arrondi.py": "f504ff732eec2c9353e52591a384ae777ed320b92e7aa978a4bd478199fc84c9",
+    "Application/forgely_atelier.py": "50147e3cb6633476d6ab06fe50fa37cdc156ff69db6974dd6af7179277e8b09b",
+    "Application/forgely_audit_terrain.py": "9d5c8ae77032c87598c66e5fd68d1ede880341538e75ca726dfb06c2d67b52c1",
+    "Application/forgely_catalogue.py": "ac07d76283442b647ecff1986d2d67118620540f04ec08d77b4b349517a3a93b",
+    "Application/forgely_catalogue_officiel.py": "796ee3a61d3aaaaf1b7b381b82c1b04e5f943f75eebf116791d8583ded505120",
+    "Application/forgely_connaissances.py": "f2ff65f77753e98a125a98cc7c2d521d25846b630054eb43679208e2269ac9ca",
+    "Application/forgely_context.py": "2a0bba26c4694679b2a4f0415f326b071e90334b4ab4a5a5046fa914f6c85702",
+    "Application/forgely_continuous_identity.py": "50de417bdb17e2d2196296c2e83f3e6dfc9b7bc5ff17a2759b26a1783bea42ba",
+    "Application/forgely_copilote.py": "65646aa7e505a7b49144f5eaf89b8ed8afe91bac64667b8695f59b6ff9b25e48",
+    "Application/forgely_cv/__init__.py": "427d060a26cf4792ce04b35b8a8fdd8ff0425bc3f95ab0e13def434cf44e15e0",
+    "Application/forgely_cv/__main__.py": "0a84c1892391ea4fa4da69cd3e69773fe4df2428a6d6c90a8f3f712c0e4ef2f6",
+    "Application/forgely_cv/capture.py": "007c6a834f11407c3082fc1ca7c3290440d3273f41cbd2ff93bf339fa28ea76e",
+    "Application/forgely_cv/detection.py": "c3b1b29dab55ce458d00862a3403014a88d77268ca68fd0ec85e7fd855b72245",
+    "Application/forgely_cv/geometry.py": "8c50becfda300adead2cfe1caf780df6bca750d78b76a72faab38493ab68413a",
+    "Application/forgely_cv/glyphs.py": "347a06dafaae85636bcbbd80ed551cfc5e291b5778902cdd2039745b1708e095",
+    "Application/forgely_cv/lines.py": "2e2d2d3447eb5e5364d421aaae4f657225f0898724fe1794a734a4b198047b49",
+    "Application/forgely_cv/masking.py": "7babce04b0f1944ab91918ab358d888bdd5630e0dd20340e023977f95b3cece8",
+    "Application/forgely_cv/numbers.py": "462cf7abaa4590a65334d9768b552aa1f7697db46532a936feadc92bcae91b91",
+    "Application/forgely_cv/pipeline.py": "87a918a438022bfcfadfa0e800dfb6fbd182207c7d1a785baa825f36583a36c0",
+    "Application/forgely_dashboard.py": "3316aca727db0b28ded0034c3d18f1e661a71e58647fc2d5034043cc94ff730a",
+    "Application/forgely_data.py": "faa7a2f67b0f211a0eda9612c96e5746ce29c249768cd0cced30146f2ce70425",
+    "Application/forgely_decision.py": "5ad3a60e714674a59ceab6f1991bc495b17215091c5c7e767cef45c8392eae34",
+    "Application/forgely_detection.py": "8102b44502bd2a306970141254d5322a85c55fdfcf1c7c1b3d0bfdecd122a70b",
+    "Application/forgely_dofocus.py": "90bb3e6650bca310e89093e306967a8f971e54f0256669eac56ae8c2e78adece",
+    "Application/forgely_dofocus_engine.py": "0a9402588b9d0ed1a8e72e06819f636d1fbe0dce8dcadd2833ffa77ea464a1ab",
+    "Application/forgely_dofocus_store.py": "1b78f4180ec603b87b043cc410cc66b5aeefcb19a98c73f7fb2f6ea78af4540d",
+    "Application/forgely_equipment_catalog.py": "a0c68da1db27e08ebea2b71127dd2f72b003dc75ca158e3a91c98971833bcb73",
+    "Application/forgely_equipment_picker.py": "7845520348ebcb4d802204eb4cc719d812138396808ceb27e0e12fe28cc4cb5d",
+    "Application/forgely_equipment_session.py": "0d608bc53da7d20541b04b2650391d28b720359b77b1af4c76c1a2fa33119d97",
+    "Application/forgely_events.py": "22ac13ee21ec9e9461c034a92c700353e9e1908e9172ec3ba93267aad175a22d",
+    "Application/forgely_expert.py": "f6bcd9966abb21794bb61efafa33fdbaae390d6425d4113ed5e72a3b5ad3adf2",
+    "Application/forgely_fast_preview.py": "f8b549fb58a3f9bf4f43e9e466ad6e511b05467b009aee973642431e861306c8",
+    "Application/forgely_fm_model.py": "a5fd082a3268242dd214f1b6b522a9bf02a4cb7be52b0e652bf27fa37d92484f",
+    "Application/forgely_gallery.py": "f9e3abc6104ae3a691264df5ab45a0f8c39ca5f3e12fc24b97cf932a23cd8aee",
+    "Application/forgely_general_policy.py": "e7d80d42c001e93f08b357111ce5ea110cc598be37a795d9e736b00a167f6c57",
+    "Application/forgely_history_delta.py": "7ef9b7b167516c25b0cc8f0e4d6c4b44b51e8a0808c909e877ca2b0e40002897",
+    "Application/forgely_history_identity.py": "3a2271128768b00c4b9c6489825489d9e7cd106877edcc48a6cdfd8e96d37a92",
+    "Application/forgely_history_summary.py": "b84e30017bb2c58a1d9c86505e34339e6c785236a585a456795dddff58a033d4",
+    "Application/forgely_huzounet.py": "4694fd65dd2868e6678fadb7a305d6fb48a864b93a7e63bc1e47c9e48f07250b",
+    "Application/forgely_hybrid.py": "dc137196a889885f26c265e9af4eb78512e965761eeb041d5c8f0be4a52f674e",
+    "Application/forgely_item_icons.py": "34f27e81b6e4d3bfd81e53f5969c42fdcf2937d5a6bea32661a992a71caae54b",
+    "Application/forgely_item_identity.py": "6bf795a8f764e123198361641c801f842bd79efec849ad53c7618dc778cf173f",
+    "Application/forgely_item_references.py": "53b98394538dc79ba86d38e1ca33ed856be84de2acb59d4a7434bf5f386b8bb0",
+    "Application/forgely_item_vision.py": "eb23eab0aaedf2860e0ba9dd42d676a79c20eda4038bd1564258d8c1a8029316",
+    "Application/forgely_items.py": "2f2eb375b666ce823b2f3ff336de2dfdd594278b12a2153955e4a67547c67d38",
+    "Application/forgely_jet.py": "ae9c5abb1ca68a313f7b3d0223c0cab6e35ce723a28dfbe9724b8d6d97db1ff7",
+    "Application/forgely_labo_live.py": "ef41b00279dda898f23fe655302d4280f70f3be2e6ce97a0aa43d727d137f3c5",
+    "Application/forgely_learning.py": "57cc997ff7e01001ea93a4a5d40f51cb8fabe8d425d7f205e9de0abe846c030d",
+    "Application/forgely_live_targets.py": "a239b482010fa1846f040b3abba2aa7afd41fd7cecbcf3e9f2e49def5f687d7d",
+    "Application/forgely_loss_bank.py": "e0860cf2b27f12acca7029425726a2cebfe0d0d4d141cb480ca854c570f2519d",
+    "Application/forgely_measured_goals.py": "a09b5a3945443a0f5a65787fd0250a15e2cf71988c9cdf79d39e570562f7eedd",
+    "Application/forgely_observation_mode.py": "89bd1b16ed6dab1e6283d59a20b13388a45845faf53036112a2e1cc4f369b064",
+    "Application/forgely_ocr_backend.py": "e681f1dd710e53b6c4c907d64212706606261b8558078ef50b73025b0a8c00de",
+    "Application/forgely_ocr_diagnostic.py": "b7cb15c07bd46b0e3847c56676eb598d5625164a2e194e7746f4a6c15306ee2d",
+    "Application/forgely_online_experience.py": "03c5b0b145267a4c8de7feead4465df110cec5c5ad4706a00e8bdc1373ecc501",
+    "Application/forgely_overlay.py": "6f6a1757f28b5e573cb7e3500ee1322e547600bf59aba8528b0084c4a2bb1673",
+    "Application/forgely_perfect_goal.py": "3361d0932f7f341b8c2770c0eb8ec7b341e0d5c5a6bfcf72f77d0b9bba114bc6",
+    "Application/forgely_performance.py": "d2f25e8c3cd9eed4443e3e33b88fe96bdda094fc152d8e7a3813ba96f48686e0",
+    "Application/forgely_pipeline.py": "6497a9c706fcb394903456f086c3c94860a1ce3f01304ab3a99bd422bf59c13e",
+    "Application/forgely_plan.py": "8db6f8be3b3b0995ea71bef19508c49f9b3e44f7c80e3bdc41778d28d87a263d",
+    "Application/forgely_pool_ledger.py": "7d525117e4bb083d07ab35825eef5aded731dba544b723a0d81d519aefc12f79",
+    "Application/forgely_pool_observer.py": "d0376502eb27821a3a3ad7e8ed55e36c7817156eb51e7bd3d236a724ec92a798",
+    "Application/forgely_predictive.py": "8b449e3ad943ac0570a4f5532c338519b43407ee603ce9f8e7b811394004ad8d",
+    "Application/forgely_pricing.py": "854279040bc44048f100072ecebffc92da79403db1873f9f075afc6a94798cd3",
+    "Application/forgely_probabilites.py": "7707e18b82214f4d4e7a6282264da9ac6fccedbcbebe6ae8a3206820b521d03f",
+    "Application/forgely_probabilites_conditionnelles.py": "a8518ff2fa1c3d851c6f94debead96ab4783a1999ce157d06305489fb5ddfd27",
+    "Application/forgely_profile_guidance.py": "fc3a5f49fe7bdbd15ae2e0025fe82f7acd4d11d09cf6514d6582db8452076b70",
+    "Application/forgely_reading_review.py": "ea15f5f2e5581fcb140f104d8d0b1776336f2696b5a20b9c2e165605e73993e4",
+    "Application/forgely_reasoning.py": "0b0cf8394e5dd58e399c6b5a98bcb9766466b49897a8a859cf045349a7598e8f",
+    "Application/forgely_recherche_probabilites.py": "3c4eb1b0138d3ed565c07e4bdeefa32970bd5cf30e5ad3924ecd6c44f4a75b95",
+    "Application/forgely_reference_publique.py": "11e52a239366886d2102476ea779562c875801af5d606a1444fa9f30008cc3d2",
+    "Application/forgely_review_collection.py": "3dec2effed68039afa5e7c1b352d0bf4790b3846851438d04cc5ddf78ca973fc",
+    "Application/forgely_review_panel.py": "267e4fa3fe81d344d743e3eb3a94c1cf828f3a72d6209623181c5417d773cd38",
+    "Application/forgely_rl.py": "b3af52ce14271a9ceb5d497ffc5a1b27e664733d1b7f1616f335a7a55a34f23a",
+    "Application/forgely_rules.py": "f8f492377e4d3f2aecdcdd8fb82ce59d619488c5529fa51ef00ab6a21cb19474",
+    "Application/forgely_rune_icons.py": "a43f8cd01c0f9daee8bbec1b1b9d04474d5de8c56bceb3570f0200fc6cc29191",
+    "Application/forgely_runtime_cache.py": "60d132f59b16570f62ab2a19a49c7d9efd9eae1b9be7dd9bc4ff6c982b46100f",
+    "Application/forgely_sequence.py": "c7f8696d84b6f35ca88f5c74c88cd920dabaaa76826f56d66448d347e2568e77",
+    "Application/forgely_session_review.py": "3c7ea8d4de36c2e4157c2a300405411591281594b947551c35515029fdc77a13",
+    "Application/forgely_session_ui.py": "a128416f486630bbee1bc1035ccf1568cbae761fbc9e313fa0dd81a56d902c12",
+    "Application/forgely_simulateur.py": "10bf023f6289d10d1db5e4c4d94a12e4fa499875bc9f3674c399da2c9473fdd8",
+    "Application/forgely_simulation_job.py": "aaab3d175bad2fb0ecba20232ae0f16ed12d91300f32b61430d4f198eb9dc952",
+    "Application/forgely_simulation_journal.py": "56c99d7c991eb6e6e518cb12bb3304d7dab22c5200ecc41f3e7a1fa657971d4b",
+    "Application/forgely_simulation_live.py": "482f2ee0722569e3d8c849fe8bd4c2de9d7d09b7fef72f7d9c6b086794259f5a",
+    "Application/forgely_simulation_ui.py": "d2da8f872046aa19b38dac4459033ff68b1afba7be4c2832368f490369d5d87c",
+    "Application/forgely_sqlite.py": "813be84154978327fe0047451f2265fe575d2cff7663a37c97bfcf081030eda6",
+    "Application/forgely_strategy.py": "026c3bbfae5d7c5bb8b3d5b64b06a40f5eb2dc3ebba5a5cd89cb8d7139934815",
+    "Application/forgely_themes.py": "ac94cdc43c5021c876f9345a26b95a34031402126d99e56707811f5694a3b877",
+    "Application/forgely_tools.py": "6d656004526ab386193f8172aa80291f156bd0b324a1491e17dc65e2ffb23840",
+    "Application/forgely_trained_policy.py": "4b0e630be0f0da628b9dc5c5ac12a301b89e0faa601d3276beb53300963616a6",
+    "Application/forgely_training.py": "5c8e344e58033df93988fcaaf4ea6e13b7340fae1d83f51086892da47a2d1bd4",
+    "Application/forgely_typographie.py": "be7f4999e26a8c55a13f4cc59efd18c7b47812dc9accb108b6b8e289a0a75044",
+    "Application/forgely_validation.py": "4e2d69e55eccb508c47b21427ba15126f12b480475e3e44839e64233ad9157a7",
+    "Application/forgely_validation_predictive.py": "4bcdb043e2189e9351b7d45d7d01483a6a4d60a429b94f0086aa562833ade643",
+    "Application/forgely_video_analysis.py": "a1f27438b538317c839a38b27c7024fe439914b746092dda287975b863628426",
+    "Application/forgely_video_report.py": "00daa3a70044ab654de221a8fa3cac811bd320a1fc9f179eea00b2b569587b4e",
+    "Application/forgely_video_store.py": "a4a15bde242601f749729d2e017afcccf50991a482f7850f7554f3923ebeae0a",
+    "Application/forgely_video_ui.py": "a7fb352f7e5ad9885c7e0508a795fe13477d5c3e807f0ffb9eac459a26a9af42",
+    "Application/forgely_virtual.py": "0c4face57f0d27396acc0c76e94247dbcef63617e7e00feb0a6688b561b4b442",
+    "Application/forgely_vision.py": "6b4ca92d60f9481c039f3e1bb99dd44cf9c09da810c43fcb30e5f8855a0ddc74",
+    "Application/forgely_vision_guidance.py": "e51228f669142ca19a93cac946e336f4754a4bb9208cf4fca249ae7d7f0663c4",
+    "Application/forgely_weights.py": "0336e87757b8419ebcbb68d6a93345c96d8b8211be93da403eabab99e853c56b",
+    "Application/forgely_windows.py": "d9b7f4423c785142c73445cedf77acc743d3587991b98fafb3da336327b37f66",
+    "Application/forgely_workshop_layout.py": "0bcb23a7760c09fcc77dbe5071115806cd3d7071ad49cd75b934bd8ead81c447",
+    "Application/forgely_workshop_readings.py": "163e291aea32a92d5de91ee402da55005362b440b497cc2f2c8bc5008a019f8f",
+    "Application/forgely_zone_cache.py": "ed5a75fd8aac94e9742c98b09972a10182c712ce1c43bfc2e16874f3114ef90c",
+    "Application/laboratoire_fm.py": "8fe0eec05fa2f3e92bc58da1517a7f30cfe5a154ce1e26137cee0e113c6773b9",
+    "Application/laboratoire_observations.py": "c725bd998edbc98ad58b70f2aeefa339fed8972d0c0222879f11e5febc05508d",
+    "Application/laboratoire_probabilites.py": "0d61a74555d647af663ea287c4895e15be06f3e522c042cad7f14e71feb316c4",
+    "Application/laboratoire_validation_predictive.py": "9b9c1de1caa007b9db7ae34c63ae08d3563728b8de932e95551a6ee7d7179dc9",
+    "Application/laboratoire_videos.py": "47df431fe2822b87ca7ffdee6f19a119857f9efb68c4db7c7cf6fa9dc1f5384a",
+    "Application/laboratoire_walkyrip.py": "9aa41b58eceb20eac275ccc85fc3847e09734b8474166bd55c55d2d3aa934c96",
+    "Application/mesurer_reference_dofocus.py": "643495603cd67ccd021ae674e2f4f9bacf5034f938f8ad11ba77d39cafe721ae",
+    "Application/mesurer_vitesse_globale.py": "0f1bc622d4d621fb19ece9682e1f7c466a68951e006e1f33cfe63033dedce03a",
+    "Application/preparer_collecte_dofocus.py": "8a7cede956ae5be2e082c41b1f9734bc444c25122b2ba52ef54734dfc38fe9a4",
+    "Application/preparer_reference_dofocus.py": "755819fec5c5abf1769c2f60bf0b459ec26bbdf4e5d0d329f94d3212647ab5de",
+    "Application/runeforge_observer.py": "413cc87284ed8cfb2f2aabb2751365130cde99e786ed75fd286d261018283616",
+    "Application/serveur/app.py": "7d1ea33bb40494565dc93b9599519cf82c6c1b4486537d93477d90a56e10cfcc",
+    "Application/serveur/tests/test_api.py": "8fc3e65f4c7308e82e8fdecbdc25790a6e4e2cd5d796898aee1d47bc6e120d88",
+    "Application/tests/test_atelier.py": "5afac0db4ec1e0e529ef6921ec01cfa68d76baf616613ff37236d8ef0def05d6",
+    "Application/tests/test_audit_terrain.py": "c1a389577e00056f9b92b267d1b6307d29f56e234a6f009f2d9ca933aecd570b",
+    "Application/tests/test_auto_window_2020.py": "0f262c9dd4e21087419a72d3f2197dfc143b453c9d0c722f61cf42a6a90d36f9",
+    "Application/tests/test_capture_2025.py": "bbb0236766536086cfbd8777244abfdda871ba0d370077ad161efe0dbc1f7e2d",
+    "Application/tests/test_catalogue.py": "f3843affd3add8351ed5156704c98e739454cdc6561860c705d567429dbf926f",
+    "Application/tests/test_comparaison.py": "cc03c6dc76b0beace882f0fb09cfdb24f002f9ef68cb0d2e104df76ab255fed7",
+    "Application/tests/test_connaissances.py": "59e564c376a85f007d18a9d721722c2bda8650fdcb083833c73fdc19b2cd5dc3",
+    "Application/tests/test_context.py": "aa4f74e583e1f2eff845ff4a72e596bbdf6d330d2cbd886a4271186af1af9e9b",
+    "Application/tests/test_continuous_identity_2038.py": "c6e84923c008f5ea4f30e7165bf25b7a90f7940baa3e4518c2691a8060a164b9",
+    "Application/tests/test_copilote_208.py": "c50f81f415f3b269fac7ea3d449dd092fd24689b8b58c740372abe6d6f5945d4",
+    "Application/tests/test_dashboard.py": "4fb52d33e5e2ff6db6e311c08576025e672386560ecb55523401b3ab6b7a8dbc",
+    "Application/tests/test_dashboard_tk.py": "ec138164d9a78b6be94fe8443e80ed345ca36ca7a745b9753df46bfa278ed141",
+    "Application/tests/test_decision.py": "3f0f209b6b03412f1b64561a3a9b35be3d56c0dd227e56e2a977a879a6e81116",
+    "Application/tests/test_detection.py": "c1b92d6589ef3b04797c2423938ce263b3687e4ef1ee6aaac06603634ea25649",
+    "Application/tests/test_detection_v11.py": "fec3fb9824a3dd19dfd81f453badf7494d70d2359f0a7d961b0eb205592bad85",
+    "Application/tests/test_diagnostic_20261107.py": "4a0d8b6df1e0e5bddfcd67a65de749fac0b68f3697c7a31e9b0f502ac2cd2638",
+    "Application/tests/test_display_modes.py": "bcae605d857d5efa39802239373dc0d38468cc4fbcf97d37eaf84c38ad8b4b5f",
+    "Application/tests/test_dofocus.py": "f42959881c49ea9d6dceed2660ee850379b27b80faa80c5f96af3d993a2875ec",
+    "Application/tests/test_dofocus_collection.py": "c613ce849f9e894489f545519f0d3718d1e8c1808e585d95d3c973f35f104df7",
+    "Application/tests/test_dofocus_store.py": "0bca418f06625200d0d68ce8a42bf58299b903c888fe9a886cd2cafe4c553f42",
+    "Application/tests/test_dynamic_simulation.py": "2a58a1675dcd66e34cdaec92e9727c34a8f9ff1d38c7c6b7f1f865f13f6cf83f",
+    "Application/tests/test_edge_effects_2056.py": "03743bcb051abad54d77e441885a7e39a34b0cd3c35a77b4e1d8301d70f94f4f",
+    "Application/tests/test_equipment_picker_tk.py": "2a2ac57770fea5a35bf553f1cdf01dbb5d3826f7d3945fe038206b2d9e4d2f6e",
+    "Application/tests/test_expert_protocol.py": "581fa74a99092fd0a05c5e5a6e59a935a94e6a92eacab9144951d2b5cdb135ff",
+    "Application/tests/test_fast_rune_preview.py": "1a7a7e2284bbbe8d6de30003af6f3ddd93decaa08fa128174cdddb1ae21379de",
+    "Application/tests/test_field_v2104.py": "e2c1e288f9e8b1e7028509564e583e47c38cb4f19ec1a7cf3f49977780913c0c",
+    "Application/tests/test_first_effect_2059.py": "917b39e2dcdae2a514acfd2649c1eb0b9fa73f2d35d1c1c3905004e39cd2b807",
+    "Application/tests/test_fm_app_integration.py": "14e15808980f18e53457b88d14425206dcb7fa9c22f4deb5f05b12fb45a2c5b3",
+    "Application/tests/test_fm_budget_session.py": "d30be41005e1cbdb3297c164bfca06763fd7f4cd7668e51e4a1056d72202abbd",
+    "Application/tests/test_fm_context_values.py": "c24bf5295489f44a7dc738cf498837aa4d84f33fc358302e0f27bf161155e2e4",
+    "Application/tests/test_fm_model.py": "a7423a67e3941145e29f6048bed9adbd13ecbbe096d11e6d87c019a1207ca92f",
+    "Application/tests/test_fm_objectives.py": "6c2efb7b2565433aed89a3ce20ebd9829d1610c4161e2777219f86431919344a",
+    "Application/tests/test_forgely.py": "7977204f2ff1aebfc927d00d3dc245b20b0cbe2c05052f2cf4a35a4d22f20b99",
+    "Application/tests/test_gallery.py": "da3ab0d924beade16ab0a5b019be96cbf2d0f2a5cc411079c13ead0580b64240",
+    "Application/tests/test_history_identity_2036.py": "50e168cd7e1274baaeb28cee207dfc14225388dfe3e27ef20ce819497fe39ee1",
+    "Application/tests/test_huzounet.py": "a443a71bebbfccda8192a8df33f5b9692115bbb51f6a7829d20119ebb10a1fe4",
+    "Application/tests/test_identity_latency.py": "a243c41de516046b96e163026cb7e335248b1c8eb139e986800d4d519c284da1",
+    "Application/tests/test_item_icons_2032.py": "c5bd2c4aba7a4f7563995190cd23603e3531b82133db8379e6e3e09b51371a26",
+    "Application/tests/test_item_vision_2031.py": "50b76892f29a9e4cff3c66ec612bfaaec66926757f89aa379a76d61bcb13f2a8",
+    "Application/tests/test_item_vision_2034.py": "5f866c4b4f5de44a96064362ae2c25d80f4eb5f5ec9cb88267dcbd7a258765ff",
+    "Application/tests/test_item_vision_2035.py": "01fb64e91dbc32e4f3e9ee32edbb28816f82155f611ce908b177cb8a8f5ac088",
+    "Application/tests/test_items.py": "6199aac3de348214e233288d4917a6306fdc2c594abb6e20006b6286e32485af",
+    "Application/tests/test_jet_2044.py": "90b0223a79f57594c85233731cf05c8c6ba1ab462b7d1d2ac7a020490cd2d4da",
+    "Application/tests/test_jet_2054.py": "da872d6f58c13b1fa6bd0de7387e41ff58cdd265a5040c1ac8a78fab78e1d877",
+    "Application/tests/test_labo_live.py": "5fde7fa0398cc2e20b666db717043d4f4ec9348c1c32189d1f187113ca45e23c",
+    "Application/tests/test_laboratoire_videos.py": "23d9ddda3db114a053da9d4f426c8fc0e91d263e02cd3ca063472427ac54c410",
+    "Application/tests/test_latest_frame_mailbox_2061.py": "c8fc92d59f097aa6e69e5a143e4fd5dffe28ce0affb680e0ad1d6be1f6b229d6",
+    "Application/tests/test_learning_transitions.py": "d7de6eb04df1f8d5973dc25f7d82fb50e8943e7aa818ce334b7e805894ea5187",
+    "Application/tests/test_observation_mode.py": "295872cf94ddb5e5ec641051ef99b118adda3dec834db8ba7a8098f02a8a3795",
+    "Application/tests/test_ocr_diagnostic.py": "4770e8e3db93158435794ac8478959f3d6ac5f2afe55138736ba97a864bc73b1",
+    "Application/tests/test_ocr_latency_regressions.py": "045a6e6263842d900112c39e9595d697b62163677aa9feab36aa96f19cf1786d",
+    "Application/tests/test_packaging_assets.py": "35fa2f97e6f9276e9dd8c4bb9b9bc79bd023ee9740ba44a994c2f82ed217242b",
+    "Application/tests/test_performance_global.py": "d569c1b33a616fddeae7904c39c33e3c67e0edcf0b2a8c23262352096a7024ea",
+    "Application/tests/test_pipeline_performance.py": "d0294716a2c6b86123b7ec45f680bab432c25dacb481c65f656e52758472caf0",
+    "Application/tests/test_plan.py": "1d0576f7d778eae101c433b8d1a4dadb56b7a004f0aa35e9100d1b15979e9444",
+    "Application/tests/test_predictive_precision.py": "b61feb391433f186a8992bdc7f4b17a61f61705f83bfd5fb5b2046a7b4a13be0",
+    "Application/tests/test_predictive_video.py": "f00ca4164ce031fa5c0fe26b2bb38b204514342a242e88e8e86c3931aa0a4abe",
+    "Application/tests/test_price_update.py": "56d7603d51fa0faa5a40c79efda359d27b8d4dd5a67c88f62659f38c8a348f10",
+    "Application/tests/test_probabilites.py": "9dc8b982770886440d1e4104bc9ed136adbbae2d4dba78e41d4e7b0b9def28c6",
+    "Application/tests/test_probabilites_conditionnelles.py": "e2d106f856c23cd99278e562d5a8a29f9160a74a10c6e13c607e3deb95a65ed3",
+    "Application/tests/test_process_window_2021.py": "beb5da3d31800227b812f3716bd0eacdab9128146a7cc41ef0ccd96b3ea9d9d6",
+    "Application/tests/test_profile_guidance_2075.py": "13c7705052bebd64d343ec3da4480b497431e6be4b3e31819b9ede7e6a268aab",
+    "Application/tests/test_recherche_probabilites.py": "da7ea5f920d97d4cc2f374d38d3adfa625acbc3aed1333271958cfb9631a3334",
+    "Application/tests/test_reference_publique.py": "d36db074362cad288c5e06298e568c3c9c004454750fda2e3693b5ec4ef5c92f",
+    "Application/tests/test_reliability_fixes.py": "bbfedcc7f726e91d74ccf7195b89446c9c8098c833a0e25068fbd53199b13bf1",
+    "Application/tests/test_rune_icons.py": "bced5bf14612da49972295bcac8ef687da779f16e72a70adf9101e9938ea5b7f",
+    "Application/tests/test_rune_weights.py": "a3f8be2430eb75ba994fc489b73728b2c95d3dddb160fd77ea32db420a33cb5b",
+    "Application/tests/test_session_review.py": "6e7c995ba9deb0d1ca3628bcff3573184eb732b5f95be2a482e8a5f99a59d068",
+    "Application/tests/test_simulateur.py": "c295a5feb775745535df0f01ef334c967e6d8f45bbb0bd305c4d876375d2bdde",
+    "Application/tests/test_themes.py": "67122480dc17dca02cba8ede50469daed73ef55bb969b45c7eaa4f94cfbbe32b",
+    "Application/tests/test_title_fallback_2024.py": "b4a40642de27548eca6f3959ff7fe29f12b95b2d66f737a67fe9fa3d8b419de4",
+    "Application/tests/test_tools.py": "f9980ec56853dd45b9d048a371749b48dfcd8294076b8209a4e09405bf51f463",
+    "Application/tests/test_tylezia_prices.py": "712efab89565b51d652814a03d4db2219e0cec3697b3d8dbacadbd7d80b87f5d",
+    "Application/tests/test_universal_jets.py": "54be9464760b365aa40c38735c525ffb9ddab421e0395e4a40bb7c48f6f6d940",
+    "Application/tests/test_v2081.py": "d23e241e0d24f62c5724088ce212e369f227c71990f0e59c31cd9d5e728c0491",
+    "Application/tests/test_v2083.py": "11a42a2a50f0d2b9774aba388994bb23bc305650277b89380772d24f1645e06c",
+    "Application/tests/test_validation.py": "a1d6a87c6dbcfccbd8225cad88354afd248e7a645f3ed4221de25087f326e0d7",
+    "Application/tests/test_validation_predictive.py": "952c895012d2a6c1ec592c51f59d532185609f85181c8794ccc53b0bca8d301a",
+    "Application/tests/test_video_candidates_205.py": "8b509bfc417500b09708a3c1d7ed7427e0ddd2fccef05129f06e4b5c37cde7cb",
+    "Application/tests/test_vision.py": "1b59f6c5bcff3936a9088086fb671e64f8615ed8432e7bc23a20e560682ff21f",
+    "Application/tests/test_walkyrip_206.py": "994d1b81a275caa355ed2268d03588eae4663102f76f4f8933fa4e3797de51b6",
+    "Application/tests/test_window_selection_2019.py": "155e8fd7a30584ecc18b64efd4c9f04f3d493730b4c6bc7942d903f727449598",
+    "Application/tests/test_workshop_attention.py": "b6699dd36930a81bac4e625093f718b3ccef390fc7d0e37680262d0bc7831288",
+    "Application/tests/test_workshop_layout.py": "7305981f792b50703a034a5fc0ec51125db9949dc28207d99d01400894dbdfde",
+    "Application/tests/test_workshop_readings_2033.py": "a8ac6aa3ee1045641cf97621151461c6ac0420a7041269e37f4812d977023762",
+    "Application/tests/test_zone_cache_2057.py": "470f61877117d78c37ea2454394abd416cfd7ddc9769d333218f1b88ee472a5c"
+  }
+}

@@ -1,0 +1,57 @@
+[
+  {
+    "path": "Application/forgely_decision.py",
+    "before_sha256": "4eb26e72d1ab35a7a7bcb8a46df4dc785c387a699f2d5af2de74569244480603",
+    "after_sha256": "19f2ffeb61a01df8e304957656b6a029da2039c15ae42a78bd5617bc7012a8b4"
+  },
+  {
+    "path": "Application/forgely_predictive.py",
+    "before_sha256": "15c13f4f7ec539c59e82ab4ac2728721364b0eb4dce799d17f4cd97d472e7b80",
+    "after_sha256": "9a16cf47454a5dadab0ae860d45fb962c4c66ad3c684be0927eed3015b34d481"
+  },
+  {
+    "path": "Application/forgely_rl.py",
+    "before_sha256": "e9f8b2a30c892383b35b3e640a73479e690299419d2099634c6f4a17a16871f4",
+    "after_sha256": "b2c800419fdf4467a16337bc25c864bd9eb580db5dbcc48a6b02e97eb0a58308"
+  },
+  {
+    "path": "Application/forgely_training.py",
+    "before_sha256": "5b5bfba2afc0dfa9299237e48888ee06a465add5cf34a3ffa3e68e457b965f71",
+    "after_sha256": "1f3f4e642ce05da29a6b4eb93ecac913212edd5be73022fbc9e14c31ad178099"
+  },
+  {
+    "path": "Tests/test_minimum_targets.py",
+    "before_sha256": "cee873f461db034309bb3cbafa835aa6060cfafa4d86b8be6ab2c06d949a2556",
+    "after_sha256": "2413d8f09f69b13d8dbf7b33076ef343b9ceaf8d4d3f13ed83bb00b32c638ba7"
+  },
+  {
+    "path": "Tests/test_cycloide_recommendation.py",
+    "before_sha256": "2ebbb4d4aa83b7eb1b867f5982c833afbf906ee8c37dd656456df06b53515cae",
+    "after_sha256": "b1bb89ee2622e13da09362ff3bc40747d408245354d27c397916409187a7caf2"
+  },
+  {
+    "path": "Tests/test_rl_environment.py",
+    "before_sha256": "8925ff00ae10b966a9a2fb2ceb4eb025860fab5d204baba943f01e101f162487",
+    "after_sha256": "4e2c6a3f0266b24a190d58a817161d8b508f75ffdcd99639dc0d6e8fcf29a776"
+  },
+  {
+    "path": "Tests/test_sequence_planning.py",
+    "before_sha256": "124c7f81a6ffdcb3023b90a921cd51289e78988989f024b82bf283f1e8c4bb90",
+    "after_sha256": "9dfd819fbf188557e69ca1675aa92d8ccfd642a3a857c34807386c9c9c205d9e"
+  },
+  {
+    "path": "Tests/test_reserve_over.py",
+    "before_sha256": "402bf7ff03d0e5f2aaa726631c47e24ef5d475b103b630c47ddbf4f916e747bf",
+    "after_sha256": "d92776279be47a2ecd7182e0ab1213a04279340427bcdae9088686f7406eff5d"
+  },
+  {
+    "path": "Application/tests/test_fm_objectives.py",
+    "before_sha256": "fee4feb4fc55137ba6e6ae1a688d5106b52c96952e8623e219e13898ff4ca750",
+    "after_sha256": "ab98196ef4b2a54a41a98af59b7071bb9e47a4bc90f6a84ba50a98e07f20c985"
+  },
+  {
+    "path": "Tests\\test_finish_tier_comparison.py",
+    "after_sha256": "29ec1ae299de3022266d2aa343e1fcbf718e4f126f1a8434d31626973e0dbf33",
+    "new": true
+  }
+]

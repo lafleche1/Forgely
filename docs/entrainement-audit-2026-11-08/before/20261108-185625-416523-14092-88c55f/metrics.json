@@ -1,0 +1,159 @@
+{
+  "run_id": "20261108-185625-416523-14092-88c55f",
+  "signature": "79b40c70530153e27cf657cce9860225218c37fa205f044e9ded6d8a5002aed6",
+  "item_id": 14092,
+  "item_name": "Anneau du Cycloïde",
+  "empirical_observations": 0,
+  "empirical_revision": null,
+  "source": "simulation",
+  "real_observations": 0,
+  "automatically_enabled_in_live_advice": false,
+  "eligible_for_advice": false,
+  "advice_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "no_demonstrated_gain",
+    "intervals": {
+      "learned": [
+        0.0027466006037749346,
+        0.03572248519617954
+      ],
+      "baseline": [
+        0.005114145184492387,
+        0.043166480556278884
+      ]
+    }
+  },
+  "direct_policy_validation": {
+    "eligible": false,
+    "criterion": "complete_jet_wilson95_superiority",
+    "minimum_episodes": 50,
+    "reason": "no_demonstrated_gain",
+    "intervals": {
+      "learned": [
+        0.0027466006037749346,
+        0.03572248519617954
+      ],
+      "baseline": [
+        0.005114145184492387,
+        0.043166480556278884
+      ]
+    }
+  },
+  "simulation_contribution_only": true,
+  "model_version": "forgely-unified-fm-2026-11-08-v1",
+  "policy_version": "generalized-no-currency-5",
+  "reward_version": "complete-target-first-2",
+  "episodes_completed": 100,
+  "prior_episodes": 0,
+  "episodes_total": 100,
+  "training_seed_start": 0,
+  "training_seed_end": 100,
+  "resumed_from": null,
+  "cancelled": false,
+  "training_successes": 0,
+  "training_runes": {
+    "Do Terre": 582,
+    "Pa Ine": 529,
+    "Do Neutre": 555,
+    "Pa Age": 537,
+    "Pa Fo": 477,
+    "Ini": 865,
+    "Pa Ini": 341,
+    "Pa Vi": 502,
+    "Vi": 1081,
+    "Ine": 1634,
+    "Age": 988,
+    "Fo": 1322,
+    "Ra Ini": 5,
+    "Pa Do Neutre": 16,
+    "Pa Do Terre": 7,
+    "Ra Age": 14,
+    "Ra Vi": 12,
+    "Ra Fo": 10,
+    "Ra Ine": 3
+  },
+  "configuration": {
+    "item_id": 14092,
+    "targets": {
+      "Vitalité": 300,
+      "Force": 40,
+      "Intelligence": 40,
+      "Agilité": 40,
+      "Initiative": 300,
+      "Dommages Neutre": 10,
+      "Dommages Terre": 10,
+      "Dommages Feu": 0,
+      "Dommages Air": 0,
+      "% Résistance Eau": 0,
+      "Tacle": 0
+    },
+    "episodes": 100,
+    "max_steps": 130,
+    "evaluation_episodes": 200,
+    "policy_search_episodes": 0,
+    "initial_preset": "moyen",
+    "initial_pool": 0.0,
+    "seed": 20261107,
+    "resume": false
+  },
+  "evaluation": {
+    "learned": {
+      "episodes": 200,
+      "successes": 2,
+      "success_rate": 0.01,
+      "mean_attempts": 96.11,
+      "mean_reward": 0.007941896024464847,
+      "stops": 114,
+      "truncated": 84,
+      "unseen_states": 18345
+    },
+    "baseline": {
+      "episodes": 200,
+      "successes": 3,
+      "success_rate": 0.015,
+      "mean_attempts": 98.23,
+      "mean_reward": 0.013441896024464828,
+      "stops": 104,
+      "truncated": 93,
+      "unseen_states": 0
+    }
+  },
+  "policy_search": {
+    "episodes": 0,
+    "training_only": true
+  },
+  "evaluation_protocol": {
+    "version": 1,
+    "seed": 20261107,
+    "seed_domain": "evaluation",
+    "seed_derivation": "sha256(seed:domain:index)",
+    "paired_seeds": true,
+    "training_replay": false,
+    "policy_frozen": true,
+    "selection_benchmark": true
+  },
+  "curriculum": {
+    "replayed_episodes": 25,
+    "buffered_failures": 64,
+    "capacity": 64,
+    "evaluation_replay": false,
+    "source": "simulation",
+    "sampling": "reservoir_per_failed_episode",
+    "preserves_horizon": true
+  },
+  "elapsed_seconds": 164.61969389999285,
+  "states": 7202,
+  "limitations": [
+    "Résultats synthétiques du modèle local, pas des taux officiels du jeu.",
+    "État discrétisé : politique approximative, à comparer au témoin.",
+    "Banc fixe utilisé pour sélectionner la meilleure archive ; un audit avec une autre graine reste nécessaire pour établir la généralisation."
+  ],
+  "selection": {
+    "selected_run": "20261108-185625-416523-14092-88c55f",
+    "candidate_selected": true,
+    "criterion": "validation_then_wilson95_lower_bound",
+    "archives_preserved": true
+  }
+}

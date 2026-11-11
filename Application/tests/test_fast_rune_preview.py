@@ -19,6 +19,8 @@ class FastPreviewTests(unittest.TestCase):
         self.after = 'ANNEAU\nRéussite critique\nÉchec\n15 Vitalité\nÉchec'
 
     def reader(self, history):
+        # OCR text changes only when its source pixels change.
+        self.image.putpixel((300, 350), (255, 0, 0) if history == self.after else (0, 0, 0))
         def ocr(patch):
             self.assertIn(patch.info['forgely_preview_zone'], ('history', 'runes'))
             return history if patch.info['forgely_preview_zone'] == 'history' else 'Rune Ra Vi'
@@ -65,6 +67,8 @@ class FastPreviewTests(unittest.TestCase):
         obj.last_full_event_frame_id = 0
         obj.last_displayed_result_frame_id = 0
         obj.fast_preview_performance = Mock()
+        obj.confirmation_requested=threading.Event()
+        obj._copilot_masked=False
         obj.messages.put(('fast_preview', (3, 100, Observation('Ra Vi', 'SC', '', 'OCR à vérifier'), 0, 'A', self.icon, obj.frame_mailbox)))
         obj.winfo_exists.return_value = False
         with patch('forgely.forgely_perf_ns', return_value=200), \
@@ -75,6 +79,9 @@ class FastPreviewTests(unittest.TestCase):
         self.assertIn('à vérifier', obj.detect_label.configure.call_args.kwargs['text'])
         insert.assert_not_called()
         unassigned.assert_not_called()
+        self.assertTrue(obj.confirmation_requested.is_set())
+        self.assertTrue(obj._copilot_masked)
+        obj.refresh_strategy.assert_called_once()
 
     def test_late_preview_does_not_replace_fully_processed_result(self):
         obj = Mock()

@@ -1,8 +1,10 @@
-"""Virtual FM entrypoints, never observations in the game database.
+"""Simulateur expérimental de progression d'une caractéristique.
 
-simulate_item: shared advisor model, multi-line states and dynamic predictions.
-simulate_target: legacy manual fixed probabilities, kept for explicit scenarios.
-See forgely_virtual and docs/SIMULATEUR_DYNAMIQUE.md for loss-model limits.
+Hypothèses fournies par l'utilisateur : probabilités fixes SC/SN/EC.
+SC ajoute le gain ; SN ajoute le gain en consommant du puits ; EC consomme du
+puits. Ne modélise PAS la perte d'autres caractéristiques, les limites d'exo,
+les règles précises de puits, ni les probabilités dépendant du jet.
+Aucun résultat n'est enregistré parmi les observations réelles.
 """
 from __future__ import annotations
 from dataclasses import dataclass
@@ -18,7 +20,6 @@ class SimResult:
     completion_rate: float
     mean_attempts: float | None
     median_attempts: float | None
-    mean_cost: float
     mean_pool_left: float
     sc: int
     sn: int
@@ -38,10 +39,10 @@ def simulate_target(rune, current, target, pool, price, sc, sn, ec, *, trials=20
     ref=reference(rune)
     if ref.gain is None or ref.weight is None:
         raise ValueError('Gain ou poids de cette rune non documenté')
-    if not all(isinstance(x,(int,float)) and not isinstance(x,bool) for x in (current,target,pool,price,sc,sn,ec)):
+    if not all(isinstance(x,(int,float)) and not isinstance(x,bool) for x in (current,target,pool,sc,sn,ec)):
         raise ValueError('Paramètres numériques requis')
-    if current<0 or target<=current or pool<0 or price<0:
-        raise ValueError('Jet, cible, puits ou prix invalides')
+    if current<0 or target<0 or pool<0:
+        raise ValueError('Jet, cible ou puits invalides')
     if min(sc,sn,ec)<0 or max(sc,sn,ec)>1 or abs(sc+sn+ec-1)>1e-8:
         raise ValueError('SC + SN + EC doivent totaliser 100 %')
     if not isinstance(trials,int) or not 1<=trials<=50000:
@@ -49,7 +50,7 @@ def simulate_target(rune, current, target, pool, price, sc, sn, ec, *, trials=20
     if not isinstance(max_attempts,int) or not 1<=max_attempts<=10000:
         raise ValueError('Limite d’essais entre 1 et 10 000')
     rng=Random(seed)
-    completed=[];costs=[];pools=[];counts={'SC':0,'SN':0,'EC':0};truncated=0
+    completed=[];pools=[];counts={'SC':0,'SN':0,'EC':0};truncated=0
     for _ in range(trials):
         jet=float(current);remaining=float(pool);attempts=0
         while jet<target and attempts<max_attempts:
@@ -65,12 +66,10 @@ def simulate_target(rune, current, target, pool, price, sc, sn, ec, *, trials=20
             attempts+=1
         if jet>=target:completed.append(attempts)
         else:truncated+=1
-        costs.append(attempts*price);pools.append(remaining)
+        pools.append(remaining)
     return SimResult(trials,len(completed),len(completed)/trials,
         mean(completed) if completed else None,median(completed) if completed else None,
-        mean(costs),mean(pools),counts['SC'],counts['SN'],counts['EC'],truncated)
+        mean(pools),counts['SC'],counts['SN'],counts['EC'],truncated)
 
 
-# The old fixed-input API remains available for explicitly manual scenarios.
-# Dynamic training/session callers share the advisor's actual prediction engine.
-from forgely_virtual import apply_outcome, simulate_item
+from forgely_virtual import apply_outcome,simulate_item

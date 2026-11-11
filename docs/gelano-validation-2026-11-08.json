@@ -1,0 +1,18 @@
+{
+  "name": "Gelano",
+  "catalogue_proof": true,
+  "jet": {
+    "Vitalité": 15,
+    "PA": 0
+  },
+  "pool": 0.0,
+  "snapshot": [
+    {
+      "Vitalité": 15,
+      "PA": 0
+    },
+    0.0
+  ],
+  "capture_workshop_verified": true,
+  "scope": "Provided screenshot, no item-name OCR; exact PA zero calibration comes from this screenshot, not independent accuracy validation"
+}

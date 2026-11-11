@@ -1,0 +1,156 @@
+{
+  "scope": "Captures statiques disponibles ; acquisition écran exclue des deux chaînes",
+  "image_size": [
+    1902,
+    1033
+  ],
+  "expected_gelano": {
+    "jet": {
+      "Vitalité": 10,
+      "PA": 0
+    },
+    "pool": 0
+  },
+  "limitations": [
+    "Une seule capture complète de Gelano ; pas une mesure généralisable au jeu.",
+    "Ancre CV découpée dans cette même capture : microbenchmark, pas validation indépendante du repérage.",
+    "Aucun dictionnaire de police DOFUS dans la V1 ; lecture de jet/puits non implémentée dans son pipeline.",
+    "Les temps V1 incluent contours/masquage et comparaison avec dictionnaire vide, pas une reconnaissance équivalente.",
+    "Essais chauds : répétitions de pixels identiques, pas de nouvelles poses de runes.",
+    "Chaque durée de bout de chaîne inclut le traitement mais pas la capture ni l’affichage."
+  ],
+  "tesseract_cold": {
+    "p50_ms": 1186.7090999730863,
+    "p95_ms": 1291.663249983685,
+    "p99_ms": 1308.1191299541388,
+    "runs": 8,
+    "outputs": [
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      },
+      {
+        "jet": {
+          "Vitalité": 10,
+          "PA": 0
+        },
+        "pool": 0.0,
+        "readable": true,
+        "active": true
+      }
+    ],
+    "exact_jet_and_pool": 8
+  },
+  "tesseract_identical_frame_cached": {
+    "p50_ms": 11.847199988551438,
+    "p95_ms": 425.7851300644688,
+    "p99_ms": 442.68545296858065,
+    "runs": 50,
+    "exact_jet_and_pool": 50
+  },
+  "cv_global_search": {
+    "p50_ms": 39.75255001569167,
+    "p95_ms": 42.80343999271281,
+    "p99_ms": 43.253250014968216,
+    "runs": 30,
+    "detections": 30,
+    "accepted_chat_lines": 0,
+    "jet": null,
+    "pool": null,
+    "exact_jet_and_pool": 0
+  },
+  "cv_local_tracking": {
+    "p50_ms": 4.070299968589097,
+    "p95_ms": 4.983325058128685,
+    "p99_ms": 5.195275004953152,
+    "runs": 100,
+    "detections": 100,
+    "accepted_chat_lines": 0,
+    "jet": null,
+    "pool": null,
+    "exact_jet_and_pool": 0
+  },
+  "second_real_effects_crop": {
+    "scope": "Crop seul : pas de localisation ni puits dans cette image",
+    "expected_subset": {
+      "Vitalité": 342,
+      "Tacle": 0
+    },
+    "tesseract_jet": {
+      "Force": 40,
+      "Intelligence": 40,
+      "Agilité": 36,
+      "Dommages Neutre": 8,
+      "Dommages Terre": 8,
+      "Dommages Feu": 10,
+      "Dommages Air": 5,
+      "Initiative": 270,
+      "% Résistance Eau": 6,
+      "Tacle": 0,
+      "Vitalité": 342
+    },
+    "tesseract_ms": 760.9931000042707,
+    "expected_subset_correct": true,
+    "cv_jet": null,
+    "cv_reason": "Dictionnaire non calibré et absence de lecture numérique intégrée"
+  }
+}

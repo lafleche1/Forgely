@@ -1,0 +1,32 @@
+{
+  "image_size": [
+    57,
+    19
+  ],
+  "scale_tag": "human-labelled-white-zero-pa-9x11-20261108",
+  "fields": [
+    {
+      "name": "PA",
+      "kind": "stat",
+      "box": {
+        "x": 22,
+        "y": 4,
+        "w": 9,
+        "h": 11
+      },
+      "guard_box": {
+        "x": 37,
+        "y": 4,
+        "w": 17,
+        "h": 10
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0"
+  ]
+}

@@ -137,7 +137,7 @@ def test_capture_reuses_thread_local_mss_and_closes_it():
 
 def test_full_ocr_invalidated_during_read_never_publishes_results():
     mailbox=LatestFrameMailbox()
-    mailbox.publish('pixels','A',1,0)
+    mailbox.publish(Image.new('RGB',(1648,928)),'A',1,0)
     stop=threading.Event()
     obj=SimpleNamespace(stop_event=stop,frame_mailbox=mailbox,capture=Mock(),
                         messages=queue.Queue(),last_capture_title='',latest_observation_id=0,
@@ -148,7 +148,7 @@ def test_full_ocr_invalidated_during_read_never_publishes_results():
             return first
         stop.set()
         return mailbox.snapshot()
-    def invalidated_read(*_args):
+    def invalidated_read(*_args,**_kwargs):
         mailbox.invalidate('other account')
         return SimpleNamespace(active=True)
     with patch.object(mailbox,'wait_snapshot',side_effect=next_frame), \

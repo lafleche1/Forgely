@@ -1,0 +1,32 @@
+{
+  "image_size": [
+    202,
+    582
+  ],
+  "scale_tag": "human-labelled-native-zero-pa-20261110",
+  "fields": [
+    {
+      "name": "PA",
+      "kind": "stat",
+      "box": {
+        "x": 27,
+        "y": 186,
+        "w": 9,
+        "h": 11
+      },
+      "guard_box": {
+        "x": 42,
+        "y": 186,
+        "w": 17,
+        "h": 10
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0"
+  ]
+}

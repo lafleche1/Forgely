@@ -34,15 +34,15 @@ def test_sc_scenario_keeps_pool_and_never_claims_final_probability():
     assert b['branches']['EC']['next_rune'] is None
 
 
-def test_sc_branch_spends_only_the_attempt_price_from_budget():
+def test_sc_branch_ignores_currency_budget():
     jets, targets = {'Force': 0}, {'Force': 2}
     p = advise(jets, targets, natural_max={'Force': 100}, pool=10,
-               mode='Budget optimisé', prices={'Fo': 36}, remaining_budget=36)
+               mode='Budget optimisé', prices={'Fo': 36, 'Pa Fo': 10000, 'Ra Fo': 100000}, remaining_budget=36)
     b = expert.build_dashboard(p, jets, targets, 10, natural_max={'Force': 100},
-                              mode='Budget optimisé', prices={'Fo': 36}, remaining_budget=36)
-    assert b['branches']['SC']['remaining_budget'] == 0
+                              mode='Budget optimisé', prices={'Fo': 36, 'Pa Fo': 10000, 'Ra Fo': 100000}, remaining_budget=36)
+    assert b['branches']['SC']['remaining_budget'] is None
     assert b['branches']['SC']['next_rune'] is None
-    assert b['branches']['SC']['status'] == 'Budget épuisé'
+    assert b['branches']['SC']['status'] != 'Budget épuisé'
 
 
 @pytest.mark.parametrize('kwargs', [{'verified': False}, {'after_fusion': True}])

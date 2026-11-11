@@ -1,0 +1,25 @@
+{
+  "screenshot_jet": {
+    "Vitalité": 294,
+    "Force": 38,
+    "Intelligence": 36,
+    "Agilité": 37,
+    "Initiative": 276,
+    "Dommages Neutre": 3,
+    "Dommages Terre": 0,
+    "Dommages Feu": 11,
+    "Dommages Air": 6,
+    "% Résistance Eau": 0,
+    "Tacle": 1
+  },
+  "pool": 0.1,
+  "proposal": "Pa Do Terre",
+  "kind": "fm_classique",
+  "rune_gain": 3,
+  "rune_weight": 15.0,
+  "matrix_weighted_repair": true,
+  "real_history_visible_groups": 2,
+  "initial_groups_added_as_new": 0,
+  "inferred_outcomes": false,
+  "scope": "Provided jet reconstruction and real still-history fixture, not a live play session or success-rate validation"
+}

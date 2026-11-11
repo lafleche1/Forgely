@@ -1,0 +1,9 @@
+{
+  "Application/forgely_training.py": "542790cfec100b646d7775ee6f28966a805bf1c352137366f7c251e8f836fbf9",
+  "Application/auditer_politique.py": "61badc8ff2e042d6546efb31125d7e1a401e141c98a93371113a6aefdc4aba64",
+  "Tests/test_training_state_precision.py": "1631d0c67b6c54eae5f689d30797f879bec1b06cb66ce384b51519cc5131a2af",
+  "Application/forgely_rl.py": "366647d34d9627f0e66c2409cb3af0702a4848a2681d79f0055a9991d372d73b",
+  "Application/forgely_dofocus_engine.py": "9d463a8484c52a9e744118424cf8d7fb8d326b049db5598c99b631367197ee47",
+  "Application/forgely_fm_model.py": "86c0e79d8439e3f2cca10a896c94bf10fe28eb4a4458649b34944eb48b02e789",
+  "Application/forgely_trained_policy.py": "d9ab4e8a082988d476a55591205b5333755b0a8d8997ca8c4a382a4249318fa3"
+}

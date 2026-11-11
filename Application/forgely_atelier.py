@@ -9,23 +9,68 @@ from dataclasses import dataclass, field
 import re
 import unicodedata
 from difflib import SequenceMatcher
+from concurrent.futures import ThreadPoolExecutor
 
 
-# (x1,y1,x2,y2) fractions of the captured DOFUS window.
-# Source: supplied 1648x928 screenshot, with workshop at approx 273..1005,138..763.
+# (x1,y1,x2,y2) fractions of the captured DOFUS window (Calibrated for 1080p Unity atelier).
 ZONES = {
-    'title': (.325,.148,.530,.188),
-    'history': (.168,.266,.289,.786),
-    'effects': (.285,.175,.515,.805),
-    'runes': (.492,.270,.598,.377),
-    'reliquat': (.325,.193,.394,.229),
+    'title': (.169, .217, .287, .250),
+    'history': (.168, .243, .289, .796),
+    'reliquat': (.310, .165, .410, .205),
+    'effects': (.294, .264, .544, .713),
+    'review_effects': (.294, .264, .604, .713),
+    'current_jet': (.375, .264, .544, .713),
+    'modifications': (.544, .264, .604, .713),
+    'runes': (.604, .264, .719, .713),
 }
+
+# Small structural probes, never OCR text outside the workshop panels.
+WORKSHOP_ANCHORS = ((.29,.162),(.48,.162),(.20,.31),(.26,.46),
+                    (.32,.31),(.32,.46))
+WORKSHOP_ROWS = ((.36,.275),(.36,.345),(.36,.415))
+
+
+def focus_workshop(image):
+    """Discard unrelated pixels while preserving coordinates for all readers.
+
+    Recompute boxes from each capture size; never modify the source image.
+    Layouts other than the supported workshop layout still require calibration.
+    """
+    from PIL import Image
+    w, h = image.size
+    focused = Image.new('RGB', image.size)
+    for a, b, c, d in ZONES.values():
+        box = (round(a*w), round(b*h), round(c*w), round(d*h))
+        focused.paste(image.crop(box).convert('RGB'), box[:2])
+    for x, y in WORKSHOP_ANCHORS + WORKSHOP_ROWS:
+        cx, cy = round(x*w), round(y*h)
+        box = (max(0,cx-3), max(0,cy-3), min(w,cx+4), min(h,cy+4))
+        focused.paste(image.crop(box).convert('RGB'), box[:2])
+    return focused
 
 def crop_zone(image, name):
     if name not in ZONES: raise ValueError('Zone inconnue')
     a,b,c,d=ZONES[name]
     w,h=image.size
     return image.crop((round(a*w),round(b*h),round(c*w),round(d*h)))
+
+
+def crop_identity_workshop_title(image):
+    """Profession title with lower padding for short-table Windows layouts.
+
+    This contains the workshop profession, never the item history/name.
+    """
+    return crop_zone(image,'identity_title')
+
+
+def workshop_title_signature(image, context):
+    patch=crop_identity_workshop_title(image)
+    return (*context,patch.size,patch.mode,patch.tobytes())
+
+
+def workshop_frame_verified(image, context, title_proof=None):
+    return (workshop_visual_fallback(image) or
+            (title_proof is not None and title_proof==workshop_title_signature(image,context)))
 
 def normalize(text):
     s=unicodedata.normalize('NFKD', text or '')
@@ -61,12 +106,14 @@ class AtelierRead:
     reason: str
     recovery_pending: bool = False
     timings: dict = field(default_factory=dict)
+    readable: bool = True
+    modifications: str = ''
 
 def title_candidates(image):
-    """Multiple conservative crops for DOFUS window borders and UI scaling."""
+    """OCR variants of the title only; never search surrounding game text."""
     from PIL import ImageEnhance, ImageOps
     w, h = image.size
-    boxes = [ZONES['title'], (.25,.12,.62,.23), (.23,.10,.66,.26)]
+    boxes = [ZONES['title']]
     for box in boxes:
         patch = image.crop((round(box[0]*w),round(box[1]*h),round(box[2]*w),round(box[3]*h)))
         yield patch
@@ -78,7 +125,7 @@ def specialized_title_candidates(image):
     """Threshold white text on DOFUS's purple header, preserving sharp edges."""
     from PIL import ImageOps
     w, h = image.size
-    for box in (ZONES['title'], (.25, .12, .62, .23)):
+    for box in (ZONES['title'],):
         patch = image.crop(tuple(round(v * (w if i % 2 == 0 else h)) for i, v in enumerate(box)))
         gray = ImageOps.grayscale(patch)
         for threshold in (155, 180):
@@ -111,16 +158,44 @@ def workshop_visual_fallback(image):
         return 28 <= r <= 145 and 28 <= g <= 145 and 48 <= b <= 170 and b >= r+8 and b >= g+8
     # Each anchor occupies a different UI element: title strip, left
     # history panel, and two separate rows of the effects table.
-    anchors=((.29,.162),(.48,.162),(.20,.31),(.26,.46),(.32,.31),(.32,.46))
+    anchors=WORKSHOP_ANCHORS
     if sum(purple(*pt) for pt in anchors) < 5:
         return False
     # The inventory or another purple DOFUS window alone must not qualify.
     # Two dark alternating effects rows must be present in the workshop.
-    rows=(mean(.36,.275),mean(.36,.345),mean(.36,.415))
-    return all(15 <= r <= 125 and 15 <= g <= 110 and 25 <= b <= 130 for r,g,b in rows)
+    rows=tuple(mean(*point) for point in WORKSHOP_ROWS)
+    if not all(15 <= r <= 125 and 15 <= g <= 110 and 25 <= b <= 130 for r,g,b in rows):
+        return False
+    header = mean(.48, .162)
+    if sum(sum(abs(a-b) for a,b in zip(row, header)) >= 30 for row in rows) < 2:
+        return False
+    # Colour alone is not structure: require actual bright header text and
+    # characteristic glyphs, independently of the current item/rune icons.
+    from PIL import ImageOps
+    title_histogram = ImageOps.grayscale(crop_zone(rgb, 'title')).histogram()
+    if sum(title_histogram[155:]) < 12:
+        return False
+    # A legitimate jet may contain only red negative values or neutral zeros.
+    # Confirm glyphs in the current column after all structural probes; their
+    # sign/colour cannot determine whether the workshop exists.
+    import numpy as np
+    effects = crop_zone(rgb, 'current_jet')
+    pixels=np.asarray(effects)
+    bright=int((pixels.max(2)>150).sum())
+    return max(12, effects.width * effects.height * .0001) <= bright <= effects.width * effects.height * .25
 
 
-def read_atelier(image, ocr, zone_cache=None, title_cache=None):
+def effects_text_occluded(text):
+    folded=normalize(text)
+    # Cropped tooltips often expose only the beginnings of these labels.
+    # These are inventory metadata, never names of workshop characteristics.
+    if re.search(r'\bprix\s+mo\w*|\bquantit\w*|\bpoids\s*[:=]?\s*\d',folded):
+        return True
+    return any(token in folded for token in (
+        'comparer avec','valeurs theor','niveau 1','panoplie'))
+
+
+def read_atelier(image, ocr, zone_cache=None, title_cache=None, *, history_ocr=None,five_zones=False,pool_ocr_token=None,on_numeric=None,numeric_only=False):
     # Fast path: a previously verified workshop with independently confirmed
     # visual anchors needs no repeated title OCR until periodic revalidation.
     # The visual check runs on EVERY frame, so closing the workshop invalidates
@@ -164,16 +239,62 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
             title_cache.clear()
     timings['titre_atelier']=perf_counter_ns()-title_started
     if not confirmed:
-        return AtelierRead(False,title,'','','','','Atelier non confirmé : aucune tentative enregistrée',timings=timings)
+        return AtelierRead(False,title,'','','','','Lecture du jeu indisponible : aucune tentative enregistrée',timings=timings)
     def read_zone(name, reader):
         started=perf_counter_ns()
         patch = crop_zone(image, name)
+        if name=='reliquat' and pool_ocr_token is not None:
+            # A rune requests a genuine new OCR pass, even for unchanged
+            # digits. The token also bypasses the shared OCR-result cache.
+            patch.info['forgely_pool_ocr_token']=pool_ocr_token
         result=zone_cache.read(name, patch, reader) if zone_cache is not None else reader(patch)
-        timings[{'history':'historique','effects':'effets','runes':'runes','reliquat':'reliquat'}[name]]=perf_counter_ns()-started
+        timings[{'history':'historique','effects':'effets','current_jet':'effets','modifications':'modifications',
+                 'runes':'runes','reliquat':'reliquat'}[name]]=perf_counter_ns()-started
         return result
-    history=read_zone('history', ocr)
+    if five_zones or numeric_only:
+        # Current-value/label column only: Min/Max, inventory counts and rune
+        # tooltips cannot be mistaken for the current jet. No exhaustive strip
+        # recovery blocks this path; incomplete readings remain incomplete.
+        def modifications(patch):
+            import numpy as np
+            a=np.asarray(patch.convert('RGB')).astype(int)
+            body=a[max(1,round(patch.height*.07)):]
+            if not body.size:return ''
+            background=np.median(body,axis=(0,1))
+            ink=(abs(body-background).max(2)>70)&(body.max(2)>150)
+            return ocr(patch) if int(ink.sum())>=8 else ''
+        with ThreadPoolExecutor(max_workers=2 if numeric_only else 4,thread_name_prefix='atelier-zones') as workers:
+            history_job=None if numeric_only else workers.submit(read_zone,'history',history_ocr or ocr)
+            from forgely_jet import read_current_jet_ocr
+            effects_job=workers.submit(read_zone,'current_jet',lambda patch:read_current_jet_ocr(patch,ocr) if zone_cache is None else read_current_jet_ocr(patch,ocr,row_cache=zone_cache))
+            pool_job=workers.submit(read_zone,'reliquat',lambda patch:read_reliquat_ocr(patch,ocr))
+            modifications_job=None if numeric_only else workers.submit(read_zone,'modifications',modifications)
+            effects,reliquat=effects_job.result(),pool_job.result()
+            if on_numeric is not None:
+                # Deliver source-bound numbers before either secondary zone
+                # completes. This partial result must not cache an empty history.
+                from forgely_jet import parse_jet
+                on_numeric(AtelierRead(True,title,'',effects,'',reliquat,
+                    'Jet et reliquat lus · historique en cours',False,
+                    dict(timings),bool(parse_jet(effects))))
+            history,changed=(('','') if numeric_only else (history_job.result(),modifications_job.result()))
+        from forgely_jet import parse_jet
+        readable=bool(parse_jet(effects))
+        return AtelierRead(True,title,history,effects,'',reliquat,
+            'Atelier reconnu · lecture ciblée du jet courant',False,timings,readable,changed)
     from forgely_jet import read_effects_ocr
-    effects=read_zone('effects', lambda patch: read_effects_ocr(patch, ocr))
+    # All readers use this immutable capture and distinct cache keys. Waiting
+    # for each subprocess serially adds their latency to every observation.
+    # Keep the executor scoped so failures cannot leave old-frame work queued.
+    with ThreadPoolExecutor(max_workers=4, thread_name_prefix='atelier-ocr') as workers:
+        history_job=workers.submit(read_zone, 'history', history_ocr or ocr)
+        effects_job=workers.submit(read_zone, 'effects', lambda patch: read_effects_ocr(patch, ocr))
+        runes_job=workers.submit(read_zone, 'runes', ocr)
+        reliquat_job=workers.submit(read_zone, 'reliquat', lambda patch: read_reliquat_ocr(patch, ocr))
+        history=history_job.result()
+        effects=effects_job.result()
+        runes=runes_job.result()
+        reliquat=reliquat_job.result()
     # IMPORTANT: effects may be served from the zone OCR cache. A highlighted
     # stat can disappear from that cached text, so run the targeted recovery on
     # the CURRENT image, not only when read_effects_ocr() runs on a cache miss.
@@ -194,6 +315,10 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
         recovered, frame_info = recover_missing_effects_live(
             actual_effects_patch, parse_jet(effects))
         recovery_pending=frame_info.get('status')=='recuperation_en_cours'
+        from forgely_jet import first_row_recovery_pending
+        if first_row_recovery_pending(actual_effects_patch):
+            recovery_pending=True
+            if zone_cache is not None:zone_cache.entries.pop('effects',None)
         if recovered:
             effects += ''.join('\n{} {}'.format(value, name) for name, value in recovered.items())
             if zone_cache is not None:
@@ -204,9 +329,9 @@ def read_atelier(image, ocr, zone_cache=None, title_cache=None):
             'status': 'erreur_lecture_ligne', 'detail': str(exc)[:160]}
 
     timings['recuperation_lignes']=perf_counter_ns()-recovery_started
-    runes=read_zone('runes', ocr)
-    reliquat=read_zone('reliquat', lambda patch: read_reliquat_ocr(patch, ocr))
-    return AtelierRead(True,title,history,effects,runes,reliquat,'Atelier reconnu ; analyse historique uniquement',recovery_pending,timings)
+    readable=bool(parse_jet(effects))
+    reason='Atelier reconnu ; analyse historique uniquement' if readable else 'Atelier repere mais effets illisibles : recadrage necessaire'
+    return AtelierRead(True,title,history,effects,runes,reliquat,reason,recovery_pending,timings,readable)
 
 def read_reliquat_ocr(patch, ocr):
     """Use an extra focused OCR pass only when the normal pool read is invalid.

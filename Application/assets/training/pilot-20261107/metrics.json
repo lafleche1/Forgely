@@ -1,0 +1,159 @@
+{
+  "item_id": 14092,
+  "item": "Anneau du Cycloïde",
+  "level": 200,
+  "initial_lines": [
+    {
+      "stat": "% Résistance Eau",
+      "value": 7,
+      "min": 6,
+      "max": 8,
+      "weight": 6
+    },
+    {
+      "stat": "Agilité",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1
+    },
+    {
+      "stat": "Dommages Air",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5
+    },
+    {
+      "stat": "Dommages Feu",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5
+    },
+    {
+      "stat": "Dommages Neutre",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5
+    },
+    {
+      "stat": "Dommages Terre",
+      "value": 9,
+      "min": 7,
+      "max": 10,
+      "weight": 5
+    },
+    {
+      "stat": "Force",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1
+    },
+    {
+      "stat": "Initiative",
+      "value": 251,
+      "min": 201,
+      "max": 300,
+      "weight": 0.1
+    },
+    {
+      "stat": "Intelligence",
+      "value": 36,
+      "min": 31,
+      "max": 40,
+      "weight": 1
+    },
+    {
+      "stat": "Tacle",
+      "value": 5,
+      "min": 4,
+      "max": 6,
+      "weight": 4
+    },
+    {
+      "stat": "Vitalité",
+      "value": 276,
+      "min": 251,
+      "max": 300,
+      "weight": 0.2
+    }
+  ],
+  "initial_pool": 10,
+  "targets": {
+    "Force": 40,
+    "Intelligence": 40
+  },
+  "horizon": 30,
+  "training_episodes": 3000,
+  "training_rune_attempts": 20824,
+  "training_successes": 1501,
+  "learned_states": 237,
+  "seed": 20261107,
+  "algorithm": "tabular Q-learning with aggregated states",
+  "discount": 0.97,
+  "model_version": "dofocus-2026-11-07-6a559153678e",
+  "state_version": "forgely-state-1",
+  "reward_version": "target-deficit-1",
+  "evaluation": {
+    "learned": {
+      "episodes": 500,
+      "successes": 464,
+      "success_rate": 0.928,
+      "mean_reward": 54.212,
+      "mean_attempts": 9.196,
+      "stops": 36,
+      "truncated": 0,
+      "outcomes": {
+        "SC": 318,
+        "SN": 1854,
+        "EC": 2426
+      },
+      "source": "simulation",
+      "real_observations": 0
+    },
+    "small_rune": {
+      "episodes": 500,
+      "successes": 333,
+      "success_rate": 0.666,
+      "mean_reward": 40.506,
+      "mean_attempts": 24.384,
+      "stops": 0,
+      "truncated": 167,
+      "outcomes": {
+        "SC": 244,
+        "SN": 4229,
+        "EC": 7719
+      },
+      "source": "simulation",
+      "real_observations": 0
+    },
+    "random": {
+      "episodes": 500,
+      "successes": 477,
+      "success_rate": 0.954,
+      "mean_reward": 55.604,
+      "mean_attempts": 13.632,
+      "stops": 0,
+      "truncated": 23,
+      "outcomes": {
+        "SC": 325,
+        "SN": 2384,
+        "EC": 4107
+      },
+      "source": "simulation",
+      "real_observations": 0
+    }
+  },
+  "prices_provided": false,
+  "limitations": [
+    "One fixed starting item and jet; no generalization claim.",
+    "Aggregated state loses detail; no full Markov guarantee.",
+    "Simulator results, not observed game success rates.",
+    "No rune prices; not an economic optimization.",
+    "Saved experimental policy is not enabled in live advice."
+  ],
+  "duration_seconds": 27.14
+}

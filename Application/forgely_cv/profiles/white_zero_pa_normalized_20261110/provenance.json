@@ -1,0 +1,11 @@
+{
+  "source": "Tests/fixtures/kido_zero_pa_20261110.png",
+  "sha256": "096f6640d0accd131638cd063272c69e9af8540763244aa0d38a4d454e0f9410",
+  "transform": [
+    1.2575079872204473,
+    -74.65303514377018,
+    -23.478594249201308
+  ],
+  "annotation": "0 PA visible on user screenshot, exact transformed glyph and label only",
+  "validation": "Calibration replay, not independent accuracy validation"
+}

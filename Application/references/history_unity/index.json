@@ -1,0 +1,66 @@
+{
+  "schema": 1,
+  "provenance": "Captures utilisateur confirmées, 2026-11-09 ; références visuelles, jamais des fréquences de passage",
+  "icons": [
+    {
+      "rune": "Ini",
+      "file": "142203-0.png",
+      "source_capture": "142203.png",
+      "source_sha256": "58f540e958bdf2b3e6d8c53339260ba114fb0c0f29ab2166936f3bde2076938e"
+    },
+    {
+      "rune": "Pa Fo",
+      "file": "150921-0.png",
+      "source_capture": "150921.png",
+      "source_sha256": "91b680862afb788f74ba832b23d5b6e1736058a0bc9b32c086834062251cb24f"
+    },
+    {
+      "rune": "Pa Ine",
+      "file": "151032-0.png",
+      "source_capture": "151032.png",
+      "source_sha256": "68b164a84fd1e8e4a8996f80c5e21b0e175e18d8a6dc771507b716ff1f92fc5f"
+    },
+    {
+      "rune": "Ine",
+      "file": "151219-0.png",
+      "source_capture": "151219.png",
+      "source_sha256": "4701a88a9664d3ddb16b638ca08e455e8f4897bda9cd0295a9ab88d0469246fc"
+    },
+    {
+      "rune": "Ine",
+      "file": "151219-1.png",
+      "source_capture": "151219.png",
+      "source_sha256": "4701a88a9664d3ddb16b638ca08e455e8f4897bda9cd0295a9ab88d0469246fc"
+    },
+    {
+      "rune": "Ré Per Eau",
+      "file": "151301-0.png",
+      "source_capture": "151301.png",
+      "source_sha256": "93f7e3ee84071170f1dd5eb6bfc9f573f54424ca2a035a647d4762692e69661f"
+    },
+    {
+      "rune": "Ré Per Eau",
+      "file": "151453-0.png",
+      "source_capture": "151453.png",
+      "source_sha256": "dbb6f2fcd2c90d55ff5ad6afe26bae3c6297aed7525ba04b37ac2f80556a4cdd"
+    },
+    {
+      "rune": "Do Pou",
+      "file": "151555-0.png",
+      "source_capture": "151555.png",
+      "source_sha256": "14d1bac6aa32e672bb8f780e6db06b908025d48cf485f099b734da90a9f77be2"
+    },
+    {
+      "rune": "Po",
+      "file": "151840-0.png",
+      "source_capture": "151840.png",
+      "source_sha256": "f812dedb55589e4024a8d819a16b779a7047f879974c3bf5822590c44934d7e1"
+    },
+    {
+      "rune": "Po",
+      "file": "151840-1.png",
+      "source_capture": "151840.png",
+      "source_sha256": "f812dedb55589e4024a8d819a16b779a7047f879974c3bf5822590c44934d7e1"
+    }
+  ]
+}

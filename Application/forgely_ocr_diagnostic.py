@@ -12,7 +12,8 @@ class Diagnostic:
 
 def evaluate(raw: str, *, running: bool, item_verified: bool,
              jet_verified: bool, rune_conflict: bool = False,
-             observation_delay_ms: float | None = None) -> Diagnostic:
+             observation_delay_ms: float | None = None,
+             rune_zone_read: bool = True) -> Diagnostic:
     raw = raw or ''
     sections = {}
     for index, heading in enumerate(SECTIONS):
@@ -37,9 +38,9 @@ def evaluate(raw: str, *, running: bool, item_verified: bool,
         reasons.append('Historique des tentatives illisible ou absent.')
     if not sections['EFFETS']:
         reasons.append('Caractéristiques illisibles ou absentes.')
-    if not sections['RUNES (Pa / Ra)']:
+    if rune_zone_read and not sections['RUNES (Pa / Ra)']:
         reasons.append('Zone des runes illisible ou absente.')
-    else:
+    elif sections['RUNES (Pa / Ra)']:
         from forgely_data import RUNES
         from runeforge_observer import find_rune
         if find_rune(sections['RUNES (Pa / Ra)'], RUNES) is None:

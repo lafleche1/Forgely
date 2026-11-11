@@ -1,0 +1,32 @@
+{
+  "image_size": [
+    202,
+    582
+  ],
+  "scale_tag": "human-labelled-zero-pa-after-live-normalization-20261110",
+  "fields": [
+    {
+      "name": "PA",
+      "kind": "stat",
+      "box": {
+        "x": 44,
+        "y": 172,
+        "w": 8,
+        "h": 10
+      },
+      "guard_box": {
+        "x": 57,
+        "y": 172,
+        "w": 16,
+        "h": 10
+      },
+      "guard": "guard-000.png",
+      "mode": "bright",
+      "guard_mode": "bright"
+    }
+  ],
+  "calibration_only": true,
+  "supported_characters": [
+    "0"
+  ]
+}
